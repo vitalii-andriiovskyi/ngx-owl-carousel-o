@@ -1,0 +1,22 @@
+<div class="owl-carousel owl-loaded owl-theme" [ngClass]="{'owl-hidden': !owlVisible}" #owlCarousel>
+
+	<div class="owl-stage-outer">
+		<div class="owl-stage" [ngStyle]="{'width': sliderWidth*slides.length + 'px', 'transform': 'translateX(' + translateXFirstStage + 'px)', '-webkit-transform': 'translateX(' + translateXFirstStage + 'px)', 'visibility': visibleFirstStage }">
+			<ng-container *ngFor="let slide of slides; let i = index">
+				<div class="owl-item" [ngClass]="{'active': false}" [ngStyle]="{'width': sliderWidth + 'px'}">
+					<ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
+				</div><!-- /.owl-item -->
+			</ng-container>
+		</div><!-- /.owl-stage -->
+		
+  </div> <!-- /.owl-stage-outer -->
+	<div class="owl-nav">
+		<div class="owl-prev" [class.disabled]="prevDisabled" (click)="prevSlide(-1)" [innerHTML]="owlPrev"></div>
+		<div class="owl-next" [class.disabled]="nextDisabled" (click)="nextSlide(1)" [innerHTML]="owlNext"></div>
+	</div> <!-- /.owl-nav -->
+	<div class="owl-dots">
+		<div class="owl-dot active"><span></span></div>
+		<div class="owl-dot"><span></span></div>
+		<div class="owl-dot"><span></span></div>
+	</div> <!-- /.owl-dots -->
+</div> <!-- /.owl-carousel owl-loaded -->

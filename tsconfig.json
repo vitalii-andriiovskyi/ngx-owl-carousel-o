@@ -16,8 +16,8 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@owl-carousel-libdemo/*": [
-        "libs/*"
+      "ngx-owl-carousel-o": [
+        "libs/ngx-owl-carousel-o"
       ]
     }
   },

@@ -1,5 +1,11 @@
 {
   "npmScope": "owl-carousel-libdemo",
   "projects": {
+    "demo-owl-carousel": {
+      "tags": []
+    },
+    "demo-owl-carousel-e2e": {
+      "tags": []
+    }
   }
 }

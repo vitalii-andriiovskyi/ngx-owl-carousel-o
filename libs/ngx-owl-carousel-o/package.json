@@ -1,0 +1,29 @@
+{
+  "$schema": "../../node_modules/ng-packagr/package.schema.json",
+  "name": "ngx-owl-carousel-o",
+  "version": "1.0.0",
+  "description": "Angular powered owl-carousel",
+  "keywords": [
+    "angular",
+    "owl-carousel",
+    "components"
+  ],
+  "author": "someone",
+  "repository": {
+    "type": "git",
+    "url": "..."
+  },
+  "license": "MIT",
+  "private": true,
+  "peerDependencies": {
+    "@angular/common": "6.0.1",
+    "@angular/core": "6.0.1",
+    "rxjs": "6.0.1"
+  },
+  "ngPackage": {
+    "lib": {
+      "entryFile": "./index.ts"
+    },
+    "dest": "../../ngx-owl-carousel-o"
+  }
+}
