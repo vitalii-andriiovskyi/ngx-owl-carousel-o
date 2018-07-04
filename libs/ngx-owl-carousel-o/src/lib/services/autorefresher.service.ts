@@ -7,9 +7,9 @@ export class Defaults {
   autoRefreshInterval?: number;
 }
 /**
-	 * Creates the auto refresh plugin.
-	 * @class The Auto Refresh Plugin
-	 */
+ * Creates the auto refresh plugin.
+ * @class The Auto Refresh Plugin
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -29,7 +29,7 @@ export class AutorefresherService {
   /**
    * Refresh interval.
    */
-	protected _interval: number | null = null;
+  protected _interval: number | null = null;
 
   /**
    * Whether the element is currently visible or not.
@@ -40,7 +40,7 @@ export class AutorefresherService {
    * All event handlers.
    */
   protected _handlers: {} = {
-    'initialized.owl.carousel': (e) => {
+    'initialized.owl.carousel': e => {
       if (e.namespace && this.core.settings.autoRefresh) {
         this.watch();
       }
@@ -48,12 +48,12 @@ export class AutorefresherService {
   };
 
   /**
-	 * Default options.
-	 */
-	defaults: Defaults = {
-		autoRefresh: true,
-		autoRefreshInterval: 500
-	};
+   * Default options.
+   */
+  defaults: Defaults = {
+    autoRefresh: true,
+    autoRefreshInterval: 500
+  };
 
   constructor(private customEventsCreator: CustomEventsService) {
     // set default options
@@ -63,7 +63,7 @@ export class AutorefresherService {
     for (const key in this._handlers) {
       if (this._handlers.hasOwnProperty(key)) {
         const eventsList = key.split(' ');
-        eventsList.forEach((item) => {
+        eventsList.forEach(item => {
           this.customEventsCreator.listen(item, this._handlers[key]);
         });
       }
@@ -71,25 +71,28 @@ export class AutorefresherService {
   }
 
   /**
-	 * Watches the element.
-	 */
-	watch() {
-		if (this._interval) {
-			return;
-		}
-    
-    // ???????????????????????????
-		this._visible = this._core.owlVisible;
-		this._interval = setInterval(this.refresh, this.core.settings.autoRefreshInterval);
-	};
+   * Watches the element.
+   */
+  watch() {
+    if (this._interval) {
+      return;
+    }
 
-	/**
-	 * Refreshes the element.
-	 */
-	refresh() {
-		if (this._core.owlVisible === this._visible) {
-			return;
-		}
+    // ???????????????????????????
+    this._visible = this._core.owlVisible;
+    this._interval = setInterval(
+      this.refresh,
+      this.core.settings.autoRefreshInterval
+    );
+  }
+
+  /**
+   * Refreshes the element.
+   */
+  refresh() {
+    if (this._core.owlVisible === this._visible) {
+      return;
+    }
 
     this._visible = !this._visible;
     // ???????????????????????????
@@ -100,28 +103,26 @@ export class AutorefresherService {
         this._core.refresh();
       }
     }
-	};
+  }
 
-	/**
-	 * Destroys the plugin.
-	 */
-	destroy() {
-		let handler;
+  /**
+   * Destroys the plugin.
+   */
+  destroy() {
+    let handler;
 
-		clearInterval(this._interval);
+    clearInterval(this._interval);
 
     for (handler in this._handlers) {
       if (this._handlers.hasOwnProperty(handler)) {
         const eventsList = handler.split(' ');
-        eventsList.forEach((item) => {
+        eventsList.forEach(item => {
           this.customEventsCreator.off(handler, this._handlers[handler]);
         });
       }
     }
-		// for (property in Object.getOwnPropertyNames(this)) {
-		// 	typeof this[property] != 'function' && (this[property] = null);
-		// }
-  };
-
+    // for (property in Object.getOwnPropertyNames(this)) {
+    // 	typeof this[property] != 'function' && (this[property] = null);
+    // }
+  }
 }
-

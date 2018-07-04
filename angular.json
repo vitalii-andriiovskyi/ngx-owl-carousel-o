@@ -116,6 +116,46 @@
           }
         }
       }
+    },
+    "ngx-owl-carousel-o": {
+      "root": "libs/ngx-owl-carousel-o",
+      "sourceRoot": "libs/ngx-owl-carousel-o/src",
+      "projectType": "library",
+      "prefix": "owl-carousel-libdemo",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/ngx-owl-carousel-o/tsconfig.lib.json",
+            "project": "libs/ngx-owl-carousel-o/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "libs/ngx-owl-carousel-o/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/ngx-owl-carousel-o/src/test.ts",
+            "tsConfig": "libs/ngx-owl-carousel-o/tsconfig.spec.json",
+            "karmaConfig": "libs/ngx-owl-carousel-o/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/ngx-owl-carousel-o/tsconfig.lib.json",
+              "libs/ngx-owl-carousel-o/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {

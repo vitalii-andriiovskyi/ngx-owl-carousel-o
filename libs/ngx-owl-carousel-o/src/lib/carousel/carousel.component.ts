@@ -12,7 +12,7 @@ import {
   Inject
 } from '@angular/core';
 
-import {  Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { ResizeService } from '../services/resize.service';
 import { WINDOW } from '../services/window-ref.service';
@@ -62,8 +62,8 @@ class ResolutionCarouselData {
 class States {
   current: {};
   tags: {
-				[key: string]: string[];
-			}
+    [key: string]: string[];
+  };
 }
 @Component({
   selector: 'surf-carousel-2',
@@ -90,7 +90,6 @@ export class CarouselComponent
   // info about id and active/inactive state of each slider in first stage
   slidersStageData: SlidersData[] = [];
 
-
   resizeSubscription: Subscription;
 
   owlVisible: true;
@@ -106,7 +105,6 @@ export class CarouselComponent
    * Current options set by the caller including defaults.
    */
   @Input() options: any = this.defaults;
-
 
   // this.$element = $(element); use this.el.
 
@@ -180,22 +178,24 @@ export class CarouselComponent
    */
   protected _pipe: any[] = [
     {
-      filter: [ 'width', 'settings' ],
+      filter: ['width', 'settings'],
       run: () => {
         this._width = this.carouselWindowWidth;
       }
-    }, {
-      filter: [ 'width', 'items', 'settings' ],
-      run: (cache) => {
+    },
+    {
+      filter: ['width', 'items', 'settings'],
+      run: cache => {
         // **   cache.current = this.slides && this.slides.toArray()[this.relative(this._current)];
         // cache.current = this._items && this._items[this.relative(this._current)];
       }
-    }, {
-      filter: [ 'items', 'settings' ],
+    },
+    {
+      filter: ['items', 'settings'],
       run: function() {
         this.$stage.children('.cloned').remove();
       }
-    }, //{
+    } //{
     //   filter: [ 'width', 'items', 'settings' ],
     //   run: function(cache) {
     //     var margin = this.settings.margin || '',
@@ -381,9 +381,9 @@ export class CarouselComponent
   protected _states: States = {
     current: {},
     tags: {
-      'initializing': [ 'busy' ],
-      'animating': [ 'busy' ],
-      'dragging': [ 'interacting' ]
+      initializing: ['busy'],
+      animating: ['busy'],
+      dragging: ['interacting']
     }
   };
 
@@ -397,22 +397,22 @@ export class CarouselComponent
   ngOnInit() {
     this.options = Object.assign({}, this.defaults, this.options);
 
-    [ 'onResize', 'onThrottledResize' ].forEach(handler => {
+    ['onResize', 'onThrottledResize'].forEach(handler => {
       this._handlers[handler] = this[handler];
     });
 
     // all plugins have to be added manually
-		// $.each(Owl.Plugins, $.proxy(function(key, plugin) {
-		// 	this._plugins[key.charAt(0).toLowerCase() + key.slice(1)]
-		// 		= new plugin(this);
-		// }, this));
+    // $.each(Owl.Plugins, $.proxy(function(key, plugin) {
+    // 	this._plugins[key.charAt(0).toLowerCase() + key.slice(1)]
+    // 		= new plugin(this);
+    // }, this));
 
-		// $.each(Owl.Workers, $.proxy(function(priority, worker) {
-		// 	this._pipe.push({
-		// 		'filter': worker.filter,
-		// 		'run': $.proxy(worker.run, this)
-		// 	});
-		// }, this));
+    // $.each(Owl.Workers, $.proxy(function(priority, worker) {
+    // 	this._pipe.push({
+    // 		'filter': worker.filter,
+    // 		'run': $.proxy(worker.run, this)
+    // 	});
+    // }, this));
 
     // set quantity of sliders in initialization of component
     this.carouselWindowWidth = this.el.nativeElement.querySelector(
@@ -422,13 +422,11 @@ export class CarouselComponent
     this.resizeSubscription = this.resizeService.onResize$
       .pipe(tap(() => {}))
       .subscribe(() => {});
-
   }
 
   ngAfterContentChecked() {
-
     // this.setup();
-		// this.initialize();
+    // this.initialize();
     // this.slides.toArray()
   }
   // ngAfterContentChecked() END
@@ -441,7 +439,6 @@ export class CarouselComponent
 
   initialize() {}
 
-
   // type checking
   isNumber(x: any): x is number {
     return typeof x === 'number';
@@ -451,30 +448,27 @@ export class CarouselComponent
     return typeof x === 'object';
   }
 
-
   /**
-	 * Updates the view.
-	 */
-	update() {
-		let i = 0;
+   * Updates the view.
+   */
+  update() {
+    let i = 0;
     const n = this._pipe.length,
-          filter = (item) => this._invalidated[item],
-          cache = {};
+      filter = item => this._invalidated[item],
+      cache = {};
 
-		while (i < n) {
+    while (i < n) {
       const filteredPipe = this._pipe[i].filter.filter(filter);
-			if (this._invalidated.all || filteredPipe.length > 0) {
-				this._pipe[i].run(cache);
-			}
-			i++;
-		}
+      if (this._invalidated.all || filteredPipe.length > 0) {
+        this._pipe[i].run(cache);
+      }
+      i++;
+    }
 
-		this._invalidated = {};
+    this._invalidated = {};
 
     // if (!this.is('valid')) {
     //   this.enter('valid');
     // }
-	};
-
-
+  }
 }

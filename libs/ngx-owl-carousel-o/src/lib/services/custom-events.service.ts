@@ -8,7 +8,7 @@ export class CustomEventsService {
   /**
    * contains Subjects for every event and array of functions for each event
    */
-  subjects: any = {}
+  subjects: any = {};
   /**
    * contains link of subscriptions for every created event's Subject()
    */
@@ -20,22 +20,19 @@ export class CustomEventsService {
   hasOwnProp = {}.hasOwnProperty;
 
   constructor() {
-  //   this.listen('data', function (data) {
-  //     console.log('data: ' + data);
-  //   });
-  //   this.listen('data', function (data) {
-  //       console.log('data2: ' + data);
-  //     });
-
-  //   this.emit('data', 'foo');
-  // // => data: foo
-
-  // // Destroy the subscription
-  // // this.unsubscribeAll();
-  // this.eventSubscriptions['data'].unsubscribe();
-  // console.log(this.eventSubscriptions);
-  // this.emit('data', 'foo');
-
+    //   this.listen('data', function (data) {
+    //     console.log('data: ' + data);
+    //   });
+    //   this.listen('data', function (data) {
+    //       console.log('data2: ' + data);
+    //     });
+    //   this.emit('data', 'foo');
+    // // => data: foo
+    // // Destroy the subscription
+    // // this.unsubscribeAll();
+    // this.eventSubscriptions['data'].unsubscribe();
+    // console.log(this.eventSubscriptions);
+    // this.emit('data', 'foo');
   }
 
   /**
@@ -57,7 +54,7 @@ export class CustomEventsService {
       this.subjects[fnName] = new Subject();
     }
     this.subjects[fnName].next(data);
-  };
+  }
 
   /**
    * creates custom event and attaches handler to it
@@ -72,11 +69,13 @@ export class CustomEventsService {
     }
 
     if (!this.eventSubscriptions[fnName]) {
-      this.eventSubscriptions[fnName] = this.subjects[fnName].subscribe((data) => {
-        this.subjects[`${fnName}.handlers`].forEach(element => {
-          element(data);
-        });
-      });
+      this.eventSubscriptions[fnName] = this.subjects[fnName].subscribe(
+        data => {
+          this.subjects[`${fnName}.handlers`].forEach(element => {
+            element(data);
+          });
+        }
+      );
     }
 
     if (!this.subjects[`${fnName}.handlers`]) {
@@ -84,8 +83,7 @@ export class CustomEventsService {
     } else {
       this.subjects[`${fnName}.handlers`].push(handler);
     }
-
-  };
+  }
 
   /**
    * delete handler from array of handlers of certain event.
@@ -93,7 +91,9 @@ export class CustomEventsService {
    */
   off(name: string, handler: any) {
     const fnName = this.createName(name);
-    this.subjects[`${fnName}.handlers`] = this.subjects[`${fnName}.handlers`].filter(item => {
+    this.subjects[`${fnName}.handlers`] = this.subjects[
+      `${fnName}.handlers`
+    ].filter(item => {
       const result = item !== handler;
       return result;
     });
@@ -116,5 +116,5 @@ export class CustomEventsService {
 
     this.subjects = {};
     this.eventSubscriptions = {};
-  };
+  }
 }

@@ -17,7 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "ngx-owl-carousel-o": [
-        "libs/ngx-owl-carousel-o"
+        "libs/ngx-owl-carousel-o/src/index.ts"
       ]
     }
   },

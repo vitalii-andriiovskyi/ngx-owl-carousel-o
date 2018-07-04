@@ -9,7 +9,10 @@ describe('AutorefresherService', () => {
     });
   });
 
-  it('should be created', inject([AutorefresherService], (service: AutorefresherService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([AutorefresherService], (service: AutorefresherService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });

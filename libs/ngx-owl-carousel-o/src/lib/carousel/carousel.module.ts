@@ -7,7 +7,7 @@ import {
 import { WINDOW_PROVIDERS } from '../services/window-ref.service';
 import { ResizeService } from '../services/resize.service';
 
-export  {
+export {
   CarouselComponent,
   CarouselSlideDirective
 } from './carousel.component';
@@ -16,9 +16,6 @@ export  {
   imports: [CommonModule],
   declarations: [CarouselComponent, CarouselSlideDirective],
   exports: [CarouselComponent, CarouselSlideDirective],
-  providers: [
-    WINDOW_PROVIDERS,
-    ResizeService
-  ]
+  providers: [WINDOW_PROVIDERS, ResizeService]
 })
 export class CarouselModule {}

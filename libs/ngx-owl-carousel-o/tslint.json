@@ -1,0 +1,17 @@
+{
+  "extends": "../../tslint.json",
+  "rules": {
+    "directive-selector": [
+      true,
+      "attribute",
+      "owl-carousel-libdemo",
+      "camelCase"
+    ],
+    "component-selector": [
+      true,
+      "element",
+      "owl-carousel-libdemo",
+      "kebab-case"
+    ]
+  }
+}

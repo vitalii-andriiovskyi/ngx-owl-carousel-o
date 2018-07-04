@@ -6,6 +6,9 @@
     },
     "demo-owl-carousel-e2e": {
       "tags": []
+    },
+    "ngx-owl-carousel-o": {
+      "tags": []
     }
   },
   "implicitDependencies": {

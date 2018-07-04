@@ -9,7 +9,10 @@ describe('CustomEventsService', () => {
     });
   });
 
-  it('should be created', inject([CustomEventsService], (service: CustomEventsService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([CustomEventsService], (service: CustomEventsService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });
