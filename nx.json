@@ -7,5 +7,12 @@
     "demo-owl-carousel-e2e": {
       "tags": []
     }
+  },
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": "*",
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
   }
 }
