@@ -5,11 +5,11 @@ export class EventData {
   /**
    * contains Subject - emiter of new values
    */
-  evtEngine: Subject;
+  evtEngine: Subject<any>;
   /**
    * array of handlers
    */
-  handlers: any[];
+  handlers?: any[];
   /**
    * Subscriprion for Subject contained by prop 'evtEngine'
    */
