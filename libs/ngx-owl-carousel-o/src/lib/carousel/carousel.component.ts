@@ -60,12 +60,14 @@ class FirstActiveSlide {
 class ResolutionCarouselData {
   [resolution: string]: number;
 }
+
 class States {
   current: {};
   tags: {
     [key: string]: string[];
   };
 }
+
 @Component({
   selector: 'surf-carousel-2',
   templateUrl: './carousel.component.html',
