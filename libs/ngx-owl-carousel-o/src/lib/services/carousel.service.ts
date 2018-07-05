@@ -17,6 +17,10 @@ export class CarouselService {
    */
   protected _invalidated: any = {};
 
+  // is needed for tests
+  get invalidated() {
+    return this._invalidated;
+  }
   /**
    * Current state information and their tags.
    * @type ff {Object}
@@ -29,6 +33,11 @@ export class CarouselService {
       dragging: ['interacting']
     }
   };
+
+  // is needed for tests
+  get states() {
+    return this._states;
+  }
 
   constructor(private customEventsCreator: CustomEventsService) { }
 
@@ -74,7 +83,9 @@ export class CarouselService {
 	 */
 	leave(name: string) {
     [ name ].concat(this._states.tags[name] || []).forEach((stateName) => {
-      this._states.current[stateName]--;
+      if (this._states.current[stateName] === 0 || !!this._states.current[stateName]) {
+        this._states.current[stateName]--;
+      }
     })
   };
 
