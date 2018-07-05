@@ -18,6 +18,7 @@ import { ResizeService } from '../services/resize.service';
 import { WINDOW } from '../services/window-ref.service';
 import { tap } from 'rxjs/operators';
 import { CustomEventsService } from '../services/custom-events.service';
+import { CarouselService } from '../services/carousel.service';
 
 let nextId = 0;
 
@@ -168,10 +169,6 @@ export class CarouselComponent
    */
   _widths: any[] = [];
 
-  /**
-   * Invalidated parts within the update process.
-   */
-  protected _invalidated: any = {};
 
   /**
    * Ordered list of workers for the update process.
@@ -193,7 +190,7 @@ export class CarouselComponent
     {
       filter: ['items', 'settings'],
       run: function() {
-        this.$stage.children('.cloned').remove();
+        // this.$stage.children('.cloned').remove();
       }
     } //{
     //   filter: [ 'width', 'items', 'settings' ],
@@ -391,7 +388,8 @@ export class CarouselComponent
     private el: ElementRef,
     private resizeService: ResizeService,
     @Inject(WINDOW) private winRef: Window,
-    private customEventsCreator: CustomEventsService
+    private customEventsCreator: CustomEventsService,
+    private carouselService: CarouselService
   ) {}
 
   ngOnInit() {
@@ -425,7 +423,7 @@ export class CarouselComponent
   }
 
   ngAfterContentChecked() {
-    // this.setup();
+    // this.carouselService.setup();
     // this.initialize();
     // this.slides.toArray()
   }
@@ -448,27 +446,4 @@ export class CarouselComponent
     return typeof x === 'object';
   }
 
-  /**
-   * Updates the view.
-   */
-  update() {
-    let i = 0;
-    const n = this._pipe.length,
-      filter = item => this._invalidated[item],
-      cache = {};
-
-    while (i < n) {
-      const filteredPipe = this._pipe[i].filter.filter(filter);
-      if (this._invalidated.all || filteredPipe.length > 0) {
-        this._pipe[i].run(cache);
-      }
-      i++;
-    }
-
-    this._invalidated = {};
-
-    // if (!this.is('valid')) {
-    //   this.enter('valid');
-    // }
-  }
 }
