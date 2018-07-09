@@ -69,7 +69,7 @@ class States {
 }
 
 @Component({
-  selector: 'surf-carousel-2',
+  selector: 'owl-carousel-o',
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.scss']
 })
@@ -151,7 +151,7 @@ export class CarouselComponent
   /**
    * Current width of the plugin element.
    */
-  _width: any = null;
+  _width: number | null = null;
 
   // protected _items = []; use this.slides
 
@@ -446,6 +446,10 @@ export class CarouselComponent
 
   isResolutionObj(x: any): x is ResolutionCarouselData {
     return typeof x === 'object';
+  }
+
+  update(workers: any[]) {
+    this.carouselService.update(workers);
   }
 
 }
