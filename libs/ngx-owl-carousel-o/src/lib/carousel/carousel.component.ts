@@ -102,7 +102,57 @@ export class CarouselComponent
    */
   settings: any = null;
 
-  defaults = [];
+  /**
+	 * Default options for the carousel.
+	 * @public
+	 */
+  defaults = {
+		items: 3,
+		loop: false,
+		center: false,
+		rewind: false,
+
+		mouseDrag: true,
+		touchDrag: true,
+		pullDrag: true,
+		freeDrag: false,
+
+		margin: 0,
+		stagePadding: 0,
+
+		merge: false,
+		mergeFit: true,
+		autoWidth: false,
+
+		startPosition: 0,
+		rtl: false,
+
+		smartSpeed: 250,
+		fluidSpeed: false,
+		dragEndSpeed: false,
+
+		responsive: {},
+		responsiveRefreshRate: 200,
+		responsiveBaseElement: window,
+
+		fallbackEasing: 'swing',
+
+		info: false,
+
+		nestedItemSelector: false,
+
+		refreshClass: 'owl-refresh',
+    loadedClass: 'owl-loaded',
+    isLoadedClass: false,
+    loadingClass: 'owl-loading',
+    isLoadingClass: false,
+		// loadingClass: 'owl-loading',
+		rtlClass: 'owl-rtl',
+		responsiveClass: 'owl-responsive',
+		dragClass: 'owl-drag',
+		itemClass: 'owl-item',
+		grabClass: 'owl-grab'
+	};
 
   /**
    * Current options set by the caller including defaults.
@@ -386,6 +436,11 @@ export class CarouselComponent
     }
   };
 
+  /**
+   * Visibility of carousel
+   */
+  isVisible = false;
+
   constructor(
     private el: ElementRef,
     private resizeService: ResizeService,
@@ -437,7 +492,35 @@ export class CarouselComponent
     }
   }
 
-  initialize() {}
+  /**
+	 * Initializes the carousel.
+	 * @protected
+	 */
+  initialize() {
+		this.carouselService.enter('initializing');
+		this.carouselService.trigger('initialize');
+
+    this.options.isLoadingClass = true;
+    this.isVisible = true;
+
+		// check visibility
+		if (this.isVisible) {
+			// update view
+			this.carouselService.refresh();
+		} else {
+			// invalidate width
+			this.carouselService.invalidate('width');
+    }
+
+    this.options.isLoadingClass = false;
+    this.options.isLoadedClass = true;
+
+		// register event handlers
+		this.carouselService.registerEventHandlers();
+
+		this.carouselService.leave('initializing');
+		this.carouselService.trigger('initialized');
+  };
 
   // type checking
   isNumber(x: any): x is number {

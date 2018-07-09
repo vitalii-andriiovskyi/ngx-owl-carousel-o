@@ -13,6 +13,13 @@ export class States {
 })
 export class CarouselService {
   /**
+   * Current settings for the carousel.
+   */
+  settings: any = null;
+
+  defaults = [];
+
+  /**
    * Invalidated parts within the update process.
    */
   protected _invalidated: any = {};
@@ -40,59 +47,6 @@ export class CarouselService {
   }
 
   constructor(private customEventsCreator: CustomEventsService) { }
-
-  /**
-	 * Initializes the carousel.
-	 * @protected
-	 */
-  initialize() {
-		// this.enter('initializing');
-		// this.trigger('initialize');
-
-		// this.$element.toggleClass(this.settings.rtlClass, this.settings.rtl);
-
-		// if (this.settings.autoWidth && !this.is('pre-loading')) {
-		// 	var imgs, nestedSelector, width;
-		// 	imgs = this.$element.find('img');
-		// 	nestedSelector = this.settings.nestedItemSelector ? '.' + this.settings.nestedItemSelector : undefined;
-		// 	width = this.$element.children(nestedSelector).width();
-
-		// 	if (imgs.length && width <= 0) {
-		// 		this.preloadAutoWidthImages(imgs);
-		// 	}
-		// }
-
-		// this.$element.addClass(this.options.loadingClass);
-
-		// // create stage
-		// this.$stage = $('<' + this.settings.stageElement + ' class="' + this.settings.stageClass + '"/>')
-		// 	.wrap('<div class="' + this.settings.stageOuterClass + '"/>');
-
-		// // append stage
-		// this.$element.append(this.$stage.parent());
-
-		// // append content
-		// this.replace(this.$element.children().not(this.$stage.parent()));
-
-		// // check visibility
-		// if (this.$element.is(':visible')) {
-		// 	// update view
-		// 	this.refresh();
-		// } else {
-		// 	// invalidate width
-		// 	this.invalidate('width');
-		// }
-
-		// this.$element
-		// 	.removeClass(this.options.loadingClass)
-		// 	.addClass(this.options.loadedClass);
-
-		// // register event handlers
-		// this.registerEventHandlers();
-
-		// this.leave('initializing');
-		// this.trigger('initialized');
-  };
 
   /**
 	 * Setups the current settings.
@@ -453,7 +407,7 @@ export class CarouselService {
 	 * @param {Boolean} [enter=false] - Indicates if the call enters the specified state or not.
 	 * @returns {Event} - The event arguments.
 	 */
-  trigger(name, data, namespace, state, enter) { }
+  trigger(name, data?, namespace?, state?, enter?) { }
 
 	/**
 	 * Enters a state.

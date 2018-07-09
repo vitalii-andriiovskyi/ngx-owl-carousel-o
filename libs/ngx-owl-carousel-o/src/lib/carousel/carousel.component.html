@@ -1,4 +1,9 @@
-<div class="owl-carousel owl-loaded owl-theme" [ngClass]="{'owl-hidden': !owlVisible}" #owlCarousel>
+<div class="owl-carousel owl-loaded owl-theme" 
+	[ngStyle]="{'display': isVisible}"
+	[ngClass]="{'owl-hidden': !owlVisible, 
+							'owl-rtl': settings.rtl,
+							options.loadingClass: options.isLoadingClass,
+							options.loadedClass: options.isLoadedClass}" #owlCarousel>
 
 	<div class="owl-stage-outer">
 		<div class="owl-stage" [ngStyle]="{'width': sliderWidth*slides.length + 'px', 'transform': 'translateX(' + translateXFirstStage + 'px)', '-webkit-transform': 'translateX(' + translateXFirstStage + 'px)', 'visibility': visibleFirstStage }">
