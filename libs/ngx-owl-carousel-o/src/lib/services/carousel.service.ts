@@ -8,6 +8,19 @@ export class States {
     [key: string]: string[];
   };
 }
+
+/**
+ * Enumeration for types.
+ * @public
+ * @readonly
+ * @enum {String}
+ */
+export enum Type {
+	Event = 'event',
+	State = 'state'
+};
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,7 +30,32 @@ export class CarouselService {
    */
   settings: any = null;
 
-  defaults = [];
+	defaults = [];
+
+	/**
+	 * All real items.
+	 */
+	protected _items: any = []; // use this.slides
+
+	/**
+   * Currently suppressed events to prevent them from beeing retriggered.
+   */
+	protected _supress: any = {};
+
+  /**
+   * References to the running plugins of this carousel.
+   */
+	protected _plugins: any = {};
+
+	/**
+   * Absolute current position.
+   */
+	protected _current: number | null = null;
+
+	/**
+   * All cloned items.
+   */
+  protected _clones: any[] = [];
 
   /**
    * Invalidated parts within the update process.
@@ -188,7 +226,33 @@ export class CarouselService {
 	 * @param {Number} [position] - The new absolute position or nothing to leave it unchanged.
 	 * @returns {Number} - The absolute position of the current item.
 	 */
-  current(position) { }
+  current(position?: number): number {
+		if (position === undefined) {
+			return this._current;
+		}
+
+		if (this._items.length === 0) {
+			return undefined;
+		}
+
+		position = this.normalize(position);
+
+		if (this._current !== position) {
+			const event = this.trigger('change', { property: { name: 'position', value: position } });
+
+			if (event.data !== undefined) {
+				position = this.normalize(event.data);
+			}
+
+			this._current = position;
+
+			this.invalidate('position');
+
+			this.trigger('changed', { property: { name: 'position', value: this._current } });
+		}
+
+		return this._current;
+	 }
 
   /**
 	 * Invalidates the given part of the update routine.
@@ -213,11 +277,22 @@ export class CarouselService {
   /**
 	 * Normalizes an absolute or a relative position of an item.
 	 * @public
-	 * @param {Number} position - The absolute or relative position to normalize.
-	 * @param {Boolean} [relative=false] - Whether the given position is relative or not.
-	 * @returns {Number} - The normalized position.
+	 * @param position - The absolute or relative position to normalize.
+	 * @param [relative=false] - Whether the given position is relative or not.
+	 * @returns Number - The normalized position.
 	 */
-  normalize(position, relative) { }
+  normalize(position: number, relative?: boolean): number {
+		const n = this._items.length,
+					m = relative ? 0 : this._clones.length;
+
+		if (!this.isNumeric(position) || n < 1) {
+			position = undefined;
+		} else if (position < 0 || position >= n + m) {
+			position = ((position - m / 2) % n + n) % n + m / 2;
+		}
+
+		return position;
+	 }
 
   /**
 	 * Converts an absolute position of an item into a relative one.
@@ -400,14 +475,54 @@ export class CarouselService {
 	 * Triggers a public event.
 	 * @todo Remove `status`, `relatedTarget` should be used instead.
 	 * @protected
-	 * @param {String} name - The event name.
-	 * @param {*} [data=null] - The event data.
-	 * @param {String} [namespace=carousel] - The event namespace.
-	 * @param {String} [state] - The state which is associated with the event.
-	 * @param {Boolean} [enter=false] - Indicates if the call enters the specified state or not.
-	 * @returns {Event} - The event arguments.
+	 * @param name - The event name.
+	 * @param [data=null] - The event data.
+	 * @param [namespace=carousel] - The event namespace.
+	 * @param [state] - The state which is associated with the event.
+	 * @param [enter=false] - Indicates if the call enters the specified state or not.
+	 * @returns return {Event} - The event arguments.
 	 */
-  trigger(name, data?, namespace?, state?, enter?) { }
+  trigger(name: string, data?: any, namespace?: string, state?: string, enter?: boolean): any {
+		const status = {
+				item: { count: this._items.length, index: this.current() }
+			},
+			handler = [ 'on', name, namespace ]
+				.filter(item => item)
+				.map((item, i) => {
+					item = item.toLowerCase();
+					if (i !== 0) {
+						item = item.charAt(0).toUpperCase() + item.slice(1);
+					}
+					return item;
+				})
+				.join(),
+			event = {
+				type: [ name, 'owl', namespace || 'carousel' ].join('.').toLowerCase(),
+				// relatedTarget: this,
+				status, // should be item: { count... }
+				data // should be property: { name: 'settings', ... }
+			};
+
+		if (!this._supress[name]) {
+			for (const key in this._plugins) {
+				if (this._plugins.hasOwnProperty(key)) {
+					const plugin = this._plugins[key];
+					if (plugin.onTrigger) {
+						plugin.onTrigger(event);
+					}
+				}
+			}
+
+			// this.register({ type: Owl.Type.Event, name: name });
+			this.customEventsCreator.emit(event.type, event);
+
+			if (this.settings && typeof this.settings[handler] === 'function') {
+				this.settings[handler].call(this, event);
+			}
+		}
+
+		return event;
+	}
 
 	/**
 	 * Enters a state.
@@ -438,9 +553,21 @@ export class CarouselService {
   /**
 	 * Registers an event or state.
 	 * @public
-	 * @param {Object} object - The event or state to register.
+	 * @param object - The event or state to register.
 	 */
-  register(object) { }
+  register(object: any) {
+		if (object.type === Type.State) {
+			if (!this._states.tags[object.name]) {
+				this._states.tags[object.name] = object.tags;
+			} else {
+				this._states.tags[object.name] = this._states.tags[object.name].concat(object.tags);
+			}
+
+			this._states.tags[object.name] = this._states.tags[object.name].filter((tag, i) => {
+				return this._states.tags[object.name].indexOf(tag) === i;
+			});
+		}
+	}
 
   /**
 	 * Suppresses events.
@@ -468,10 +595,12 @@ export class CarouselService {
   	/**
 	 * Determines if the input is a Number or something that can be coerced to a Number
 	 * @protected
-	 * @param {Number|String|Object|Array|Boolean|RegExp|Function|Symbol} - The input to be tested
-	 * @returns {Boolean} - An indication if the input is a Number or can be coerced to a Number
+	 * @param - {Number|String|Object|Array|Boolean|RegExp|Function|Symbol} - The input to be tested
+	 * @returns - An indication if the input is a Number or can be coerced to a Number
 	 */
-  isNumeric(number) { }
+  isNumeric(number: any): boolean {
+		return !isNaN(parseFloat(number));
+	}
 
   	/**
 	 * Gets the difference of two vectors.

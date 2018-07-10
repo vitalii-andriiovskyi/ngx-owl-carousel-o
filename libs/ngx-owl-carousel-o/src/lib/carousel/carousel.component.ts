@@ -167,21 +167,6 @@ export class CarouselComponent
   protected _handlers: any = {};
 
   /**
-   * References to the running plugins of this carousel.
-   */
-  protected _plugins: any = {};
-
-  /**
-   * Currently suppressed events to prevent them from beeing retriggered.
-   */
-  protected _supress: any = {};
-
-  /**
-   * Absolute current position.
-   */
-  protected _current: number | null = null;
-
-  /**
    * Animation speed in milliseconds.
    */
   protected _speed: number | null = null;
