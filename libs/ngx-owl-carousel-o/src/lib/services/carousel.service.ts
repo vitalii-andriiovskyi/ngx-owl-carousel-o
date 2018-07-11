@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { CustomEventsService } from '../services/custom-events.service';
+import { CarouselSlideDirective } from '../carousel/carousel.module';
 
 export class States {
   current: {};
@@ -20,6 +21,17 @@ export enum Type {
 	State = 'state'
 };
 
+/**
+ * Enumeration for width.
+ * @public
+ * @readonly
+ * @enum {String}
+ */
+export enum Width {
+	Default = 'default',
+	Inner = 'inner',
+	Outer = 'outer'
+};
 
 @Injectable({
   providedIn: 'root'
@@ -32,10 +44,15 @@ export class CarouselService {
 
 	defaults = [];
 
+	// properties, which must be changed in views;
+	transform: string;
+	transition: string;
+	_width: number;
+
 	/**
 	 * All real items.
 	 */
-	protected _items: any = []; // use this.slides
+	protected _items: any[] = []; // use this.slides
 
 	/**
    * Currently suppressed events to prevent them from beeing retriggered.
@@ -55,7 +72,24 @@ export class CarouselService {
 	/**
    * All cloned items.
    */
-  protected _clones: any[] = [];
+	protected _clones: any[] = [];
+
+  /**
+   * Merge values of all items.
+   * @todo Maybe this could be part of a plugin.
+   */
+	readonly _mergers: any[] = [];
+
+	/**
+   * Animation speed in milliseconds.
+   */
+	protected _speed: number | null = null;
+
+	/**
+   * Coordinates of all items in pixel.
+   * @todo The name of this member is missleading.
+   */
+  protected _coordinates: any[] = [];
 
   /**
    * Invalidated parts within the update process.
@@ -136,10 +170,19 @@ export class CarouselService {
   /**
 	 * Gets the width of the view.
 	 * @public
-	 * @param {Owl.Width} [dimension=Owl.Width.Default] - The dimension to return.
-	 * @returns {Number} - The width of the view in pixel.
+	 * @param [dimension=Width.Default] - The dimension to return.
+	 * @returns - The width of the view in pixel.
 	 */
-  width(dimension) { }
+  width(dimension?: Width): number {
+		dimension = dimension || Width.Default;
+		switch (dimension) {
+			case Width.Inner:
+			case Width.Outer:
+				return this._width;
+			default:
+				return this._width - this.settings.stagePadding * 2 + this.settings.margin;
+		}
+	}
 
   /**
 	 * Refreshes the carousel primarily for adaptive purposes.
@@ -207,9 +250,25 @@ export class CarouselService {
 	 * Animates the stage.
 	 * @todo #270
 	 * @public
-	 * @param {Number} coordinate - The coordinate in pixels.
+	 * @param coordinate - The coordinate in pixels.
 	 */
-  animate(coordinate) { }
+  animate(coordinate: number | number[]) {
+		const animate = this.speed() > 0;
+
+		if (this.is('animating')) {
+			this.onTransitionEnd();
+		}
+
+		if (animate) {
+			this.enter('animating');
+			this.trigger('translate');
+		}
+
+		this.transform = 'translate3d(' + coordinate + 'px,0px,0px)';
+		this.transition = (this.speed() / 1000) + 's';
+
+		// also there was transition by means of JQuery.animate or css-changing property left
+	 }
 
   /**
 	 * Checks whether the carousel is in a specific state or not.
@@ -270,9 +329,24 @@ export class CarouselService {
 	/**
 	 * Resets the absolute position of the current item.
 	 * @public
-	 * @param {Number} position - The absolute position of the new item.
+	 * @param position - The absolute position of the new item.
 	 */
-  reset(position) { }
+  reset(position: number) {
+		position = this.normalize(position);
+
+		if (position === undefined) {
+			return;
+		}
+
+		this._speed = 0;
+		this._current = position;
+
+		this.suppress([ 'translate', 'translated' ]);
+
+		this.animate(this.coordinates(position));
+
+		this.release([ 'translate', 'translated' ]);
+	}
 
   /**
 	 * Normalizes an absolute or a relative position of an item.
@@ -348,16 +422,50 @@ export class CarouselService {
 	 * @param {Number} [speed] - The animation speed in milliseconds or nothing to leave it unchanged.
 	 * @returns {Number} - The current animation speed in milliseconds.
 	 */
-  speed(speed) { }
+  speed(speed?: number): number {
+		if (speed !== undefined) {
+			this._speed = speed;
+		}
+
+		return this._speed;
+	}
 
   /**
 	 * Gets the coordinate of an item.
 	 * @todo The name of this method is missleanding.
 	 * @public
-	 * @param {Number} position - The absolute position of the item within `minimum()` and `maximum()`.
-	 * @returns {Number|Array.<Number>} - The coordinate of the item in pixel or all coordinates.
+	 * @param position - The absolute position of the item within `minimum()` and `maximum()`.
+	 * @returns - The coordinate of the item in pixel or all coordinates.
 	 */
-  coordinates(position) { }
+  coordinates(position: number): number | number[] {
+		let multiplier = 1,
+			newPosition = position - 1,
+			coordinate,
+			result: any;
+
+		if (position === undefined) {
+			result = this._coordinates.map((item, index) => {
+				return this.coordinates(index);
+			});
+			return result;
+		}
+
+		if (this.settings.center) {
+			if (this.settings.rtl) {
+				multiplier = -1;
+				newPosition = position + 1;
+			}
+
+			coordinate = this._coordinates[position];
+			coordinate += (this.width() - coordinate + (this._coordinates[newPosition] || 0)) / 2 * multiplier;
+		} else {
+			coordinate = this._coordinates[newPosition] || 0;
+		}
+
+		coordinate = Math.ceil(coordinate);
+
+		return coordinate;
+	 }
 
   /**
 	 * Calculates the speed for a translation.
@@ -391,12 +499,25 @@ export class CarouselService {
 	 */
   prev(speed) { }
 
-  	/**
+  /**
 	 * Handles the end of an animation.
 	 * @protected
 	 * @param {Event} event - The event arguments.
 	 */
-  onTransitionEnd(event) { }
+  onTransitionEnd(event?: any) {
+		// if css2 animation then event object is undefined
+		if (event !== undefined) {
+			// event.stopPropagation();
+
+			// // Catch only owl-stage transitionEnd event
+			// if ((event.target || event.srcElement || event.originalTarget) !== this.$stage.get(0)	) {
+			// 	return false;
+			// }
+			return false;
+		}
+		this.leave('animating');
+		this.trigger('translated');
+	}
 
   /**
 	 * Gets viewport width.
@@ -408,9 +529,25 @@ export class CarouselService {
   /**
 	 * Replaces the current content.
 	 * @public
-	 * @param {HTMLElement|jQuery|String} content - The new content.
+	 * @param content - The new content.
 	 */
-  replace(content) { }
+  setItems(content: CarouselSlideDirective[]) {
+		this._items = content;
+
+		// content.filter(function() {
+		// 	return this.nodeType === 1;
+		// }).each($.proxy(function(index, item) {
+		// 	item = this.prepare(item);
+		// 	this.$stage.append(item);
+		// 	this._items.push(item);
+		// 	this._mergers.push(item.find('[data-merge]').addBack('[data-merge]').attr('data-merge') * 1 || 1);
+		// }, this));
+		content.forEach(item => this._mergers.push(item.dataMerge || 1));
+
+		this.reset(this.isNumeric(this.settings.startPosition) ? this.settings.startPosition : 0);
+
+		this.invalidate('items');
+	}
 
   	/**
 	 * Adds an item.
@@ -572,16 +709,24 @@ export class CarouselService {
   /**
 	 * Suppresses events.
 	 * @protected
-	 * @param {Array.<String>} events - The events to suppress.
+	 * @param events - The events to suppress.
 	 */
-  suppress(events) { }
+  suppress(events: string[]) {
+		events.forEach(event => {
+			this._supress[event] = true;
+		});
+	}
 
   /**
 	 * Releases suppressed events.
 	 * @protected
-	 * @param {Array.<String>} events - The events to release.
+	 * @param events - The events to release.
 	 */
-  release(events) { }
+  release(events: string[]) {
+		events.forEach(event => {
+			delete this._supress[event];
+		});
+	 }
 
   /**
 	 * Gets unified pointer coordinates from event.

@@ -183,17 +183,6 @@ export class CarouselComponent
   protected _handlers: any = {};
 
   /**
-   * Animation speed in milliseconds.
-   */
-  protected _speed: number | null = null;
-
-  /**
-   * Coordinates of all items in pixel.
-   * @todo The name of this member is missleading.
-   */
-  protected _coordinates: any[] = [];
-
-  /**
    * Current breakpoint.
    * @todo Real media queries would be nice.
    */
@@ -500,7 +489,7 @@ export class CarouselComponent
     this.isVisible = true;
 
     // append content; I need it for setting _items in CarouselService;
-    // this.replace(this.$element.children().not(this.$stage.parent()));
+    this.carouselService.setItems(this.slides.toArray());
 
 		// check visibility
 		if (this.isVisible) {
