@@ -29,7 +29,23 @@ export class CarouselSlideDirective {
    * Will be auto-generated if not provided.
    */
   @Input() id = `ngb-slide-${nextId++}`;
+
+  /**
+   * defines how much widths of common slide will current slide have
+   * e.g. if _mergeData=2, the slide will twice wider then slides with _mergeData=1
+   */
+  private _dataMerge: number;
+  @Input()
+  set dataMerge(data: number) {
+    this._dataMerge = this.isNumeric(data) ? data : 1;
+  };
+  get dataMerge(): number { return this._dataMerge }
+
   constructor(public tplRef: TemplateRef<any>) {}
+
+  isNumeric(number: any): boolean {
+		return !isNaN(parseFloat(number));
+	}
 }
 
 class SlidersData {
@@ -194,12 +210,6 @@ export class CarouselComponent
    * All cloned items.
    */
   protected _clones: any[] = [];
-
-  /**
-   * Merge values of all items.
-   * @todo Maybe this could be part of a plugin.
-   */
-  protected _mergers: any[] = [];
 
   /**
    * Widths of all items.
@@ -468,6 +478,7 @@ export class CarouselComponent
     // this.carouselService.setup();
     // this.initialize();
     // this.slides.toArray()
+    // console.log(this.slides.toArray()[1].mergeData);
   }
   // ngAfterContentChecked() END
 
@@ -487,6 +498,9 @@ export class CarouselComponent
 
     this.options.isLoadingClass = true;
     this.isVisible = true;
+
+    // append content; I need it for setting _items in CarouselService;
+    // this.replace(this.$element.children().not(this.$stage.parent()));
 
 		// check visibility
 		if (this.isVisible) {
