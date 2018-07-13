@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { CustomEventsService } from '../services/custom-events.service';
 import { CarouselSlideDirective } from '../carousel/carousel.module';
+import { SliderModel } from '../carousel/slider.model';
 
 export class States {
   current: {};
@@ -40,19 +41,30 @@ export class CarouselService {
   /**
    * Current settings for the carousel.
    */
-  settings: any = null;
-
-	defaults = [];
+  settings: any = {
+		items: 0
+	};
 
 	// properties, which must be changed in views;
 	transform: string;
 	transition: string;
 	_width: number;
+	stageWidth: number | string;
+	stagePaddingL: number | string;
+	stagePaddingR: number | string;
+	// width of item
+	itemsData: SliderModel[];
+
 
 	/**
 	 * All real items.
 	 */
-	protected _items: any[] = []; // use this.slides
+	protected _items: CarouselSlideDirective[] = []; // is equal to this.slides
+
+	/**
+   * array with width of every slide.
+   */
+  _widths: any[] = [];
 
 	/**
    * Currently suppressed events to prevent them from beeing retriggered.
@@ -89,7 +101,65 @@ export class CarouselService {
    * Coordinates of all items in pixel.
    * @todo The name of this member is missleading.
    */
-  protected _coordinates: any[] = [];
+	protected _coordinates: any[] = [];
+
+  /**
+	 * Default options for the carousel.
+	 * @public
+	 */
+  defaults = {
+		items: 3,
+		loop: false,
+		center: false,
+		rewind: false,
+
+		mouseDrag: true,
+		touchDrag: true,
+		pullDrag: true,
+		freeDrag: false,
+
+		margin: 0,
+		stagePadding: 0,
+
+		merge: false,
+		mergeFit: true,
+		autoWidth: false,
+
+		startPosition: 0,
+		rtl: false,
+
+		smartSpeed: 250,
+		fluidSpeed: false,
+		dragEndSpeed: false,
+
+		responsive: {},
+		responsiveRefreshRate: 200,
+		responsiveBaseElement: window,
+
+		fallbackEasing: 'swing',
+
+		info: false,
+
+		nestedItemSelector: false,
+
+		refreshClass: 'owl-refresh',
+    loadedClass: 'owl-loaded',
+    isLoadedClass: false,
+    loadingClass: 'owl-loading',
+    isLoadingClass: false,
+		// loadingClass: 'owl-loading',
+		rtlClass: 'owl-rtl',
+		responsiveClass: 'owl-responsive',
+		dragClass: 'owl-drag',
+		itemClass: 'owl-item',
+		grabClass: 'owl-grab'
+	};
+
+	/**
+		 * Current options set by the caller including defaults.
+		 * @public
+		 */
+	options: any = {};
 
   /**
    * Invalidated parts within the update process.
@@ -116,9 +186,241 @@ export class CarouselService {
   // is needed for tests
   get states() {
     return this._states;
-  }
+	}
+
+	 /**
+   * Ordered list of workers for the update process.
+   */
+  protected _pipe: any[] = [
+    // {
+    //   filter: ['width', 'settings'],
+    //   run: () => {
+    //     this._width = this.carouselWindowWidth;
+    //   }
+    // },
+    {
+      filter: ['width', 'items', 'settings'],
+      run: cache => {
+        cache.current = this._items && this._items[this.relative(this._current)].id;
+      }
+    },
+    // {
+    //   filter: ['items', 'settings'],
+    //   run: function() {
+    //     // this.$stage.children('.cloned').remove();
+    //   }
+		// },
+		 {
+      filter: [ 'width', 'items', 'settings' ],
+      run: (cache) => {
+        const margin = this.settings.margin || '',
+          grid = !this.settings.autoWidth,
+          rtl = this.settings.rtl,
+          css = {
+            'margin-left': rtl ? margin : '',
+            'margin-right': rtl ? '' : margin
+          };
+
+        if(!grid) {
+					this.itemsData.forEach(slide => {
+						slide.marginL = css['margin-left'];
+						slide.marginR = css['margin-right'];
+					});
+				}
+
+        cache.css = css;
+      }
+    }, {
+      filter: [ 'width', 'items', 'settings' ],
+      run: (cache) => {
+        const width: any = +(this.width() / this.settings.items).toFixed(3) - this.settings.margin,
+          grid = !this.settings.autoWidth,
+          widths = [];
+				let merge = null,
+						iterator = this._items.length;
+
+        cache.items = {
+          merge: false,
+          width: width
+        };
+
+        while (iterator--) {
+          merge = this._mergers[iterator];
+          merge = this.settings.mergeFit && Math.min(merge, this.settings.items) || merge;
+
+          cache.items.merge = merge > 1 || cache.items.merge;
+
+          widths[iterator] = !grid ? this._items[iterator].width ? this._items[iterator].width : width : width * merge;
+        }
+
+				this._widths = widths;
+
+				this.itemsData.forEach((slide, i) => {
+					slide.width = this._width[i];
+				});
+      }
+    }, {
+      filter: [ 'items', 'settings' ],
+      run: () => {
+        const clones: any[] = [],
+          items: CarouselSlideDirective[] = this._items,
+          settings: any = this.settings,
+          // TODO: Should be computed from number of min width items in stage
+          view = Math.max(settings.items * 2, 4),
+          size = Math.ceil(items.length / 2) * 2;
+				let  append: any[] = [],
+          prepend: any[] = [],
+					repeat = settings.loop && items.length ? settings.rewind ? view : Math.max(view, size) : 0;
+
+        repeat /= 2;
+
+        while (repeat--) {
+          // Switch to only using appended clones
+          clones.push(this.normalize(clones.length / 2, true));
+          append.push(Object.assign({}, this.itemsData[clones[clones.length - 1]]));
+					clones.push(this.normalize(items.length - 1 - (clones.length - 1) / 2, true));
+					prepend.unshift(Object.assign({}, this.itemsData[clones[clones.length - 1]]));
+        }
+
+				this._clones = clones;
+
+				append = append.map(slide => {
+					slide.id = `cloned-${slide.id}`;
+					slide.active = false;
+					return slide;
+				});
+
+				prepend = prepend.map(slide => {
+					slide.id = `cloned-${slide.id}`;
+					slide.active = false;
+					return slide;
+				});
+
+				this.itemsData = prepend.concat(this.itemsData).concat(append);
+      }
+    }, {
+      filter: [ 'width', 'items', 'settings' ],
+      run: () => {
+        const rtl = this.settings.rtl ? 1 : -1,
+          size = this._clones.length + this._items.length,
+          coordinates = [];
+        let iterator = -1,
+          previous = 0,
+          current = 0;
+
+        while (++iterator < size) {
+          previous = coordinates[iterator - 1] || 0;
+          current = this._widths[this.relative(iterator)] + this.settings.margin;
+          coordinates.push(previous + current * rtl);
+        }
+
+        this._coordinates = coordinates;
+      }
+    }, {
+      filter: [ 'width', 'items', 'settings' ],
+      run: () => {
+        const padding = this.settings.stagePadding,
+          coordinates = this._coordinates,
+          css = {
+            'width': Math.ceil(Math.abs(coordinates[coordinates.length - 1])) + padding * 2,
+            'padding-left': padding || '',
+            'padding-right': padding || ''
+					};
+
+				this.stageWidth = css.width; // use this property in *ngIf directive for .owl-stage element
+				this.stagePaddingL = css['padding-left'];
+				this.stagePaddingR = css['padding-right'];
+      }
+    }, {
+    //   filter: [ 'width', 'items', 'settings' ],
+    //   run: cache => {
+		// 		// this method sets the width for every slide, but I set it in different way earlier
+		// 		const grid = !this.settings.autoWidth,
+		// 		items = this.$stage.children(); // use this.itemsData
+    //     let iterator = this._coordinates.length;
+
+    //     if (grid && cache.items.merge) {
+    //       while (iterator--) {
+    //         cache.css.width = this._widths[this.relative(iterator)];
+    //         items.eq(iterator).css(cache.css);
+    //       }
+    //     } else if (grid) {
+    //       cache.css.width = cache.items.width;
+    //       items.css(cache.css);
+    //     }
+    //   }
+    // }, {
+    //   filter: [ 'items' ],
+    //   run: function() {
+    //     this._coordinates.length < 1 && this.$stage.removeAttr('style');
+    //   }
+    // }, {
+      filter: [ 'width', 'items', 'settings' ],
+      run: function(cache) {
+        cache.current = cache.current ? this.itemsData.findIndex(slide => slide.id === cache.current) : 0;
+        cache.current = Math.max(this.minimum(), Math.min(this.maximum(), cache.current));
+        this.reset(cache.current);
+      }
+    }, {
+      filter: [ 'position' ],
+      run: function() {
+        this.animate(this.coordinates(this._current));
+      }
+    }, {
+      filter: [ 'width', 'position', 'items', 'settings' ],
+      run: function() {
+        const rtl = this.settings.rtl ? 1 : -1,
+          padding = this.settings.stagePadding * 2,
+          begin = this.coordinates(this.current()) + padding,
+          end = begin + this.width() * rtl, matches = [];
+          let inner, outer, i, n;
+
+        for (i = 0, n = this._coordinates.length; i < n; i++) {
+          inner = this._coordinates[i - 1] || 0;
+          outer = Math.abs(this._coordinates[i]) + padding * rtl;
+
+          if ((this.op(inner, '<=', begin) && (this.op(inner, '>', end)))
+            || (this.op(outer, '<', begin) && this.op(outer, '>', end))) {
+            matches.push(i);
+          }
+				}
+
+				this.itemsData.forEach(slide => {
+					slide.active = false;
+					return slide;
+				});
+				matches.forEach(item => {
+					this.itemsData[item].active = true;
+				});
+
+        if (this.settings.center) {
+					this.itemsData.forEach(slide => {
+						slide.center = false;
+						return slide;
+					});
+					this.itemsData[this.current()].center = true;
+        }
+      }
+    }
+  ];
 
   constructor(private customEventsCreator: CustomEventsService) { }
+
+	/**
+	 * Setups custom options expanding default options
+	 * @param options custom options
+	 */
+	setOptions(options: any) {
+		this.options.assign({}, this.defaults, options);
+	}
+
+	/**
+	 * set current width of carousel
+	 * @param width width of carousel Window
+	 */
+	setCarouselWidth(width: number) {
+		this._width = width;
+	}
 
   /**
 	 * Setups the current settings.
@@ -371,10 +673,13 @@ export class CarouselService {
   /**
 	 * Converts an absolute position of an item into a relative one.
 	 * @public
-	 * @param {Number} position - The absolute position to convert.
-	 * @returns {Number} - The converted position.
+	 * @param position - The absolute position to convert.
+	 * @returns - The converted position.
 	 */
-  relative(position) { }
+  relative(position: number): number {
+		position -= this._clones.length / 2;
+		return this.normalize(position, true);
+	 }
 
   /**
 	 * Gets the maximum position for the current item.
@@ -533,6 +838,15 @@ export class CarouselService {
 	 */
   setItems(content: CarouselSlideDirective[]) {
 		this._items = content;
+		// there must be set active to true for current slides
+		this.itemsData = this._items.map(slide => {
+			return {
+				id: `${slide.id}`,
+				active: false,
+				tplRef: slide.tplRef,
+				dataMerge: slide.dataMerge
+			}
+		});
 
 		// content.filter(function() {
 		// 	return this.nodeType === 1;
