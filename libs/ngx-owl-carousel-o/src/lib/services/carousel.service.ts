@@ -684,18 +684,52 @@ export class CarouselService {
   /**
 	 * Gets the maximum position for the current item.
 	 * @public
-	 * @param {Boolean} [relative=false] - Whether to return an absolute position or a relative position.
-	 * @returns {Number}
+	 * @param [relative=false] - Whether to return an absolute position or a relative position.
+	 * @returns number of maximum position
 	 */
-  maximum(relative) { }
+  maximum(relative: boolean = false): number {
+		const settings = this.settings;
+		let	maximum = this._coordinates.length,
+			iterator,
+			reciprocalItemsWidth,
+			elementWidth;
+
+		if (settings.loop) {
+			maximum = this._clones.length / 2 + this._items.length - 1;
+		} else if (settings.autoWidth || settings.merge) {
+			iterator = this._items.length;
+			reciprocalItemsWidth = this.itemsData[--iterator].width;
+			elementWidth = this.setCarouselWidth;
+			while (iterator--) {
+				// it could be use this._items instead of this.itemsData;
+				reciprocalItemsWidth += this.itemsData[iterator].width + this.settings.margin;
+				if (reciprocalItemsWidth > elementWidth) {
+					break;
+				}
+			}
+			maximum = iterator + 1;
+		} else if (settings.center) {
+			maximum = this._items.length - 1;
+		} else {
+			maximum = this._items.length - settings.items;
+		}
+
+		if (relative) {
+			maximum -= this._clones.length / 2;
+		}
+
+		return Math.max(maximum, 0);
+	 }
 
   /**
 	 * Gets the minimum position for the current item.
 	 * @public
-	 * @param {Boolean} [relative=false] - Whether to return an absolute position or a relative position.
-	 * @returns {Number}
+	 * @param [relative=false] - Whether to return an absolute position or a relative position.
+	 * @returns number of minimum position
 	 */
-  minimum(relative) { }
+  minimum(relative: boolean = false): number {
+		return relative ? 0 : this._clones.length / 2;
+	}
 
   /**
 	 * Gets an item at the specified relative position.
@@ -896,11 +930,26 @@ export class CarouselService {
   /**
 	 * Operators to calculate right-to-left and left-to-right.
 	 * @protected
-	 * @param {Number} [a] - The left side operand.
-	 * @param {String} [o] - The operator.
-	 * @param {Number} [b] - The right side operand.
+	 * @param [a] - The left side operand.
+	 * @param [o] - The operator.
+	 * @param [b] - The right side operand.
+	 * @returns true/false meaning right-to-left or left-to-right
 	 */
-  op(a, o, b) { }
+  protected op(a: number, o: string, b: number): boolean {
+		const rtl = this.settings.rtl;
+		switch (o) {
+			case '<':
+				return rtl ? a > b : a < b;
+			case '>':
+				return rtl ? a < b : a > b;
+			case '>=':
+				return rtl ? a <= b : a >= b;
+			case '<=':
+				return rtl ? a >= b : a <= b;
+			default:
+				break;
+		}
+	}
 
   	/**
 	 * Attaches to an internal event.
