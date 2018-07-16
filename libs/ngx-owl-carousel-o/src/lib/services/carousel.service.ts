@@ -141,13 +141,13 @@ export class CarouselService {
 
 		responsive: {},
 		responsiveRefreshRate: 200,
-		responsiveBaseElement: window,
+		// responsiveBaseElement: window, delete
 
 		fallbackEasing: 'swing',
 
 		info: false,
 
-		nestedItemSelector: false,
+		// nestedItemSelector: false, delete
 
 		refreshClass: 'owl-refresh',
     loadedClass: 'owl-loaded',
@@ -156,7 +156,7 @@ export class CarouselService {
     isLoadingClass: false,
 		// loadingClass: 'owl-loading',
 		rtlClass: 'owl-rtl',
-		responsiveClass: 'owl-responsive',
+		// responsiveClass: 'owl-responsive', delete
 		dragClass: 'owl-drag',
 		itemClass: 'owl-item',
 		grabClass: 'owl-grab'
@@ -484,18 +484,18 @@ export class CarouselService {
 
   /**
    * Updates the view.
-   * @param workers - list of functions: workers
+   * @param - list of functions: workers
    */
-  update(workers: any[]) {
+  update() {
     let i = 0;
-    const n = workers.length,
+    const n = this._pipe.length,
       filter = item => this._invalidated[item],
       cache = {};
 
     while (i < n) {
-      const filteredPipe = workers[i].filter.filter(filter);
+      const filteredPipe = this._pipe[i].filter.filter(filter);
       if (this._invalidated.all || filteredPipe.length > 0) {
-        workers[i].run(cache);
+        this._pipe[i].run(cache);
       }
       i++;
     }
@@ -528,7 +528,23 @@ export class CarouselService {
 	 * Refreshes the carousel primarily for adaptive purposes.
 	 * @public
 	 */
-  refresh() { }
+  refresh() {
+		this.enter('refreshing');
+		this.trigger('refresh');
+
+		this.setup();
+
+		this.optionsLogic();
+
+		// this.$element.addClass(this.options.refreshClass);
+
+		this.update();
+
+		// this.$element.removeClass(this.options.refreshClass);
+
+		this.leave('refreshing');
+		this.trigger('refreshed');
+	 }
 
   /**
 	 * Checks window `resize` event.
