@@ -48,6 +48,7 @@ export class CarouselService {
 	// properties, which must be changed in views;
 	transform: string;
 	transition: string;
+	// carousel width
 	_width: number;
 	stageWidth: number | string;
 	stagePaddingL: number | string;
@@ -102,6 +103,12 @@ export class CarouselService {
    * @todo The name of this member is missleading.
    */
 	protected _coordinates: any[] = [];
+
+	/**
+   * Current breakpoint.
+   * @todo Real media queries would be nice.
+   */
+  protected _breakpoint: any = null;
 
   /**
 	 * Default options for the carousel.
@@ -428,7 +435,38 @@ export class CarouselService {
 	 * @todo Support for media queries by using `matchMedia` would be nice.
 	 * @public
 	 */
-  setup() { }
+  setup() {
+		const viewport = this._width,
+			overwrites = this.options.responsive;
+		let	match = -1,
+			settings = null;
+
+		if (!overwrites) {
+			settings = Object.assign({}, this.options);
+		} else {
+			for (const key in overwrites) {
+				if (overwrites.hasOwnProperty(key)) {
+					if (+key <= viewport && +key > match) {
+						match = Number(key);
+					}
+				}
+			}
+
+			settings = Object.assign({}, this.options, overwrites[match]);
+			if (typeof settings.stagePadding === 'function') {
+				settings.stagePadding = settings.stagePadding();
+			}
+			delete settings.responsive;
+
+		}
+
+		// trigger can be deleted
+		// this.trigger('change', { property: { name: 'settings', value: settings } });
+		this._breakpoint = match;
+		this.settings = settings;
+		this.invalidate('settings');
+		// this.trigger('changed', { property: { name: 'settings', value: this.settings } });
+	 }
 
   /**
 	 * Updates option logic if necessery.
@@ -861,9 +899,17 @@ export class CarouselService {
   /**
 	 * Gets viewport width.
 	 * @protected
-	 * @return {Number} - The width in pixel.
+	 * @return - The width in pixel.
 	 */
-  viewport() { }
+  viewport(): number {
+		let width;
+		if (this._width) {
+			width = this._width;
+		} else {
+			console.warn('Can not detect viewport width.');
+		}
+		return width;
+	}
 
   /**
 	 * Replaces the current content.
