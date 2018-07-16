@@ -185,12 +185,6 @@ export class CarouselComponent
   protected _handlers: any = {};
 
   /**
-   * Current breakpoint.
-   * @todo Real media queries would be nice.
-   */
-  protected _breakpoint: any = null;
-
-  /**
    * Current width of the plugin element.
    */
   _width: number | null = null;
@@ -295,39 +289,6 @@ export class CarouselComponent
     }
   }
 
-  /**
-	 * Initializes the carousel.
-	 * @protected
-	 */
-  initialize() {
-		this.carouselService.enter('initializing');
-		this.carouselService.trigger('initialize');
-
-    this.options.isLoadingClass = true;
-    this.isVisible = true;
-
-    // append content; I need it for setting _items in CarouselService;
-    this.carouselService.setItems(this.slides.toArray());
-
-		// check visibility
-		if (this.isVisible) {
-			// update view
-			this.carouselService.refresh();
-		} else {
-			// invalidate width
-			this.carouselService.invalidate('width');
-    }
-
-    this.options.isLoadingClass = false;
-    this.options.isLoadedClass = true;
-
-		// register event handlers
-		this.carouselService.registerEventHandlers();
-
-		this.carouselService.leave('initializing');
-		this.carouselService.trigger('initialized');
-  };
-
   // type checking
   isNumber(x: any): x is number {
     return typeof x === 'number';
@@ -335,10 +296,6 @@ export class CarouselComponent
 
   isResolutionObj(x: any): x is ResolutionCarouselData {
     return typeof x === 'object';
-  }
-
-  update(workers: any[]) {
-    this.carouselService.update(workers);
   }
 
 }

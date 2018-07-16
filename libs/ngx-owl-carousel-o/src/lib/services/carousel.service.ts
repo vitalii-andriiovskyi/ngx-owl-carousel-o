@@ -466,7 +466,27 @@ export class CarouselService {
 		this.settings = settings;
 		this.invalidate('settings');
 		// this.trigger('changed', { property: { name: 'settings', value: this.settings } });
-	 }
+	}
+
+	/**
+	 * Initializes the carousel.
+	 * @protected
+	 */
+  initialize() {
+		this.enter('initializing');
+		// this.trigger('initialize');
+
+		this.refresh();
+
+    // this.settings.isLoadedClass = true;
+
+		// register event handlers
+		this.registerEventHandlers();
+
+		this.leave('initializing');
+		// this.trigger('initialized');
+  };
+
 
   /**
 	 * Updates option logic if necessery.
@@ -568,7 +588,27 @@ export class CarouselService {
 	 * @todo #261
 	 * @protected
 	 */
-  registerEventHandlers() { }
+  registerEventHandlers() {
+		// if ($.support.transition) {
+		// 	console.log($.support.transition);
+		// 	this.$stage.on($.support.transition.end + '.owl.core', $.proxy(this.onTransitionEnd, this));
+		// }
+
+		// if (this.settings.responsive !== false) {
+		// 	this.on(window, 'resize', this._handlers.onThrottledResize);
+		// }
+
+		// if (this.settings.mouseDrag) {
+		// 	this.$element.addClass(this.options.dragClass);
+		// 	this.$stage.on('mousedown.owl.core', $.proxy(this.onDragStart, this));
+		// 	this.$stage.on('dragstart.owl.core selectstart.owl.core', function() { return false });
+		// }
+
+		// if (this.settings.touchDrag){
+		// 	this.$stage.on('touchstart.owl.core', $.proxy(this.onDragStart, this));
+		// 	this.$stage.on('touchcancel.owl.core', $.proxy(this.onDragEnd, this));
+		// }
+	 }
 
   /**
 	 * Handles `touchstart` and `mousedown` events.
