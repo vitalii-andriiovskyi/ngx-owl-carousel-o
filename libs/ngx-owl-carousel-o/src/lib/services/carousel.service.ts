@@ -38,15 +38,15 @@ export enum Width {
 export class StageData {
 	transform: string;
 	transition: string;
-	stageWidth: number | string;
-	stagePaddingL: number | string;
-	stagePaddingR: number | string;
+	width: number | string;
+	paddingL: number | string;
+	paddingR: number | string;
 }
 
 export class CarouselCurrentData {
 	settings: any;
 	stageData: StageData;
-	itemsData: SliderModel[];
+	slidesData: SliderModel[];
 }
 
 @Injectable({
@@ -71,7 +71,7 @@ export class CarouselService {
 	/**
 	 *  data of every slide
 	 */
-	itemsData: SliderModel[];
+	slidesData: SliderModel[];
 
 	/**
 	 * carousel width
@@ -250,7 +250,7 @@ export class CarouselService {
           };
 
         if(!grid) {
-					this.itemsData.forEach(slide => {
+					this.slidesData.forEach(slide => {
 						slide.marginL = css['margin-left'];
 						slide.marginR = css['margin-right'];
 					});
@@ -283,7 +283,7 @@ export class CarouselService {
 
 				this._widths = widths;
 
-				this.itemsData.forEach((slide, i) => {
+				this.slidesData.forEach((slide, i) => {
 					slide.width = this._width[i];
 				});
       }
@@ -305,9 +305,9 @@ export class CarouselService {
         while (repeat--) {
           // Switch to only using appended clones
           clones.push(this.normalize(clones.length / 2, true));
-          append.push(Object.assign({}, this.itemsData[clones[clones.length - 1]]));
+          append.push(Object.assign({}, this.slidesData[clones[clones.length - 1]]));
 					clones.push(this.normalize(items.length - 1 - (clones.length - 1) / 2, true));
-					prepend.unshift(Object.assign({}, this.itemsData[clones[clones.length - 1]]));
+					prepend.unshift(Object.assign({}, this.slidesData[clones[clones.length - 1]]));
         }
 
 				this._clones = clones;
@@ -324,7 +324,7 @@ export class CarouselService {
 					return slide;
 				});
 
-				this.itemsData = prepend.concat(this.itemsData).concat(append);
+				this.slidesData = prepend.concat(this.slidesData).concat(append);
       }
     }, {
       filter: [ 'width', 'items', 'settings' ],
@@ -355,9 +355,9 @@ export class CarouselService {
             'padding-right': padding || ''
 					};
 
-				this.stageData.stageWidth = css.width; // use this property in *ngIf directive for .owl-stage element
-				this.stageData.stagePaddingL = css['padding-left'];
-				this.stageData.stagePaddingR = css['padding-right'];
+				this.stageData.width = css.width; // use this property in *ngIf directive for .owl-stage element
+				this.stageData.paddingL = css['padding-left'];
+				this.stageData.paddingR = css['padding-right'];
       }
     }, {
     //   filter: [ 'width', 'items', 'settings' ],
@@ -594,7 +594,7 @@ export class CarouselService {
 		this._allDataShipper$.next({
 			settings: this.settings,
 			stageData: this.stageData,
-			itemsData: this.itemsData
+			slidesData: this.slidesData
 		});
 
 		// this.$element.removeClass(this.options.refreshClass);
@@ -829,11 +829,11 @@ export class CarouselService {
 			maximum = this._clones.length / 2 + this._items.length - 1;
 		} else if (settings.autoWidth || settings.merge) {
 			iterator = this._items.length;
-			reciprocalItemsWidth = this.itemsData[--iterator].width;
+			reciprocalItemsWidth = this.slidesData[--iterator].width;
 			elementWidth = this.setCarouselWidth;
 			while (iterator--) {
 				// it could be use this._items instead of this.itemsData;
-				reciprocalItemsWidth += this.itemsData[iterator].width + this.settings.margin;
+				reciprocalItemsWidth += this.slidesData[iterator].width + this.settings.margin;
 				if (reciprocalItemsWidth > elementWidth) {
 					break;
 				}
@@ -1012,7 +1012,7 @@ export class CarouselService {
   setItems(content: CarouselSlideDirective[]) {
 		this._items = content;
 		// there must be set active to true for current slides
-		this.itemsData = this._items.map(slide => {
+		this.slidesData = this._items.map(slide => {
 			return {
 				id: `${slide.id}`,
 				active: false,
