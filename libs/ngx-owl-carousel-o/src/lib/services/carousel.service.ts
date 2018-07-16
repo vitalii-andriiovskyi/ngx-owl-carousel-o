@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { CustomEventsService } from '../services/custom-events.service';
 import { CarouselSlideDirective } from '../carousel/carousel.module';
 import { SliderModel } from '../carousel/slider.model';
+import { Subject, Observable } from '../../../../../node_modules/rxjs';
 
 export class States {
   current: {};
@@ -34,10 +35,27 @@ export enum Width {
 	Outer = 'outer'
 };
 
+export class StageData {
+	transform: string;
+	transition: string;
+	stageWidth: number | string;
+	stagePaddingL: number | string;
+	stagePaddingR: number | string;
+}
+
+export class CarouselCurrentData {
+	settings: any;
+	stageData: StageData;
+	itemsData: SliderModel[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class CarouselService {
+
+	private _allDataShipper$ = new Subject<CarouselCurrentData>();
+
   /**
    * Current settings for the carousel.
    */
@@ -45,17 +63,20 @@ export class CarouselService {
 		items: 0
 	};
 
-	// properties, which must be changed in views;
-	transform: string;
-	transition: string;
-	// carousel width
-	_width: number;
-	stageWidth: number | string;
-	stagePaddingL: number | string;
-	stagePaddingR: number | string;
-	// width of item
+	/**
+   * data of owl-stage
+   */
+	stageData: StageData;
+
+	/**
+	 *  data of every slide
+	 */
 	itemsData: SliderModel[];
 
+	/**
+	 * carousel width
+	 */
+	private _width: number;
 
 	/**
 	 * All real items.
@@ -334,9 +355,9 @@ export class CarouselService {
             'padding-right': padding || ''
 					};
 
-				this.stageWidth = css.width; // use this property in *ngIf directive for .owl-stage element
-				this.stagePaddingL = css['padding-left'];
-				this.stagePaddingR = css['padding-right'];
+				this.stageData.stageWidth = css.width; // use this property in *ngIf directive for .owl-stage element
+				this.stageData.stagePaddingL = css['padding-left'];
+				this.stageData.stagePaddingR = css['padding-right'];
       }
     }, {
     //   filter: [ 'width', 'items', 'settings' ],
@@ -411,8 +432,14 @@ export class CarouselService {
     }
   ];
 
-  constructor(private customEventsCreator: CustomEventsService) { }
+	constructor(private customEventsCreator: CustomEventsService) { }
 
+	/**
+	 * returns all needed data for showing carousel
+	 */
+	getCarouselCurSettings(): Observable<CarouselCurrentData> {
+		return this._allDataShipper$.asObservable();
+	}
 	/**
 	 * Setups custom options expanding default options
 	 * @param options custom options
@@ -564,6 +591,12 @@ export class CarouselService {
 
 		this.update();
 
+		this._allDataShipper$.next({
+			settings: this.settings,
+			stageData: this.stageData,
+			itemsData: this.itemsData
+		});
+
 		// this.$element.removeClass(this.options.refreshClass);
 
 		this.leave('refreshing');
@@ -664,8 +697,8 @@ export class CarouselService {
 			this.trigger('translate');
 		}
 
-		this.transform = 'translate3d(' + coordinate + 'px,0px,0px)';
-		this.transition = (this.speed() / 1000) + 's';
+		this.stageData.transform = 'translate3d(' + coordinate + 'px,0px,0px)';
+		this.stageData.transition = (this.speed() / 1000) + 's';
 
 		// also there was transition by means of JQuery.animate or css-changing property left
 	 }
