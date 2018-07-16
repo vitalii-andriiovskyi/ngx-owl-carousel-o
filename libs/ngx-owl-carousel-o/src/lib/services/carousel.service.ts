@@ -470,9 +470,13 @@ export class CarouselService {
 
   /**
 	 * Updates option logic if necessery.
-	 * @protected
 	 */
-  optionsLogic() { }
+  private _optionsLogic() {
+		if (this.settings.autoWidth) {
+			this.settings.stagePadding = false;
+			this.settings.merge = false;
+		}
+	}
 
   /**
 	 * Prepares an item before add.
@@ -530,11 +534,11 @@ export class CarouselService {
 	 */
   refresh() {
 		this.enter('refreshing');
-		this.trigger('refresh');
+		// this.trigger('refresh');
 
 		this.setup();
 
-		this.optionsLogic();
+		this._optionsLogic();
 
 		// this.$element.addClass(this.options.refreshClass);
 
@@ -543,7 +547,7 @@ export class CarouselService {
 		// this.$element.removeClass(this.options.refreshClass);
 
 		this.leave('refreshing');
-		this.trigger('refreshed');
+		// this.trigger('refreshed');
 	 }
 
   /**
