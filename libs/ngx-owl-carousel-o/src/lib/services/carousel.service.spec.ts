@@ -5,18 +5,6 @@ import { CustomEventsService } from './custom-events.service';
 
 describe('CarouselService', () => {
   let carouselService: CarouselService;
-  let workerResult1: string;
-  let workerResult2: string;
-  const workers: any[] = [
-    {
-      filter: ['width', 'settings'],
-      run: () => workerResult1 = 'width'
-    },
-    {
-      filter: ['items', 'height'],
-      run: () => workerResult2 = 'height'
-    }
-  ];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -59,20 +47,5 @@ describe('CarouselService', () => {
     expect('' + state).toBe('0', 'state is 0 after leaving');
 
   });
-
-  it('should call run() of 1st element of workers array after calling update() method', () => {
-    carouselService.invalidate('width');
-    carouselService.update(workers);
-    expect(workerResult1).toBe('width', 'called 1st worker from workers');
-    expect(carouselService.states.current['valid']).toBe(1);
-
-    expect(workerResult2).toBe(undefined, '2nd worker from workers isn\'t touched');
-    carouselService.invalidate('height');
-    carouselService.update(workers);
-    expect(workerResult2).toBe('height', 'called 2nd worker from workers');
-    expect(carouselService.states.current['valid']).toBe(1);
-
-  });
-
 
 });
