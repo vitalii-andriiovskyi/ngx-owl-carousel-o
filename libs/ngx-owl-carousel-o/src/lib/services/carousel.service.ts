@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 
-import { CustomEventsService } from '../services/custom-events.service';
+import { CustomEventsService } from './custom-events.service';
 import { CarouselSlideDirective } from '../carousel/carousel.module';
 import { SliderModel } from '../carousel/slider.model';
-import { Subject, Observable } from '../../../../../node_modules/rxjs';
+import { Subject, Observable } from 'rxjs';
+import { OwlCarouselOConfig } from '../carousel/owl-carousel-o-config';
 
 export class States {
   current: {};
@@ -136,59 +137,6 @@ export class CarouselService {
    * @todo Real media queries would be nice.
    */
   private _breakpoint: any = null;
-
-  /**
-	 * Default options for the carousel.
-	 * @public
-	 */
-  defaults = {
-		items: 3,
-		loop: false,
-		center: false,
-		rewind: false,
-
-		mouseDrag: true,
-		touchDrag: true,
-		pullDrag: true,
-		freeDrag: false,
-
-		margin: 0,
-		stagePadding: 0,
-
-		merge: false,
-		mergeFit: true,
-		autoWidth: false,
-
-		startPosition: 0,
-		rtl: false,
-
-		smartSpeed: 250,
-		fluidSpeed: false,
-		dragEndSpeed: false,
-
-		responsive: {},
-		responsiveRefreshRate: 200,
-		// responsiveBaseElement: window, delete
-
-		fallbackEasing: 'swing',
-
-		info: false,
-
-		// nestedItemSelector: false, delete
-
-		refreshClass: 'owl-refresh',
-    loadedClass: 'owl-loaded',
-    isLoadedClass: false,
-    loadingClass: 'owl-loading',
-    isLoadingClass: false,
-		// loadingClass: 'owl-loading',
-		rtlClass: 'owl-rtl',
-		// responsiveClass: 'owl-responsive', delete
-		isResponsive: false,
-		dragClass: 'owl-drag',
-		itemClass: 'owl-item',
-		grabClass: 'owl-grab'
-	};
 
 	/**
 		 * Current options set by the caller including defaults.
@@ -460,7 +408,7 @@ export class CarouselService {
 	 * @param options custom options
 	 */
 	setOptions(options: any) {
-		this._options = Object.assign({}, this.defaults, options);
+		this._options = Object.assign({}, new OwlCarouselOConfig(), options);
 	}
 
 	/**
@@ -479,11 +427,11 @@ export class CarouselService {
 	 */
   setup() {
 		const viewport = this._width,
-			overwrites = this._options.responsive;
+			overwrites = Object.keys(this._options.responsive);
 		let	match = -1,
 			settings = null;
 
-		if (!overwrites) {
+		if (!overwrites.length) {
 			settings = Object.assign({}, this._options);
 		} else {
 			for (const key in overwrites) {
