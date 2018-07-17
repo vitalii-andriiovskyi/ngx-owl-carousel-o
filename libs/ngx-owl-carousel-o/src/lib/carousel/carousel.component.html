@@ -7,7 +7,8 @@
 																			'transform': stageData.transform,
 																			'transition': stageData.transition,
 																			'paddint-left': stageData.paddingL,
-																			'paddint-right': stageData.paddingR }">
+																			'paddint-right': stageData.paddingR }"
+			(transitionend)="onTransitionEnd()">
 			<ng-container *ngFor="let slide of slidesData; let i = index">
 				<div class="owl-item" [ngClass]="{'active': slide.active, 
 																					'center': slide.center,

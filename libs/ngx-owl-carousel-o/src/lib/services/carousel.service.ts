@@ -986,7 +986,6 @@ export class CarouselService {
 
   /**
 	 * Handles the end of an animation.
-	 * @protected
 	 * @param {Event} event - The event arguments.
 	 */
   onTransitionEnd(event?: any) {

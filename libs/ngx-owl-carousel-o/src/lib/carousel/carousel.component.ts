@@ -334,4 +334,8 @@ export class CarouselComponent
     })
   }
 
+  onTransitionEnd() {
+    this.carouselService.onTransitionEnd();
+  }
+
 }
