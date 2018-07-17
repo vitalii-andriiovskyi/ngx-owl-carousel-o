@@ -1,16 +1,17 @@
-<div *ngIf="carouselLoaded" class="owl-carousel owl-loaded owl-theme" 
+<div class="owl-carousel owl-loaded owl-theme" 
 	[ngClass]="{'owl-rtl': settings?.rtl,
 							'owl-loading': settings?.isLoadingClass}" #owlCarousel>
 
-	<div class="owl-stage-outer">
+	<div *ngIf="carouselLoaded" class="owl-stage-outer">
 		<div class="owl-stage" [ngStyle]="{'width': stageData.width + 'px',
 																			'transform': stageData.transform,
 																			'transition': stageData.transition,
-																			'paddint-left': stage.paddingL,
-																			'paddint-right': stage.paddingR }">
+																			'paddint-left': stageData.paddingL,
+																			'paddint-right': stageData.paddingR }">
 			<ng-container *ngFor="let slide of slidesData; let i = index">
 				<div class="owl-item" [ngClass]="{'active': slide.active, 
-																					'center': slide.center}" 
+																					'center': slide.center,
+																					'cloned': slide.cloned}" 
 															[ngStyle]="{'width': slide.width + 'px',
 																					'margin-left': slide.marginL + 'px',
 																					'margin-right': slide.marginR + 'px'}">

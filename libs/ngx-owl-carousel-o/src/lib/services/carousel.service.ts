@@ -320,12 +320,14 @@ export class CarouselService {
 				append = append.map(slide => {
 					slide.id = `cloned-${slide.id}`;
 					slide.active = false;
+					slide.cloned = true;
 					return slide;
 				});
 
 				prepend = prepend.map(slide => {
 					slide.id = `cloned-${slide.id}`;
 					slide.active = false;
+					slide.cloned = true;
 					return slide;
 				});
 
@@ -1030,7 +1032,9 @@ export class CarouselService {
 				id: `${slide.id}`,
 				active: false,
 				tplRef: slide.tplRef,
-				dataMerge: slide.dataMerge
+				dataMerge: slide.dataMerge,
+				width: 0,
+				cloned: false
 			}
 		});
 

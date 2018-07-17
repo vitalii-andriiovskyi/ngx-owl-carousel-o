@@ -5,8 +5,9 @@ export class SliderModel {
   active: boolean;
   tplRef: TemplateRef<any>;
   dataMerge: number;
-  width?: number | string;
+  width: number | string;
   marginL?: number | string;
   marginR?: number | string;
   center?: boolean;
+  cloned: boolean;
 }
