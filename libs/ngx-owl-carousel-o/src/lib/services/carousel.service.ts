@@ -66,7 +66,13 @@ export class CarouselService {
 	/**
    * data of owl-stage
    */
-	stageData: StageData;
+	stageData: StageData = {
+		transform: 'translate3d(0px,0px,0px)',
+		transition: '0s',
+		width: 0,
+		paddingL: 0,
+		paddingR: 0
+	};
 
 	/**
 	 *  data of every slide
@@ -275,7 +281,6 @@ export class CarouselService {
         while (iterator--) {
           merge = this._mergers[iterator];
           merge = this.settings.mergeFit && Math.min(merge, this.settings.items) || merge;
-
           cache.items.merge = merge > 1 || cache.items.merge;
 
           widths[iterator] = !grid ? this._items[iterator].width ? this._items[iterator].width : width : width * merge;
@@ -284,7 +289,7 @@ export class CarouselService {
 				this._widths = widths;
 
 				this.slidesData.forEach((slide, i) => {
-					slide.width = this._width[i];
+					slide.width = this._widths[i];
 				});
       }
     }, {
@@ -364,7 +369,7 @@ export class CarouselService {
     //   run: cache => {
 		// 		// this method sets the width for every slide, but I set it in different way earlier
 		// 		const grid = !this.settings.autoWidth,
-		// 		items = this.$stage.children(); // use this.itemsData
+		// 		items = this.$stage.children(); // use this.slidesData
     //     let iterator = this._coordinates.length;
 
     //     if (grid && cache.items.merge) {
@@ -384,28 +389,36 @@ export class CarouselService {
     //   }
     // }, {
       filter: [ 'width', 'items', 'settings' ],
-      run: function(cache) {
-        cache.current = cache.current ? this.itemsData.findIndex(slide => slide.id === cache.current) : 0;
-        cache.current = Math.max(this.minimum(), Math.min(this.maximum(), cache.current));
-        this.reset(cache.current);
+      run: cache => {
+        let current = cache.current ? this.slidesData.findIndex(slide => slide.id === cache.current) : 0;
+       	current = Math.max(this.minimum(), Math.min(this.maximum(), current));
+        this.reset(current);
       }
     }, {
       filter: [ 'position' ],
-      run: function() {
+      run: () => {
         this.animate(this.coordinates(this._current));
       }
     }, {
       filter: [ 'width', 'position', 'items', 'settings' ],
-      run: function() {
+      run: () => {
         const rtl = this.settings.rtl ? 1 : -1,
-          padding = this.settings.stagePadding * 2,
-          begin = this.coordinates(this.current()) + padding,
-          end = begin + this.width() * rtl, matches = [];
-          let inner, outer, i, n;
+					padding = this.settings.stagePadding * 2,
+					matches = [];
+					let begin, end, inner, outer, i, n;
+
+					begin = this.coordinates(this.current());
+					if (typeof begin === 'number' ) {
+						begin += padding;
+					} else {
+						begin = 0;
+					}
+
+          end = begin + this.width() * rtl;
 
         for (i = 0, n = this._coordinates.length; i < n; i++) {
           inner = this._coordinates[i - 1] || 0;
-          outer = Math.abs(this._coordinates[i]) + padding * rtl;
+					outer = Math.abs(this._coordinates[i]) + padding * rtl;
 
           if ((this.op(inner, '<=', begin) && (this.op(inner, '>', end)))
             || (this.op(outer, '<', begin) && this.op(outer, '>', end))) {
@@ -413,20 +426,20 @@ export class CarouselService {
           }
 				}
 
-				this.itemsData.forEach(slide => {
+				this.slidesData.forEach(slide => {
 					slide.active = false;
 					return slide;
 				});
 				matches.forEach(item => {
-					this.itemsData[item].active = true;
+					this.slidesData[item].active = true;
 				});
 
         if (this.settings.center) {
-					this.itemsData.forEach(slide => {
+					this.slidesData.forEach(slide => {
 						slide.center = false;
 						return slide;
 					});
-					this.itemsData[this.current()].center = true;
+					this.slidesData[this.current()].center = true;
         }
       }
     }
@@ -445,7 +458,7 @@ export class CarouselService {
 	 * @param options custom options
 	 */
 	setOptions(options: any) {
-		this.options.assign({}, this.defaults, options);
+		this.options = Object.assign({}, this.defaults, options);
 	}
 
 	/**
@@ -499,14 +512,14 @@ export class CarouselService {
 	 * Initializes the carousel.
 	 * @protected
 	 */
-  initialize() {
+  initialize(slides: CarouselSlideDirective[]) {
 		this.enter('initializing');
 		// this.trigger('initialize');
 
+		this.setItems(slides);
 		this.refresh();
 
     // this.settings.isLoadedClass = true;
-
 		// register event handlers
 		this.registerEventHandlers();
 
@@ -546,10 +559,10 @@ export class CarouselService {
     while (i < n) {
       const filteredPipe = this._pipe[i].filter.filter(filter);
       if (this._invalidated.all || filteredPipe.length > 0) {
-        this._pipe[i].run(cache);
+				this._pipe[i].run(cache);
       }
       i++;
-    }
+		}
 
     this._invalidated = {};
 
@@ -832,7 +845,7 @@ export class CarouselService {
 			reciprocalItemsWidth = this.slidesData[--iterator].width;
 			elementWidth = this.setCarouselWidth;
 			while (iterator--) {
-				// it could be use this._items instead of this.itemsData;
+				// it could be use this._items instead of this.slidesData;
 				reciprocalItemsWidth += this.slidesData[iterator].width + this.settings.margin;
 				if (reciprocalItemsWidth > elementWidth) {
 					break;
