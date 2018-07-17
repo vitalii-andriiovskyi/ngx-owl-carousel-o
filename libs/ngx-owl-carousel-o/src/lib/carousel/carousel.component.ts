@@ -18,7 +18,8 @@ import { ResizeService } from '../services/resize.service';
 import { WINDOW } from '../services/window-ref.service';
 import { tap } from 'rxjs/operators';
 import { CustomEventsService } from '../services/custom-events.service';
-import { CarouselService } from '../services/carousel.service';
+import { CarouselService, StageData } from '../services/carousel.service';
+import { SliderModel } from './slider.model';
 
 let nextId = 0;
 
@@ -112,6 +113,7 @@ export class CarouselComponent
   slidersStageData: SlidersData[] = [];
 
   resizeSubscription: Subscription;
+  curSettingsSubscr: Subscription;
 
   owlVisible: true;
 
@@ -119,6 +121,21 @@ export class CarouselComponent
    * Current settings for the carousel.
    */
   settings: any = null;
+
+  /**
+   * data of owl-stage
+   */
+	stageData: StageData;
+
+	/**
+	 *  data of every slide
+	 */
+  slidesData: SliderModel[];
+
+  /**
+   * shows whether carousel is loaded of not.
+   */
+  carouselLoaded = false;
 
   /**
 	 * Default options for the carousel.
@@ -201,9 +218,6 @@ export class CarouselComponent
    */
   _widths: any[] = [];
 
-
- 
-
   /**
    * Current state information for the drag operation.
    * @todo #261
@@ -246,11 +260,13 @@ export class CarouselComponent
   ) {}
 
   ngOnInit() {
-    this.options = Object.assign({}, this.defaults, this.options);
+    this.getCarouselCurrentSettings();
 
-    ['onResize', 'onThrottledResize'].forEach(handler => {
-      this._handlers[handler] = this[handler];
-    });
+    // this.options = Object.assign({}, this.defaults, this.options);
+
+    // ['onResize', 'onThrottledResize'].forEach(handler => {
+    //   this._handlers[handler] = this[handler];
+    // });
 
     // all plugins have to be added manually
     // $.each(Owl.Plugins, $.proxy(function(key, plugin) {
@@ -287,6 +303,8 @@ export class CarouselComponent
     if (this.resizeSubscription) {
       this.resizeSubscription.unsubscribe();
     }
+
+    this.curSettingsSubscr.unsubscribe();
   }
 
   // type checking
@@ -296,6 +314,17 @@ export class CarouselComponent
 
   isResolutionObj(x: any): x is ResolutionCarouselData {
     return typeof x === 'object';
+  }
+
+  getCarouselCurrentSettings() {
+    this.curSettingsSubscr = this.carouselService.getCarouselCurSettings().subscribe(data => {
+      this.settings = data.settings;
+      this.stageData = data.stageData;
+      this.slidesData = data.slidesData;
+      if (!this.carouselLoaded) {
+        this.carouselLoaded = true;
+      }
+    })
   }
 
 }

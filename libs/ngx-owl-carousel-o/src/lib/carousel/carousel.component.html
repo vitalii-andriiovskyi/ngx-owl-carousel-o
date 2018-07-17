@@ -1,14 +1,19 @@
-<div class="owl-carousel owl-loaded owl-theme" 
-	[ngStyle]="{'display': isVisible}"
-	[ngClass]="{'owl-hidden': !owlVisible, 
-							'owl-rtl': settings.rtl,
-							options.loadingClass: options.isLoadingClass,
-							options.loadedClass: options.isLoadedClass}" #owlCarousel>
+<div *ngIf="carouselLoaded" class="owl-carousel owl-loaded owl-theme" 
+	[ngClass]="{'owl-rtl': settings?.rtl,
+							'owl-loading': settings?.isLoadingClass}" #owlCarousel>
 
 	<div class="owl-stage-outer">
-		<div class="owl-stage" [ngStyle]="{'width': sliderWidth*slides.length + 'px', 'transform': 'translateX(' + translateXFirstStage + 'px)', '-webkit-transform': 'translateX(' + translateXFirstStage + 'px)', 'visibility': visibleFirstStage }">
-			<ng-container *ngFor="let slide of slides; let i = index">
-				<div class="owl-item" [ngClass]="{'active': false}" [ngStyle]="{'width': sliderWidth + 'px'}">
+		<div class="owl-stage" [ngStyle]="{'width': stageData.width + 'px',
+																			'transform': stageData.transform,
+																			'transition': stageData.transition,
+																			'paddint-left': stage.paddingL,
+																			'paddint-right': stage.paddingR }">
+			<ng-container *ngFor="let slide of slidesData; let i = index">
+				<div class="owl-item" [ngClass]="{'active': slide.active, 
+																					'center': slide.center}" 
+															[ngStyle]="{'width': slide.width + 'px',
+																					'margin-left': slide.marginL + 'px',
+																					'margin-right': slide.marginR + 'px'}">
 					<ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
 				</div><!-- /.owl-item -->
 			</ng-container>
