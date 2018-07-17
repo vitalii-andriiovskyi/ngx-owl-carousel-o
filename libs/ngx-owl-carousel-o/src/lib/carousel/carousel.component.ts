@@ -9,7 +9,8 @@ import {
   ContentChildren,
   TemplateRef,
   ElementRef,
-  Inject
+  Inject,
+  AfterContentInit
 } from '@angular/core';
 
 import { Subscription } from 'rxjs';
@@ -93,7 +94,7 @@ class States {
   styleUrls: ['./carousel.component.scss']
 })
 export class CarouselComponent
-  implements OnInit, AfterContentChecked, OnDestroy {
+  implements OnInit, AfterContentChecked, AfterContentInit, OnDestroy {
   @ContentChildren(CarouselSlideDirective)
   slides: QueryList<CarouselSlideDirective>;
 
@@ -299,6 +300,12 @@ export class CarouselComponent
   }
   // ngAfterContentChecked() END
 
+  ngAfterContentInit() {
+    this.carouselService.setCarouselWidth(this.carouselWindowWidth);
+    this.carouselService.setOptions(this.options);
+    this.carouselService.setup();
+    this.carouselService.initialize(this.slides.toArray());
+  }
   ngOnDestroy() {
     if (this.resizeSubscription) {
       this.resizeSubscription.unsubscribe();
