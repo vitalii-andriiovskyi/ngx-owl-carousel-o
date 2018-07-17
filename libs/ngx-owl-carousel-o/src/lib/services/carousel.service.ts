@@ -184,6 +184,7 @@ export class CarouselService {
 		// loadingClass: 'owl-loading',
 		rtlClass: 'owl-rtl',
 		// responsiveClass: 'owl-responsive', delete
+		isResponsive: false,
 		dragClass: 'owl-drag',
 		itemClass: 'owl-item',
 		grabClass: 'owl-grab'
@@ -498,7 +499,7 @@ export class CarouselService {
 				settings.stagePadding = settings.stagePadding();
 			}
 			delete settings.responsive;
-
+			settings.isResponsive = true;
 		}
 
 		// trigger can be deleted

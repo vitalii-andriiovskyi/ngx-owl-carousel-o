@@ -1,6 +1,7 @@
 <div class="owl-carousel owl-loaded owl-theme" 
 	[ngClass]="{'owl-rtl': settings?.rtl,
-							'owl-loading': settings?.isLoadingClass}" #owlCarousel>
+							'owl-loading': settings?.isLoadingClass,
+							'owl-responsive': settings?.isResponsive}" #owlCarousel>
 
 	<div *ngIf="carouselLoaded" class="owl-stage-outer">
 		<div class="owl-stage" [ngStyle]="{'width': stageData.width + 'px',
