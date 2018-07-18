@@ -1,4 +1,4 @@
-import { TemplateRef } from "../../../../../node_modules/@angular/core";
+import { TemplateRef } from "@angular/core";
 
 export class SliderModel {
   id: string;
