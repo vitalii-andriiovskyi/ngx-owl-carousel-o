@@ -36,6 +36,48 @@ export enum Width {
 	Outer = 'outer'
 };
 
+export class OwlDOMData {
+	/**
+	 * is needed for setting class .owl-rtl
+	 */
+	rtl = false;
+
+	/**
+	 * is needed for setting class .owl-loading
+	 */
+	isLoadingClass = false;
+
+	/**
+	 * is needed for setting class .owl-responsive
+	 */
+	isResponsive = false;
+
+	/**
+	 * is needed for setting class .owl-refreshed
+	 */
+
+	isRefreshed = false;
+	/**
+	 * is needed for setting class .owl-loaded
+	*/
+	isLoaded = false;
+
+	/**
+	 * is needed for setting class .owl-loading
+	 */
+	isLoading = false;
+
+	/**
+	 * is needed for setting class .owl-drag
+	 */
+	isDragable = false;
+
+	/**
+	 * is needed for setting class .owl-grab
+	 */
+	isGrab = false;
+}
+
 export class StageData {
 	transform: string;
 	transition: string;
@@ -63,6 +105,11 @@ export class CarouselService {
   settings: any = {
 		items: 0
 	};
+
+	/**
+   * data containing true/false for setting classes to element .owl-carousel
+   */
+	owlDOMData: OwlDOMData;
 
 	/**
    * data of owl-stage
@@ -468,13 +515,22 @@ export class CarouselService {
 		this.setItems(slides);
 		this.refresh();
 
-    // this.settings.isLoadedClass = true;
+		this.owlDOMData.isLoaded = true;
+		this._sendChanges();
 		// register event handlers
 		this._registerEventHandlers();
 
 		this.leave('initializing');
 		// this.trigger('initialized');
-  };
+	};
+
+	private _sendChanges() {
+		this._allDataShipper$.next({
+			settings: this.settings,
+			stageData: this.stageData,
+			slidesData: this.slidesData
+		});
+	}
 
 
   /**
@@ -544,12 +600,6 @@ export class CarouselService {
 		// this.$element.addClass(this.options.refreshClass);
 
 		this.update();
-
-		this._allDataShipper$.next({
-			settings: this.settings,
-			stageData: this.stageData,
-			slidesData: this.slidesData
-		});
 
 		// this.$element.removeClass(this.options.refreshClass);
 
