@@ -19,7 +19,7 @@ import { ResizeService } from '../services/resize.service';
 import { WINDOW } from '../services/window-ref.service';
 import { tap } from 'rxjs/operators';
 import { CustomEventsService } from '../services/custom-events.service';
-import { CarouselService, StageData } from '../services/carousel.service';
+import { CarouselService, StageData, OwlDOMData } from '../services/carousel.service';
 import { SliderModel } from './slider.model';
 
 let nextId = 0;
@@ -121,7 +121,7 @@ export class CarouselComponent
   /**
    * Current settings for the carousel.
    */
-  settings: any = null;
+  owlDOMData: OwlDOMData;
 
   /**
    * data of owl-stage
@@ -325,7 +325,9 @@ export class CarouselComponent
 
   getCarouselCurrentSettings() {
     this.curSettingsSubscr = this.carouselService.getCarouselCurSettings().subscribe(data => {
-      this.settings = data.settings;
+      this.owlDOMData = data.owlDOMData;
+      console.log(this.owlDOMData);
+
       this.stageData = data.stageData;
       this.slidesData = data.slidesData;
       if (!this.carouselLoaded) {

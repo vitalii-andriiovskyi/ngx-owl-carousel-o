@@ -43,11 +43,6 @@ export class OwlDOMData {
 	rtl = false;
 
 	/**
-	 * is needed for setting class .owl-loading
-	 */
-	isLoadingClass = false;
-
-	/**
 	 * is needed for setting class .owl-responsive
 	 */
 	isResponsive = false;
@@ -55,8 +50,8 @@ export class OwlDOMData {
 	/**
 	 * is needed for setting class .owl-refreshed
 	 */
-
 	isRefreshed = false;
+
 	/**
 	 * is needed for setting class .owl-loaded
 	*/
@@ -87,7 +82,7 @@ export class StageData {
 }
 
 export class CarouselCurrentData {
-	settings: any;
+	owlDOMData: OwlDOMData;
 	stageData: StageData;
 	slidesData: SliderModel[];
 }
@@ -494,7 +489,7 @@ export class CarouselService {
 				settings.stagePadding = settings.stagePadding();
 			}
 			delete settings.responsive;
-			settings.isResponsive = true;
+			this.owlDOMData.isResponsive = true;
 		}
 
 		// trigger can be deleted
@@ -512,6 +507,8 @@ export class CarouselService {
 		this.enter('initializing');
 		// this.trigger('initialize');
 
+		this.owlDOMData.rtl = this.settings.rtl;
+
 		this.setItems(slides);
 		this.refresh();
 
@@ -526,7 +523,7 @@ export class CarouselService {
 
 	private _sendChanges() {
 		this._allDataShipper$.next({
-			settings: this.settings,
+			owlDOMData: this.owlDOMData,
 			stageData: this.stageData,
 			slidesData: this.slidesData
 		});
@@ -632,11 +629,12 @@ export class CarouselService {
 		// 	this.on(window, 'resize', this._handlers.onThrottledResize);
 		// }
 
-		// if (this.settings.mouseDrag) {
-		// 	this.$element.addClass(this.options.dragClass);
-		// 	this.$stage.on('mousedown.owl.core', $.proxy(this.onDragStart, this));
-		// 	this.$stage.on('dragstart.owl.core selectstart.owl.core', function() { return false });
-		// }
+		if (this.settings.mouseDrag) {
+			this.owlDOMData.isDragable = true;
+			// this.$element.addClass(this.options.dragClass);
+			// this.$stage.on('mousedown.owl.core', $.proxy(this.onDragStart, this));
+			// this.$stage.on('dragstart.owl.core selectstart.owl.core', function() { return false });
+		}
 
 		// if (this.settings.touchDrag){
 		// 	this.$stage.on('touchstart.owl.core', $.proxy(this.onDragStart, this));

@@ -1,7 +1,9 @@
-<div class="owl-carousel owl-loaded owl-theme" 
-	[ngClass]="{'owl-rtl': settings?.rtl,
-							'owl-loading': settings?.isLoadingClass,
-							'owl-responsive': settings?.isResponsive}" #owlCarousel>
+<div class="owl-carousel owl-theme" 
+	[ngClass]="{'owl-rtl': owlDOMData?.rtl,
+							'owl-loaded': owlDOMData?.isLoaded,
+							'owl-responsive': owlDOMData?.isResponsive,
+							'owl-drag': owlDOMData?.isDragable,
+							'owl-grab': owlDOMData?.isGrab}" #owlCarousel>
 
 	<div *ngIf="carouselLoaded" class="owl-stage-outer">
 		<div class="owl-stage" [ngStyle]="{'width': stageData.width + 'px',
