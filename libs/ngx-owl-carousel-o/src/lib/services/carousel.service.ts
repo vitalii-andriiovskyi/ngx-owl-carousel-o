@@ -289,6 +289,8 @@ export class CarouselService {
 
 				this.slidesData.forEach((slide, i) => {
 					slide.width = this._widths[i];
+					slide.marginR = cache.css['margin-right'];
+					slide.marginL = cache.css['margin-left'];
 				});
       }
     }, {
