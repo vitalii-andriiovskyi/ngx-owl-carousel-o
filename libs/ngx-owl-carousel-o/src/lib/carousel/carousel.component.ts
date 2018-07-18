@@ -21,6 +21,7 @@ import { tap } from 'rxjs/operators';
 import { CustomEventsService } from '../services/custom-events.service';
 import { CarouselService, StageData, OwlDOMData } from '../services/carousel.service';
 import { SliderModel } from './slider.model';
+import { OwlOptions } from './owl-options.model';
 
 let nextId = 0;
 
@@ -193,7 +194,7 @@ export class CarouselComponent
   /**
    * User's options
    */
-  @Input() options: any;
+  @Input() options: OwlOptions;
 
   // this.$element = $(element); use this.el.
 

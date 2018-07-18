@@ -5,6 +5,7 @@ import { CarouselSlideDirective } from '../carousel/carousel.module';
 import { SliderModel } from '../carousel/slider.model';
 import { Subject, Observable } from 'rxjs';
 import { OwlCarouselOConfig } from '../carousel/owl-carousel-o-config';
+import { OwlOptions } from '../carousel/owl-options.model';
 
 export class States {
   current: {};
@@ -191,7 +192,7 @@ export class CarouselService {
 	/**
 		 * Current options set by the caller including defaults.
 		 */
-	private _options: any = {};
+	private _options: OwlOptions = {};
 
   /**
    * Invalidated parts within the update process.
@@ -457,8 +458,9 @@ export class CarouselService {
 	 * Setups custom options expanding default options
 	 * @param options custom options
 	 */
-	setOptions(options: any) {
+	setOptions(options: OwlOptions) {
 		this._options = Object.assign({}, new OwlCarouselOConfig(), options);
+		console.log(this._options);
 	}
 
 	/**
