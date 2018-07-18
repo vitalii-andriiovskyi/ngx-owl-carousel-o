@@ -30,20 +30,5 @@ export class OwlCarouselOConfig {
   fallbackEasing = 'swing';
 
   info = false;
-
-  // nestedIte mSelector = false, delet;
-
-  refreshClass = 'owl-refresh';
-  loadedClass = 'owl-loaded';
-  isLoadedClass = false;
-  loadingClass = 'owl-loading';
-  isLoadingClass = false;
-  // loadingClass = 'owl-loading';
-  rtlClass = 'owl-rtl';
-  // responsiveClass = 'owl-responsive', delet;
-  isResponsive = false;
-  dragClass = 'owl-drag';
-  itemClass = 'owl-item';
-  grabClass = 'owl-grab';
   constructor() { }
 }
