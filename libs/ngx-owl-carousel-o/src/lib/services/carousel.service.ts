@@ -40,37 +40,37 @@ export class OwlDOMData {
 	/**
 	 * is needed for setting class .owl-rtl
 	 */
-	rtl = false;
+	rtl: boolean;
 
 	/**
 	 * is needed for setting class .owl-responsive
 	 */
-	isResponsive = false;
+	isResponsive: boolean;
 
 	/**
 	 * is needed for setting class .owl-refreshed
 	 */
-	isRefreshed = false;
+	isRefreshed: boolean;
 
 	/**
 	 * is needed for setting class .owl-loaded
 	*/
-	isLoaded = false;
+	isLoaded: boolean;
 
 	/**
 	 * is needed for setting class .owl-loading
 	 */
-	isLoading = false;
+	isLoading: boolean;
 
 	/**
 	 * is needed for setting class .owl-drag
 	 */
-	isDragable = false;
+	isDragable: boolean;
 
 	/**
 	 * is needed for setting class .owl-grab
 	 */
-	isGrab = false;
+	isGrab: boolean;
 }
 
 export class StageData {
@@ -104,7 +104,15 @@ export class CarouselService {
 	/**
    * data containing true/false for setting classes to element .owl-carousel
    */
-	owlDOMData: OwlDOMData;
+	owlDOMData: OwlDOMData = {
+		rtl: false,
+		isResponsive: false,
+		isRefreshed: false,
+		isLoaded: false,
+		isLoading: false,
+		isDragable: false,
+		isGrab: false
+	};
 
 	/**
    * data of owl-stage
