@@ -30,7 +30,7 @@ export class CarouselSlideDirective {
    * Unique slide identifier. Must be unique for the entire document for proper accessibility support.
    * Will be auto-generated if not provided.
    */
-  @Input() id = `ngb-slide-${nextId++}`;
+  @Input() id = `owl-slide-${nextId++}`;
 
   /**
    * defines how much widths of common slide will current slide have
@@ -326,10 +326,9 @@ export class CarouselComponent
   getCarouselCurrentSettings() {
     this.curSettingsSubscr = this.carouselService.getCarouselCurSettings().subscribe(data => {
       this.owlDOMData = data.owlDOMData;
-      console.log(this.owlDOMData);
-
       this.stageData = data.stageData;
       this.slidesData = data.slidesData;
+      console.log(this.slidesData);
       if (!this.carouselLoaded) {
         this.carouselLoaded = true;
       }
