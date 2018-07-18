@@ -10,26 +10,29 @@ import { ResizeService } from '../services/resize.service';
 import { WINDOW_PROVIDERS } from '../services/window-ref.service';
 import { CarouselService } from '../services/carousel.service';
 import { createGenericTestComponent } from './test/common';
+import { last } from '../../../../../node_modules/rxjs/operators';
 
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>
 
 
-describe('SurfCarousel2Component with prop "cycled=true"', () => {
-  let hostComponent: TestComponent;
+describe('CarouselComponent', () => {
+  let testComponent: TestComponent;
   let fixtureHost: ComponentFixture<TestComponent>;
 
   let carouselComponent: CarouselComponent;
   let deCarouselComponent: DebugElement;
+  let carouselHTML: HTMLElement;
   let carouselService: CarouselService;
+
+  let deStage: DebugElement;
 
   let deNavButtons: DebugElement[];
   let rightButton: HTMLElement;
   let leftButton: HTMLElement;
 
   let deSlides: DebugElement[];
-  let deStages: DebugElement[];
 
   beforeEach(
     async(() => {
@@ -44,9 +47,84 @@ describe('SurfCarousel2Component with prop "cycled=true"', () => {
     })
   );
 
-  // it('should create SurfCarousel2Component', () => {
-  //   expect(hostComponent).toBeTruthy();
-  // });
+  it('should render carousel with slides keeping default values', async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o>
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    carouselComponent = deCarouselComponent.componentInstance;
+
+    carouselService = fixtureHost.debugElement.injector.get(CarouselService);
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+      carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+      expect(carouselComponent).toBeTruthy();
+
+      expect(carouselComponent.owlDOMData.isDragable).toBeTruthy('isDragable should be true');
+      expect(carouselHTML.classList.contains('owl-drag')).toBeTruthy('has .owl-drag');
+
+      expect(carouselComponent.owlDOMData.rtl).toBeFalsy('isDragable should be true');
+      expect(carouselHTML.classList.contains('owl-rtl')).toBeFalsy('has .owl-rtl');
+
+      expect(carouselComponent.owlDOMData.isResponsive).toBeFalsy('isDragable should be true');
+      expect(carouselHTML.classList.contains('owl-responsive')).toBeFalsy('has .owl-responsive');
+
+      expect(carouselComponent.owlDOMData.isLoaded).toBe(true, 'isDragable should be true');
+      expect(carouselHTML.classList.contains('owl-loaded')).toBeTruthy('has .owl-loaded');
+
+      expect(carouselComponent.owlDOMData.isGrab).toBe(false, 'isDragable should be true');
+      expect(carouselHTML.classList.contains('owl-grab')).toBeFalsy('has .owl-grab');
+
+      expect(carouselComponent.carouselLoaded).toBeTruthy('owlVisible should be true; this means stage is created')
+
+      deStage = deCarouselComponent.query(By.css('.owl-stage'));
+      expect(carouselComponent.stageData.width).toBe(2000, 'width of stage');
+      expect(deStage.nativeElement.clientWidth).toBe(2000, 'width of stage');
+
+      expect(carouselComponent.stageData.transition).toBe('0s', 'transition of stage');
+      expect(deStage.nativeElement.style.transition).toBe('0s', 'transition of stage');
+
+      expect(carouselComponent.stageData.transform).toBe('translate3d(0px,0px,0px)', 'transform of stage');
+      expect(deStage.nativeElement.style.transform).toBe('translate3d(0px, 0px, 0px)', 'transform of stage');
+
+      expect(carouselComponent.stageData.paddingL).toBe('', 'padding-left of stage');
+      expect(deStage.nativeElement.style.paddingLeft).toBe('', 'padding-left of stage');
+
+      expect(carouselComponent.stageData.paddingR).toBe('', 'padding-right of stage');
+      expect(deStage.nativeElement.style.paddingRight).toBe('', 'padding-right of stage');
+
+      deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+      expect(carouselComponent.slidesData[0].dataMerge).toBe(1, 'dataMerge of first slide is 1');
+      expect(carouselComponent.slidesData.length).toBe(5, 'length of slidesData');
+      expect(deSlides.length).toBe(5, '5 slides');
+
+      expect(deSlides[0].nativeElement.clientWidth).toBe(400, '400px width of first slide');
+      expect(deSlides[0].nativeElement.style.marginLeft).toBe('', '"" margin-left of first slide');
+      expect(deSlides[0].nativeElement.style.marginRight).toBe('', '"" margin-left of first slide');
+      expect(deSlides[0].nativeElement.style.marginRight).toBe('', '"" margin-left of first slide');
+
+      const activeSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(activeSlides.length).toBe(3, '3 active slides');
+
+      const clonedSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.cloned'));
+      expect(clonedSlides.length).toBe(0, '0 cloned slides');
+
+      const centeredSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.center'));
+      expect(centeredSlides.length).toBe(0, '0 centered slides');
+
+      // discardPeriodicTasks();
+    });
+  }));
 
 
   // it('should have 10 sliders and 2 stages whilest prop "cycled" is true', () => {
@@ -118,6 +196,9 @@ describe('SurfCarousel2Component with prop "cycled=true"', () => {
 });
 
 @Component({
+  selector: 'test-dom',
   template: ''
 })
-class TestComponent {}
+class TestComponent {
+  options: any = {};
+}
