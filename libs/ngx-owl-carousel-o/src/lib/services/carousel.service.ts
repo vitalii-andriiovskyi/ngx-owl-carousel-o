@@ -459,8 +459,30 @@ export class CarouselService {
 	 * @param options custom options
 	 */
 	setOptions(options: OwlOptions) {
-		this._options = Object.assign({}, new OwlCarouselOConfig(), options);
-		console.log(this._options);
+		const configOptions: OwlOptions = new OwlCarouselOConfig();
+		const checkedOptions: OwlOptions = this._validateOptions(options, configOptions);
+		this._options = Object.assign({}, new OwlCarouselOConfig(), checkedOptions);
+	}
+
+	private _validateOptions(options: OwlOptions, configOptions: OwlOptions): OwlOptions {
+		const checkedOptions: OwlOptions = Object.assign({}, options);
+
+		for (const key in checkedOptions) {
+			if (checkedOptions.hasOwnProperty(key)) {
+				if (this._isNumeric(checkedOptions[key]) && typeof configOptions[key] === 'number') {
+					checkedOptions[key] = +checkedOptions[key];
+				} else if (typeof checkedOptions[key] !== typeof configOptions[key]) {
+					checkedOptions[key] = setRightOption(typeof configOptions[key], key);
+				}
+			}
+		}
+
+		function setRightOption(type: string, key: any): any {
+			console.log(`options.${key} must be type of ${type}; ${key}=${options[key]} skipped to defaults: ${key}=${configOptions[key]}`);
+			return configOptions[key];
+		}
+
+		return checkedOptions;
 	}
 
 	/**
