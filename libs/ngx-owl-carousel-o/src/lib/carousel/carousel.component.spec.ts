@@ -343,6 +343,29 @@ describe('CarouselComponent', () => {
     });
   }));
 
+  it(`should render carousel which doesn\'t have class .owl-drag [options]="{items: 1, mouseDrag: false}`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{items: 1, mouseDrag: false}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    carouselComponent = deCarouselComponent.componentInstance;
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+      expect(carouselHTML.classList.contains('owl-drag')).toBeFalsy('should have class .owl-drag');
+
+    });
+  }));
+
   // rewind prop is used when carousel moves, so should be tested when moving will be done;
 
 
