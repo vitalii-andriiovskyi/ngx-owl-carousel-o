@@ -36,7 +36,7 @@ export class CarouselSlideDirective {
    * defines how much widths of common slide will current slide have
    * e.g. if _mergeData=2, the slide will twice wider then slides with _mergeData=1
    */
-  private _dataMerge: number;
+  private _dataMerge = 1;
   @Input()
   set dataMerge(data: number) {
     this._dataMerge = this.isNumeric(data) ? data : 1;
