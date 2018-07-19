@@ -576,6 +576,54 @@ describe('CarouselComponent', () => {
     });
   }));
 
+  it(`should limit width of slide with [dataMerge]="4" by 2 widths of common slide [options]="{items: 2, merge: true}`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{items: 2, merge: true}">
+          <ng-template carouselSlide [dataMerge]="4">Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide [dataMerge]="2">Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+      expect(deSlides[0].nativeElement.clientWidth).toBe(1200, 'width of 1th slide is twice bigger then common slide');
+      expect(deSlides[1].nativeElement.clientWidth).toBe(600, 'width of 2th slide should be 400 (1200/3=400)');
+      expect(deSlides[2].nativeElement.clientWidth).toBe(1200, 'width of 3th slide is twice bigger then common slide');
+    });
+  }));
+
+  it(`shouldn\'t limit width of slide with [dataMerge]="4" by 2 widths of common slide [options]="{mergeFit: false, items: 2, merge: true}`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{mergeFit: false, items: 2, merge: true}">
+          <ng-template carouselSlide [dataMerge]="4">Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide [dataMerge]="2">Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+      expect(deSlides[0].nativeElement.clientWidth).toBe(2400, 'width of 1th slide is twice bigger then common slide');
+      expect(deSlides[1].nativeElement.clientWidth).toBe(600, 'width of 2th slide should be 400 (1200/3=400)');
+      expect(deSlides[2].nativeElement.clientWidth).toBe(1200, 'width of 3th slide is twice bigger then common slide');
+    });
+  }));
+
 
   // it('should have 10 sliders and 2 stages whilest prop "cycled" is true', () => {
   //   expect(deSlides.length).toBe(10, 'must be 10 sliders');
