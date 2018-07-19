@@ -420,8 +420,8 @@ export class CarouselService {
           end = begin + this.width() * rtl;
 
         for (i = 0, n = this._coordinates.length; i < n; i++) {
-          inner = this._coordinates[i - 1] || 0;
-					outer = Math.abs(this._coordinates[i]) + padding * rtl;
+          inner = Math.ceil(this._coordinates[i - 1] || 0);
+					outer = Math.ceil(Math.abs(this._coordinates[i]) + padding * rtl);
 
           if ((this._op(inner, '<=', begin) && (this._op(inner, '>', end)))
             || (this._op(outer, '<', begin) && this._op(outer, '>', end))) {
