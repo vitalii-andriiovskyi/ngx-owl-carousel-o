@@ -510,11 +510,11 @@ export class CarouselService {
 	 */
   setup() {
 		const viewport = this._width,
-			overwrites = Object.keys(this._options.responsive);
+			overwrites = this._options.responsive;
 		let	match = -1,
 			settings = null;
 
-		if (!overwrites.length) {
+		if (!Object.keys(overwrites).length) {
 			settings = Object.assign({}, this._options);
 		} else {
 			for (const key in overwrites) {
