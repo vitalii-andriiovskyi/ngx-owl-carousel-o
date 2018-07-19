@@ -408,19 +408,26 @@ export class CarouselService {
         const rtl = this.settings.rtl ? 1 : -1,
 					padding = this.settings.stagePadding * 2,
 					matches = [];
-					let begin, end, inner, outer, i, n;
+				let begin, end, inner, outer, i, n;
 
-					begin = this.coordinates(this.current());
-					if (typeof begin === 'number' ) {
-						begin += padding;
-					} else {
-						begin = 0;
-					}
+				begin = this.coordinates(this.current());
+				if (typeof begin === 'number' ) {
+					begin += padding;
+				} else {
+					begin = 0;
+				}
 
-          end = begin + this.width() * rtl;
+				end = begin + this.width() * rtl;
+
+				if (rtl === -1 && this.settings.center) {
+					const result =	this._coordinates.filter(element => {
+						return element > begin;
+					});
+					begin = result.length ? result[result.length - 1] : begin;
+				}
 
         for (i = 0, n = this._coordinates.length; i < n; i++) {
-          inner = Math.ceil(this._coordinates[i - 1] || 0);
+          inner = this.settings.rtl ? Math.ceil(this._coordinates[i - 1] || 0) : Math.floor(this._coordinates[i - 1] || 0);
 					outer = Math.ceil(Math.abs(this._coordinates[i]) + padding * rtl);
 
           if ((this._op(inner, '<=', begin) && (this._op(inner, '>', end)))
