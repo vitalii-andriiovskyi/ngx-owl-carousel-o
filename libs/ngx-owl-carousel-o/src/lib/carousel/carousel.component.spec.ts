@@ -367,6 +367,30 @@ describe('CarouselComponent', () => {
   }));
 
   // rewind prop is used when carousel moves, so should be tested when moving will be done;
+  it(`should render carousel with slides having 'margin-right=10px' [options]="{items: 2, margin: 10}`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{items: 2, margin: 10}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+      expect(deSlides[0].nativeElement.style.marginRight).toBe('10px', 'margin-right should be 10px');
+      expect(deSlides[0].nativeElement.clientWidth).toBe(595, 'width of each slider should be 595px');
+
+    });
+  }));
+
 
   it(`should render carousel with .owl-rtl [options]="{items: 2, rtl: true}`, async(() => {
     const html = `
@@ -381,7 +405,6 @@ describe('CarouselComponent', () => {
     `;
     fixtureHost = createTestComponent(html);
     deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
-    carouselComponent = deCarouselComponent.componentInstance;
 
     fixtureHost.whenStable().then(() => {
       fixtureHost.detectChanges();
@@ -395,6 +418,77 @@ describe('CarouselComponent', () => {
 
     });
   }));
+
+  it(`should render carousel with slides having 'margin-left=10px' [options]="{items: 2, margin: 10, rtl: true}`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{items: 2, margin: 10, rtl: true}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+      expect(deSlides[0].nativeElement.style.marginLeft).toBe('10px', 'margin-left should be 10px');
+      expect(deSlides[0].nativeElement.clientWidth).toBe(595, 'width of each slider should be 595px');
+
+    });
+  }));
+
+  it(`should render carousel with class .owl-rtl and active slides starting from 2 position [options]="{items: 2, startPosition: 2, rtl: true}`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{items: 2, startPosition: 2, rtl: true}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      const activeSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(activeSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+
+    });
+  }));
+
+  it(`should render carousel with class .owl-rtl, active slides starting from 2nd position and first of active slide should have .center  [options]="{items: 3, startPosition: 2, rtl: true}`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{items: 3, startPosition: 2, rtl: true, center: true}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      const activeSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(activeSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 3 should be first, but due to center=true and odd number of active slides, it takes center spot giving its place preceding Slide 2');
+      expect(activeSlides[1].nativeElement.classList.contains('center')).toBeTruthy('Slide 3 is centered');
+    });
+  }));
+
 
   // it('should have 10 sliders and 2 stages whilest prop "cycled" is true', () => {
   //   expect(deSlides.length).toBe(10, 'must be 10 sliders');
