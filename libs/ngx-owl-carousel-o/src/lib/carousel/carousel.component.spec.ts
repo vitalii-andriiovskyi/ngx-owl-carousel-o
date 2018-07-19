@@ -361,13 +361,40 @@ describe('CarouselComponent', () => {
       fixtureHost.detectChanges();
 
       carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
-      expect(carouselHTML.classList.contains('owl-drag')).toBeFalsy('should have class .owl-drag');
+      expect(carouselHTML.classList.contains('owl-drag')).toBeFalsy('shouldn\'t have class .owl-drag');
 
     });
   }));
 
   // rewind prop is used when carousel moves, so should be tested when moving will be done;
 
+  it(`should render carousel with .owl-rtl [options]="{items: 2, rtl: true}`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{items: 2, rtl: true}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    carouselComponent = deCarouselComponent.componentInstance;
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+      expect(carouselHTML.classList.contains('owl-rtl')).toBeTruthy('should have class .owl-rtl');
+
+      deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+      expect(getComputedStyle(deSlides[0].nativeElement).cssFloat).toBe('right', '.owl-item should have css-rule float: right');
+      expect(deSlides[0].nativeElement.classList.contains('active')).toBeTruthy('1th slide should be active');
+
+    });
+  }));
 
   // it('should have 10 sliders and 2 stages whilest prop "cycled" is true', () => {
   //   expect(deSlides.length).toBe(10, 'must be 10 sliders');
