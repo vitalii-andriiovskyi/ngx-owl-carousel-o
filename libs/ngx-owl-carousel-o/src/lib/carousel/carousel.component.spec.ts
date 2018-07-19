@@ -491,6 +491,45 @@ describe('CarouselComponent', () => {
     });
   }));
 
+  it(`should render responsive carousel  [options]="{responsive: {'0': {items: 1}, '600': {items: 2}, '900': {items: 3}}}"`, async(() => {
+    const html = `
+      <div class="owl-wrapper" style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{responsive: {'0': {items: 1}, '600': {items: 2}, '900': {items: 3}}}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+      expect(carouselHTML.classList.contains('owl-responsive')).toBeTruthy('should have class .owl-responsive');
+
+      let activeSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(activeSlides.length).toBe(3, 'should be 3 active slides');
+
+      carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 800px; margin: auto');
+      fixtureHost.detectChanges();
+
+      expect(carouselHTML.clientWidth).toBe(800);
+
+      carouselService = fixtureHost.debugElement.injector.get(CarouselService);
+      carouselService.setCarouselWidth(800);
+      carouselService.refresh();
+
+      fixtureHost.detectChanges();
+      activeSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(activeSlides.length).toBe(2, 'should be 2 active slides');
+
+    });
+  }));
+
 
   // it('should have 10 sliders and 2 stages whilest prop "cycled" is true', () => {
   //   expect(deSlides.length).toBe(10, 'must be 10 sliders');
