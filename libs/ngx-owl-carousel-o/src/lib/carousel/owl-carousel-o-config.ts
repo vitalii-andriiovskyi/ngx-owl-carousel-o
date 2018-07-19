@@ -25,10 +25,6 @@ export class OwlCarouselOConfig {
 
   responsive = {};
   responsiveRefreshRate = 200;
-  // responsiveBaseElement = window, delet;
 
-  fallbackEasing = 'swing';
-
-  info = false;
   constructor() { }
 }

@@ -29,8 +29,5 @@ export class OwlOptions {
   responsive?: ResponsiveSettings;
   responsiveRefreshRate?: number;
 
-  fallbackEasing?: string;
-
-  info?: boolean;
   constructor() { }
 }
