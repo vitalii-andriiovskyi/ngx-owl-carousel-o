@@ -599,6 +599,8 @@ export class CarouselService {
       i++;
 		}
 
+		this._sendChanges();
+
     this._invalidated = {};
 
     if (!this.is('valid')) {
@@ -975,12 +977,18 @@ export class CarouselService {
 
   /**
 	 * Calculates the speed for a translation.
-	 * @param {Number} from - The absolute position of the start item.
-	 * @param {Number} to - The absolute position of the target item.
-	 * @param {Number} [factor=undefined] - The time factor in milliseconds.
-	 * @returns {Number} - The time in milliseconds for the translation.
+	 * @param from - The absolute position of the start item.
+	 * @param to - The absolute position of the target item.
+	 * @param factor [factor=undefined] - The time factor in milliseconds.
+	 * @returns - The time in milliseconds for the translation.
 	 */
-  private _duration(from, to, factor) { }
+  private _duration(from: number, to: number, factor?: number | boolean): number {
+		if (factor === 0) {
+			return 0;
+		}
+
+		return Math.min(Math.max(Math.abs(to - from), 1), 6) * Math.abs((factor || this.settings.smartSpeed));
+	}
 
   	/**
 	 * Slides to the specified item.
@@ -988,21 +996,60 @@ export class CarouselService {
 	 * @param {Number} position - The position of the item.
 	 * @param {Number} [speed] - The time in milliseconds for the transition.
 	 */
-  to(position, speed) { }
+  to(position: number, speed: number | boolean) {
+		let current = this.current(),
+			revert = null,
+			distance = position - this.relative(current),
+			maximum = this.maximum();
+		const	direction = +(distance > 0) - +(distance < 0),
+			items = this._items.length,
+			minimum = this.minimum();
+
+		if (this.settings.loop) {
+			if (!this.settings.rewind && Math.abs(distance) > items / 2) {
+				distance += direction * -1 * items;
+			}
+
+			position = current + distance;
+			revert = ((position - minimum) % items + items) % items + minimum;
+
+			if (revert !== position && revert - distance <= maximum && revert - distance > 0) {
+				current = revert - distance;
+				position = revert;
+				this.reset(current);
+			}
+		} else if (this.settings.rewind) {
+			maximum += 1;
+			position = (position % maximum + maximum) % maximum;
+		} else {
+			position = Math.max(minimum, Math.min(maximum, position));
+		}
+
+		this.speed(this._duration(current, position, speed));
+		this.current(position);
+
+		this.update();
+	}
 
   /**
 	 * Slides to the next item.
 	 * @public
-	 * @param {Number} [speed] - The time in milliseconds for the transition.
+	 * @param [speed] - The time in milliseconds for the transition.
 	 */
-  next(speed) { }
+  next(speed: number | boolean) {
+		speed = speed || false;
+		this.to(this.relative(this.current()) + 1, speed);
+	}
 
   /**
 	 * Slides to the previous item.
 	 * @public
-	 * @param {Number} [speed] - The time in milliseconds for the transition.
+	 * @param [speed] - The time in milliseconds for the transition.
 	 */
-  prev(speed) { }
+  prev(speed: number | boolean) {
+		speed = speed || false;
+		this.to(this.relative(this.current()) - 1, speed);
+	}
 
   /**
 	 * Handles the end of an animation.
