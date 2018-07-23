@@ -989,10 +989,17 @@ export class CarouselService {
   /**
 	 * Gets an item at the specified relative position.
 	 * @public
-	 * @param {Number} [position] - The relative position of the item.
-	 * @return {jQuery|Array.<jQuery>} - The item at the given position or all items if no position was given.
+	 * @param [position] - The relative position of the item.
+	 * @return - The item at the given position or all items if no position was given.
 	 */
-  items(position) { }
+  items(position?: number): CarouselSlideDirective[] {
+		if (position === undefined) {
+			return this._items.slice();
+		}
+
+		position = this.normalize(position, true);
+		return [this._items[position]];
+	 }
 
   /**
 	 * Gets an item at the specified relative position.
@@ -1012,10 +1019,20 @@ export class CarouselService {
   /**
 	 * Gets the absolute positions of clones for an item.
 	 * @public
-	 * @param {Number} [position] - The relative position of the item.
-	 * @returns {Array.<Number>} - The absolute positions of clones for the item or all if no position was given.
+	 * @param position - The relative position of the item.
+	 * @returns The absolute positions of clones for the item or all if no position was given.
 	 */
-  clones(position) { }
+  clones(position?: number): number[] {
+		const odd = this._clones.length / 2,
+			even = odd + this._items.length,
+			map = index => index % 2 === 0 ? even + index / 2 : odd - (index + 1) / 2;
+
+		if (position === undefined) {
+			return this._clones.map((v, i) => map(i));
+		}
+
+		return this._clones.map((v, i) => v === position ? map(i) : null);
+	}
 
   /**
 	 * Sets the current animation speed.
