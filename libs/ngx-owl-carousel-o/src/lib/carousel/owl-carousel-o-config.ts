@@ -1,4 +1,6 @@
-export class OwlCarouselOConfig {
+import { OwlOptions } from "./owl-options.model";
+
+export class OwlCarouselOConfig implements OwlOptions {
   items = 3;
   loop = false;
   center = false;
@@ -26,5 +28,17 @@ export class OwlCarouselOConfig {
   responsive = {};
   responsiveRefreshRate = 200;
 
+  // defaults to Navigation
+  nav = false;
+  navText = [ 'prev', 'next' ];
+  navSpeed = false;
+  navElement = 'div';
+  navContainer = false;
+  slideBy = 1;
+  dots = true;
+  dotsEach = false;
+  dotsData = false;
+  dotsSpeed = false;
+  dotsContainer = false;
   constructor() { }
 }
