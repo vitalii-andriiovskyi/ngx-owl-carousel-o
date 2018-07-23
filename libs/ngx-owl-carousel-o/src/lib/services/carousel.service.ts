@@ -508,37 +508,47 @@ export class CarouselService {
 	 * @todo Support for media queries by using `matchMedia` would be nice.
 	 * @public
 	 */
-  setup() {
-		const viewport = this._width,
-			overwrites = this._options.responsive;
-		let	match = -1,
-			settings = null;
+  setup(carouselWidth: number, slides: CarouselSlideDirective[], options: OwlOptions) {
+		this.setCarouselWidth(carouselWidth);
+    this.setItems(slides);
+		this.setOptions(options);
 
-		if (!Object.keys(overwrites).length) {
-			settings = { ...this._options};
-		} else {
-			for (const key in overwrites) {
-				if (overwrites.hasOwnProperty(key)) {
-					if (+key <= viewport && +key > match) {
-						match = Number(key);
-					}
-				}
-			}
+		this.settings = { ...this._options};
 
-			settings = { ...this._options, ...overwrites[match]};
-			if (typeof settings.stagePadding === 'function') {
-				settings.stagePadding = settings.stagePadding();
-			}
-			delete settings.responsive;
-			this.owlDOMData.isResponsive = true;
-		}
+		this.setViewportItemsN();
 
 		// trigger can be deleted
 		// this.trigger('change', { property: { name: 'settings', value: settings } });
-		this._breakpoint = match;
-		this.settings = settings;
-		this.invalidate('settings');
+		this.invalidate('settings'); // must be call of this function;
 		// this.trigger('changed', { property: { name: 'settings', value: this.settings } });
+	}
+
+	setViewportItemsN() {
+		const viewport = this._width,
+			overwrites = this._options.responsive;
+		let	match = -1;
+
+		if (!Object.keys(overwrites).length) {
+			return;
+		}
+
+		for (const key in overwrites) {
+			if (overwrites.hasOwnProperty(key)) {
+				if (+key <= viewport && +key > match) {
+					match = Number(key);
+				}
+			}
+		}
+
+		this.settings = { ...this.settings, ...overwrites[match]};
+		if (typeof this.settings.stagePadding === 'function') {
+			this.settings.stagePadding = this.settings.stagePadding();
+		}
+		delete this.settings.responsive;
+		this.owlDOMData.isResponsive = true;
+		this._breakpoint = match;
+
+		this.invalidate('settings');
 	}
 
 	/**
@@ -550,7 +560,11 @@ export class CarouselService {
 
 		this.owlDOMData.rtl = this.settings.rtl;
 
-		this.setItems(slides);
+		slides.forEach(item => this._mergers.push(item.dataMerge || 1));
+
+		this.reset(this._isNumeric(this.settings.startPosition) ? this.settings.startPosition : 0);
+
+		this.invalidate('items');
 		this.refresh();
 
 		this.owlDOMData.isLoaded = true;
@@ -633,7 +647,7 @@ export class CarouselService {
 		this.enter('refreshing');
 		// this.trigger('refresh');
 
-		this.setup();
+		this.setViewportItemsN();
 
 		this._optionsLogic();
 
@@ -1111,11 +1125,6 @@ export class CarouselService {
 		// 	this._items.push(item);
 		// 	this._mergers.push(item.find('[data-merge]').addBack('[data-merge]').attr('data-merge') * 1 || 1);
 		// }, this));
-		content.forEach(item => this._mergers.push(item.dataMerge || 1));
-
-		this.reset(this._isNumeric(this.settings.startPosition) ? this.settings.startPosition : 0);
-
-		this.invalidate('items');
 	}
 
   	/**
