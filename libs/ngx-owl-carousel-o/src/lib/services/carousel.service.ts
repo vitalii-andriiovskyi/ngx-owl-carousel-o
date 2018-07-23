@@ -768,17 +768,17 @@ export class CarouselService {
 		position = this.normalize(position);
 
 		if (this._current !== position) {
-			const event = this._trigger('change', { property: { name: 'position', value: position } });
+			// const event = this._trigger('change', { property: { name: 'position', value: position } });
 
-			if (event.data !== undefined) {
-				position = this.normalize(event.data);
-			}
+			// if (event.data !== undefined) {
+			// 	position = this.normalize(event.data);
+			// }
 
 			this._current = position;
 
 			this.invalidate('position');
 
-			this._trigger('changed', { property: { name: 'position', value: this._current } });
+			// this._trigger('changed', { property: { name: 'position', value: this._current } });
 		}
 
 		return this._current;
