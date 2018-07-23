@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { NavData, DotsData } from '../models/navigation-data.models';
+import { CarouselSlideDirective } from '../carousel/carousel.module';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +17,27 @@ export class NavigationService {
   protected _pages: any[] = [];
 
   /**
-   * All DOM elements of the user interface.
+   * Navigation elements of the user interface.
    */
-  protected _controls: any = {};
+  protected _navData: NavData = {
+    disabled: false,
+    prev: {
+      disabled: false,
+      htmlText: ''
+    },
+    next: {
+      disabled: false,
+      htmlText: ''
+    },
+  };
+
+  /**
+   * dot elements of the user interface.
+   */
+  protected _dotsData: DotsData = {
+    disabled: false,
+    dots: []
+  };
 
   /**
    * Markup for an indicator.
@@ -34,4 +54,21 @@ export class NavigationService {
   // };
 
   constructor() { }
+
+  /**
+	 * Initializes the layout of the plugin and extends the carousel.
+   * @param settings current settings of carousel
+	 */
+	initialize(settings: any): { navData: NavData, dotsData: DotsData} {
+    this._navData.disabled = true;
+    this._navData.prev.htmlText = settings.navText[0];
+    this._navData.next.htmlText = settings.navText[1];
+
+    this._dotsData.disabled = true;
+    return {
+      navData: this._navData,
+      dotsData: this._dotsData
+    }
+  }
+ 
 }
