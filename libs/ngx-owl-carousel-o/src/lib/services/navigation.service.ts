@@ -70,5 +70,15 @@ export class NavigationService {
       dotsData: this._dotsData
     }
   }
- 
+
+  /**
+   * Updates the internal state.
+   * @param pages array containing start and end of each page. Start and end are number of slides in this._items
+   */
+	update(pages: any[]) {
+		if (pages.length) {
+      this._pages = pages;
+    }
+  };
+
 }
