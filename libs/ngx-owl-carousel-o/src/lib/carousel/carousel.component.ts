@@ -302,9 +302,7 @@ export class CarouselComponent
   // ngAfterContentChecked() END
 
   ngAfterContentInit() {
-    this.carouselService.setCarouselWidth(this.carouselWindowWidth);
-    this.carouselService.setOptions(this.options);
-    this.carouselService.setup();
+    this.carouselService.setup(this.carouselWindowWidth, this.slides.toArray(), this.options);
     this.carouselService.initialize(this.slides.toArray());
   }
   ngOnDestroy() {
@@ -329,7 +327,7 @@ export class CarouselComponent
       this.owlDOMData = data.owlDOMData;
       this.stageData = data.stageData;
       this.slidesData = data.slidesData;
-      console.log(this.slidesData);
+      console.log(this.stageData);
       if (!this.carouselLoaded) {
         this.carouselLoaded = true;
       }
@@ -338,6 +336,14 @@ export class CarouselComponent
 
   onTransitionEnd() {
     this.carouselService.onTransitionEnd();
+  }
+
+  next() {
+    this.carouselService.next(200);
+  }
+
+  prev() {
+    this.carouselService.prev(200);
   }
 
 }
