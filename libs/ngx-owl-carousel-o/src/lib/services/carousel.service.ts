@@ -311,9 +311,9 @@ export class CarouselService {
         while (repeat--) {
           // Switch to only using appended clones
           clones.push(this.normalize(clones.length / 2, true));
-          append.push(Object.assign({}, this.slidesData[clones[clones.length - 1]]));
+          append.push({ ...this.slidesData[clones[clones.length - 1]]});
 					clones.push(this.normalize(items.length - 1 - (clones.length - 1) / 2, true));
-					prepend.unshift(Object.assign({}, this.slidesData[clones[clones.length - 1]]));
+					prepend.unshift({ ...this.slidesData[clones[clones.length - 1]]});
         }
 
 				this._clones = clones;
@@ -470,11 +470,11 @@ export class CarouselService {
 	setOptions(options: OwlOptions) {
 		const configOptions: OwlOptions = new OwlCarouselOConfig();
 		const checkedOptions: OwlOptions = this._validateOptions(options, configOptions);
-		this._options = Object.assign({}, new OwlCarouselOConfig(), checkedOptions);
+		this._options = { ...configOptions, ...checkedOptions};
 	}
 
 	private _validateOptions(options: OwlOptions, configOptions: OwlOptions): OwlOptions {
-		const checkedOptions: OwlOptions = Object.assign({}, options);
+		const checkedOptions: OwlOptions = { ...options};
 
 		for (const key in checkedOptions) {
 			if (checkedOptions.hasOwnProperty(key)) {
@@ -515,7 +515,7 @@ export class CarouselService {
 			settings = null;
 
 		if (!Object.keys(overwrites).length) {
-			settings = Object.assign({}, this._options);
+			settings = { ...this._options};
 		} else {
 			for (const key in overwrites) {
 				if (overwrites.hasOwnProperty(key)) {
@@ -525,7 +525,7 @@ export class CarouselService {
 				}
 			}
 
-			settings = Object.assign({}, this._options, overwrites[match]);
+			settings = { ...this._options, ...overwrites[match]};
 			if (typeof settings.stagePadding === 'function') {
 				settings.stagePadding = settings.stagePadding();
 			}
