@@ -480,6 +480,7 @@ export class CarouselService {
 			if (checkedOptions.hasOwnProperty(key)) {
 				if (this._isNumeric(checkedOptions[key]) && typeof configOptions[key] === 'number') {
 					checkedOptions[key] = +checkedOptions[key];
+					checkedOptions[key] = key === 'items' ? this._validateItems(checkedOptions[key]) : checkedOptions[key];
 				} else if (typeof checkedOptions[key] !== typeof configOptions[key]) {
 					checkedOptions[key] = setRightOption(typeof configOptions[key], key);
 				}
@@ -492,6 +493,17 @@ export class CarouselService {
 		}
 
 		return checkedOptions;
+	}
+
+	private _validateItems(items: number): number {
+		let result: number;
+		if (items >= this._items.length) {
+			result = this._items.length ;
+			console.log('option \'items\' in your options is bigger than number of slides; This option is updated to current number of slides and navigation got disabled');
+		} else {
+			result = items;
+		}
+		return result;
 	}
 
 	/**
@@ -540,7 +552,7 @@ export class CarouselService {
 			}
 		}
 
-		this.settings = { ...this.settings, ...overwrites[match]};
+		this.settings = { ...this.settings, items: this._validateItems(overwrites[match].items)};
 		if (typeof this.settings.stagePadding === 'function') {
 			this.settings.stagePadding = this.settings.stagePadding();
 		}
