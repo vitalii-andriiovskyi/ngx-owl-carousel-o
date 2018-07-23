@@ -1,4 +1,4 @@
-import { OwlOptions } from "./owl-options.model";
+import { OwlOptions } from "../models/owl-options.model";
 
 export class OwlCarouselOConfig implements OwlOptions {
   items = 3;

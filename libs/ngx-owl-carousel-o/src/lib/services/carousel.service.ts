@@ -1,12 +1,14 @@
+
 import { Injectable } from '@angular/core';
 
 import { CustomEventsService } from './custom-events.service';
 import { CarouselSlideDirective } from '../carousel/carousel.module';
-import { SliderModel } from '../carousel/slider.model';
+import { SliderModel } from '../models/slider.model';
 import { Subject, Observable } from 'rxjs';
 import { OwlCarouselOConfig } from '../carousel/owl-carousel-o-config';
-import { OwlOptions } from '../carousel/owl-options.model';
+import { OwlOptions } from '../models/owl-options.model';
 
+import { NavData, DotsData } from '../models/navigation-data.models';
 export class States {
   current: {};
   tags: {
@@ -100,68 +102,6 @@ export class StageData {
    */
 	paddingR: number | string;
 }
-
-/**
- * data model for single navigation button
- */
-export class NavButton {
-	/**
-	 * make button disabled by attaching class .disabled; it's being used when otpion loop=false
-	 */
-	disabled: boolean;
-	/**
-	 * text for button; can be simple text or html-markup (e.g. <i class="fa fa-next">)
-	 */
-	htmlText: string;
-}
-
-/**
- * data model for  navigation block
- */
-export class NavData {
-	/**
-	 * turns on or turns off navigation block
-	 */
-	disabled: boolean;
-
-	/**
-	 * navigation button 'prev'
-	 */
-	prev: NavButton;
-	/**
-	 * navigation button 'next'
-	 */
-	next: NavButton;
-}
-
-/**
- * data model for single owl dot-button
- */
-export class OwlSingeDot {
-	/**
-	 * id for dot button
-	 */
-	id: string;
-	/**
-	 * makes dot active by attaching .active class to it
-	 */
-	active: boolean;
-}
-
-/**
- * data model for owl dot-block
- */
-export class DotsData {
-	/**
-	 * turns on or turns off navigation block
-	 */
-	disabled: boolean;
-	/**
-	 * array of dots
-	 */
-	dots: OwlSingeDot[];
-}
-
 
 /**
  * model for all current data of carousel

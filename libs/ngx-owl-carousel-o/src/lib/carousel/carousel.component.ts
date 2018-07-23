@@ -20,8 +20,8 @@ import { WINDOW } from '../services/window-ref.service';
 import { tap } from 'rxjs/operators';
 import { CustomEventsService } from '../services/custom-events.service';
 import { CarouselService, StageData, OwlDOMData } from '../services/carousel.service';
-import { SliderModel } from './slider.model';
-import { OwlOptions } from './owl-options.model';
+import { SliderModel } from '../models/slider.model';
+import { OwlOptions } from '../models/owl-options.model';
 
 let nextId = 0;
 
