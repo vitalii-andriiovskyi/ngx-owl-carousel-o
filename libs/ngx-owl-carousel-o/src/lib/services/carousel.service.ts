@@ -17,7 +17,6 @@ export class States {
 /**
  * Enumeration for types.
  * @public
- * @readonly
  * @enum {String}
  */
 export enum Type {
@@ -28,7 +27,6 @@ export enum Type {
 /**
  * Enumeration for width.
  * @public
- * @readonly
  * @enum {String}
  */
 export enum Width {
@@ -37,6 +35,9 @@ export enum Width {
 	Outer = 'outer'
 };
 
+/**
+ * data model for managing classes of .owl-carousel DOM element
+ */
 export class OwlDOMData {
 	/**
 	 * is needed for setting class .owl-rtl
@@ -74,18 +75,103 @@ export class OwlDOMData {
 	isGrab: boolean;
 }
 
+/**
+ * data model for managing classes of .owl-stage DOM element
+ */
 export class StageData {
+	/**
+	 * determines css-rule transform
+	 */
 	transform: string;
+	/**
+	 *  determines css-rule transition
+   */
 	transition: string;
+	/**
+	 *  determines css-rule width
+   */
 	width: number | string;
+	/**
+	 *  determines css-rule padding-left
+   */
 	paddingL: number | string;
+	/**
+	 *  determines css-rule padding-right
+   */
 	paddingR: number | string;
 }
 
+/**
+ * data model for single navigation button
+ */
+export class NavButton {
+	/**
+	 * make button disabled by attaching class .disabled; it's being used when otpion loop=false
+	 */
+	disabled: boolean;
+	/**
+	 * text for button; can be simple text or html-markup (e.g. <i class="fa fa-next">)
+	 */
+	htmlText: string;
+}
+
+/**
+ * data model for  navigation block
+ */
+export class NavData {
+	/**
+	 * turns on or turns off navigation block
+	 */
+	disabled: boolean;
+
+	/**
+	 * navigation button 'prev'
+	 */
+	prev: NavButton;
+	/**
+	 * navigation button 'next'
+	 */
+	next: NavButton;
+}
+
+/**
+ * data model for single owl dot-button
+ */
+export class OwlSingeDot {
+	/**
+	 * id for dot button
+	 */
+	id: string;
+	/**
+	 * makes dot active by attaching .active class to it
+	 */
+	active: boolean;
+}
+
+/**
+ * data model for owl dot-block
+ */
+export class DotsData {
+	/**
+	 * turns on or turns off navigation block
+	 */
+	disabled: boolean;
+	/**
+	 * array of dots
+	 */
+	dots: OwlSingeDot[];
+}
+
+
+/**
+ * model for all current data of carousel
+ */
 export class CarouselCurrentData {
 	owlDOMData: OwlDOMData;
 	stageData: StageData;
 	slidesData: SliderModel[];
+	navData: NavData;
+	dotsData: DotsData;
 }
 
 @Injectable({
@@ -130,6 +216,16 @@ export class CarouselService {
 	 *  data of every slide
 	 */
 	slidesData: SliderModel[];
+
+	/**
+	 * data of navigation block
+	 */
+	navData: NavData;
+
+	/**
+	 * data of dots block
+	 */
+	dotsData: DotsData;
 
 	/**
 	 * carousel width
@@ -612,7 +708,9 @@ export class CarouselService {
 		this._allDataShipper$.next({
 			owlDOMData: this.owlDOMData,
 			stageData: this.stageData,
-			slidesData: this.slidesData
+			slidesData: this.slidesData,
+			navData: this.navData,
+			dotsData: this.dotsData
 		});
 	}
 
