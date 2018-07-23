@@ -176,6 +176,30 @@ describe('CarouselComponent', () => {
     });
   }));
 
+  it(`should render carousel with 5 active slides when prop items=10 and there're just 5 slides: [options]="{items: '10'}"`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{items: '10'}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    carouselComponent = deCarouselComponent.componentInstance;
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      const activeSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(activeSlides.length).toBe(5, '5 active slides');
+    });
+  }));
+
   it(`should render carousel with 2 active slides and 6 cloned slide (total slides 11) [options]="{items: 2, loop: true}`, async(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
