@@ -463,6 +463,7 @@ export class CarouselService {
 	getCarouselCurSettings(): Observable<CarouselCurrentData> {
 		return this._allDataShipper$.asObservable();
 	}
+
 	/**
 	 * Setups custom options expanding default options
 	 * @param options custom options
@@ -473,6 +474,11 @@ export class CarouselService {
 		this._options = { ...configOptions, ...checkedOptions};
 	}
 
+	/**
+	 * checks whether user's option are set properly. Cheking is based on typings;
+	 * @param options options set by user
+	 * @param configOptions default options
+	 */
 	private _validateOptions(options: OwlOptions, configOptions: OwlOptions): OwlOptions {
 		const checkedOptions: OwlOptions = { ...options};
 
@@ -495,6 +501,11 @@ export class CarouselService {
 		return checkedOptions;
 	}
 
+	/**
+	 * checks option items set by user and if it bigger than number of slides then returns number of slides
+	 * @param items option items set by user
+	 * @returns right number of items
+	 */
 	private _validateItems(items: number): number {
 		let result: number;
 		if (items >= this._items.length) {
@@ -518,6 +529,9 @@ export class CarouselService {
 	 * Setups the current settings.
 	 * @todo Remove responsive classes. Why should adaptive designs be brought into IE8?
 	 * @todo Support for media queries by using `matchMedia` would be nice.
+	 * @param carouselWidth width of carousel
+	 * @param slides array of slides
+	 * @param options options set by user
 	 * @public
 	 */
   setup(carouselWidth: number, slides: CarouselSlideDirective[], options: OwlOptions) {
@@ -535,6 +549,9 @@ export class CarouselService {
 		// this.trigger('changed', { property: { name: 'settings', value: this.settings } });
 	}
 
+	/**
+	 * set number of items for current viewport
+	 */
 	setViewportItemsN() {
 		const viewport = this._width,
 			overwrites = this._options.responsive;
@@ -588,6 +605,9 @@ export class CarouselService {
 		// this.trigger('initialized');
 	};
 
+	/**
+	 * Sends all data needed for View.
+	 */
 	private _sendChanges() {
 		this._allDataShipper$.next({
 			owlDOMData: this.owlDOMData,
