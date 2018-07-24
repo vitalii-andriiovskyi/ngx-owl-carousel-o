@@ -40,6 +40,10 @@ export class OwlSingeDot {
 	 * makes dot active by attaching .active class to it
 	 */
 	active: boolean;
+	/**
+	 * inner content of dot; can be html-markup
+	 */
+	innerContent?: string;
 }
 /**
  * data model for owl dot-block
