@@ -44,7 +44,15 @@ export class CarouselSlideDirective {
   };
   get dataMerge(): number { return this._dataMerge }
 
+  /**
+   * width of slide
+   */
   @Input() width = 0;
+
+  /**
+   * inner content of dot for certain slide; can be html-markup
+   */
+  @Input() dotContent: string;
 
   constructor(public tplRef: TemplateRef<any>) {}
 
