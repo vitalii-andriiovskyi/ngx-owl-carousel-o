@@ -2,11 +2,17 @@ import { Injectable } from '@angular/core';
 import { NavData, DotsData } from '../models/navigation-data.models';
 import { CarouselSlideDirective } from '../carousel/carousel.module';
 import { CarouselService } from './carousel.service';
+import { Subscription } from '../../../../../node_modules/rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NavigationService {
+  /**
+   * subscrioption to initSubject from CarouselService
+   */
+  initSubscription: Subscription;
+
   /**
    * Indicates whether the plugin is initialized or not.
    */
@@ -54,7 +60,21 @@ export class NavigationService {
   //   to: this._core.to
   // };
 
-  constructor(private carouselService: CarouselService) { }
+  constructor(private carouselService: CarouselService) {
+    this.catchInitialization();
+  }
+
+  catchInitialization() {
+    this.initSubscription = this.carouselService.getInitSubject().subscribe(
+      () => {
+        this.initialize();
+        this._updateNavPages();
+        this.draw();
+        this.updateDots();
+        this.carouselService.sendChanges();
+      }
+    );
+  }
 
   /**
 	 * Initializes the layout of the plugin and extends the carousel.
