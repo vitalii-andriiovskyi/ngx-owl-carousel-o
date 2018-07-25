@@ -120,6 +120,7 @@ export class CarouselCurrentData {
 export class CarouselService {
 
 	private _allDataShipper$ = new Subject<CarouselCurrentData>();
+	private _initCarousel$ = new Subject<string>();
 
   /**
    * Current settings for the carousel.
@@ -500,6 +501,10 @@ export class CarouselService {
 		return this._allDataShipper$.asObservable();
 	}
 
+	getInitSubject(): Observable<string> {
+		return this._initCarousel$.asObservable()
+	}
+
 	/**
 	 * Setups custom options expanding default options
 	 * @param options custom options
@@ -633,9 +638,10 @@ export class CarouselService {
 		this.refresh();
 
 		this.owlDOMData.isLoaded = true;
-		this._sendChanges();
+		this.sendChanges();
 		// register event handlers
 		this._registerEventHandlers();
+		this._initCarousel$.next('initialized');
 
 		this.leave('initializing');
 		// this.trigger('initialized');
@@ -644,7 +650,7 @@ export class CarouselService {
 	/**
 	 * Sends all data needed for View.
 	 */
-	private _sendChanges() {
+	sendChanges() {
 		this._allDataShipper$.next({
 			owlDOMData: this.owlDOMData,
 			stageData: this.stageData,
@@ -683,7 +689,7 @@ export class CarouselService {
       i++;
 		}
 
-		this._sendChanges();
+		this.sendChanges();
 
     this._invalidated = {};
 
