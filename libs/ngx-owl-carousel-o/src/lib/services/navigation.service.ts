@@ -109,22 +109,20 @@ export class NavigationService {
   /**
 	 * Draws the user interface.
 	 * @todo The option `dotsData` wont work.
-   * @param settings current settings of carousel
-   * @param items  all items; the result of calling method items() (it's created at CarouselService)
-   * @param index the converted position; the result of calling carouselService.relative(carouselService.current())
-   * @param minimum number of minimum position; the result of calling carouselService.mimimum(true)
-   * @param maximum number of maximum position; the result of calling carouselService.maximum(true)
 	 */
-  draw(settings: any, items: CarouselSlideDirective[], index: any, minimum: number, maximum: number): { navData: NavData, dotsData: DotsData} {
+  draw() {
 		let difference;
-		const	disabled = items.length <= settings.items,
-			loop = settings.loop || settings.rewind;
+    const	settings = this.carouselService.settings,
+      items = this.carouselService.items(),
+      disabled = items.length <= settings.items,
+      loop = settings.loop || settings.rewind,
+      index = this.carouselService.relative(this.carouselService.current());
 
 		this._navData.disabled = !settings.nav || disabled;
 
 		if (settings.nav) {
-			this._navData.prev.disabled = !loop && index <= minimum;
-			this._navData.next.disabled = !loop && index >= maximum;
+			this._navData.prev.disabled = !loop && index <= this.carouselService.minimum(true);
+			this._navData.next.disabled = !loop && index >= this.carouselService.maximum(true);
 		}
 
 		this._dotsData.disabled = !settings.dots || disabled;
@@ -151,10 +149,9 @@ export class NavigationService {
         this._dotsData.dots.splice(difference, Math.abs(difference))
 			}
     }
-    return {
-      navData: this._navData,
-      dotsData: this._dotsData
-    }
+
+    this.carouselService.navData = this._navData;
+    this.carouselService.dotsData = this._dotsData;
   };
 
   /**
