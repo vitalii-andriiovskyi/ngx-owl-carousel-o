@@ -812,7 +812,78 @@ describe('CarouselComponent', () => {
   }));
 
 
+  it(`should render carousel with dots with text [options]="{dotsData: true}"`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{ dotsData: true}">
+          <ng-template carouselSlide dotContent="to Slide 1">Slide 1</ng-template>
+          <ng-template carouselSlide dotContent="to Slide 2">Slide 2</ng-template>
+          <ng-template carouselSlide dotContent="to Slide 3">Slide 3</ng-template>
+          <ng-template carouselSlide dotContent="to Slide 4">Slide 4</ng-template>
+          <ng-template carouselSlide dotContent="to Slide 5">Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
 
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+      expect(deDots.length).toBe(5, '5 dots');
+      expect(deDots[0].nativeElement.innerHTML).toContain('to Slide 1', 'to Slide 1');
+    });
+  }));
+
+  it(`should render carousel with dots with html in [options]="{dotsData: true}"`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{ dotsData: true}">
+          <ng-template carouselSlide dotContent="<span class=innerDot>1<span>">Slide 1</ng-template>
+          <ng-template carouselSlide dotContent="<span class=innerDot>1<span>">Slide 2</ng-template>
+          <ng-template carouselSlide dotContent="<span class=innerDot>1<span>">Slide 3</ng-template>
+          <ng-template carouselSlide dotContent="<span class=innerDot>1<span>">Slide 4</ng-template>
+          <ng-template carouselSlide dotContent="<span class=innerDot>1<span>">Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+      expect(deDots.length).toBe(5, '5 dots');
+      const innerSpan = deDots[0].nativeElement.firstElementChild.firstElementChild;
+      expect(innerSpan.classList.contains('innerDot')).toBeTruthy('dot contains <span class=innerDot>1<span>');
+    });
+  }));
+
+  it(`should render carousel with dots with html in [options]="{dotsData: true}"`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{ dotsData: true}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+      expect(deDots[0].nativeElement.firstElementChild.innerHTML).toBe('', '');
+
+    });
+  }));
 
 
   // it('should have 10 sliders and 2 stages whilest prop "cycled" is true', () => {
