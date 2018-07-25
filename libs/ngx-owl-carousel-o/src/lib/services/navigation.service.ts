@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NavData, DotsData } from '../models/navigation-data.models';
 import { CarouselSlideDirective } from '../carousel/carousel.module';
 import { CarouselService } from './carousel.service';
-import { Subscription } from '../../../../../node_modules/rxjs';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -141,7 +141,7 @@ export class NavigationService {
 		this._navData.disabled = !settings.nav || disabled;
 
 		if (settings.nav) {
-			this._navData.prev.disabled = !loop && index <= this.carouselService.minimum(true);
+      this._navData.prev.disabled = !loop && index <= this.carouselService.minimum(true);
 			this._navData.next.disabled = !loop && index >= this.carouselService.maximum(true);
 		}
 
@@ -186,7 +186,9 @@ export class NavigationService {
     })
 
     curActiveDotI = this._current();
-    this._dotsData.dots[curActiveDotI].active = true;
+    if (this._dotsData.dots.length) {
+      this._dotsData.dots[curActiveDotI].active = true;
+    }
     this.carouselService.dotsData = this._dotsData;
   }
 
