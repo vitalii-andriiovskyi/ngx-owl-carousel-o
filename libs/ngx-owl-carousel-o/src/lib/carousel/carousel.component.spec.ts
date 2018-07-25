@@ -764,6 +764,33 @@ describe('CarouselComponent', () => {
   }));
 
 
+  it(`should render carousel without dots [options]="{dots: false}"`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{ dots: false}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      deDotsWrapper = deCarouselComponent.query(By.css('.owl-dots'));
+      expect(deDotsWrapper.nativeElement.classList.contains('disabled')).toBeTruthy('is disabled');
+    });
+  }));
+
+
+
+
+
   // it('should have 10 sliders and 2 stages whilest prop "cycled" is true', () => {
   //   expect(deSlides.length).toBe(10, 'must be 10 sliders');
   //   expect(deStages.length).toBe(2, 'must be 2 stages');
