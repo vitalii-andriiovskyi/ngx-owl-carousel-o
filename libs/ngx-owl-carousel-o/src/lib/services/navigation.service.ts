@@ -71,14 +71,40 @@ export class NavigationService {
   }
 
   /**
-   * Updates the internal state.
-   * @param pages array containing start and end of each page. Start and end are number of slides in this._items
+   * calculates the internal state and updates prop _pages
    */
-	updateNavPages(pages: any[]) {
-		if (pages.length) {
-      this._pages = pages;
-    }
-  };
+	private _updateNavPages() {
+		let i, j, k;
+		const lower = this.carouselService.clones().length / 2,
+      upper = lower + this.carouselService.items().length,
+      maximum = this.carouselService.maximum(true),
+      pages = [],
+      settings = this.carouselService.settings,
+      size = settings.center || settings.autoWidth || settings.dotsData
+        ? 1 : settings.dotsEach || settings.items;
+
+		if (settings.slideBy !== 'page') {
+			settings.slideBy = Math.min(settings.slideBy, settings.items);
+		}
+
+		if (settings.dots || settings.slideBy === 'page') {
+
+			for (i = lower, j = 0, k = 0; i < upper; i++) {
+				if (j >= size || j === 0) {
+					pages.push({
+						start: Math.min(maximum, i - lower),
+						end: i - lower + size - 1
+					});
+					if (Math.min(maximum, i - lower) === maximum) {
+						break;
+					}
+					j = 0, ++k;
+				}
+				j += this.carouselService.mergers(this.carouselService.relative(i));
+			}
+		}
+		this._pages = pages;
+	}
 
   /**
 	 * Draws the user interface.

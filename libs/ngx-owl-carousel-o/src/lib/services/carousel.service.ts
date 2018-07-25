@@ -9,7 +9,6 @@ import { OwlCarouselOConfig } from '../carousel/owl-carousel-o-config';
 import { OwlOptions } from '../models/owl-options.model';
 
 import { NavData, DotsData } from '../models/navigation-data.models';
-import { NavigationService } from './navigation.service';
 export class States {
   current: {};
   tags: {
@@ -492,8 +491,7 @@ export class CarouselService {
     }
   ];
 
-	constructor(private customEventsCreator: CustomEventsService,
-							private navigationService: NavigationService) { }
+	constructor(private customEventsCreator: CustomEventsService) { }
 
 	/**
 	 * returns all needed data for showing carousel
@@ -1437,46 +1435,4 @@ export class CarouselService {
 	 */
   private _difference(first, second) { }
 
-	/**
-   * calculates the internal state.
-	 * @returns pages - array containing start and end of each page. Start and end are number of slides in this._items
-   */
-	private _calculateNavPages(): any[] {
-		let i, j, k;
-		const lower = this.clones().length / 2,
-		upper = lower + this.items().length,
-		maximum = this.maximum(true),
-		pages = [],
-		size = this.settings.center || this.settings.autoWidth || this.settings.dotsData
-			? 1 : this.settings.dotsEach || this.settings.items;
-
-		if (this.settings.slideBy !== 'page') {
-			this.settings.slideBy = Math.min(this.settings.slideBy, this.settings.items);
-		}
-
-		if (this.settings.dots || this.settings.slideBy === 'page') {
-
-			for (i = lower, j = 0, k = 0; i < upper; i++) {
-				if (j >= size || j === 0) {
-					pages.push({
-						start: Math.min(maximum, i - lower),
-						end: i - lower + size - 1
-					});
-					if (Math.min(maximum, i - lower) === maximum) {
-						break;
-					}
-					j = 0, ++k;
-				}
-				j += this.mergers(this.relative(i));
-			}
-		}
-		return pages;
-	}
-
-  /**
-   * Updates the internal state of NavigationService
-	 */
-	private _updateNavPages() {
-		this.navigationService.updateNavPages(this._calculateNavPages());
-	}
 }
