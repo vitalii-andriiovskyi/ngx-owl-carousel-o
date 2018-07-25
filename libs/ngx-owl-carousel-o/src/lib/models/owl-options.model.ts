@@ -33,13 +33,11 @@ export class OwlOptions {
   nav?: boolean;
   navText?: string[];
   navSpeed?: boolean;
-  navContainer?: boolean;
   slideBy?: number | string;
   dots?: boolean;
   dotsEach?: boolean;
   dotsData?: boolean;
   dotsSpeed?: boolean;
-  dotsContainer?: boolean;
 
   constructor() { }
 }

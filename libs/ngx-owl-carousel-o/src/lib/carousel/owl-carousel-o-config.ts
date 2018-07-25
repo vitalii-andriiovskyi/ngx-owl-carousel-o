@@ -32,13 +32,10 @@ export class OwlCarouselOConfig implements OwlOptions {
   nav = false;
   navText = [ 'prev', 'next' ];
   navSpeed = false;
-  navElement = 'div';
-  navContainer = false;
   slideBy = 1;
   dots = true;
   dotsEach = false;
   dotsData = false;
   dotsSpeed = false;
-  dotsContainer = false;
   constructor() { }
 }
