@@ -184,10 +184,21 @@ export class NavigationService {
         item.active = false;
       }
     })
-    curActiveDotI = this._pages.indexOf(this.carouselService.current());
-    this._dotsData.dots[curActiveDotI].active = true;
 
+    curActiveDotI = this._current();
+    this._dotsData.dots[curActiveDotI].active = true;
     this.carouselService.dotsData = this._dotsData;
   }
+
+  /**
+	 * Gets the current page position of the carousel.
+	 * @returns the current page position of the carousel
+	 */
+	private _current(): any {
+		const current = this.carouselService.relative(this.carouselService.current());
+		return this._pages.findIndex(page => {
+      return page.start <= current && page.end >= current;
+    });
+	};
 
 }
