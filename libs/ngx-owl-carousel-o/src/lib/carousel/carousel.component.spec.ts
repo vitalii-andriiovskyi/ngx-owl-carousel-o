@@ -10,7 +10,7 @@ import { ResizeService } from '../services/resize.service';
 import { WINDOW_PROVIDERS } from '../services/window-ref.service';
 import { CarouselService } from '../services/carousel.service';
 import { createGenericTestComponent } from './test/common';
-import { last } from '../../../../../node_modules/rxjs/operators';
+import { last } from 'rxjs/operators';
 
 
 const createTestComponent = (html: string) =>
@@ -648,10 +648,10 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should set custom width of slides [options]="{autoWidth: true, merge: true}`, async(() => {
+  it(`should set custom width of slides [options]="{autoWidth: true}`, async(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
-        <owl-carousel-o [options]="{autoWidth: true, merge: true}">
+        <owl-carousel-o [options]="{autoWidth: true}">
           <ng-template carouselSlide [width]="300">Slide 1</ng-template>
           <ng-template carouselSlide>Slide 2</ng-template>
           <ng-template carouselSlide [width]="500">Slide 3</ng-template>
@@ -672,10 +672,10 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`shouldn\'t set custom width of slides if autoWidth=false [options]="{autoWidth: false, merge: true}`, async(() => {
+  it(`shouldn\'t set custom width of slides if autoWidth=false [options]="{autoWidth: false}`, async(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
-        <owl-carousel-o [options]="{autoWidth: false, merge: true}">
+        <owl-carousel-o [options]="{autoWidth: false}">
           <ng-template carouselSlide [width]="300">Slide 1</ng-template>
           <ng-template carouselSlide>Slide 2</ng-template>
           <ng-template carouselSlide [width]="500">Slide 3</ng-template>
