@@ -1477,6 +1477,6 @@ export class CarouselService {
    * Updates the internal state of NavigationService
 	 */
 	private _updateNavPages() {
-		this.navigationService.update(this._calculateNavPages());
+		this.navigationService.updateNavPages(this._calculateNavPages());
 	}
 }

@@ -75,10 +75,79 @@ export class NavigationService {
    * Updates the internal state.
    * @param pages array containing start and end of each page. Start and end are number of slides in this._items
    */
-	update(pages: any[]) {
+	updateNavPages(pages: any[]) {
 		if (pages.length) {
       this._pages = pages;
     }
   };
+
+  /**
+	 * Draws the user interface.
+	 * @todo The option `dotsData` wont work.
+   * @param settings current settings of carousel
+   * @param items  all items; the result of calling method items() (it's created at CarouselService)
+   * @param index the converted position; the result of calling carouselService.relative(carouselService.current())
+   * @param minimum number of minimum position; the result of calling carouselService.mimimum(true)
+   * @param maximum number of maximum position; the result of calling carouselService.maximum(true)
+	 */
+  draw(settings: any, items: CarouselSlideDirective[], index: any, minimum: number, maximum: number): { navData: NavData, dotsData: DotsData} {
+		let difference;
+		const	disabled = items.length <= settings.items,
+			loop = settings.loop || settings.rewind;
+
+		this._navData.disabled = !settings.nav || disabled;
+
+		if (settings.nav) {
+			this._navData.prev.disabled = !loop && index <= minimum;
+			this._navData.next.disabled = !loop && index >= maximum;
+		}
+
+		this._dotsData.disabled = !settings.dots || disabled;
+
+		if (settings.dots) {
+			difference = this._pages.length - this._dotsData.dots.length;
+
+			if (settings.dotsData && difference !== 0) {
+        items.forEach(item => {
+          this._dotsData.dots.push({
+            active: false,
+            id: `dot-${item.id}`,
+            innerContent: item.dotContent
+          });
+        });
+			} else if (difference > 0) {
+        for (let i = 0; i < difference; i++) {
+          this._dotsData.dots.push({
+            active: false,
+            id: `dot-${i}`,
+          });
+        }
+			} else if (difference < 0) {
+        this._dotsData.dots.splice(difference, Math.abs(difference))
+			}
+    }
+    return {
+      navData: this._navData,
+      dotsData: this._dotsData
+    }
+  };
+
+  /**
+   * changes active dot if page becomes changed
+   * @param curActiveSlide The absolute position of the current item; result of calling carouselServive.current();
+   */
+  updateDots(curActiveSlide: number): { dotsData: DotsData} {
+    let curActiveDotI: number;
+    this._dotsData.dots.forEach(item => {
+      if (item.active === true) {
+        item.active = false;
+      }
+    })
+    curActiveDotI = this._pages.indexOf(curActiveSlide);
+    this._dotsData.dots[curActiveDotI].active = true;
+    return {
+      dotsData: this._dotsData
+    }
+  }
 
 }
