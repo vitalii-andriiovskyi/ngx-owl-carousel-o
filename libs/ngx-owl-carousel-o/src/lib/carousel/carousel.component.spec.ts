@@ -29,8 +29,11 @@ describe('CarouselComponent', () => {
   let deStage: DebugElement;
 
   let deNavButtons: DebugElement[];
-  let rightButton: HTMLElement;
-  let leftButton: HTMLElement;
+  let deNavButtonsWrapper: DebugElement;
+  let nextButton: HTMLElement;
+  let prevButton: HTMLElement;
+  let deDots: DebugElement[];
+  let deDotsWrapper: DebugElement;
 
   let deSlides: DebugElement[];
 
@@ -124,6 +127,15 @@ describe('CarouselComponent', () => {
       const centeredSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.center'));
       expect(centeredSlides.length).toBe(0, '0 centered slides');
 
+      deDotsWrapper = deCarouselComponent.query(By.css('.owl-dots'));
+      deDots = deCarouselComponent.queryAll(By.css('.owl-dot'));
+      expect(deDotsWrapper.nativeElement.classList.contains('disabled')).toBeFalsy('.owl-dots doesn\'t have class .disabled');
+      expect(deDots.length).toBe(2, '2 dots for 5 slides');
+      expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
+      expect(deDots[0].query(By.css('span')).nativeElement.innerHTML).toBe('', 'there\'s just empty span in .owl-dot');
+
+      deNavButtonsWrapper = deCarouselComponent.query(By.css('.owl-nav'));
+      expect(deNavButtonsWrapper.nativeElement.classList.contains('disabled')).toBeTruthy('.owl-nav is disabled');
       // discardPeriodicTasks();
     });
   }));
@@ -693,6 +705,61 @@ describe('CarouselComponent', () => {
       expect(deSlides[0].nativeElement.clientWidth).toBe(400, 'width of 1th slide is 400px');
       expect(deSlides[1].nativeElement.clientWidth).toBe(400, 'width of 2th slide should be 400 (1200/3=400)');
       expect(deSlides[2].nativeElement.clientWidth).toBe(400, 'width of 3th slide is 400px');
+    });
+  }));
+
+  it(`should add navigation buttons  [options]="{nav: true}`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{nav: true}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+      expect(deNavButtons.length).toBe(2, '2 buttons');
+
+      prevButton = deNavButtons[0].nativeElement;
+      nextButton = deNavButtons[1].nativeElement;
+      expect(prevButton.classList.contains('disabled')).toBeTruthy('prev button is disabled');
+      expect(prevButton.innerHTML).toContain('prev', 'prev is text of prev button');
+      expect(nextButton.innerHTML).toContain('next', 'next is text of next button');
+    });
+  }));
+
+  it(`should set custom content on navigation buttons [options]="{nav: true, navText: [ '<i class=fa-chevron-left></i>', '<i class=fa-chevron-right></i>' ]}"`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{ navText: [ '<i class=fa-chevron-left></i>', '<i class=fa-chevron-right></i>'], nav: true }">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+      prevButton = deNavButtons[0].nativeElement;
+      nextButton = deNavButtons[1].nativeElement;
+      expect(prevButton.firstElementChild.classList.contains('fa-chevron-left')).toBeTruthy('fa-chevron-left is class of child <i> Element of prev button');
+      expect(nextButton.firstElementChild.classList.contains('fa-chevron-right')).toBeTruthy('fa-chevron-right is class of child <i> Element of next button');
     });
   }));
 
