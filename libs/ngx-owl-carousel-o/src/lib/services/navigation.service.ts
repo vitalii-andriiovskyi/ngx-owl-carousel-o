@@ -156,20 +156,18 @@ export class NavigationService {
 
   /**
    * changes active dot if page becomes changed
-   * @param curActiveSlide The absolute position of the current item; result of calling carouselServive.current();
    */
-  updateDots(curActiveSlide: number): { dotsData: DotsData} {
+  updateDots() {
     let curActiveDotI: number;
     this._dotsData.dots.forEach(item => {
       if (item.active === true) {
         item.active = false;
       }
     })
-    curActiveDotI = this._pages.indexOf(curActiveSlide);
+    curActiveDotI = this._pages.indexOf(this.carouselService.current());
     this._dotsData.dots[curActiveDotI].active = true;
-    return {
-      dotsData: this._dotsData
-    }
+
+    this.carouselService.dotsData = this._dotsData;
   }
 
 }
