@@ -9,8 +9,8 @@
 		<div class="owl-stage" [ngStyle]="{'width': stageData.width + 'px',
 																			'transform': stageData.transform,
 																			'transition': stageData.transition,
-																			'paddint-left': stageData.paddingL,
-																			'paddint-right': stageData.paddingR }"
+																			'padding-left': stageData.paddingL + 'px',
+																			'padding-right': stageData.paddingR + 'px' }"
 			(transitionend)="onTransitionEnd()">
 			<ng-container *ngFor="let slide of slidesData; let i = index">
 				<div class="owl-item" [ngClass]="{'active': slide.active, 
@@ -25,13 +25,13 @@
 		</div><!-- /.owl-stage -->
 		
   </div> <!-- /.owl-stage-outer -->
-	<div class="owl-nav">
-		<div class="owl-prev" [class.disabled]="prevDisabled" (click)="prevSlide(-1)" [innerHTML]="owlPrev"></div>
-		<div class="owl-next" [class.disabled]="nextDisabled" (click)="nextSlide(1)" [innerHTML]="owlNext"></div>
+	<div class="owl-nav" [ngClass]="{'disabled': navData?.disabled}">
+		<div class="owl-prev" [ngClass]="{'disabled': navData?.prev?.disabled}" (click)="prev()" [innerHTML]="navData?.prev?.htmlText"></div>
+		<div class="owl-next" [ngClass]="{'disabled': navData?.next?.disabled}" (click)="next()" [innerHTML]="navData?.next?.htmlText"></div>
 	</div> <!-- /.owl-nav -->
-	<div class="owl-dots">
-		<div class="owl-dot active"><span></span></div>
-		<div class="owl-dot"><span></span></div>
-		<div class="owl-dot"><span></span></div>
+	<div class="owl-dots" [ngClass]="{'disabled': dotsData?.disabled}">
+		<div *ngFor="let dot of dotsData?.dots" class="owl-dot" [ngClass]="{'active': dot.active}">
+			<span [innerHTML]="dot.innerContent"></span>
+		</div>
 	</div> <!-- /.owl-dots -->
 </div> <!-- /.owl-carousel owl-loaded -->

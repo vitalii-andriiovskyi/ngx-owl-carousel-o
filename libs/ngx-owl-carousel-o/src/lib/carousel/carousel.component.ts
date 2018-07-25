@@ -22,6 +22,7 @@ import { CustomEventsService } from '../services/custom-events.service';
 import { CarouselService, StageData, OwlDOMData } from '../services/carousel.service';
 import { SliderModel } from '../models/slider.model';
 import { OwlOptions } from '../models/owl-options.model';
+import { NavData, DotsData } from '../models/navigation-data.models';
 
 let nextId = 0;
 
@@ -141,6 +142,16 @@ export class CarouselComponent
 	 *  data of every slide
 	 */
   slidesData: SliderModel[];
+
+  /**
+	 * data of navigation block
+	 */
+	navData: NavData;
+
+	/**
+	 * data of dots block
+	 */
+	dotsData: DotsData;
 
   /**
    * shows whether carousel is loaded of not.
@@ -335,10 +346,13 @@ export class CarouselComponent
       this.owlDOMData = data.owlDOMData;
       this.stageData = data.stageData;
       this.slidesData = data.slidesData;
-      console.log(this.stageData);
       if (!this.carouselLoaded) {
         this.carouselLoaded = true;
       }
+      this.navData = data.navData;
+      this.dotsData = data.dotsData;
+      console.log(this.dotsData);
+
     })
   }
 
