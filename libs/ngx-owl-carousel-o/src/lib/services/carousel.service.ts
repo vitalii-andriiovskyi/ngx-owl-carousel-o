@@ -121,6 +121,7 @@ export class CarouselService {
 
 	private _allDataShipper$ = new Subject<CarouselCurrentData>();
 	private _initializedCarousel$ = new Subject<string>();
+	private _changedSettingsCarousel$ = new Subject<string>();
 
   /**
    * Current settings for the carousel.
@@ -503,6 +504,10 @@ export class CarouselService {
 
 	getInitializedState(): Observable<string> {
 		return this._initializedCarousel$.asObservable()
+	}
+
+	getChangedState(): Observable<string> {
+		return this._changedSettingsCarousel$.asObservable();
 	}
 
 	/**
