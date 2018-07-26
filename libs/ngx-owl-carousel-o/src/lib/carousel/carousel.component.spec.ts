@@ -937,6 +937,86 @@ describe('CarouselComponent', () => {
     });
   }));
 
+  it(`should render 2 dots with [options]="{loop: true, merge: true}" and without defined [dataMerge]`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{ loop: true, merge: true}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+      expect(deDots.length).toBe(2, '2 dots');
+
+    });
+  }));
+
+  it(`should render 3 dots with [options]="{loop: true, merge: true}" and defined [dataMerge]`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{ loop: true, merge: true}">
+          <ng-template carouselSlide [dataMerge]='2'>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide [dataMerge]='3'>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide [dataMerge]='2'>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+      // option items=3 (3 widths of slides must be visible).
+      // Slide 1 takes 2 widths (w), slide 2 takes 1 w, slide 3 takes 3 w, slide 4 takes 1 w and slide 5 takes 2 w.
+      // Together 2 + 1 + 3 + 1 + 2 = 9
+      // 9 / 3 items = 3 pages = 3 dots
+      expect(deDots.length).toBe(3, '3 dots');
+
+    });
+  }));
+
+  it(`should render 3 dots with [options]="{merge: true}" and defined [dataMerge]`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{ loop: true, merge: true}">
+          <ng-template carouselSlide [dataMerge]='2'>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide [dataMerge]='3'>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide [dataMerge]='2'>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+      // option items=3 (3 widths of slides must be visible).
+      // Slide 1 takes 2 widths (w), slide 2 takes 1 w, slide 3 takes 3 w, slide 4 takes 1 w and slide 5 takes 2 w.
+      // Together 2 + 1 + 3 + 1 + 2 = 9
+      // 9 / 3 items = 3 pages = 3 dots
+      expect(deDots.length).toBe(3, '3 dots');
+
+    });
+  }));
+
 
   // it('should have 10 sliders and 2 stages whilest prop "cycled" is true', () => {
   //   expect(deSlides.length).toBe(10, 'must be 10 sliders');
