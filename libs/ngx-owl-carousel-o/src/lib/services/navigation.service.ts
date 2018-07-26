@@ -197,10 +197,13 @@ export class NavigationService {
 	 * @returns the current page position of the carousel
 	 */
 	private _current(): any {
-		const current = this.carouselService.relative(this.carouselService.current());
-		return this._pages.findIndex(page => {
-      return page.start <= current && page.end >= current;
+    const current = this.carouselService.relative(this.carouselService.current());
+    let finalCurrent: number;
+		this._pages.forEach((page, index) => {
+      finalCurrent = page.start <= current && page.end >= current ? index : 0;
     });
+
+    return finalCurrent;
 	};
 
 }
