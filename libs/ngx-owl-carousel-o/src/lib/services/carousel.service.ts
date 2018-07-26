@@ -958,7 +958,7 @@ export class CarouselService {
 		} else if (settings.autoWidth || settings.merge) {
 			iterator = this._items.length;
 			reciprocalItemsWidth = this.slidesData[--iterator].width;
-			elementWidth = this.setCarouselWidth;
+			elementWidth = this._width;
 			while (iterator--) {
 				// it could be use this._items instead of this.slidesData;
 				reciprocalItemsWidth += this.slidesData[iterator].width + this.settings.margin;
