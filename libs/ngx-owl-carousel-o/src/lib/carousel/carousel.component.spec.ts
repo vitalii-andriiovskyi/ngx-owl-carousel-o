@@ -885,6 +885,58 @@ describe('CarouselComponent', () => {
     });
   }));
 
+  it(`should prev button be enabled when loop=true in [options]="{loop: true}"`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{ loop: true}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+      prevButton = deNavButtons[0].nativeElement;
+      expect(prevButton.classList.contains('disabled')).toBeFalsy('prev button is enabled');
+
+      deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+      expect(deDots.length).toBe(2, '2 dots');
+
+    });
+  }));
+
+  it(`should render carousel with the same number of dots as number of slides [options]="{center: true}"`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{ center: true}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+      expect(deDots.length).toBe(5, '5 dots');
+
+    });
+  }));
+
 
   // it('should have 10 sliders and 2 stages whilest prop "cycled" is true', () => {
   //   expect(deSlides.length).toBe(10, 'must be 10 sliders');
