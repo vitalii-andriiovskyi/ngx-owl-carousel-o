@@ -204,6 +204,28 @@ export class NavigationService {
     });
 
     return finalCurrent;
+  };
+
+  /**
+	 * Gets the current succesor/predecessor position.
+	 * @returns the current succesor/predecessor position
+	 */
+	private _getPosition(successor): number {
+		let position, length;
+		const	settings = this.carouselService.settings;
+
+		if (settings.slideBy === 'page') {
+			position = this._current();
+			length = this._pages.length;
+			successor ? ++position : --position;
+			position = this._pages[((position % length) + length) % length].start;
+		} else {
+			position = this.carouselService.relative(this.carouselService.current());
+			length = this.carouselService.items().length;
+			successor ? position += settings.slideBy : position -= settings.slideBy;
+		}
+
+		return position;
 	};
 
 }
