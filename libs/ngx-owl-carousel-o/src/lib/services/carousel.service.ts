@@ -120,7 +120,7 @@ export class CarouselCurrentData {
 export class CarouselService {
 
 	private _allDataShipper$ = new Subject<CarouselCurrentData>();
-	private _initCarousel$ = new Subject<string>();
+	private _initializedCarousel$ = new Subject<string>();
 
   /**
    * Current settings for the carousel.
@@ -501,8 +501,8 @@ export class CarouselService {
 		return this._allDataShipper$.asObservable();
 	}
 
-	getInitSubject(): Observable<string> {
-		return this._initCarousel$.asObservable()
+	getInitializedState(): Observable<string> {
+		return this._initializedCarousel$.asObservable()
 	}
 
 	/**
@@ -641,7 +641,7 @@ export class CarouselService {
 		this.sendChanges();
 		// register event handlers
 		this._registerEventHandlers();
-		this._initCarousel$.next('initialized');
+		this._initializedCarousel$.next('initialized');
 
 		this.leave('initializing');
 		// this.trigger('initialized');

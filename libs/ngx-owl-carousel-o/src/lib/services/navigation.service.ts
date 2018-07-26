@@ -65,7 +65,7 @@ export class NavigationService {
   }
 
   catchInitialization() {
-    this.initSubscription = this.carouselService.getInitSubject().subscribe(
+    this.initSubscription = this.carouselService.getInitializedState().subscribe(
       () => {
         this.initialize();
         this._updateNavPages();
