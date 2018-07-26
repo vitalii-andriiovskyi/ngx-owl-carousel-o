@@ -2,16 +2,17 @@ import { Injectable } from '@angular/core';
 import { NavData, DotsData } from '../models/navigation-data.models';
 import { CarouselSlideDirective } from '../carousel/carousel.module';
 import { CarouselService } from './carousel.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable, merge } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NavigationService {
   /**
-   * subscrioption to initSubject from CarouselService
+   * subscrioption to merge Observable  from CarouselService
    */
-  initSubscription: Subscription;
+  navSubscription: Subscription;
 
   /**
    * Indicates whether the plugin is initialized or not.
@@ -51,28 +52,34 @@ export class NavigationService {
    */
   protected _templates: string[] = [];
 
-  /**
-   * Overridden methods of the carousel.
-   */
-  // protected _overrides = {
-  //   next: this._core.next,
-  //   prev: this._core.prev,
-  //   to: this._core.to
-  // };
-
   constructor(private carouselService: CarouselService) {
-    this.catchInitialization();
+    this.spyDataStreams();
   }
 
-  catchInitialization() {
-    this.initSubscription = this.carouselService.getInitializedState().subscribe(
-      () => {
+  /**
+   * defines Observables which service must observe
+   */
+  spyDataStreams() {
+
+    const changedSettings$: Observable<string> = this.carouselService.getInitializedState().pipe(
+      tap(state => {
         this.initialize();
         this._updateNavPages();
         this.draw();
         this.updateDots();
         this.carouselService.sendChanges();
-      }
+      })
+    );
+
+    const initializedCarousel$: Observable<string> = this.carouselService.getChangedState().pipe(
+      tap(state => {
+        this.updateDots();
+      })
+    );
+
+    const navMerge$: Observable<string> = merge(initializedCarousel$, changedSettings$);
+    this.navSubscription = navMerge$.subscribe(
+      () => {}
     );
   }
 
