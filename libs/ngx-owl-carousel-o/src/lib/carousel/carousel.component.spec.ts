@@ -1065,6 +1065,33 @@ describe('CarouselComponent', () => {
     });
   }));
 
+  it(`should render 2 dots and make next nav button disabled; [options]="{startPosition: 4, nav: true}"`, async(() => {
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{ startPosition: 4, nav: true}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide >Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+      expect(deDots.length).toBe(2, '2 dots');
+      expect(deDots[1].nativeElement.classList.contains('active')).toBeTruthy('last dot has .active');
+
+      nextButton = deCarouselComponent.query(By.css('.owl-nav > .owl-next')).nativeElement;
+      expect(nextButton.classList.contains('disabled')).toBeTruthy('next nav button has class .disabled')
+    });
+  }));
+
 
   // it('should have 10 sliders and 2 stages whilest prop "cycled" is true', () => {
   //   expect(deSlides.length).toBe(10, 'must be 10 sliders');
