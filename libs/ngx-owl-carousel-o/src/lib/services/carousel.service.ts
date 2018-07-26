@@ -872,8 +872,7 @@ export class CarouselService {
 			this._current = position;
 
 			this.invalidate('position');
-
-			// this._trigger('changed', { property: { name: 'position', value: this._current } });
+			this._changedSettingsCarousel$.next('changed');
 		}
 
 		return this._current;
