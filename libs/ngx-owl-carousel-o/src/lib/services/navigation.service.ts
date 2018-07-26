@@ -226,6 +226,22 @@ export class NavigationService {
 		}
 
 		return position;
+  };
+
+  /**
+	 * Slides to the next item or page.
+	 * @param [speed=false] - The time in milliseconds for the transition.
+	 */
+	next(speed: number) {
+    this.carouselService.to(this._getPosition(true), speed);
+	};
+
+	/**
+	 * Slides to the previous item or page.
+	 * @param [speed=false] - The time in milliseconds for the transition.
+	 */
+	prev(speed) {
+    this.carouselService.to(this._getPosition(false), speed);
 	};
 
 }
