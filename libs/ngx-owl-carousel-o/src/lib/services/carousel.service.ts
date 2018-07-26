@@ -1131,6 +1131,7 @@ export class CarouselService {
 				current = revert - distance;
 				position = revert;
 				this.reset(current);
+				this.sendChanges();
 			}
 		} else if (this.settings.rewind) {
 			maximum += 1;
@@ -1139,10 +1140,13 @@ export class CarouselService {
 			position = Math.max(minimum, Math.min(maximum, position));
 		}
 
-		this.speed(this._duration(current, position, speed));
-		this.current(position);
+		setTimeout(() => {
+			this.speed(this._duration(current, position, speed));
+			this.current(position);
 
-		this.update();
+			this.update();
+		}, 0);
+
 	}
 
   /**
