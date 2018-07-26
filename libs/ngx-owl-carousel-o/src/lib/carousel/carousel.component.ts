@@ -23,6 +23,7 @@ import { CarouselService, StageData, OwlDOMData } from '../services/carousel.ser
 import { SliderModel } from '../models/slider.model';
 import { OwlOptions } from '../models/owl-options.model';
 import { NavData, DotsData } from '../models/navigation-data.models';
+import { NavigationService } from '../services/navigation.service';
 
 let nextId = 0;
 
@@ -53,7 +54,7 @@ export class CarouselSlideDirective {
   /**
    * inner content of dot for certain slide; can be html-markup
    */
-  @Input() dotContent: string;
+  @Input() dotContent = '';
 
   constructor(public tplRef: TemplateRef<any>) {}
 
@@ -277,7 +278,8 @@ export class CarouselComponent
     private resizeService: ResizeService,
     @Inject(WINDOW) private winRef: Window,
     private customEventsCreator: CustomEventsService,
-    private carouselService: CarouselService
+    private carouselService: CarouselService,
+    private navigationService: NavigationService
   ) {}
 
   ngOnInit() {
@@ -361,11 +363,11 @@ export class CarouselComponent
   }
 
   next() {
-    this.carouselService.next(200);
+    this.navigationService.next(this.carouselService.settings.navSpeed);
   }
 
   prev() {
-    this.carouselService.prev(200);
+    this.navigationService.prev(this.carouselService.settings.navSpeed);
   }
 
 }
