@@ -61,19 +61,27 @@ export class NavigationService {
    */
   spyDataStreams() {
 
-    const changedSettings$: Observable<string> = this.carouselService.getInitializedState().pipe(
+    const initializedCarousel$: Observable<string> = this.carouselService.getInitializedState().pipe(
       tap(state => {
         this.initialize();
         this._updateNavPages();
         this.draw();
-        this.updateDots();
+        this.update();
         this.carouselService.sendChanges();
       })
     );
 
-    const initializedCarousel$: Observable<string> = this.carouselService.getChangedState().pipe(
+    // mostly changes in carouselService and carousel at all causes carouselService.to(). It moves stage right-left by its code and calling needed functions
+    // Thus this method by calling carouselService.current(position) notifies about changes
+    const changedSettings$: Observable<string> = this.carouselService.getChangedState().pipe(
       tap(state => {
-        this.updateDots();
+        this.update();
+        // should be the call of the function written at the end of comment
+        // but the method carouselServive.to() has setTimeout(f, 0) which contains carouselServive.update() which calls sendChanges() method.
+        // carouselService.navData and carouselService.dotsData update earlier than carouselServive.update() gets called
+        // updates of carouselService.navData and carouselService.dotsData are being happening withing carouselService.current(position) method which calls next() of _changedSettingsCarousel$
+        // carouselService.current(position) is being calling earlier than carouselServive.update();
+        // this.carouselService.sendChanges();
       })
     );
 
@@ -141,17 +149,9 @@ export class NavigationService {
 		let difference;
     const	settings = this.carouselService.settings,
       items = this.carouselService.items(),
-      disabled = items.length <= settings.items,
-      loop = settings.loop || settings.rewind,
-      index = this.carouselService.relative(this.carouselService.current());
+      disabled = items.length <= settings.items;
 
 		this._navData.disabled = !settings.nav || disabled;
-
-		if (settings.nav) {
-      this._navData.prev.disabled = !loop && index <= this.carouselService.minimum(true);
-			this._navData.next.disabled = !loop && index >= this.carouselService.maximum(true);
-		}
-
 		this._dotsData.disabled = !settings.dots || disabled;
 
 		if (settings.dots) {
@@ -182,9 +182,33 @@ export class NavigationService {
   };
 
   /**
+   * updates navigation buttons's and dots's states
+   */
+  update() {
+    this._updateNavButtons();
+    this._updateDots();
+  }
+
+  /**
+   * changes state of nav buttons (disabled, enabled)
+   */
+  private _updateNavButtons() {
+    const	settings = this.carouselService.settings,
+      loop = settings.loop || settings.rewind,
+      index = this.carouselService.relative(this.carouselService.current());
+
+    if (settings.nav) {
+      this._navData.prev.disabled = !loop && index <= this.carouselService.minimum(true);
+			this._navData.next.disabled = !loop && index >= this.carouselService.maximum(true);
+    }
+
+    this.carouselService.navData = this._navData;
+  }
+
+  /**
    * changes active dot if page becomes changed
    */
-  updateDots() {
+  private _updateDots() {
     let curActiveDotI: number;
     this._dotsData.dots.forEach(item => {
       if (item.active === true) {
