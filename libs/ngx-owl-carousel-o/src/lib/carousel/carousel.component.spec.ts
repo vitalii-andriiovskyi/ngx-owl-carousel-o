@@ -1153,8 +1153,6 @@ describe('CarouselComponent', () => {
     expect(deSlides.length).toBe(11, '11 slides: 3 cloned + 5 origin + 3 cloned ');
 
     deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
-    nextButton = deCarouselComponent.query(By.css('.owl-nav > .owl-next')).nativeElement;
-    prevButton = deCarouselComponent.query(By.css('.owl-nav > .owl-prev')).nativeElement;
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
 
     // move carousel left
@@ -1261,7 +1259,7 @@ describe('CarouselComponent', () => {
 
   }));
 
-  //   deNavButtons[1].triggerEventHandler('click', null);
+    //   deNavButtons[1].triggerEventHandler('click', null);
   //   fixtureHost.detectChanges();
 
   //   deSlides = deStages[0].queryAll(By.css('.surf-carousel-2-slide-wrapper'));
