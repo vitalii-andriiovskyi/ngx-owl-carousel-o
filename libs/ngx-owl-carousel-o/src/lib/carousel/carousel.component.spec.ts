@@ -1301,6 +1301,47 @@ describe('CarouselComponent', () => {
 
   }));
 
+  it(`should rewind carousel to first slide when last one is visible and vise versa; [options]="{nav: true, rewind: true}"`, fakeAsync(() => {
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{ nav: true, rewind: true}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    tick();
+    fixtureHost.detectChanges();
+
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    let deActiveSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', '1th slide is active');
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot has .active');
+
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[2].nativeElement.innerHTML).toContain('Slide 5', '5th slide is active');
+    expect(deDots[1].nativeElement.classList.contains('active')).toBeTruthy('2th dot has .active');
+
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', '1th slide is active');
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot has .active');
+
+  }));
+
   //   deNavButtons[1].triggerEventHandler('click', null);
   //   fixtureHost.detectChanges();
 
