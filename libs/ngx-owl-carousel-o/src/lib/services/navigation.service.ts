@@ -230,8 +230,12 @@ export class NavigationService {
 	private _current(): any {
     const current = this.carouselService.relative(this.carouselService.current());
     let finalCurrent: number;
-		this._pages.forEach((page, index) => {
-      finalCurrent = page.start <= current && page.end >= current ? index : 0;
+    const pages: any = this._pages.filter((page, index) => {
+      return page.start <= current && page.end >= current;
+    }).pop();
+
+    finalCurrent = this._pages.findIndex(page => {
+      return page.start === pages.start && page.end === pages.end;
     });
 
     return finalCurrent;
