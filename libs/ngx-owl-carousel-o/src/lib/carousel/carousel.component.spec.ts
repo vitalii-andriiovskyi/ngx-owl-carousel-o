@@ -1259,7 +1259,49 @@ describe('CarouselComponent', () => {
 
   }));
 
-    //   deNavButtons[1].triggerEventHandler('click', null);
+  it(`should change the centered slide after clicking prev and next buttons; [options]="{nav: true, center: true, loop: true}"`, fakeAsync(() => {
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{ nav: true, center: true, loop: true}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    tick();
+    fixtureHost.detectChanges();
+
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+
+    let centeredSlide: HTMLElement = deCarouselComponent.query(By.css('.owl-item.active.center')).nativeElement;
+    expect(centeredSlide.innerHTML).toContain('Slide 1', 'Slide 1 is centered');
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('first dot has .active');
+
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    centeredSlide = deCarouselComponent.query(By.css('.owl-item.active.center')).nativeElement;
+    expect(centeredSlide.innerHTML).toContain('Slide 5', 'Slide 5 is centered');
+    expect(deDots[4].nativeElement.classList.contains('active')).toBeTruthy('last dot has .active');
+
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    centeredSlide = deCarouselComponent.query(By.css('.owl-item.active.center')).nativeElement;
+    expect(centeredSlide.innerHTML).toContain('Slide 1', 'Slide 1 is centered');
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot has .active');
+
+  }));
+
+  //   deNavButtons[1].triggerEventHandler('click', null);
   //   fixtureHost.detectChanges();
 
   //   deSlides = deStages[0].queryAll(By.css('.surf-carousel-2-slide-wrapper'));
