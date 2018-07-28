@@ -523,6 +523,7 @@ describe('CarouselComponent', () => {
       const activeSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active'));
       expect(activeSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 3 should be first, but due to center=true and odd number of active slides, it takes center spot giving its place preceding Slide 2');
       expect(activeSlides[1].nativeElement.classList.contains('center')).toBeTruthy('Slide 3 is centered');
+      expect(activeSlides.length).toBe(3, '3 active slides');
     });
   }));
 
