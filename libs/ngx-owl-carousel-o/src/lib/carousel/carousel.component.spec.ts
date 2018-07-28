@@ -35,6 +35,7 @@ describe('CarouselComponent', () => {
   let deDotsWrapper: DebugElement;
 
   let deSlides: DebugElement[];
+  let deActiveSlides: DebugElement[];
 
   beforeEach(
     async(() => {
@@ -1124,7 +1125,7 @@ describe('CarouselComponent', () => {
     fixtureHost.detectChanges();
     expect(nextButton.classList.contains('disabled')).toBeTruthy('next nav button has class .disabled')
 
-    const deActiveSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
     expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
 
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
@@ -1204,7 +1205,7 @@ describe('CarouselComponent', () => {
     tick();
     fixtureHost.detectChanges();
 
-    let deActiveSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
     expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 5', '5th origin slide is active');
     expect(deActiveSlides[0].nativeElement.classList.contains('cloned')).toBeFalsy('1th active slide is origin and not cloned');
     expect(deActiveSlides[1].nativeElement.classList.contains('cloned')).toBeTruthy('2th active slide is cloned');
@@ -1320,7 +1321,7 @@ describe('CarouselComponent', () => {
     deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
     deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    let deActiveSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
     expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', '1th slide is active');
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot has .active');
 
