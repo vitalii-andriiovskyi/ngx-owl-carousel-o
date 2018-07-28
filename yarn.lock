@@ -73,6 +73,15 @@
   optionalDependencies:
     node-sass "^4.9.0"
 
+"@angular-devkit/build-ng-packagr@~0.6.1":
+  version "0.6.8"
+  resolved "https://registry.yarnpkg.com/@angular-devkit/build-ng-packagr/-/build-ng-packagr-0.6.8.tgz#27a902ac58b4b6a17a458b81b04d6c6f0211cd16"
+  dependencies:
+    "@angular-devkit/architect" "0.6.8"
+    "@angular-devkit/core" "0.6.8"
+    resolve "^1.5.0"
+    rxjs "^6.0.0"
+
 "@angular-devkit/build-optimizer@0.6.8":
   version "0.6.8"
   resolved "https://registry.yarnpkg.com/@angular-devkit/build-optimizer/-/build-optimizer-0.6.8.tgz#9e18a4f447290d3a8e32df1110aac8b98b80dec2"
@@ -217,13 +226,13 @@
     tree-kill "^1.0.0"
     webpack-sources "^1.1.0"
 
-"@nrwl/nx@6.0.4":
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/@nrwl/nx/-/nx-6.0.4.tgz#4541bd3130dda1bb1ef9a44a6ff03cf96e8f9b59"
+"@nrwl/nx@6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@nrwl/nx/-/nx-6.1.0.tgz#a2bc3c94f6cc7529932702b4aa3e433b60377fa6"
 
-"@nrwl/schematics@6.0.4":
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/@nrwl/schematics/-/schematics-6.0.4.tgz#fa51993672d9890b2c7bfb6794446d9554a5dd02"
+"@nrwl/schematics@6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@nrwl/schematics/-/schematics-6.1.0.tgz#bb0fde94f1fcfad323952ada2dbea1616cdf161f"
   dependencies:
     "@angular-devkit/schematics" "0.6.1"
     "@ngrx/schematics" "5.2.0"
@@ -3781,7 +3790,13 @@ jasmine-core@~2.99.1:
   version "2.99.1"
   resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-2.99.1.tgz#e6400df1e6b56e130b61c4bcd093daa7f6e8ca15"
 
-jasmine-marbles@0.3.1:
+jasmine-diff@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/jasmine-diff/-/jasmine-diff-0.1.3.tgz#93ccc2dcc41028c5ddd4606558074839f2deeaa8"
+  dependencies:
+    diff "^3.2.0"
+
+jasmine-marbles@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/jasmine-marbles/-/jasmine-marbles-0.3.1.tgz#ef65edecb41b8dd62fc6bda40448222042e32043"
   dependencies:
@@ -6915,6 +6930,16 @@ ts-node@~5.0.1:
     source-map-support "^0.5.3"
     yn "^2.0.0"
 
+tsickle@>=0.25.5:
+  version "0.32.1"
+  resolved "https://registry.yarnpkg.com/tsickle/-/tsickle-0.32.1.tgz#f16e94ba80b32fc9ebe320dc94fbc2ca7f3521a5"
+  dependencies:
+    jasmine-diff "^0.1.3"
+    minimist "^1.2.0"
+    mkdirp "^0.5.1"
+    source-map "^0.6.0"
+    source-map-support "^0.5.0"
+
 tsickle@^0.27.2:
   version "0.27.5"
   resolved "https://registry.yarnpkg.com/tsickle/-/tsickle-0.27.5.tgz#41e1a41a5acf971cbb2b0558a9590779234d591f"
@@ -6923,6 +6948,10 @@ tsickle@^0.27.2:
     mkdirp "^0.5.1"
     source-map "^0.6.0"
     source-map-support "^0.5.0"
+
+tslib@^1.7.1:
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
 
 tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.9.2"
