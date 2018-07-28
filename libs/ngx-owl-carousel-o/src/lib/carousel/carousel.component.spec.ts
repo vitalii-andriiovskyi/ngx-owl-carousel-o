@@ -1,4 +1,4 @@
-import { async, ComponentFixture, discardPeriodicTasks, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, discardPeriodicTasks, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
@@ -10,8 +10,7 @@ import { ResizeService } from '../services/resize.service';
 import { WINDOW_PROVIDERS } from '../services/window-ref.service';
 import { CarouselService } from '../services/carousel.service';
 import { createGenericTestComponent } from './test/common';
-import { last } from 'rxjs/operators';
-
+import { cold, getTestScheduler, hot } from 'jasmine-marbles';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>
@@ -1092,22 +1091,175 @@ describe('CarouselComponent', () => {
     });
   }));
 
+  it('should move stage left on 2 slide after 2 clicking next button and move back after 2 clicks on prev button', fakeAsync(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{nav: true}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    fixtureHost.detectChanges();
 
-  // it('should have 10 sliders and 2 stages whilest prop "cycled" is true', () => {
-  //   expect(deSlides.length).toBe(10, 'must be 10 sliders');
-  //   expect(deStages.length).toBe(2, 'must be 2 stages');
-  // });
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    nextButton = deCarouselComponent.query(By.css('.owl-nav > .owl-next')).nativeElement;
+    prevButton = deCarouselComponent.query(By.css('.owl-nav > .owl-prev')).nativeElement;
 
-  // it('should have 4 active sliders for carousel with width of 1000px', () => {
-  //   deSlides = deStages[0].queryAll(By.css('.active'));
-  //   expect(deSlides.length).toBe(4, '4 active slides');
-  // });
+    carouselService = deCarouselComponent.injector.get(CarouselService);
 
-  // it('first button (arrow-left) shouldn\'t have class .disabled whilest prop "cycled" is true', () => {
-  //   expect(leftButton.classList.contains('disabled')).toBeFalsy();
-  // });
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
 
-  // it('should move carousel left on 1 slide after clicking right button', () => {
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+    expect(nextButton.classList.contains('disabled')).toBeTruthy('next nav button has class .disabled')
+
+    const deActiveSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    expect(deDots[1].nativeElement.classList.contains('active')).toBeTruthy('last dot got .active');
+
+  }));
+
+  it('should loop stage movement by using nav prev-next buttons [options]="{nav: true, loop: true}"', fakeAsync(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{nav: true, loop: true}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    fixtureHost.detectChanges();
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    expect(deSlides.length).toBe(11, '11 slides: 3 cloned + 5 origin + 3 cloned ');
+
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    nextButton = deCarouselComponent.query(By.css('.owl-nav > .owl-next')).nativeElement;
+    prevButton = deCarouselComponent.query(By.css('.owl-nav > .owl-prev')).nativeElement;
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+
+    // move carousel left
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+    expect(deSlides[2].nativeElement.classList.contains('active')).toBeTruthy('3th slide is active');
+    expect(deSlides[2].nativeElement.classList.contains('cloned')).toBeTruthy('3th slide is active and cloned');
+    expect(deDots[1].nativeElement.classList.contains('active')).toBeTruthy('2th dot is active');
+
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+    expect(deSlides[6].nativeElement.classList.contains('active')).toBeTruthy('6th slide at all and 4th from origin slides is active');
+    expect(deSlides[6].nativeElement.innerHTML).toContain('Slide 4');
+    expect(deSlides[8].nativeElement.classList.contains('active')).toBeTruthy('8th slide which is clone of 1th origin slide is active');
+    expect(deSlides[8].nativeElement.innerHTML).toContain('Slide 1');
+    expect(deDots[1].nativeElement.classList.contains('active')).toBeTruthy('2th dot is active');
+
+    // 5 clicks on prev button in order to reach the Slide 1 and check job of loop
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
+
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+    expect(deSlides[6].nativeElement.classList.contains('active')).toBeTruthy('6th slide at all and 4th from origin slides is active');
+    expect(deSlides[6].nativeElement.innerHTML).toContain('Slide 4');
+    expect(deSlides[8].nativeElement.classList.contains('active')).toBeTruthy('8th slide which is clone of 1th origin slide is active');
+    expect(deSlides[8].nativeElement.innerHTML).toContain('Slide 1');
+    expect(deDots[1].nativeElement.classList.contains('active')).toBeTruthy('2th dot is active');
+
+    // move carousel right
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    let deActiveSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 5', '5th origin slide is active');
+    expect(deActiveSlides[0].nativeElement.classList.contains('cloned')).toBeFalsy('1th active slide is origin and not cloned');
+    expect(deActiveSlides[1].nativeElement.classList.contains('cloned')).toBeTruthy('2th active slide is cloned');
+    expect(deActiveSlides[1].nativeElement.innerHTML).toContain('Slide 1', '2th active slide is the clone of 1th origin slide');
+    expect(deActiveSlides[2].nativeElement.classList.contains('cloned')).toBeTruthy('3th active slide is cloned');
+    expect(deActiveSlides[2].nativeElement.innerHTML).toContain('Slide 2', '3th active slide is the clone of 2th origin slide');
+    expect(deDots[1].nativeElement.classList.contains('active')).toBeTruthy('2th dot is active');
+
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    // we reached the start position of carousel
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', '1th origin slide is active');
+    expect(deActiveSlides[0].nativeElement.classList.contains('cloned')).toBeFalsy('1th active slide is origin and not cloned');
+    expect(deActiveSlides[1].nativeElement.innerHTML).toContain('Slide 2', '2th origin slide is active');
+    expect(deActiveSlides[1].nativeElement.classList.contains('cloned')).toBeFalsy('2th active slide is origin and not cloned');
+    expect(deActiveSlides[2].nativeElement.innerHTML).toContain('Slide 3', '3th origin slide is active');
+    expect(deActiveSlides[2].nativeElement.classList.contains('cloned')).toBeFalsy('3th active slide is origin and not cloned');
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('2th dot is active');
+
+    // 5 clicks on next button in order to reach the Slide 1 and check job of loop
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+    // we reached the start position of carousel
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', '1th origin slide is active');
+    expect(deActiveSlides[0].nativeElement.classList.contains('cloned')).toBeFalsy('1th active slide is origin and not cloned');
+    expect(deActiveSlides[1].nativeElement.innerHTML).toContain('Slide 2', '2th origin slide is active');
+    expect(deActiveSlides[1].nativeElement.classList.contains('cloned')).toBeFalsy('2th active slide is origin and not cloned');
+    expect(deActiveSlides[2].nativeElement.innerHTML).toContain('Slide 3', '3th origin slide is active');
+    expect(deActiveSlides[2].nativeElement.classList.contains('cloned')).toBeFalsy('3th active slide is origin and not cloned');
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('2th dot is active');
+
+  }));
+
   //   deNavButtons[1].triggerEventHandler('click', null);
   //   fixtureHost.detectChanges();
 
