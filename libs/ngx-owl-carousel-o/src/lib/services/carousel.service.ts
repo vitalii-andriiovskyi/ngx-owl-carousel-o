@@ -459,13 +459,13 @@ export class CarouselService {
 
 				if (rtl === -1 && this.settings.center) {
 					const result =	this._coordinates.filter(element => {
-						return element > begin;
+						return this.settings.items % 2 === 1 ? element >= begin : element > begin;
 					});
 					begin = result.length ? result[result.length - 1] : begin;
 				}
 
         for (i = 0, n = this._coordinates.length; i < n; i++) {
-          inner = this.settings.rtl ? Math.ceil(this._coordinates[i - 1] || 0) : Math.floor(this._coordinates[i - 1] || 0);
+          inner = this.settings.rtl ? Math.ceil(this._coordinates[i - 1] || 0) : Math.ceil(this._coordinates[i - 1] || 0);
 					outer = Math.ceil(Math.abs(this._coordinates[i]) + padding * rtl);
 
           if ((this._op(inner, '<=', begin) && (this._op(inner, '>', end)))
