@@ -1343,6 +1343,75 @@ describe('CarouselComponent', () => {
 
   }));
 
+  it(`should change number of active slides according to number of visible slide with [options]="{merge: true, nav: true}`, fakeAsync(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{merge: true, nav: true}">
+          <ng-template carouselSlide [dataMerge]="2">Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide [dataMerge]="3">Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    tick();
+    fixtureHost.detectChanges();
+
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+
+    expect(deActiveSlides.length).toBe(2, '2 active slides');
+    expect(deDots.length).toBe(3, '3 dots');
+
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(1, '1 active slide');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+    expect(deDots[1].nativeElement.classList.contains('active')).toBeTruthy('3th dot is active');
+  }));
+
+  it(`should change number of active slides according to number of visible slide with [options]="{merge: true, nav: true, loop: true}`, fakeAsync(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{merge: true, nav: true, loop: true}">
+          <ng-template carouselSlide [dataMerge]="2">Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide [dataMerge]="3">Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    tick();
+    fixtureHost.detectChanges();
+
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+
+    expect(deActiveSlides.length).toBe(2, '2 active slides');
+    expect(deDots.length).toBe(3, '3 dots');
+
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(1, '1 active slide');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+    expect(deDots[1].nativeElement.classList.contains('active')).toBeTruthy('3th dot is active');
+  }));
   //   deNavButtons[1].triggerEventHandler('click', null);
   //   fixtureHost.detectChanges();
 
