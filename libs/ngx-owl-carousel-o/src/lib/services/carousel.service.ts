@@ -5,7 +5,7 @@ import { CustomEventsService } from './custom-events.service';
 import { CarouselSlideDirective } from '../carousel/carousel.module';
 import { SliderModel } from '../models/slider.model';
 import { Subject, Observable } from 'rxjs';
-import { OwlCarouselOConfig } from '../carousel/owl-carousel-o-config';
+import { OwlCarouselOConfig, OwlOptionsMockedTypes } from '../carousel/owl-carousel-o-config';
 import { OwlOptions } from '../models/owl-options.model';
 
 import { NavData, DotsData } from '../models/navigation-data.models';
@@ -126,7 +126,7 @@ export class CarouselService {
   /**
    * Current settings for the carousel.
    */
-  settings: any = {
+  settings: OwlOptions = {
 		items: 0
 	};
 
@@ -527,17 +527,35 @@ export class CarouselService {
 	 */
 	private _validateOptions(options: OwlOptions, configOptions: OwlOptions): OwlOptions {
 		const checkedOptions: OwlOptions = { ...options};
+		const mockedTypes = new OwlOptionsMockedTypes();
 
 		for (const key in checkedOptions) {
 			if (checkedOptions.hasOwnProperty(key)) {
-				if (this._isNumeric(checkedOptions[key]) && typeof configOptions[key] === 'number') {
-					checkedOptions[key] = +checkedOptions[key];
-					checkedOptions[key] = key === 'items' ? this._validateItems(checkedOptions[key]) : checkedOptions[key];
-				} else if (typeof checkedOptions[key] !== typeof configOptions[key]) {
-					if (key === 'slideBy' && typeof options[key] === 'string') {
-						continue;
+
+				// condition could be shortened but it gets harder for understanding
+				if (mockedTypes[key] === 'number') {
+					if (this._isNumeric(checkedOptions[key])) {
+						checkedOptions[key] = +checkedOptions[key];
+						checkedOptions[key] = key === 'items' ? this._validateItems(checkedOptions[key]) : checkedOptions[key];
+					} else {
+						checkedOptions[key] = setRightOption(mockedTypes[key], key);
 					}
-					checkedOptions[key] = setRightOption(typeof configOptions[key], key);
+				} else if (mockedTypes[key] === 'boolean' && typeof checkedOptions[key] !== 'boolean') {
+					checkedOptions[key] = setRightOption(mockedTypes[key], key);
+				} else if (mockedTypes[key] === 'number|boolean' && !this._isNumberOrBoolean(checkedOptions[key])) {
+					checkedOptions[key] = setRightOption(mockedTypes[key], key);
+				} else if (mockedTypes[key] === 'number|string' && !this._isNumberOrString(checkedOptions[key])) {
+					checkedOptions[key] = setRightOption(mockedTypes[key], key);
+				} else if (mockedTypes[key] === 'string[]') {
+					if (Array.isArray(checkedOptions[key])) {
+						let isString = false;
+						checkedOptions[key].forEach(element => {
+							isString = typeof element === 'string' ? true : false;
+						});
+						if (!isString) { checkedOptions[key] = setRightOption(mockedTypes[key], key) };
+					} else {
+						checkedOptions[key] = setRightOption(mockedTypes[key], key);
+					}
 				}
 			}
 		}
@@ -619,9 +637,9 @@ export class CarouselService {
 		}
 
 		this.settings = { ...this.settings, items: this._validateItems(overwrites[match].items)};
-		if (typeof this.settings.stagePadding === 'function') {
-			this.settings.stagePadding = this.settings.stagePadding();
-		}
+		// if (typeof this.settings.stagePadding === 'function') {
+		// 	this.settings.stagePadding = this.settings.stagePadding();
+		// }
 		delete this.settings.responsive;
 		this.owlDOMData.isResponsive = true;
 		this._breakpoint = match;
@@ -674,7 +692,7 @@ export class CarouselService {
 	 */
   private _optionsLogic() {
 		if (this.settings.autoWidth) {
-			this.settings.stagePadding = false;
+			this.settings.stagePadding = 0;
 			this.settings.merge = false;
 		}
 	}
@@ -968,7 +986,7 @@ export class CarouselService {
 			elementWidth = this._width;
 			while (iterator--) {
 				// it could be use this._items instead of this.slidesData;
-				reciprocalItemsWidth += this.slidesData[iterator].width + this.settings.margin;
+				reciprocalItemsWidth += +this.slidesData[iterator].width + this.settings.margin;
 				if (reciprocalItemsWidth > elementWidth) {
 					break;
 				}
@@ -1108,7 +1126,7 @@ export class CarouselService {
 			return 0;
 		}
 
-		return Math.min(Math.max(Math.abs(to - from), 1), 6) * Math.abs((factor || this.settings.smartSpeed));
+		return Math.min(Math.max(Math.abs(to - from), 1), 6) * Math.abs((+factor || this.settings.smartSpeed));
 	}
 
   	/**
@@ -1441,6 +1459,22 @@ export class CarouselService {
 	 */
   private _isNumeric(number: any): boolean {
 		return !isNaN(parseFloat(number));
+	}
+
+	/**
+	 * Determines whether value is number or boolean type
+	 * @param value The input to be tested
+	 */
+	private _isNumberOrBoolean(value: number | boolean): boolean {
+		return this._isNumeric(value) || typeof value === 'boolean';
+	}
+
+	/**
+	 * Determines whether value is number or string type
+	 * @param value The input to be tested
+	 */
+	private _isNumberOrString(value: number | string): boolean {
+		return this._isNumeric(value) || typeof value === 'string';
 	}
 
   	/**
