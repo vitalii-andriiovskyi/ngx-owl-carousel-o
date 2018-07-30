@@ -797,7 +797,6 @@ describe('CarouselComponent', () => {
     });
   }));
 
-
   it(`should render carousel without dots [options]="{dots: false}"`, async(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
@@ -1868,6 +1867,37 @@ describe('CarouselComponent', () => {
     expect(deActiveSlides[1].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
     expect(deActiveSlides[1].nativeElement.classList.contains('cloned')).toBeFalsy('Slide 1 isn\'t cloned');
     expect(deDots[3].nativeElement.classList.contains('active')).toBeTruthy('4th dot is active');
+
+  }));
+
+  it('should set speed of moving carousel after clicking on prev or next button [options]="{nav: true, navSpeed: 500}"', fakeAsync(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{nav: true, navSpeed: 500}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+
+    fixtureHost.detectChanges();
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0s', '0s transition');
+
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.5s', '0.5s transition');
 
   }));
   //   deNavButtons[1].triggerEventHandler('click', null);
