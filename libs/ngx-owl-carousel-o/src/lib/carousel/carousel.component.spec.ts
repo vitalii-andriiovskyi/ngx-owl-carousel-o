@@ -973,7 +973,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render carousel with the same number of dots as number of slides [options]="{center: true}"`, async(() => {
+  it(`should render carousel with the same number of dots as number of slides [options]="{center: true}"`, fakeAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{ center: true}">
@@ -986,15 +986,33 @@ describe('CarouselComponent', () => {
       </div>
     `;
     fixtureHost = createTestComponent(html);
+    tick();
+    fixtureHost.detectChanges();
+
     deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    expect(deDots.length).toBe(5, '5 dots');
 
-    fixtureHost.whenStable().then(() => {
-      fixtureHost.detectChanges();
+    deDots[3].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
 
-      deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-      expect(deDots.length).toBe(5, '5 dots');
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
 
-    });
+    deDots[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+    deDots[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
   }));
 
   it(`should render 2 dots with [options]="{loop: true, merge: true}" and without defined [dataMerge]`, async(() => {
