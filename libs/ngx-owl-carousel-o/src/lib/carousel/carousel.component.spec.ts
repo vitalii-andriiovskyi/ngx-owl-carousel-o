@@ -844,6 +844,33 @@ describe('CarouselComponent', () => {
     });
   }));
 
+  it(`should render carousel with 3 dots [options]="{dotsEach: 4}"`, async(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{ dotsEach: 4}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+          <ng-template carouselSlide>Slide 6</ng-template>
+          <ng-template carouselSlide>Slide 7</ng-template>
+          <ng-template carouselSlide>Slide 8</ng-template>
+          <ng-template carouselSlide>Slide 9</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.whenStable().then(() => {
+      fixtureHost.detectChanges();
+
+      deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+      expect(deDots.length).toBe(3, '3 dots');
+    });
+  }));
+
 
   it(`should render carousel with dots with text [options]="{dotsData: true}"`, async(() => {
     const html = `
@@ -1898,6 +1925,199 @@ describe('CarouselComponent', () => {
 
     deStage = deCarouselComponent.query(By.css('.owl-stage'));
     expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.5s', '0.5s transition');
+
+  }));
+
+  it('should move carousel onto 1 slide [options]="{nav: true, dotsEach: true}"', fakeAsync(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{nav: true, dotsEach: true}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+
+    fixtureHost.detectChanges();
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled')).toBeTruthy('prev button is disabled');
+    expect(deDots.length).toBe(3, '3 dots = 3 pages');
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
+
+    deDots[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+
+    deDots[2].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+    expect(deNavButtons[1].nativeElement.classList.contains('disabled')).toBeTruthy('next button is disabled');
+
+    deDots[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+  }));
+
+  it('should move carousel onto 1 slide [options]="{nav: true, dotsEach: true, loop: true}"', fakeAsync(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{nav: true, dotsEach: true, loop: true}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+
+    fixtureHost.detectChanges();
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(deDots.length).toBe(5, '5 dots = 5 pages');
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
+
+    deDots[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+
+    deDots[2].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+
+    deDots[4].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 5', 'Slide 5');
+    expect(deActiveSlides[1].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(deActiveSlides[1].nativeElement.classList.contains('cloned')).toBeTruthy('Slide 1 is cloned');
+    expect(deActiveSlides[2].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+    expect(deActiveSlides[2].nativeElement.classList.contains('cloned')).toBeTruthy('Slide 2 is cloned');
+
+    deDots[1].triggerEventHandler('click', null);
+    tick();
+    deDots[4].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 5', 'Slide 5');
+    expect(deActiveSlides[0].nativeElement.classList.contains('cloned')).toBeTruthy('Slide 5 is cloned');
+    expect(deActiveSlides[1].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(deActiveSlides[1].nativeElement.classList.contains('cloned')).toBeFalsy('Slide 2 isn\'t cloned');
+    expect(deActiveSlides[2].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+
+    deDots[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(deActiveSlides[0].nativeElement.classList.contains('cloned')).toBeFalsy('Slide 1 isn\'t cloned');
+
+    deDots[3].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 4', 'Slide 4');
+    expect(deActiveSlides[0].nativeElement.classList.contains('cloned')).toBeTruthy('Slide 4 is cloned');
+    expect(deActiveSlides[1].nativeElement.innerHTML).toContain('Slide 5', 'Slide 5');
+    expect(deActiveSlides[1].nativeElement.classList.contains('cloned')).toBeTruthy('Slide 5 is cloned');
+    expect(deActiveSlides[2].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(deActiveSlides[2].nativeElement.classList.contains('cloned')).toBeFalsy('Slide 1 isn\'t cloned');
+
+    deDots[4].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 5', 'Slide 5');
+
+    const deActiveClonedItems: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active.cloned'));
+    expect(deActiveClonedItems.length).toBe(2, '2 cloned active slides');
+  }));
+
+  it('should move carousel onto 1 slide [options]="{nav: true, dotsEach: 4}"', fakeAsync(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{nav: true, dotsEach: 4}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+          <ng-template carouselSlide>Slide 6</ng-template>
+          <ng-template carouselSlide>Slide 7</ng-template>
+          <ng-template carouselSlide>Slide 8</ng-template>
+          <ng-template carouselSlide>Slide 9</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+
+    fixtureHost.detectChanges();
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled')).toBeTruthy('prev button is disabled');
+    expect(deDots.length).toBe(3, '3 dots = 3 pages');
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
+
+    deDots[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 5', 'Slide 5');
+
+    deDots[2].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 7', 'Slide 7');
+    expect(deNavButtons[1].nativeElement.classList.contains('disabled')).toBeTruthy('next button is disabled');
 
   }));
   //   deNavButtons[1].triggerEventHandler('click', null);
