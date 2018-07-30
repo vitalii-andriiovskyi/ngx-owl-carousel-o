@@ -32,10 +32,53 @@ export class OwlCarouselOConfig implements OwlOptions {
   nav = false;
   navText = [ 'prev', 'next' ];
   navSpeed = false;
-  slideBy = 1;
+  slideBy = 1; // stage moves on 1 width of slide; if slideBy = 2, stage moves on 2 widths of slide
   dots = true;
   dotsEach = false;
   dotsData = false;
   dotsSpeed = false;
+  constructor() { }
+}
+
+// although we can't read types from OwlOptions in javascript as props have value undefined and types are used for validating inputs
+// class below is copy of OwlOptions but its all props have string value showing certain type;
+// this is class is being used just in method _validateOptions of CarouselService;
+export class OwlOptionsMockedTypes {
+  items = 'number';
+  loop = 'boolean';
+  center = 'boolean';
+  rewind = 'boolean';
+
+  mouseDrag = 'boolean';
+  touchDrag = 'boolean';
+  pullDrag = 'boolean';
+  freeDrag = 'boolean';
+
+  margin = 'number';
+  stagePadding = 'number';
+
+  merge = 'boolean';
+  mergeFit = 'boolean';
+  autoWidth = 'boolean';
+
+  startPosition = 'number';
+  rtl = 'boolean';
+
+  smartSpeed = 'number';
+  fluidSpeed = 'boolean';
+  dragEndSpeed = 'number|boolean';
+
+  responsive = {};
+  responsiveRefreshRate = 'number';
+
+  // defaults to Navigation
+  nav = 'boolean';
+  navText = 'string[]';
+  navSpeed = 'number|boolean';
+  slideBy = 'number|string'; // stage moves on 1 width of slide; if slideBy = 2, stage moves on 2 widths of slide
+  dots = 'boolean';
+  dotsEach = 'number|boolean';
+  dotsData = 'boolean';
+  dotsSpeed = 'number|boolean';
   constructor() { }
 }

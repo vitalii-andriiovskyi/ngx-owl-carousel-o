@@ -24,7 +24,7 @@ export class OwlOptions {
 
   smartSpeed?: number;
   fluidSpeed?: boolean;
-  dragEndSpeed?: boolean;
+  dragEndSpeed?: number | boolean;
 
   responsive?: ResponsiveSettings;
   responsiveRefreshRate?: number;
@@ -32,12 +32,12 @@ export class OwlOptions {
   // Navigation
   nav?: boolean;
   navText?: string[];
-  navSpeed?: boolean;
+  navSpeed?: number | boolean;
   slideBy?: number | string;
   dots?: boolean;
-  dotsEach?: boolean;
+  dotsEach?: number | boolean;
   dotsData?: boolean;
-  dotsSpeed?: boolean;
+  dotsSpeed?: number | boolean;
 
   constructor() { }
 }
