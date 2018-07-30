@@ -534,6 +534,9 @@ export class CarouselService {
 					checkedOptions[key] = +checkedOptions[key];
 					checkedOptions[key] = key === 'items' ? this._validateItems(checkedOptions[key]) : checkedOptions[key];
 				} else if (typeof checkedOptions[key] !== typeof configOptions[key]) {
+					if (key === 'slideBy' && typeof options[key] === 'string') {
+						continue;
+					}
 					checkedOptions[key] = setRightOption(typeof configOptions[key], key);
 				}
 			}
