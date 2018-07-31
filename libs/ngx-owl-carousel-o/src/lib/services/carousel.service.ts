@@ -122,6 +122,7 @@ export class CarouselService {
 	private _allDataShipper$ = new Subject<CarouselCurrentData>();
 	private _initializedCarousel$ = new Subject<string>();
 	private _changedSettingsCarousel$ = new Subject<string>();
+	private _translatedCarousel$ = new Subject<string>();
 
   /**
    * Current settings for the carousel.
@@ -508,6 +509,10 @@ export class CarouselService {
 
 	getChangedState(): Observable<string> {
 		return this._changedSettingsCarousel$.asObservable();
+	}
+
+	getTranslatedState(): Observable<string> {
+		return this._translatedCarousel$.asObservable();
 	}
 
 	/**
@@ -1213,7 +1218,8 @@ export class CarouselService {
 			return false;
 		}
 		this.leave('animating');
-		this._trigger('translated');
+		this._translatedCarousel$.next('translated');
+		// this._trigger('translated');
 	}
 
   /**
