@@ -2276,57 +2276,52 @@ describe('CarouselComponent', () => {
     expect(deNavButtons[1].nativeElement.classList.contains('disabled')).toBeTruthy('next button is disabled');
 
   }));
-  //   deNavButtons[1].triggerEventHandler('click', null);
-  //   fixtureHost.detectChanges();
 
-  //   deSlides = deStages[0].queryAll(By.css('.surf-carousel-2-slide-wrapper'));
-  //   expect(deSlides[0].nativeElement.classList.contains('active')).toBeFalsy();
-  //   expect(deSlides[4].nativeElement.classList.contains('active')).toBeTruthy();
-  // });
+  it('should set speed of moving carousel after clicking on dots [options]="{dotsSpeed: 500}"', fakeAsync(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{dotsSpeed: 500}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+          <ng-template carouselSlide>Slide 6</ng-template>
+          <ng-template carouselSlide>Slide 7</ng-template>
+          <ng-template carouselSlide>Slide 8</ng-template>
+          <ng-template carouselSlide>Slide 9</ng-template>
+          <ng-template carouselSlide>Slide 10</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
 
-  // it('should move carousel left  on 5 slides after clicking right button 5 times', () => {
-  //   deNavButtons[1].triggerEventHandler('click', null);
-  //   fixtureHost.detectChanges();
-  //   deNavButtons[1].triggerEventHandler('click', null);
-  //   fixtureHost.detectChanges();
-  //   deNavButtons[1].triggerEventHandler('click', null);
-  //   fixtureHost.detectChanges();
-  //   deNavButtons[1].triggerEventHandler('click', null);
-  //   fixtureHost.detectChanges();
-  //   deNavButtons[1].triggerEventHandler('click', null);
-  //   fixtureHost.detectChanges();
+    fixtureHost.detectChanges();
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
 
-  //   deSlides = deStages[0].queryAll(By.css('.active'));
-  //   expect(deSlides.length).toBe(
-  //     0,
-  //     "1t stage shouldn't have sliders with .active class"
-  //   );
-  //   deSlides = deStages[1].queryAll(By.css('.surf-carousel-2-slide-wrapper'));
-  //   expect(deSlides[0].nativeElement.classList.contains('active')).toBeTruthy(
-  //     'first slide of 2d stage must have .active class'
-  //   );
+    expect(deDots.length).toBe(4, '4 dots');
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0s', '0s transition');
 
-  //   deNavButtons[1].triggerEventHandler('click', null);
-  //   fixtureHost.detectChanges();
-  //   expect(deStages[0].nativeElement.style.transform).toBe(
-  //     'translateX(1000px)',
-  //     '1t stage is after second when last slide if 2d stage has .active'
-  //   );
-  // });
+    deDots[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
 
-  // it('should move carousel right on 1 slide after clicking left button', () => {
-  //   deNavButtons[0].triggerEventHandler('click', null);
-  //   fixtureHost.detectChanges();
+    // transtionDuration is defined using number of slides which must be scrolled after clicking dot. If number of slides is 3 transtionDuration will be 1.5s (3*500ms);
+    // If number of slides is 1 transtionDuration will be 1.5s (1*500ms);
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('1.5s', '1.5s transition');
 
-  //   deSlides = deStages[0].queryAll(By.css('.surf-carousel-2-slide-wrapper'));
-  //   expect(deSlides[3].nativeElement.classList.contains('active')).toBeFalsy(
-  //     "4th slide if 1t stage doesn't have .active"
-  //   );
-  //   deSlides = deStages[1].queryAll(By.css('.surf-carousel-2-slide-wrapper'));
-  //   expect(deSlides[4].nativeElement.classList.contains('active')).toBeTruthy(
-  //     'last slide if 2t stage has .active'
-  //   );
-  // });
+    deDots[3].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    // 4 slides should be scrolled; 4*500ms = 2000ms = 2s
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('2s', '2s transition');
+  }));
 });
 
 @Component({
