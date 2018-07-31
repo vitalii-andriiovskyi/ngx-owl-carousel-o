@@ -119,7 +119,7 @@ export class CarouselComponent
   @ContentChildren(CarouselSlideDirective)
   slides: QueryList<CarouselSlideDirective>;
 
-  @Output() translatedCarousel = new EventEmitter<SlidesOutputData>();
+  @Output() translated = new EventEmitter<SlidesOutputData>();
 
   // number of visible sliders in carousel; it's needed for defining width of each slider
   private _slidersQuantity = 1;
@@ -398,7 +398,7 @@ export class CarouselComponent
     this._translatedCarousel$ = this.carouselService.getTranslatedState().pipe(
       tap(() => {
         this.gatherTranslatedData();
-        this.translatedCarousel.emit(this.slidesOutputData);
+        this.translated.emit(this.slidesOutputData);
         this.slidesOutputData = {};
       })
     );
