@@ -656,7 +656,10 @@ export class CarouselService {
 
 		this.owlDOMData.rtl = this.settings.rtl;
 
-		slides.forEach(item => this._mergers.push(item.dataMerge || 1));
+		slides.forEach(item => {
+			const mergeN: number = this.settings.merge ? item.dataMerge : 1;
+			this._mergers.push(mergeN);
+		});
 
 		this.reset(this._isNumeric(this.settings.startPosition) ? this.settings.startPosition : 0);
 
