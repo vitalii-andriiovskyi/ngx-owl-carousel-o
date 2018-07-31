@@ -1119,7 +1119,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render 4 dots with [options]="{autoWidth: true}" and defined [width]`, async(() => {
+  it(`should render 4 dots with [options]="{autoWidth: true}" and defined [width]; and move carousel by clicking on dots`, fakeAsync(() => {
     const html = `
       <div style="width: 920px; margin: auto">
         <owl-carousel-o [options]="{ autoWidth: true}">
@@ -1133,14 +1133,82 @@ describe('CarouselComponent', () => {
     `;
     fixtureHost = createTestComponent(html);
     deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    fixtureHost.detectChanges();
 
-    fixtureHost.whenStable().then(() => {
-      fixtureHost.detectChanges();
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    expect(deDots.length).toBe(4, '4 dots');
 
-      deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-      expect(deDots.length).toBe(4, '4 dots');
+    deDots[3].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
 
-    });
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(2, '2 active slides');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 4', 'Slide 4');
+
+    deDots[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+  }));
+
+  it(`should render 5 dots with [options]="{autoWidth: true, loop: true}" and defined [width]; and move carousel by clicking on dots`, fakeAsync(() => {
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{ autoWidth: true, loop: true}">
+          <ng-template carouselSlide [width]="300">Slide 1</ng-template>
+          <ng-template carouselSlide [width]="500">Slide 2</ng-template>
+          <ng-template carouselSlide >Slide 3</ng-template>
+          <ng-template carouselSlide [width]="450">Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    tick();
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    fixtureHost.detectChanges();
+
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    expect(deDots.length).toBe(5, '5 dots');
+
+    deDots[3].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 4', 'Slide 4');
+    expect(deActiveSlides[0].nativeElement.classList.contains('cloned')).toBeTruthy('Slide 4 is cloned');
+
+    deDots[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(deActiveSlides[0].nativeElement.classList.contains('cloned')).toBeFalsy('Slide 1 isn\'t cloned');
+
+    deDots[2].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+    expect(deActiveSlides[0].nativeElement.classList.contains('cloned')).toBeFalsy('Slide 3 isn\'t cloned');
+
+    deDots[4].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 5', 'Slide 5');
+    expect(deActiveSlides[0].nativeElement.classList.contains('cloned')).toBeFalsy('Slide 5 isn\'t cloned');
+    expect(deActiveSlides[1].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(deActiveSlides[1].nativeElement.classList.contains('cloned')).toBeTruthy('Slide 1 is cloned');
   }));
 
   it(`should render 2 dots and make next nav button disabled; [options]="{startPosition: 4, nav: true}"`, async(() => {
