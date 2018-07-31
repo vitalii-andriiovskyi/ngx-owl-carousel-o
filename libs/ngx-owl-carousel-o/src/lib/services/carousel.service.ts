@@ -119,7 +119,7 @@ export class CarouselCurrentData {
 })
 export class CarouselService {
 
-	private _allDataShipper$ = new Subject<CarouselCurrentData>();
+	private _viewSettingsShipper$ = new Subject<CarouselCurrentData>();
 	private _initializedCarousel$ = new Subject<string>();
 	private _changedSettingsCarousel$ = new Subject<string>();
 	private _translatedCarousel$ = new Subject<string>();
@@ -499,8 +499,8 @@ export class CarouselService {
 	/**
 	 * returns all needed data for showing carousel
 	 */
-	getCarouselCurSettings(): Observable<CarouselCurrentData> {
-		return this._allDataShipper$.asObservable();
+	getViewCurSettings(): Observable<CarouselCurrentData> {
+		return this._viewSettingsShipper$.asObservable();
 	}
 
 	getInitializedState(): Observable<string> {
@@ -685,7 +685,7 @@ export class CarouselService {
 	 * Sends all data needed for View.
 	 */
 	sendChanges() {
-		this._allDataShipper$.next({
+		this._viewSettingsShipper$.next({
 			owlDOMData: this.owlDOMData,
 			stageData: this.stageData,
 			slidesData: this.slidesData,
