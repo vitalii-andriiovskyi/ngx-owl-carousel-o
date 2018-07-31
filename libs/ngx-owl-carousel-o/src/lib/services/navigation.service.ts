@@ -114,12 +114,12 @@ export class NavigationService {
       upper = lower + this.carouselService.items().length,
       maximum = this.carouselService.maximum(true),
       pages = [],
-      settings = this.carouselService.settings,
-      size = settings.center || settings.autoWidth || settings.dotsData
+      settings = this.carouselService.settings;
+     let size = settings.center || settings.autoWidth || settings.dotsData
         ? 1 : settings.dotsEach || settings.items;
-
+      size = +size;
 		if (settings.slideBy !== 'page') {
-			settings.slideBy = Math.min(settings.slideBy, settings.items);
+			settings.slideBy = Math.min(+settings.slideBy, settings.items);
 		}
 
 		if (settings.dots || settings.slideBy === 'page') {
@@ -257,7 +257,7 @@ export class NavigationService {
 		} else {
 			position = this.carouselService.relative(this.carouselService.current());
 			length = this.carouselService.items().length;
-			successor ? position += settings.slideBy : position -= settings.slideBy;
+			successor ? position += settings.slideBy : position -= +settings.slideBy;
 		}
 
 		return position;
@@ -267,7 +267,7 @@ export class NavigationService {
 	 * Slides to the next item or page.
 	 * @param [speed=false] - The time in milliseconds for the transition.
 	 */
-	next(speed: number) {
+	next(speed: number | boolean) {
     this.carouselService.to(this._getPosition(true), speed);
 	};
 
@@ -275,8 +275,29 @@ export class NavigationService {
 	 * Slides to the previous item or page.
 	 * @param [speed=false] - The time in milliseconds for the transition.
 	 */
-	prev(speed) {
+	prev(speed: number | boolean) {
     this.carouselService.to(this._getPosition(false), speed);
-	};
+  };
+
+ 	/**
+	 * Slides to the specified item or page.
+	 * @param position - The position of the item or page.
+	 * @param speed - The time in milliseconds for the transition.
+	 * @param standard - Whether to use the standard behaviour or not. Default meaning false
+	 */
+	to(position: number, speed: number | boolean, standard?: boolean) {
+		let length;
+		if (!standard && this._pages.length) {
+      length = this._pages.length;
+      this.carouselService.to(this._pages[((position % length) + length) % length].start, speed);
+		} else {
+      this.carouselService.to(position, speed);
+		}
+  };
+
+  moveByDot(dotId: string) {
+    const index = this._dotsData.dots.findIndex(dot => dotId === dot.id);
+    this.to(index, this.carouselService.settings.dotsSpeed);
+  }
 
 }
