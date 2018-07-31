@@ -353,7 +353,7 @@ export class CarouselComponent
       }
       this.navData = data.navData;
       this.dotsData = data.dotsData;
-      console.log(this.dotsData);
+      console.log(this.stageData);
 
     })
   }
@@ -368,6 +368,10 @@ export class CarouselComponent
 
   prev() {
     this.navigationService.prev(this.carouselService.settings.navSpeed);
+  }
+
+  moveByDot(dotId: string) {
+    this.navigationService.moveByDot(dotId);
   }
 
 }

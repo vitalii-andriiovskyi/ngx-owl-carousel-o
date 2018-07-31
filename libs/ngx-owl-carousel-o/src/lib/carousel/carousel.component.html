@@ -30,7 +30,7 @@
 		<div class="owl-next" [ngClass]="{'disabled': navData?.next?.disabled}" (click)="next()" [innerHTML]="navData?.next?.htmlText"></div>
 	</div> <!-- /.owl-nav -->
 	<div class="owl-dots" [ngClass]="{'disabled': dotsData?.disabled}">
-		<div *ngFor="let dot of dotsData?.dots" class="owl-dot" [ngClass]="{'active': dot.active}">
+		<div *ngFor="let dot of dotsData?.dots" class="owl-dot" [ngClass]="{'active': dot.active}" (click)="moveByDot(dot.id)">
 			<span [innerHTML]="dot.innerContent"></span>
 		</div>
 	</div> <!-- /.owl-dots -->
