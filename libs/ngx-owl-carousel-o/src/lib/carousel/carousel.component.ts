@@ -15,13 +15,13 @@ import {
   EventEmitter
 } from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Observable, merge } from 'rxjs';
 
 import { ResizeService } from '../services/resize.service';
 import { WINDOW } from '../services/window-ref.service';
 import { tap } from 'rxjs/operators';
 import { CustomEventsService } from '../services/custom-events.service';
-import { CarouselService, StageData, OwlDOMData } from '../services/carousel.service';
+import { CarouselService, StageData, OwlDOMData, CarouselCurrentData } from '../services/carousel.service';
 import { SliderModel } from '../models/slider.model';
 import { OwlOptions } from '../models/owl-options.model';
 import { NavData, DotsData } from '../models/navigation-data.models';
@@ -137,7 +137,7 @@ export class CarouselComponent
   slidersStageData: SlidersData[] = [];
 
   resizeSubscription: Subscription;
-  curSettingsSubscr: Subscription;
+  private _allObservSubscription: Subscription;
 
   owlVisible: true;
 
@@ -290,6 +290,21 @@ export class CarouselComponent
    */
   isVisible = false;
 
+  /**
+   * observable for getting current View Settings
+   */
+  private _viewCurSettings$: Observable<CarouselCurrentData>;
+
+  /**
+   * observable for catching the end of transition of carousel
+   */
+  private _translatedCarousel$: Observable<string>;
+
+  /**
+   * observable for merging all Observables and creating one subscription
+   */
+  private _carouselMerge$: Observable<CarouselCurrentData | string>;
+
   constructor(
     private el: ElementRef,
     private resizeService: ResizeService,
@@ -300,7 +315,7 @@ export class CarouselComponent
   ) {}
 
   ngOnInit() {
-    this.getCarouselCurrentSettings();
+    this.spyDataStreams();
 
     // this.options = Object.assign({}, this.defaults, this.options);
 
@@ -343,12 +358,13 @@ export class CarouselComponent
     this.carouselService.setup(this.carouselWindowWidth, this.slides.toArray(), this.options);
     this.carouselService.initialize(this.slides.toArray());
   }
+
   ngOnDestroy() {
     if (this.resizeSubscription) {
       this.resizeSubscription.unsubscribe();
     }
 
-    this.curSettingsSubscr.unsubscribe();
+    this._allObservSubscription.unsubscribe();
   }
 
   // type checking
@@ -360,37 +376,68 @@ export class CarouselComponent
     return typeof x === 'object';
   }
 
-  getCarouselCurrentSettings() {
-    this.curSettingsSubscr = this.carouselService.getCarouselCurSettings().subscribe(data => {
-      this.owlDOMData = data.owlDOMData;
-      this.stageData = data.stageData;
-      this.slidesData = data.slidesData;
-      if (!this.carouselLoaded) {
-        this.carouselLoaded = true;
-      }
-      this.navData = data.navData;
-      this.dotsData = data.dotsData;
-      console.log(this.stageData);
+  /**
+   * Joins the observable login in one place: sets values to some observables, merges this observables and
+   * subcribes to merge func
+   */
+  spyDataStreams() {
+    this._viewCurSettings$ = this.carouselService.getViewCurSettings().pipe(
+      tap(data => {
+        this.owlDOMData = data.owlDOMData;
+        this.stageData = data.stageData;
+        this.slidesData = data.slidesData;
+        if (!this.carouselLoaded) {
+          this.carouselLoaded = true;
+        }
+        this.navData = data.navData;
+        this.dotsData = data.dotsData;
+        console.log(this.stageData);
+      })
+    );
 
-    })
+    this._translatedCarousel$ = this.carouselService.getTranslatedState().pipe(
+      tap(() => {
+        this.gatherTranslatedData();
+        this.translatedCarousel.emit(this.slidesOutputData);
+        this.slidesOutputData = {};
+      })
+    );
+
+    this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$);
+    this._allObservSubscription = this._carouselMerge$.subscribe(() => {});
   }
 
+  /**
+   * Handler for transitioend event
+   */
   onTransitionEnd() {
     this.carouselService.onTransitionEnd();
   }
 
+  /**
+   * Handler for click event, attached to next button
+   */
   next() {
     this.navigationService.next(this.carouselService.settings.navSpeed);
   }
 
+  /**
+   * Handler for click event, attached to prev button
+   */
   prev() {
     this.navigationService.prev(this.carouselService.settings.navSpeed);
   }
 
+  /**
+   * Handler for click event, attached to dots
+   */
   moveByDot(dotId: string) {
     this.navigationService.moveByDot(dotId);
   }
 
+  /**
+   * gathers and prepares data intended for passing to the user by means of firing event translatedCarousel
+   */
   gatherTranslatedData() {
     let startPosition: number;
     const activeSlides: SliderModel[] = this.slidesData
