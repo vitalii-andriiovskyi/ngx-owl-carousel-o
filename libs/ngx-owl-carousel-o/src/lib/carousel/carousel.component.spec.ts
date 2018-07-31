@@ -1039,7 +1039,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render 3 dots with [options]="{loop: true, merge: true}" and defined [dataMerge]`, async(() => {
+  it(`should render 3 dots with [options]="{loop: true, merge: true}" and defined [dataMerge]; ; and move carousel correctly by clicking dots`, fakeAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{ loop: true, merge: true}">
@@ -1053,21 +1053,72 @@ describe('CarouselComponent', () => {
     `;
     fixtureHost = createTestComponent(html);
     deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    fixtureHost.detectChanges();
 
-    fixtureHost.whenStable().then(() => {
-      fixtureHost.detectChanges();
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    // option items=3 (3 widths of slides must be visible).
+    // Slide 1 takes 2 widths (w), slide 2 takes 1 w, slide 3 takes 3 w, slide 4 takes 1 w and slide 5 takes 2 w.
+    // Together 2 + 1 + 3 + 1 + 2 = 9
+    // 9 / 3 items = 3 pages = 3 dots
+    expect(deDots.length).toBe(3, '3 dots');
 
-      deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-      // option items=3 (3 widths of slides must be visible).
-      // Slide 1 takes 2 widths (w), slide 2 takes 1 w, slide 3 takes 3 w, slide 4 takes 1 w and slide 5 takes 2 w.
-      // Together 2 + 1 + 3 + 1 + 2 = 9
-      // 9 / 3 items = 3 pages = 3 dots
-      expect(deDots.length).toBe(3, '3 dots');
+    deDots[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
 
-    });
+    deActiveSlides =  deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(1, '1 active slide');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    expect(deDots[1].nativeElement.classList.contains('active')).toBeTruthy('2th dot is active');
+
+    deDots[2].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides =  deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(2, '2 active slides');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 4', 'Slide 4');
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    expect(deDots[2].nativeElement.classList.contains('active')).toBeTruthy('3th dot is active');
+
+    deDots[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides =  deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(2, '2 active slides');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
+
+    deDots[2].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides =  deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(2, '2 active slides');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 4', 'Slide 4');
+    expect(deActiveSlides[0].nativeElement.classList.contains('cloned')).toBeTruthy('Slide 4 is cloned');
+    expect(deActiveSlides[1].nativeElement.innerHTML).toContain('Slide 5', 'Slide 5');
+    expect(deActiveSlides[1].nativeElement.classList.contains('cloned')).toBeTruthy('Slide 5 is cloned');
+
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    expect(deDots[2].nativeElement.classList.contains('active')).toBeTruthy('3th dot is active');
+
+    deDots[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides =  deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(2, '2 active slides');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
   }));
 
-  it(`should render 3 dots with [options]="{merge: true}" and defined [dataMerge]`, async(() => {
+  it(`should render 3 dots with [options]="{merge: true}" and defined [dataMerge]; and move carousel correctly by clicking dots`, fakeAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{ loop: true, merge: true}">
@@ -1081,18 +1132,37 @@ describe('CarouselComponent', () => {
     `;
     fixtureHost = createTestComponent(html);
     deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    fixtureHost.detectChanges();
 
-    fixtureHost.whenStable().then(() => {
-      fixtureHost.detectChanges();
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    // option items=3 (3 widths of slides must be visible).
+    // Slide 1 takes 2 widths (w), slide 2 takes 1 w, slide 3 takes 3 w, slide 4 takes 1 w and slide 5 takes 2 w.
+    // Together 2 + 1 + 3 + 1 + 2 = 9
+    // 9 / 3 items = 3 pages = 3 dots
+    expect(deDots.length).toBe(3, '3 dots');
 
-      deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-      // option items=3 (3 widths of slides must be visible).
-      // Slide 1 takes 2 widths (w), slide 2 takes 1 w, slide 3 takes 3 w, slide 4 takes 1 w and slide 5 takes 2 w.
-      // Together 2 + 1 + 3 + 1 + 2 = 9
-      // 9 / 3 items = 3 pages = 3 dots
-      expect(deDots.length).toBe(3, '3 dots');
+    deDots[2].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
 
-    });
+    deActiveSlides =  deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(2, '2 active slides');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 4', 'Slide 4');
+    expect(deActiveSlides[1].nativeElement.innerHTML).toContain('Slide 5', 'Slide 5');
+
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    expect(deDots[2].nativeElement.classList.contains('active')).toBeTruthy('3th dot is active');
+
+    deDots[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides =  deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(2, '2 active slides');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
   }));
 
   it(`should render 4 dots with [options]="{autoWidth: true}" and undefined [width]`, async(() => {
