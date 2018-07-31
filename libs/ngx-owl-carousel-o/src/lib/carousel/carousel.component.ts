@@ -4,13 +4,15 @@ import {
   AfterContentChecked,
   OnDestroy,
   Input,
+  Output,
   Directive,
   QueryList,
   ContentChildren,
   TemplateRef,
   ElementRef,
   Inject,
-  AfterContentInit
+  AfterContentInit,
+  EventEmitter
 } from '@angular/core';
 
 import { Subscription } from 'rxjs';
@@ -88,6 +90,14 @@ class FirstActiveSlide {
   index: number;
 }
 
+/**
+ * data which will be passed out after ending of transition of carousel
+ */
+export class SlidesOutputData {
+  startPosition?: number;
+  slides?: SliderModel[];
+};
+
 class ResolutionCarouselData {
   [resolution: string]: number;
 }
@@ -108,6 +118,8 @@ export class CarouselComponent
   implements OnInit, AfterContentChecked, AfterContentInit, OnDestroy {
   @ContentChildren(CarouselSlideDirective)
   slides: QueryList<CarouselSlideDirective>;
+
+  @Output() translatedCarousel = new EventEmitter<SlidesOutputData>();
 
   // number of visible sliders in carousel; it's needed for defining width of each slider
   private _slidersQuantity = 1;
@@ -152,7 +164,12 @@ export class CarouselComponent
 	/**
 	 * data of dots block
 	 */
-	dotsData: DotsData;
+  dotsData: DotsData;
+
+  /**
+   * data, wich are passed out of carousel after ending of transioning of carousel
+   */
+  slidesOutputData: SlidesOutputData;
 
   /**
    * shows whether carousel is loaded of not.
@@ -372,6 +389,27 @@ export class CarouselComponent
 
   moveByDot(dotId: string) {
     this.navigationService.moveByDot(dotId);
+  }
+
+  gatherTranslatedData() {
+    let startPosition: number;
+    const activeSlides: SliderModel[] = this.slidesData
+      .filter(slide => slide.active === true)
+      .map(slide => {
+        const id = slide.id.indexOf('cloned-') >= 0 ? slide.id.slice(7) : slide.id;
+        return {
+          id: id,
+          width: slide.width,
+          marginL: slide.marginL,
+          marginR: slide.marginR,
+          center: slide.center
+        }
+      });
+    startPosition = this.slides.toArray().findIndex(slide => slide.id === activeSlides[0].id);
+    this.slidesOutputData = {
+      startPosition: startPosition,
+      slides: activeSlides
+    }
   }
 
 }
