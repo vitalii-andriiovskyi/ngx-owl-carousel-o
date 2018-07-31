@@ -4,13 +4,15 @@ import { By } from '@angular/platform-browser';
 
 import {
   CarouselComponent,
-  CarouselSlideDirective
+  CarouselSlideDirective,
+  SlidesOutputData
 } from './carousel.component';
 import { ResizeService } from '../services/resize.service';
 import { WINDOW_PROVIDERS } from '../services/window-ref.service';
 import { CarouselService } from '../services/carousel.service';
 import { createGenericTestComponent } from './test/common';
 import { cold, getTestScheduler, hot } from 'jasmine-marbles';
+import { NavigationService } from '../services/navigation.service';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>
@@ -45,7 +47,7 @@ describe('CarouselComponent', () => {
           TestComponent,
           CarouselSlideDirective
         ],
-        providers: [ResizeService, WINDOW_PROVIDERS, CarouselService]
+        providers: [ResizeService, WINDOW_PROVIDERS, CarouselService, NavigationService]
       });
     })
   );
@@ -2322,6 +2324,99 @@ describe('CarouselComponent', () => {
     deStage = deCarouselComponent.query(By.css('.owl-stage'));
     expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('2s', '2s transition');
   }));
+
+  it('should pass data after moving carousel [options]="{nav: true}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{nav: true}" (translated)="getPassedData($event)">
+          <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+          <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+          <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+          <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+          <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    testComponent = fixtureHost.componentInstance;
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+
+    fixtureHost.detectChanges();
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    expect(deDots.length).toBe(2, '2 dots');
+
+    deDots[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deDots[0].triggerEventHandler('click', null);
+    tick();
+
+    // 2 tests below should be before the 2 lines above. But in that case output data don't get updates. In real app everything works fine.
+    // This is because the long time of transition. Making one more else click finishes current transition, calls handler for ontransionend and starts new transition
+    expect(testComponent.translatedData.startPosition).toBe(2, '2 startPosition');
+    expect(testComponent.translatedData.slides[0].id).toBe('owl-slide-3', 'owl-slide-3');
+
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+    // 2 tests below should be before the 2 lines above. But in that case output data don't get updates. In real app everything works fine.
+    // This is because the long time of transition. Making one more else click finishes current transition, calls handler for ontransionend and starts new transition
+    expect(testComponent.translatedData.startPosition).toBe(1, '1 startPosition');
+    expect(testComponent.translatedData.slides[0].id).toBe('owl-slide-2', 'owl-slide-2');
+  }));
+
+
+  it('should pass data after moving carousel [options]="{nav: true, loop: true}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{nav: true, loop: true}" (translated)="getPassedData($event)">
+          <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+          <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+          <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+          <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+          <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+          <ng-template carouselSlide id="owl-slide-6">Slide 6</ng-template>
+          <ng-template carouselSlide id="owl-slide-7">Slide 7</ng-template>
+          <ng-template carouselSlide id="owl-slide-8">Slide 8</ng-template>
+          <ng-template carouselSlide id="owl-slide-9">Slide 9</ng-template>
+          <ng-template carouselSlide id="owl-slide-10">Slide 10</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    testComponent = fixtureHost.componentInstance;
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+
+    fixtureHost.detectChanges();
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+
+    // 2 tests below should be before the 2 lines above. But in that case output data don't get updates. In real app everything works fine.
+    // This is because the long time of transition. Making one more else click finishes current transition, calls handler for ontransionend and starts new transition
+    expect(testComponent.translatedData.startPosition).toBe(9, '9 startPosition');
+    expect(testComponent.translatedData.slides[0].id).toBe('owl-slide-10', 'owl-slide-10');
+
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+  }));
+
+
+  // the ending of tests
 });
 
 @Component({
@@ -2330,4 +2425,9 @@ describe('CarouselComponent', () => {
 })
 class TestComponent {
   options: any = {};
+  translatedData: SlidesOutputData;
+  constructor() {}
+  getPassedData(data: any) {
+    this.translatedData = data;
+  }
 }
