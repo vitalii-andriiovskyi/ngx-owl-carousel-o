@@ -85,7 +85,16 @@ export class NavigationService {
       })
     );
 
-    const navMerge$: Observable<string> = merge(initializedCarousel$, changedSettings$);
+    const refreshedCarousel$: Observable<string> = this.carouselService.getRefreshedState().pipe(
+      tap(() => {
+        this._updateNavPages();
+        this.draw();
+        this.update();
+        this.carouselService.sendChanges();
+      })
+    );
+
+    const navMerge$: Observable<string> = merge(initializedCarousel$, changedSettings$, refreshedCarousel$);
     this.navSubscription = navMerge$.subscribe(
       () => {}
     );
