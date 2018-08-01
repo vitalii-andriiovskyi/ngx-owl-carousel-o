@@ -172,7 +172,8 @@ export class NavigationService {
           this._dotsData.dots.push({
             active: false,
             id: `dot-${item.id}`,
-            innerContent: item.dotContent
+            innerContent: item.dotContent,
+            showInnerContent: true
           });
         });
 			} else if (difference > 0) {
@@ -181,6 +182,7 @@ export class NavigationService {
           this._dotsData.dots.push({
             active: false,
             id: `dot-${i + startI}`,
+            showInnerContent: false
           });
         }
 			} else if (difference < 0) {
