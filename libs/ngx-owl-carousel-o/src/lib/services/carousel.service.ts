@@ -804,7 +804,7 @@ export class CarouselService {
 	 */
   refresh() {
 		this.enter('refreshing');
-		// this.trigger('refresh');
+		this._refreshCarousel$.next('refresh');
 		this._defineSlidesData();
 		this.setViewportItemsN();
 
@@ -817,7 +817,7 @@ export class CarouselService {
 		// this.$element.removeClass(this.options.refreshClass);
 
 		this.leave('refreshing');
-		// this.trigger('refreshed');
+		this._refreshedCarousel$.next('refreshed');
 	 }
 
   /**
