@@ -44,6 +44,10 @@ export class OwlSingeDot {
 	 * inner content of dot; can be html-markup
 	 */
 	innerContent?: string;
+	/**
+	 * enabled css-class which gives right presentaion of innerContent of dot.
+	 */
+	showInnerContent?: boolean;
 }
 /**
  * data model for owl dot-block
