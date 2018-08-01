@@ -724,10 +724,9 @@ export class CarouselService {
 		this.sendChanges();
 		// register event handlers
 		this._registerEventHandlers();
-		this._initializedCarousel$.next('initialized');
 
 		this.leave('initializing');
-		// this.trigger('initialized');
+		this._trigger('initialized');
 	};
 
 	/**
@@ -804,7 +803,7 @@ export class CarouselService {
 	 */
   refresh() {
 		this.enter('refreshing');
-		this._refreshCarousel$.next('refresh');
+		this._trigger('refresh');
 		this._defineSlidesData();
 		this.setViewportItemsN();
 
@@ -817,7 +816,7 @@ export class CarouselService {
 		// this.$element.removeClass(this.options.refreshClass);
 
 		this.leave('refreshing');
-		this._refreshedCarousel$.next('refreshed');
+		this._trigger('refreshed');
 	 }
 
   /**
@@ -841,14 +840,13 @@ export class CarouselService {
 		// 	this.leave('resizing');
 		// 	return false;
 		// }
-		this._resizeCarousel$.next('resize');
-
+		this._trigger('resize');
 		this.invalidate('width');
 
 		this.refresh();
 
 		this.leave('resizing');
-		this._resizedCarousel$.next('resized');
+		this._trigger('resized');
 	}
 
   /**
@@ -971,7 +969,7 @@ export class CarouselService {
 			this._current = position;
 
 			this.invalidate('position');
-			this._changedSettingsCarousel$.next('changed');
+			this._trigger('changed');
 		}
 
 		return this._current;
@@ -1288,8 +1286,7 @@ export class CarouselService {
 			return false;
 		}
 		this.leave('animating');
-		this._translatedCarousel$.next('translated');
-		// this._trigger('translated');
+		this._trigger('translated');
 	}
 
   /**
