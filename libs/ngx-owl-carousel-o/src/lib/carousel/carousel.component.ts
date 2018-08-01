@@ -19,7 +19,7 @@ import { Subscription, Observable, merge } from 'rxjs';
 
 import { ResizeService } from '../services/resize.service';
 import { WINDOW } from '../services/window-ref.service';
-import { tap } from 'rxjs/operators';
+import { tap, delay, filter } from 'rxjs/operators';
 import { CustomEventsService } from '../services/custom-events.service';
 import { CarouselService, StageData, OwlDOMData, CarouselCurrentData } from '../services/carousel.service';
 import { SliderModel } from '../models/slider.model';
@@ -341,9 +341,6 @@ export class CarouselComponent
       '.owl-carousel'
     ).clientWidth;
 
-    this.resizeSubscription = this.resizeService.onResize$
-      .pipe(tap(() => {}))
-      .subscribe(() => {});
   }
 
   ngAfterContentChecked() {
@@ -357,6 +354,8 @@ export class CarouselComponent
   ngAfterContentInit() {
     this.carouselService.setup(this.carouselWindowWidth, this.slides.toArray(), this.options);
     this.carouselService.initialize(this.slides.toArray());
+
+    this._winResizeWatcher();
   }
 
   ngOnDestroy() {
@@ -405,6 +404,23 @@ export class CarouselComponent
 
     this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$);
     this._allObservSubscription = this._carouselMerge$.subscribe(() => {});
+  }
+
+  /**
+   * init subscription to resize event and attaches handler for this event
+   */
+  private _winResizeWatcher() {
+    if (Object.keys(this.carouselService._options.responsive).length) {
+      this.resizeSubscription = this.resizeService.onResize$
+        .pipe(
+          filter(() => this.carouselWindowWidth !== this.el.nativeElement.querySelector('.owl-carousel').clientWidth),
+          delay(this.carouselService.settings.responsiveRefreshRate)
+        )
+        .subscribe(() => {
+          this.carouselService.onResize(this.el.nativeElement.querySelector('.owl-carousel').clientWidth);
+          this.carouselWindowWidth = this.el.nativeElement.querySelector('.owl-carousel').clientWidth;
+        });
+    }
   }
 
   /**
