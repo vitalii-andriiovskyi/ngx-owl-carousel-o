@@ -817,12 +817,14 @@ export class CarouselService {
 		// 	this.leave('resizing');
 		// 	return false;
 		// }
+		this._resizeCarousel$.next('resize');
 
 		this.invalidate('width');
 
 		this.refresh();
 
 		this.leave('resizing');
+		this._resizedCarousel$.next('resized');
 	}
 
   /**
