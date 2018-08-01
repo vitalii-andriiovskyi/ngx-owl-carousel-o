@@ -123,6 +123,14 @@ export class CarouselService {
 	private _initializedCarousel$ = new Subject<string>();
 	private _changedSettingsCarousel$ = new Subject<string>();
 	private _translatedCarousel$ = new Subject<string>();
+	/**
+   * observable catching moment when carousel starts rebuilding after firing resize event
+   */
+	private _resizeCarousel$ = new Subject<string>();
+	/**
+   * observable catching moment when carousel ends rebuilding after firing resize event
+   */
+	private _resizedCarousel$ = new Subject<string>();
 
   /**
    * Current settings for the carousel.
@@ -516,6 +524,22 @@ export class CarouselService {
 	}
 
 	/**
+	 * makes _resizeCarousel$ Subject become Observable
+	 * @returns Observable of _resizeCarousel$ Subject
+	 */
+	getResizeState(): Observable<string> {
+		return this._resizeCarousel$.asObservable();
+	}
+
+	/**
+	 * makes _resizedCarousel$ Subject become Observable
+	 * @returns Observable of _resizedCarousel$ Subject
+	 */
+	getResizedState(): Observable<string> {
+		return this._resizedCarousel$.asObservable();
+	}
+
+	/**
 	 * Setups custom options expanding default options
 	 * @param options custom options
 	 */
@@ -782,10 +806,6 @@ export class CarouselService {
 	 */
   onResize(curWidth: number) {
 		if (!this._items.length) {
-			return false;
-		}
-
-		if (this._width === curWidth) {
 			return false;
 		}
 
