@@ -124,13 +124,21 @@ export class CarouselService {
 	private _changedSettingsCarousel$ = new Subject<string>();
 	private _translatedCarousel$ = new Subject<string>();
 	/**
-   * observable catching moment when carousel starts rebuilding after firing resize event
+   * Subject for notification when the carousel's rebuilding caused by resize event starts
    */
 	private _resizeCarousel$ = new Subject<string>();
 	/**
-   * observable catching moment when carousel ends rebuilding after firing resize event
+   * Subject for notification  when the carousel's rebuilding caused by resize event is ended
    */
 	private _resizedCarousel$ = new Subject<string>();
+	/**
+   * Subject for notification when the refresh of carousel starts
+   */
+	private _refreshCarousel$ = new Subject<string>();
+	/**
+   * Subject for notification when the refresh of carousel is ended
+   */
+	private _refreshedCarousel$ = new Subject<string>();
 
   /**
    * Current settings for the carousel.
@@ -537,6 +545,22 @@ export class CarouselService {
 	 */
 	getResizedState(): Observable<string> {
 		return this._resizedCarousel$.asObservable();
+	}
+
+	/**
+	 * makes _refreshCarousel$ Subject become Observable
+	 * @returns Observable of _refreshCarousel$ Subject
+	 */
+	getRefreshState(): Observable<string> {
+		return this._refreshCarousel$.asObservable();
+	}
+
+	/**
+	 * makes _refreshedCarousel$ Subject become Observable
+	 * @returns Observable of _refreshedCarousel$ Subject
+	 */
+	getRefreshedState(): Observable<string> {
+		return this._refreshedCarousel$.asObservable();
 	}
 
 	/**
