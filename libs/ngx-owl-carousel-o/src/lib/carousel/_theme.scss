@@ -60,5 +60,20 @@
 				}
 			}
 		}
+		.owl-dot-text {
+			span {
+				width: auto;
+				height: auto;
+				background: none;
+				border-radius: 0;
+			}
+			&.active {
+				background-color: transparent;
+				span {
+					background-color: transparent;
+					color: $dot-background;
+				}
+			}
+		}
 	}
 }
