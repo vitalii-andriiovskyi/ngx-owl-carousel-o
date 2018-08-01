@@ -1045,6 +1045,9 @@ describe('CarouselComponent', () => {
       deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
       expect(deDots.length).toBe(5, '5 dots');
       expect(deDots[0].nativeElement.innerHTML).toContain('to Slide 1', 'to Slide 1');
+      expect(deDots[0].nativeElement.classList.contains('owl-dot-text')).toBeTruthy('dot has .owl-dot-text');
+      deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot.owl-dot-text'));
+      expect(deDots.length).toBe(5, '5 dots');
     });
   }));
 
