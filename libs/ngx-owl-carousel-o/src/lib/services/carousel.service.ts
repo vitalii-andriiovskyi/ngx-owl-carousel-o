@@ -229,9 +229,9 @@ export class CarouselService {
   private _breakpoint: any = null;
 
 	/**
-		 * Current options set by the caller including defaults.
-		 */
-	private _options: OwlOptions = {};
+	 * Current options set by the caller including defaults.
+	 */
+	_options: OwlOptions = {};
 
   /**
    * Invalidated parts within the update process.
@@ -713,7 +713,7 @@ export class CarouselService {
     let i = 0;
     const n = this._pipe.length,
       filter = item => this._invalidated[item],
-      cache = {};
+			cache = {};
 
     while (i < n) {
       const filteredPipe = this._pipe[i].filter.filter(filter);
@@ -779,7 +779,30 @@ export class CarouselService {
   /**
 	 * Checks window `resize` event.
 	 */
-  private _onResize() { }
+  onResize(curWidth: number) {
+		if (!this._items.length) {
+			return false;
+		}
+
+		if (this._width === curWidth) {
+			return false;
+		}
+
+		this.setCarouselWidth(curWidth);
+
+		this.enter('resizing');
+
+		// if (this.trigger('resize').isDefaultPrevented()) {
+		// 	this.leave('resizing');
+		// 	return false;
+		// }
+
+		this.invalidate('width');
+
+		this.refresh();
+
+		this.leave('resizing');
+	}
 
   /**
 	 * Registers event handlers.
