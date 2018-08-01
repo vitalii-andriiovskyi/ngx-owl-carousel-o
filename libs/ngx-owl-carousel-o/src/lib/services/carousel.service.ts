@@ -1411,46 +1411,30 @@ export class CarouselService {
 	 * @param [enter=false] - Indicates if the call enters the specified state or not.
 	 * @returns return {Event} - The event arguments.
 	 */
-  private _trigger(name: string, data?: any, namespace?: string, state?: string, enter?: boolean): any {
-		const status = {
-				item: { count: this._items.length, index: this.current() }
-			},
-			handler = [ 'on', name, namespace ]
-				.filter(item => item)
-				.map((item, i) => {
-					item = item.toLowerCase();
-					if (i !== 0) {
-						item = item.charAt(0).toUpperCase() + item.slice(1);
-					}
-					return item;
-				})
-				.join(),
-			event = {
-				type: [ name, 'owl', namespace || 'carousel' ].join('.').toLowerCase(),
-				// relatedTarget: this,
-				status, // should be item: { count... }
-				data // should be property: { name: 'settings', ... }
-			};
-
-		if (!this._supress[name]) {
-			for (const key in this._plugins) {
-				if (this._plugins.hasOwnProperty(key)) {
-					const plugin = this._plugins[key];
-					if (plugin.onTrigger) {
-						plugin.onTrigger(event);
-					}
-				}
-			}
-
-			// this.register({ type: Owl.Type.Event, name: name });
-			this.customEventsCreator.emit(event.type, event);
-
-			if (this.settings && typeof this.settings[handler] === 'function') {
-				this.settings[handler].call(this, event);
-			}
+  private _trigger(name: string, data?: any, namespace?: string, state?: string, enter?: boolean) {
+		switch (name) {
+			case 'initialized':
+				this._initializedCarousel$.next(name)
+				break;
+			case 'translated':
+				this._translatedCarousel$.next(name)
+				break;
+			case 'resize':
+				this._resizeCarousel$.next(name)
+				break;
+			case 'resized':
+				this._resizedCarousel$.next(name)
+				break;
+			case 'refresh':
+				this._refreshCarousel$.next(name)
+				break;
+			case 'refreshed':
+				this._refreshedCarousel$.next(name)
+				break;
+			default:
+				break;
 		}
 
-		return event;
 	}
 
 	/**
