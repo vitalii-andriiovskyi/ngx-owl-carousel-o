@@ -1406,27 +1406,29 @@ export class CarouselService {
 	 * @param [namespace=carousel] - The event namespace.
 	 * @param [state] - The state which is associated with the event.
 	 * @param [enter=false] - Indicates if the call enters the specified state or not.
-	 * @returns return {Event} - The event arguments.
 	 */
   private _trigger(name: string, data?: any, namespace?: string, state?: string, enter?: boolean) {
 		switch (name) {
 			case 'initialized':
-				this._initializedCarousel$.next(name)
+				this._initializedCarousel$.next(name);
 				break;
 			case 'translated':
-				this._translatedCarousel$.next(name)
+				this._translatedCarousel$.next(name);
+				break;
+			case 'changed':
+				this._changedSettingsCarousel$.next(name);
 				break;
 			case 'resize':
-				this._resizeCarousel$.next(name)
+				this._resizeCarousel$.next(name);
 				break;
 			case 'resized':
-				this._resizedCarousel$.next(name)
+				this._resizedCarousel$.next(name);
 				break;
 			case 'refresh':
-				this._refreshCarousel$.next(name)
+				this._refreshCarousel$.next(name);
 				break;
 			case 'refreshed':
-				this._refreshedCarousel$.next(name)
+				this._refreshedCarousel$.next(name);
 				break;
 			default:
 				break;
