@@ -167,6 +167,7 @@ export class NavigationService {
 			difference = this._pages.length - this._dotsData.dots.length;
 
 			if (settings.dotsData && difference !== 0) {
+        this._dotsData.dots = [];
         items.forEach(item => {
           this._dotsData.dots.push({
             active: false,
@@ -175,10 +176,11 @@ export class NavigationService {
           });
         });
 			} else if (difference > 0) {
+        const startI = this._dotsData.dots.length > 0 ? this._dotsData.dots.length : 0;
         for (let i = 0; i < difference; i++) {
           this._dotsData.dots.push({
             active: false,
-            id: `dot-${i}`,
+            id: `dot-${i + startI}`,
           });
         }
 			} else if (difference < 0) {
