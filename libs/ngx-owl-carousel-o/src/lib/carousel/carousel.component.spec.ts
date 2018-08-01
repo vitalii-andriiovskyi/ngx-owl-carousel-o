@@ -13,7 +13,8 @@ import { CarouselService } from '../services/carousel.service';
 import { createGenericTestComponent } from './test/common';
 import { cold, getTestScheduler, hot } from 'jasmine-marbles';
 import { NavigationService } from '../services/navigation.service';
-
+import 'zone.js/dist/zone-patch-rxjs-fake-async';
+// import 'zone.js/lib/rxjs/rxjs-fake-async';
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>
 
@@ -563,43 +564,192 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render responsive carousel  [options]="{responsive: {'0': {items: 1}, '600': {items: 2}, '900': {items: 3}}}"`, async(() => {
+  it(`should render responsive carousel  [options]="{nav: true, responsive: {'0': {items: 1}, '600': {items: 2}, '900': {items: 3}}}"`, fakeAsync(() => {
     const html = `
       <div class="owl-wrapper" style="width: 1200px; margin: auto">
-        <owl-carousel-o [options]="{responsive: {'0': {items: 1}, '600': {items: 2}, '900': {items: 3}}}">
+        <owl-carousel-o [options]="{nav: true, responsive: {'0': {items: 1}, '600': {items: 2}, '900': {items: 3}}}">
           <ng-template carouselSlide>Slide 1</ng-template>
           <ng-template carouselSlide>Slide 2</ng-template>
           <ng-template carouselSlide>Slide 3</ng-template>
           <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
         </owl-carousel-o>
       </div>
     `;
     fixtureHost = createTestComponent(html);
     deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    fixtureHost.detectChanges();
 
-    fixtureHost.whenStable().then(() => {
-      fixtureHost.detectChanges();
+    carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+    expect(carouselHTML.classList.contains('owl-responsive')).toBeTruthy('should have class .owl-responsive');
 
-      carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
-      expect(carouselHTML.classList.contains('owl-responsive')).toBeTruthy('should have class .owl-responsive');
+    let activeSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(activeSlides.length).toBe(3, 'should be 3 active slides');
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    expect(deDots.length).toBe(2, '2 dots');
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled')).toBeTruthy('prev button is disabled');
 
-      let activeSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-      expect(activeSlides.length).toBe(3, 'should be 3 active slides');
+    // ------- set width of carousel to 800px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 800px; margin: auto');
+    fixtureHost.detectChanges();
 
-      carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 800px; margin: auto');
-      fixtureHost.detectChanges();
+    expect(carouselHTML.clientWidth).toBe(800);
 
-      expect(carouselHTML.clientWidth).toBe(800);
+    carouselService = fixtureHost.debugElement.injector.get(CarouselService);
 
-      carouselService = fixtureHost.debugElement.injector.get(CarouselService);
-      carouselService.setCarouselWidth(800);
-      carouselService.refresh();
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
 
-      fixtureHost.detectChanges();
-      activeSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-      expect(activeSlides.length).toBe(2, 'should be 2 active slides');
+    activeSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(activeSlides.length).toBe(2, 'should be 2 active slides');
+    expect(activeSlides[0].nativeElement.innerHTML).toContain('Slide 1');
 
-    });
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    expect(deDots.length).toBe(3, '3 dots');
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled')).toBeTruthy('prev button is disabled');
+
+    // ------- set width of carousel to 500px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 500px; margin: auto');
+    fixtureHost.detectChanges();
+    expect(carouselHTML.clientWidth).toBe(500);
+
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
+
+    activeSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(activeSlides.length).toBe(1, 'should be 1 active slide');
+    expect(activeSlides[0].nativeElement.innerHTML).toContain('Slide 1');
+
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    expect(deDots.length).toBe(5, '5 dots');
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled')).toBeTruthy('prev button is disabled');
+
+    // ------- set width of carousel to 800px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 800px; margin: auto');
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
+
+    activeSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(activeSlides.length).toBe(2, 'should be 2 active slides');
+    expect(activeSlides[0].nativeElement.innerHTML).toContain('Slide 1');
+
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    expect(deDots.length).toBe(3, '3 dots');
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled')).toBeTruthy('prev button is disabled');
+
+    // ------- set width of carousel to 1100px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 1100px; margin: auto');
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
+
+    activeSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(activeSlides.length).toBe(3, 'should be 3 active slides');
+    expect(activeSlides[0].nativeElement.innerHTML).toContain('Slide 1');
+
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    expect(deDots.length).toBe(2, '2 dots');
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled')).toBeTruthy('prev button is disabled');
+  }));
+
+  it(`should render responsive carousel  [options]="{nav: true, responsive: {'0': {items: 1}, '600': {items: 2}, '900': {items: 3}}}"`, fakeAsync(() => {
+    const html = `
+      <div class="owl-wrapper" style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{nav: true, responsive: {'0': {items: 1}, '600': {items: 2}, '900': {items: 3}}}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    fixtureHost.detectChanges();
+
+    carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+    expect(carouselHTML.classList.contains('owl-responsive')).toBeTruthy('should have class .owl-responsive');
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(3, 'should be 3 active slides');
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
+    deDots[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+
+    // ------- set width of carousel to 800px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 800px; margin: auto');
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+    expect(deActiveSlides.length).toBe(2, '2 active slides');
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    expect(deDots[1].nativeElement.classList.contains('active')).toBeTruthy('2 dot is active');
+
+    deDots[2].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 4', 'Slide 4');
+
+    // ------- set width of carousel to 400px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 400px; margin: auto');
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 4', 'Slide 4');
+    expect(deActiveSlides.length).toBe(1, '1 active slide');
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    expect(deDots[3].nativeElement.classList.contains('active')).toBeTruthy('4th dot is active');
+
+    // 2 clicks on prev button Slide 2 should be first from actives
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+
+    // ------- set width of carousel to 800px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 800px; margin: auto');
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+    expect(deActiveSlides.length).toBe(2, '2 active slide');
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
   }));
 
   it(`should set paddings to .owl-stage  [options]="{items: 3, loop: true, stagePadding: 40}`, async(() => {
