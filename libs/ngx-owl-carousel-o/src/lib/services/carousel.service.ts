@@ -608,7 +608,8 @@ export class CarouselService {
 	 */
   setup(carouselWidth: number, slides: CarouselSlideDirective[], options: OwlOptions) {
 		this.setCarouselWidth(carouselWidth);
-    this.setItems(slides);
+		this.setItems(slides);
+		this._defineSlidesData();
 		this.setOptions(options);
 
 		this.settings = { ...this._options};
@@ -756,7 +757,7 @@ export class CarouselService {
   refresh() {
 		this.enter('refreshing');
 		// this.trigger('refresh');
-
+		this._defineSlidesData();
 		this.setViewportItemsN();
 
 		this._optionsLogic();
@@ -1260,13 +1261,17 @@ export class CarouselService {
 	}
 
   /**
-	 * sets _items, slidesData, _mergers
-	 * @public
+	 * sets _items
 	 * @param content - The new content.
 	 */
   setItems(content: CarouselSlideDirective[]) {
 		this._items = content;
-		// there must be set active to true for current slides
+	}
+
+	/**
+	 * sets slidesData using this.items
+	 */
+	private _defineSlidesData() {
 		this.slidesData = this._items.map(slide => {
 			return {
 				id: `${slide.id}`,
@@ -1275,17 +1280,8 @@ export class CarouselService {
 				dataMerge: slide.dataMerge,
 				width: 0,
 				cloned: false
-			}
+			};
 		});
-
-		// content.filter(function() {
-		// 	return this.nodeType === 1;
-		// }).each($.proxy(function(index, item) {
-		// 	item = this.prepare(item);
-		// 	this.$stage.append(item);
-		// 	this._items.push(item);
-		// 	this._mergers.push(item.find('[data-merge]').addBack('[data-merge]').attr('data-merge') * 1 || 1);
-		// }, this));
 	}
 
   	/**
