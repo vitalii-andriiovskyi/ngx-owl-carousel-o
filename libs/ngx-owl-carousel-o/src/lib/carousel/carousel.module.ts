@@ -6,6 +6,7 @@ import {
 } from './carousel.component';
 import { WINDOW_PROVIDERS } from '../services/window-ref.service';
 import { ResizeService } from '../services/resize.service';
+import { DraggableDirective } from './draggable.directive';
 
 export {
   CarouselComponent,
@@ -14,7 +15,7 @@ export {
 
 @NgModule({
   imports: [CommonModule],
-  declarations: [CarouselComponent, CarouselSlideDirective],
+  declarations: [CarouselComponent, CarouselSlideDirective, DraggableDirective],
   exports: [CarouselComponent, CarouselSlideDirective],
   providers: [WINDOW_PROVIDERS, ResizeService]
 })
