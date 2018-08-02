@@ -5,11 +5,26 @@ import { CarouselService } from '../services/carousel.service';
   selector: '[owlDraggable]'
 })
 export class DraggableDirective {
+  /**
+   * Function wich will be returned after attaching listener to 'mousemove' event
+   */
   listenerMouseMove: () => void;
+  /**
+   * Function wich will be returned after attaching listener to 'touchmove' event
+   */
   listenerTouchMove: () => void;
+  /**
+   * Function wich will be returned after attaching listener to 'mousemove' event
+   */
   listenerOneMouseMove: () => void;
+  /**
+   * Function wich will be returned after attaching listener to 'touchmove' event
+   */
   listenerOneTouchMove: () => void;
 
+  /**
+   * Object with data needed for dragging
+   */
   private _drag: any = {
     stage: {}
   };
@@ -40,10 +55,16 @@ export class DraggableDirective {
     return false;
   }
 
+  /**
+   * Passes this to _oneMouseTouchMove();
+   */
   bindOneMouseTouchMove = (ev) => {
     this._oneMouseTouchMove(ev);
   }
 
+  /**
+   * Passes this to _onDragMove();
+   */
   bindOnDragMove = (ev) => {
     this._onDragMove(ev);
   }
@@ -99,6 +120,10 @@ export class DraggableDirective {
 
   }
 
+  /**
+   * Attaches listeners to `touchmove` and `mousemove` events; initiates updating carousel after starting dragging
+   * @param event event objech of mouse or touch event
+   */
   private _oneMouseTouchMove(event) {
     const delta = this.carouselService.difference(this._drag.pointer, this.carouselService.pointer(event));
     this.listenerMouseMove = this.renderer.listen(document, 'mousemove', this.bindOnDragMove);
@@ -149,6 +174,10 @@ export class DraggableDirective {
 		this._animate(stage.x);
   };
 
+  /**
+   * Moves .owl-stage left-right
+   * @param coordinate coordinate to be set to .owl-stage
+   */
   private _animate(coordinate: number) {
     this.renderer.setStyle(this.el.nativeElement, 'transform', `translate3d(${coordinate}px,0px,0px`);
     this.renderer.setStyle(this.el.nativeElement, 'transition', '0s');
