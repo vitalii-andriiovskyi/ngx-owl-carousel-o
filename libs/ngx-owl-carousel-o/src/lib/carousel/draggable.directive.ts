@@ -40,6 +40,14 @@ export class DraggableDirective {
     return false;
   }
 
+  bindOneMouseTouchMove = (ev) => {
+    this._oneMouseTouchMove(ev);
+  }
+
+  bindOnDragMove = (ev) => {
+    this._onDragMove(ev);
+  }
+
   /**
 	 * Handles `touchstart` and `mousedown` events.
 	 * @todo Horizontal swipe threshold as option
@@ -84,16 +92,17 @@ export class DraggableDirective {
 		this._drag.stage.current = stage;
     this._drag.pointer = this.carouselService.pointer(event);
 
-    this.listenerOneMouseMove = this.renderer.listen(document, 'mousemove', (evt) => this._oneMouseTouchMove(evt));
-    this.listenerOneTouchMove = this.renderer.listen(document, 'touchmove', (evt) => this._oneMouseTouchMove(evt));
+    this.zone.runOutsideAngular(() => {
+      this.listenerOneMouseMove = this.renderer.listen(document, 'mousemove', this.bindOneMouseTouchMove);
+      this.listenerOneTouchMove = this.renderer.listen(document, 'touchmove', this.bindOneMouseTouchMove);
+    });
 
   }
 
   private _oneMouseTouchMove(event) {
     const delta = this.carouselService.difference(this._drag.pointer, this.carouselService.pointer(event));
-    // this.listenerMouseMove = this.renderer.listen(document, 'mousemove', (evt) => this.onDragMove(evt));
-    // this.listenerTouchMove = this.renderer.listen(document, 'touchmove', (evt) => this.onDragMove(evt));
-
+    this.listenerMouseMove = this.renderer.listen(document, 'mousemove', this.bindOnDragMove);
+    this.listenerTouchMove = this.renderer.listen(document, 'touchmove', this.bindOnDragMove);
     if (Math.abs(delta.x) < Math.abs(delta.y) && this.carouselService.is('valid')) {
       return;
     }
@@ -102,6 +111,7 @@ export class DraggableDirective {
 
     this.carouselService.enter('dragging');
     // this.carouselService._trigger('drag');
+    this.carouselService.sendChanges();
     this.listenerOneMouseMove();
     this.listenerOneTouchMove();
   }
