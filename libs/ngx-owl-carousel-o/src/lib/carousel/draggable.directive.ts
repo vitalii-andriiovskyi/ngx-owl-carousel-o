@@ -245,4 +245,38 @@ export class DraggableDirective {
   private _pointer(event: any): any {
     return this.carouselService.pointer(event);
   }
+
+  /**
+	 * Gets the difference of two vectors.
+	 * @param first - The first vector.
+	 * @param second- The second vector.
+	 * @returns - The difference.
+	 */
+  private _difference(first: Coords, second: Coords): any {
+    return this.carouselService.difference(first, second);
+  }
+
+  /**
+	 * Checks whether the carousel is in a specific state or not.
+	 * @param state - The state to check.
+	 * @return} - The flag which indicates if the carousel is busy.
+	 */
+  private _is(state: string): boolean {
+    return this.carouselService.is(state);
+  }
+
+  /**
+  * Enters a state.
+  * @param name - The state name.
+  */
+  private _enter(name: string) {
+    this.carouselService.enter(name);
+  }
+
+  /**
+	 * Sends all data needed for View.
+	 */
+  private _sendChanges() {
+    this.carouselService.sendChanges();
+  }
 }
