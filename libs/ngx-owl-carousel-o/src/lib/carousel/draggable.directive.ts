@@ -23,6 +23,15 @@ export class DraggableDirective {
   listenerOneTouchMove: () => void;
 
   /**
+   * Function wich will be returned after attaching listener to 'mouseup' event
+   */
+  listenerMouseUp: () => void;
+  /**
+   * Function wich will be returned after attaching listener to 'touchend' event
+   */
+  listenerTouchEnd: () => void;
+
+  /**
    * Object with data needed for dragging
    */
   private _drag: any = {
