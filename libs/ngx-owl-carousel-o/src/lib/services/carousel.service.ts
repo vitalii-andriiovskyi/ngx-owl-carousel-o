@@ -1191,11 +1191,10 @@ export class CarouselService {
   /**
 	 * Gets the coordinate of an item.
 	 * @todo The name of this method is missleanding.
-	 * @public
 	 * @param position - The absolute position of the item within `minimum()` and `maximum()`.
 	 * @returns - The coordinate of the item in pixel or all coordinates.
 	 */
-  coordinates(position: number): number | number[] {
+  coordinates(position?: number): number | number[] {
 		let multiplier = 1,
 			newPosition = position - 1,
 			coordinate,
