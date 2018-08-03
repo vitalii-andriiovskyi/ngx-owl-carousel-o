@@ -88,6 +88,15 @@ export class DraggableDirective {
   }
 
   /**
+   * Passes this to _onDragMove();
+   */
+  bindOnDragEnd = (ev) => {
+    // this.zone.run(() => {
+      this._onDragEnd(ev);
+    // });
+  }
+
+  /**
 	 * Handles `touchstart` and `mousedown` events.
 	 * @todo Horizontal swipe threshold as option
 	 * @todo #261
@@ -180,6 +189,44 @@ export class DraggableDirective {
     this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transform', `translate3d(${coordinate}px,0px,0px`);
     this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transition', '0s');
   }
+
+  /**
+	 * Handles the `touchend` and `mouseup` events.
+	 * @todo #261
+	 * @todo Threshold for click event
+	 * @param event - The event arguments.
+	 */
+	private _onDragEnd(event) {
+		const delta = this.carouselService.difference(this._drag.pointer, this.carouselService.pointer(event)),
+			stage = this._drag.stage.current,
+			direction = delta.x > +this.carouselService.settings.rtl ? 'left' : 'right';
+    console.log(stage);
+    this.carouselService.owlDOMData.isGrab = false;
+
+    this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transform', ``);
+    this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transition', this.carouselService.speed(+this.carouselService.settings.dragEndSpeed || this.carouselService.settings.smartSpeed)/1000 +'s');
+		if (delta.x !== 0 && this.carouselService.is('dragging') || !this.carouselService.is('valid')) {
+			this.carouselService.speed(+this.carouselService.settings.dragEndSpeed || this.carouselService.settings.smartSpeed);
+			this.carouselService.current(this.carouselService.closest(stage.x, delta.x !== 0 ? direction : this._drag.direction));
+      this.carouselService.invalidate('position');
+			this.carouselService.update();
+
+			this._drag.direction = direction;
+
+			if (Math.abs(delta.x) > 3 || new Date().getTime() - this._drag.time > 300) {
+				// this._drag.target.one('click.owl.core', function() { return false; });
+			}
+		}
+
+		if (!this.carouselService.is('dragging')) {
+			return;
+		}
+
+		this.carouselService.leave('dragging');
+    // this.carouselService.trigger('dragged');
+    this.listenerMouseUp();
+    this.listenerTouchEnd();
+  };
 
   /**
 	 * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
