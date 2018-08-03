@@ -910,21 +910,21 @@ export class CarouselService {
   closest(coordinate: number, direction: string): number {
 		const pull = 30,
 			width = this.width(),
-			coordinates = this.coordinates();
+			coordinates = this.coordinates() as number[];
 		let position = -1;
 
 		if (!this.settings.freeDrag) {
 			// check closest item
-			for (let i = 0; i < this._coordinates.length; i++) {
+			for (let i = 0; i < coordinates.length; i++) {
 
-				if (direction === 'left' && coordinate > this._coordinates[i] - pull && coordinate < this._coordinates[i] + pull) {
+				if (direction === 'left' && coordinate > coordinates[i] - pull && coordinate < coordinates[i] + pull) {
 					position = i;
 				// on a right pull, check on previous index
 				// to do so, subtract width from value and set position = index + 1
-				} else if (direction === 'right' && coordinate > this._coordinates[i] - width - pull && coordinate < this._coordinates[i] - width + pull) {
+				} else if (direction === 'right' && coordinate > coordinates[i] - width - pull && coordinate < coordinates[i] - width + pull) {
 					position = i + 1;
-				} else if (this._op(coordinate, '<', this._coordinates[i])
-					&& this._op(coordinate, '>', coordinates[i + 1] || this._coordinates[i] - width)) {
+				} else if (this._op(coordinate, '<', coordinates[i])
+					&& this._op(coordinate, '>', coordinates[i + 1] || coordinates[i] - width)) {
 					position = direction === 'left' ? i + 1 : i;
 				}
 
@@ -1558,7 +1558,7 @@ export class CarouselService {
 			result.y = event.clientY;
 		}
 
-		console.log(result);
+		// console.log(result);
 		return result;
 	 }
 
