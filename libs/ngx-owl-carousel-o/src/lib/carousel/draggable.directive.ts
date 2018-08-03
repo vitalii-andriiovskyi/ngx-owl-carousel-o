@@ -132,18 +132,20 @@ export class DraggableDirective {
    * @param event event objech of mouse or touch event
    */
   private _oneMouseTouchMove(event) {
-    const delta = this.carouselService.difference(this._drag.pointer, this.carouselService.pointer(event));
+    const delta = this._difference(this._drag.pointer, this._pointer(event));
+
     this.listenerMouseMove = this.renderer.listen(document, 'mousemove', this.bindOnDragMove);
     this.listenerTouchMove = this.renderer.listen(document, 'touchmove', this.bindOnDragMove);
-    if (Math.abs(delta.x) < Math.abs(delta.y) && this.carouselService.is('valid')) {
+
+    if (Math.abs(delta.x) < Math.abs(delta.y) && this._is('valid')) {
       return;
     }
 
     event.preventDefault();
 
-    this.carouselService.enter('dragging');
+    this._enter('dragging');
     // this.carouselService._trigger('drag');
-    this.carouselService.sendChanges();
+    this._sendChanges();
     this.listenerOneMouseMove();
     this.listenerOneTouchMove();
   }
