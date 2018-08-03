@@ -43,6 +43,15 @@ export class DraggableDirective {
     return false;
   }
 
+  @HostListener('touchstart', ['$event']) onTouchStart(event) {
+    this._onDragStart(event);
+    return false;
+  }
+
+  @HostListener('touchcancel', ['$event']) onTouchCancel(event) {
+    return false;
+  }
+
   @HostListener('touchend', ['$event']) onTouchEnd(event) {
     return false;
   }
