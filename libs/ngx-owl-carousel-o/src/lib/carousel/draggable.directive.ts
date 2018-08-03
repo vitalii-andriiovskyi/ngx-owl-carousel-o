@@ -156,28 +156,15 @@ export class DraggableDirective {
 	 * @param event - The event arguments.
 	 */
 	private _onDragMove(event) {
-		let minimum = null,
-			maximum = null,
-			pull = null;
-		const	delta = this.carouselService.difference(this._drag.pointer, this.carouselService.pointer(event)),
-			stage = this.carouselService.difference(this._drag.stage.start, delta);
+    let stage: Coords;
+    const stageOrExit: boolean | Coords = this.carouselService.onDragMove(event, this._drag);
 
-		if (!this.carouselService.is('dragging')) {
-			return;
-		}
+    if (stageOrExit === false) {
+      return;
+    }
+    stage = stageOrExit as Coords;
 
 		event.preventDefault();
-
-		if (this.carouselService.settings.loop) {
-			minimum = this.carouselService.coordinates(this.carouselService.minimum());
-			maximum = +this.carouselService.coordinates(this.carouselService.maximum() + 1) - minimum;
-			stage.x = (((stage.x - minimum) % maximum + maximum) % maximum) + minimum;
-		} else {
-			minimum = this.carouselService.settings.rtl ? this.carouselService.coordinates(this.carouselService.maximum()) : this.carouselService.coordinates(this.carouselService.minimum());
-			maximum = this.carouselService.settings.rtl ? this.carouselService.coordinates(this.carouselService.minimum()) : this.carouselService.coordinates(this.carouselService.maximum());
-			pull = this.carouselService.settings.pullDrag ? -1 * delta.x / 5 : 0;
-			stage.x = Math.max(Math.min(stage.x, minimum + pull), maximum + pull);
-		}
 
     this._drag.stage.current = stage;
 		this._animate(stage.x - this._drag.stage.start.x);
