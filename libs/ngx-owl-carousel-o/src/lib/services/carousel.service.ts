@@ -922,9 +922,34 @@ export class CarouselService {
   /**
 	 * Handles the `touchmove` and `mousemove` events.
 	 * @todo #261
-	 * @param {Event} event - The event arguments.
+	 * @param event - The event arguments.
+	 * @param dragData - initial data got after starting dragging
+	 * @returns coords of false
 	 */
-  private _onDragMove(event) { }
+  onDragMove(event: any, dragData: any): boolean | Coords {
+		let minimum = null,
+		maximum = null,
+		pull = null;
+		const	delta = this.difference(dragData.pointer, this.pointer(event)),
+			stage = this.difference(dragData.stage.start, delta);
+
+		if (!this.is('dragging')) {
+			return false;
+		}
+
+		if (this.settings.loop) {
+			minimum = this.coordinates(this.minimum());
+			maximum = +this.coordinates(this.maximum() + 1) - minimum;
+			stage.x = (((stage.x - minimum) % maximum + maximum) % maximum) + minimum;
+		} else {
+			minimum = this.settings.rtl ? this.coordinates(this.maximum()) : this.coordinates(this.minimum());
+			maximum = this.settings.rtl ? this.coordinates(this.minimum()) : this.coordinates(this.maximum());
+			pull = this.settings.pullDrag ? -1 * delta.x / 5 : 0;
+			stage.x = Math.max(Math.min(stage.x, minimum + pull), maximum + pull);
+		}
+
+		return stage;
+	}
 
   /**
 	 * Handles the `touchend` and `mouseup` events.
