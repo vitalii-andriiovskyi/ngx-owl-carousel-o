@@ -1,5 +1,5 @@
 import { Directive, NgZone, ElementRef, HostListener, Renderer2 } from '@angular/core';
-import { CarouselService } from '../services/carousel.service';
+import { CarouselService, Coords } from '../services/carousel.service';
 
 @Directive({
   selector: '[owlDraggable]'
@@ -103,7 +103,7 @@ export class DraggableDirective {
 	 * @param event - The event arguments.
 	 */
 	private _onDragStart(event): any {
-		let stage = null;
+		let stage: Coords = null;
 
 		if (event.which === 3) {
 			return;
@@ -233,7 +233,7 @@ export class DraggableDirective {
 	 * @param event - The event arguments.
 	 * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
 	 */
-  private _prepareDragging(event: any): any {
+  private _prepareDragging(event: any): Coords {
     return this.carouselService.prepareDragging(event);
   }
 
