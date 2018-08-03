@@ -37,6 +37,11 @@ export enum Width {
 	Outer = 'outer'
 };
 
+export class Coords {
+	x: number;
+	y: number;
+}
+
 /**
  * data model for managing classes of .owl-carousel DOM element
  */
@@ -1622,7 +1627,7 @@ export class CarouselService {
 	 * @param second- The second vector.
 	 * @returns - The difference.
 	 */
-  difference(first: {x: number, y: number}, second: {x: number, y: number}): {x: number, y: number} {
+  difference(first: Coords, second: Coords): Coords {
 		return {
 			x: first.x - second.x,
 			y: first.y - second.y
