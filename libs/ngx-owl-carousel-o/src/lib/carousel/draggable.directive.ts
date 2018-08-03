@@ -89,38 +89,18 @@ export class DraggableDirective {
 
 		if (event.which === 3) {
 			return;
-		}
-
-
-    // could be 5 commented lines below; However we have stage transform in stageData and in updates after each move of stage
-    // stage = getComputedStyle(this.el.nativeElement).transform.replace(/.*\(|\)| /g, '').split(',');
-    // stage = {
-    //   x: stage[stage.length === 16 ? 12 : 4],
-    //   y: stage[stage.length === 16 ? 13 : 5]
-    // };
-
-    stage = this.carouselService.stageData.transform.replace(/.*\(|\)| |[^,-\d]\w|\)/g, '').split(',');
-    stage = {
-      x: +stage[0],
-      y: +stage[1]
-    };
-
-		if (this.carouselService.is('animating')) {
-			this.carouselService.animate(stage.x);
-			this.carouselService.invalidate('position');
     }
 
-    if (event.type === 'mousedown') {
-      this.carouselService.owlDOMData.isGrab = true;
-    }
-
-		this.carouselService.speed(0);
+    stage = this._prepareDragging(event);
 
 		this._drag.time = new Date().getTime();
 		this._drag.target = event.target;
 		this._drag.stage.start = stage;
 		this._drag.stage.current = stage;
-    this._drag.pointer = this.carouselService.pointer(event);
+    this._drag.pointer = this._pointer(event);
+
+    this.listenerMouseUp = this.renderer.listen(document, 'mouseup', this.bindOnDragEnd);
+    this.listenerTouchEnd = this.renderer.listen(document, 'touchend', this.bindOnDragEnd);
 
     this.zone.runOutsideAngular(() => {
       this.listenerOneMouseMove = this.renderer.listen(document, 'mousemove', this.bindOneMouseTouchMove);
@@ -179,8 +159,8 @@ export class DraggableDirective {
 			stage.x = Math.max(Math.min(stage.x, minimum + pull), maximum + pull);
 		}
 
-		this._drag.stage.current = stage;
-		this._animate(stage.x);
+    this._drag.stage.current = stage;
+		this._animate(stage.x - this._drag.stage.start.x);
   };
 
   /**
@@ -188,8 +168,25 @@ export class DraggableDirective {
    * @param coordinate coordinate to be set to .owl-stage
    */
   private _animate(coordinate: number) {
-    this.renderer.setStyle(this.el.nativeElement, 'transform', `translate3d(${coordinate}px,0px,0px`);
-    this.renderer.setStyle(this.el.nativeElement, 'transition', '0s');
+    this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transform', `translate3d(${coordinate}px,0px,0px`);
+    this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transition', '0s');
   }
 
+  /**
+	 * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
+	 * @param event - The event arguments.
+	 * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
+	 */
+  private _prepareDragging(event: any): any {
+    return this.carouselService.prepareDragging(event);
+  }
+
+  /**
+	 * Gets unified pointer coordinates from event.
+	 * @param event - The `mousedown` or `touchstart` event.
+	 * @returns - Contains `x` and `y` coordinates of current pointer position.
+	 */
+  private _pointer(event: any): any {
+    return this.carouselService.pointer(event);
+  }
 }
