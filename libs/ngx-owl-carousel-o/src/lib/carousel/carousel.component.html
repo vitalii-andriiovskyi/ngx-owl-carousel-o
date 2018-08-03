@@ -6,31 +6,32 @@
 							'owl-grab': owlDOMData?.isGrab}" #owlCarousel>
 
 	<div *ngIf="carouselLoaded" class="owl-stage-outer">
-		<div class="owl-stage" [ngStyle]="{'width': stageData.width + 'px',
-																			'transform': stageData.transform,
-																			'transition': stageData.transition,
-																			'padding-left': stageData.paddingL + 'px',
-																			'padding-right': stageData.paddingR + 'px' }"
-			(transitionend)="onTransitionEnd()">
-			<ng-container *ngFor="let slide of slidesData; let i = index">
-				<div class="owl-item" [ngClass]="{'active': slide.active, 
-																					'center': slide.center,
-																					'cloned': slide.cloned}" 
-															[ngStyle]="{'width': slide.width + 'px',
-																					'margin-left': slide.marginL + 'px',
-																					'margin-right': slide.marginR + 'px'}">
-					<ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
-				</div><!-- /.owl-item -->
-			</ng-container>
-		</div><!-- /.owl-stage -->
-		
+		<div>
+			<div owlDraggable class="owl-stage" [ngStyle]="{'width': stageData.width + 'px',
+																				'transform': stageData.transform,
+																				'transition': stageData.transition,
+																				'padding-left': stageData.paddingL + 'px',
+																				'padding-right': stageData.paddingR + 'px' }"
+				(transitionend)="onTransitionEnd()">
+				<ng-container *ngFor="let slide of slidesData; let i = index">
+					<div class="owl-item" [ngClass]="{'active': slide.active, 
+																						'center': slide.center,
+																						'cloned': slide.cloned}" 
+																[ngStyle]="{'width': slide.width + 'px',
+																						'margin-left': slide.marginL + 'px',
+																						'margin-right': slide.marginR + 'px'}">
+						<ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
+					</div><!-- /.owl-item -->
+				</ng-container>
+			</div><!-- /.owl-stage -->
+		</div>
   </div> <!-- /.owl-stage-outer -->
 	<div class="owl-nav" [ngClass]="{'disabled': navData?.disabled}">
-		<div class="owl-prev" [ngClass]="{'disabled': navData?.prev?.disabled}" (click)="prev()" [innerHTML]="navData?.prev?.htmlText"></div>
-		<div class="owl-next" [ngClass]="{'disabled': navData?.next?.disabled}" (click)="next()" [innerHTML]="navData?.next?.htmlText"></div>
+		<div class="owl-prev" [ngClass]="{'disabled': navData?.prev?.disabled}" (click)="prev(); $event.stopPropagation()" [innerHTML]="navData?.prev?.htmlText"></div>
+		<div class="owl-next" [ngClass]="{'disabled': navData?.next?.disabled}" (click)="next(); $event.stopPropagation()" [innerHTML]="navData?.next?.htmlText"></div>
 	</div> <!-- /.owl-nav -->
 	<div class="owl-dots" [ngClass]="{'disabled': dotsData?.disabled}">
-		<div *ngFor="let dot of dotsData?.dots" class="owl-dot" [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" (click)="moveByDot(dot.id)">
+		<div *ngFor="let dot of dotsData?.dots" class="owl-dot" [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" (click)="moveByDot(dot.id);  $event.stopPropagation()">
 			<span [innerHTML]="dot.innerContent"></span>
 		</div>
 	</div> <!-- /.owl-dots -->
