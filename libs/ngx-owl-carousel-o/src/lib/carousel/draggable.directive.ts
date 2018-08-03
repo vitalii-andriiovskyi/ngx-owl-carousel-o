@@ -157,7 +157,7 @@ export class DraggableDirective {
 	 */
 	private _onDragMove(event) {
     let stage: Coords;
-    const stageOrExit: boolean | Coords = this.carouselService.onDragMove(event, this._drag);
+    const stageOrExit: boolean | Coords = this.carouselService.defineNewCoordsDrag(event, this._drag);
 
     if (stageOrExit === false) {
       return;

@@ -920,13 +920,13 @@ export class CarouselService {
 	}
 
   /**
-	 * Handles the `touchmove` and `mousemove` events.
+	 * defines new coords for .owl-stage while dragging it
 	 * @todo #261
 	 * @param event - The event arguments.
 	 * @param dragData - initial data got after starting dragging
 	 * @returns coords of false
 	 */
-  onDragMove(event: any, dragData: any): boolean | Coords {
+  defineNewCoordsDrag(event: any, dragData: any): boolean | Coords {
 		let minimum = null,
 		maximum = null,
 		pull = null;
