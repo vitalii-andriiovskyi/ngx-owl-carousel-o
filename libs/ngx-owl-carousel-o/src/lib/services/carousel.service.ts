@@ -903,11 +903,46 @@ export class CarouselService {
   	/**
 	 * Gets absolute position of the closest item for a coordinate.
 	 * @todo Setting `freeDrag` makes `closest` not reusable. See #165.
-	 * @param {Number} coordinate - The coordinate in pixel.
-	 * @param {String} direction - The direction to check for the closest item. Ether `left` or `right`.
-	 * @return {Number} - The absolute position of the closest item.
+	 * @param coordinate - The coordinate in pixel.
+	 * @param direction - The direction to check for the closest item. Ether `left` or `right`.
+	 * @return - The absolute position of the closest item.
 	 */
-  private _closest(coordinate, direction) { }
+  closest(coordinate: number, direction: string): number {
+		const pull = 30,
+			width = this.width(),
+			coordinates = this.coordinates();
+		let position = -1;
+
+		if (!this.settings.freeDrag) {
+			// check closest item
+			for (let i = 0; i < this._coordinates.length; i++) {
+
+				if (direction === 'left' && coordinate > this._coordinates[i] - pull && coordinate < this._coordinates[i] + pull) {
+					position = i;
+				// on a right pull, check on previous index
+				// to do so, subtract width from value and set position = index + 1
+				} else if (direction === 'right' && coordinate > this._coordinates[i] - width - pull && coordinate < this._coordinates[i] - width + pull) {
+					position = i + 1;
+				} else if (this._op(coordinate, '<', this._coordinates[i])
+					&& this._op(coordinate, '>', coordinates[i + 1] || this._coordinates[i] - width)) {
+					position = direction === 'left' ? i + 1 : i;
+				}
+
+				if (position !== -1) { break };
+			}
+		}
+
+		if (!this.settings.loop) {
+			// non loop boundries
+			if (this._op(coordinate, '>', coordinates[this.minimum()])) {
+				position = coordinate = this.minimum();
+			} else if (this._op(coordinate, '<', coordinates[this.maximum()])) {
+				position = coordinate = this.maximum();
+			}
+		}
+
+		return position;
+	 }
 
   /**
 	 * Animates the stage.
