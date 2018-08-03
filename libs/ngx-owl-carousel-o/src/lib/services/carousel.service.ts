@@ -889,8 +889,9 @@ export class CarouselService {
 	 * @param event - The event arguments.
 	 * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
 	 */
-  prepareDragging(event: any): any {
-		let stage: any = null;
+  prepareDragging(event: any): Coords {
+		let stage: Coords = null,
+				transformArr: string[];
 
 		// could be 5 commented lines below; However we have stage transform in stageData and in updates after each move of stage
     // stage = getComputedStyle(this.el.nativeElement).transform.replace(/.*\(|\)| /g, '').split(',');
@@ -899,10 +900,10 @@ export class CarouselService {
     //   y: stage[stage.length === 16 ? 13 : 5]
 		// };
 
-		stage = this.stageData.transform.replace(/.*\(|\)| |[^,-\d]\w|\)/g, '').split(',');
+		transformArr = this.stageData.transform.replace(/.*\(|\)| |[^,-\d]\w|\)/g, '').split(',');
     stage = {
-      x: +stage[0],
-      y: +stage[1]
+      x: +transformArr[0],
+      y: +transformArr[1]
     };
 
 		if (this.is('animating')) {
