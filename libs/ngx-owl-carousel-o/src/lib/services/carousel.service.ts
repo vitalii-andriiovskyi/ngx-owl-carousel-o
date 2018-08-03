@@ -1504,10 +1504,29 @@ export class CarouselService {
   /**
 	 * Gets unified pointer coordinates from event.
 	 * @todo #261
-	 * @param {Event} - The `mousedown` or `touchstart` event.
+	 * @param event - The `mousedown` or `touchstart` event.
 	 * @returns {Object} - Contains `x` and `y` coordinates of current pointer position.
 	 */
-  private _pointer(event) { }
+	pointer(event: any): {x: number, y: number} {
+		const result = { x: null, y: null };
+
+		event = event.originalEvent || event || window.event;
+
+		event = event.touches && event.touches.length ?
+			event.touches[0] : event.changedTouches && event.changedTouches.length ?
+				event.changedTouches[0] : event;
+
+		if (event.pageX) {
+			result.x = event.pageX;
+			result.y = event.pageY;
+		} else {
+			result.x = event.clientX;
+			result.y = event.clientY;
+		}
+
+		console.log(result);
+		return result;
+	 }
 
   	/**
 	 * Determines if the input is a Number or something that can be coerced to a Number
@@ -1537,10 +1556,15 @@ export class CarouselService {
   	/**
 	 * Gets the difference of two vectors.
 	 * @todo #261
-	 * @param {Object} - The first vector.
-	 * @param {Object} - The second vector.
-	 * @returns {Object} - The difference.
+	 * @param first - The first vector.
+	 * @param second- The second vector.
+	 * @returns - The difference.
 	 */
-  private _difference(first, second) { }
+  difference(first: {x: number, y: number}, second: {x: number, y: number}): {x: number, y: number} {
+		return {
+			x: first.x - second.x,
+			y: first.y - second.y
+		};
+	}
 
 }
