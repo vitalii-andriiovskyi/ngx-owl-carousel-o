@@ -878,12 +878,40 @@ export class CarouselService {
 	 }
 
   /**
-	 * Handles `touchstart` and `mousedown` events.
+	 * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
 	 * @todo Horizontal swipe threshold as option
 	 * @todo #261
-	 * @param {Event} event - The event arguments.
+	 * @param event - The event arguments.
+	 * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
 	 */
-  private _onDragStart(event) { }
+  prepareDragging(event: any): any {
+		let stage: any = null;
+
+		// could be 5 commented lines below; However we have stage transform in stageData and in updates after each move of stage
+    // stage = getComputedStyle(this.el.nativeElement).transform.replace(/.*\(|\)| /g, '').split(',');
+    // stage = {
+    //   x: stage[stage.length === 16 ? 12 : 4],
+    //   y: stage[stage.length === 16 ? 13 : 5]
+		// };
+
+		stage = this.stageData.transform.replace(/.*\(|\)| |[^,-\d]\w|\)/g, '').split(',');
+    stage = {
+      x: +stage[0],
+      y: +stage[1]
+    };
+
+		if (this.is('animating')) {
+			this.animate(stage.x);
+			this.invalidate('position');
+    }
+
+    if (event.type === 'mousedown') {
+      this.owlDOMData.isGrab = true;
+    }
+
+		this.speed(0);
+		return stage;
+	}
 
   /**
 	 * Handles the `touchmove` and `mousemove` events.
@@ -1539,7 +1567,7 @@ export class CarouselService {
 	 * Gets unified pointer coordinates from event.
 	 * @todo #261
 	 * @param event - The `mousedown` or `touchstart` event.
-	 * @returns {Object} - Contains `x` and `y` coordinates of current pointer position.
+	 * @returns - Contains `x` and `y` coordinates of current pointer position.
 	 */
 	pointer(event: any): {x: number, y: number} {
 		const result = { x: null, y: null };
