@@ -241,7 +241,7 @@ export class CarouselService {
    * Coordinates of all items in pixel.
    * @todo The name of this member is missleading.
    */
-	private _coordinates: any[] = [];
+	private _coordinates: number[] = [];
 
 	/**
    * Current breakpoint.
@@ -907,7 +907,6 @@ export class CarouselService {
     };
 
 		if (this.is('animating')) {
-			this.animate(stage.x);
 			this.invalidate('position');
     }
 
@@ -969,7 +968,7 @@ export class CarouselService {
   closest(coordinate: number, direction: string): number {
 		const pull = 30,
 			width = this.width(),
-			coordinates = this.coordinates() as number[];
+			coordinates: number[] = this.coordinates() as number[];
 		let position = -1;
 
 		if (!this.settings.freeDrag) {
@@ -985,6 +984,8 @@ export class CarouselService {
 				} else if (this._op(coordinate, '<', coordinates[i])
 					&& this._op(coordinate, '>', coordinates[i + 1] || coordinates[i] - width)) {
 					position = direction === 'left' ? i + 1 : i;
+				} else if (direction === null && coordinate > coordinates[i] - pull && coordinate < coordinates[i] + pull) {
+					position = i;
 				}
 
 				if (position !== -1) { break };
@@ -1257,11 +1258,11 @@ export class CarouselService {
 		let multiplier = 1,
 			newPosition = position - 1,
 			coordinate,
-			result: any;
+			result: number[];
 
 		if (position === undefined) {
 			result = this._coordinates.map((item, index) => {
-				return this.coordinates(index);
+				return this.coordinates(index) as number;
 			});
 			return result;
 		}
@@ -1600,7 +1601,7 @@ export class CarouselService {
 	 * @param event - The `mousedown` or `touchstart` event.
 	 * @returns - Contains `x` and `y` coordinates of current pointer position.
 	 */
-	pointer(event: any): {x: number, y: number} {
+	pointer(event: any): Coords {
 		const result = { x: null, y: null };
 
 		event = event.originalEvent || event || window.event;
