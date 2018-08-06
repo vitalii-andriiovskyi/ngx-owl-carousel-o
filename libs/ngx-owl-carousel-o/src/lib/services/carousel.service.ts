@@ -956,7 +956,30 @@ export class CarouselService {
 	 * @todo Threshold for click event
 	 * @param {Event} event - The event arguments.
 	 */
-  private _onDragEnd(event) { }
+  finishDragging(event: any, dragObj: any, clickAttacher: () => void) {
+		const delta = this.difference(dragObj.pointer, this.pointer(event)),
+        stage = dragObj.stage.current,
+				direction = delta.x > +this.settings.rtl ? 'left' : 'right';
+		let currentSlideI: number;
+
+      if (delta.x !== 0 && this.is('dragging') || !this.is('valid')) {
+        this.speed(+this.settings.dragEndSpeed || this.settings.smartSpeed);
+        currentSlideI = this.closest(stage.x, delta.x !== 0 ? direction : dragObj.direction);
+        this.current(currentSlideI === -1 ? undefined : currentSlideI);
+        this.invalidate('position');
+        this.update();
+
+        dragObj.direction = direction;
+
+        if (Math.abs(delta.x) > 3 || new Date().getTime() - dragObj.time > 300) {
+					clickAttacher();
+        }
+      }
+      if (!this.is('dragging')) {
+        return;
+      }
+      this.leave('dragging');
+	 }
 
   	/**
 	 * Gets absolute position of the closest item for a coordinate.
