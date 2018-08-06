@@ -27,11 +27,11 @@
 		</div>
   </div> <!-- /.owl-stage-outer -->
 	<div class="owl-nav" [ngClass]="{'disabled': navData?.disabled}">
-		<div class="owl-prev" [ngClass]="{'disabled': navData?.prev?.disabled}" (click)="prev(); $event.stopPropagation()" [innerHTML]="navData?.prev?.htmlText"></div>
-		<div class="owl-next" [ngClass]="{'disabled': navData?.next?.disabled}" (click)="next(); $event.stopPropagation()" [innerHTML]="navData?.next?.htmlText"></div>
+		<div class="owl-prev" [ngClass]="{'disabled': navData?.prev?.disabled}" (click)="prev()" [innerHTML]="navData?.prev?.htmlText"></div>
+		<div class="owl-next" [ngClass]="{'disabled': navData?.next?.disabled}" (click)="next()" [innerHTML]="navData?.next?.htmlText"></div>
 	</div> <!-- /.owl-nav -->
 	<div class="owl-dots" [ngClass]="{'disabled': dotsData?.disabled}">
-		<div *ngFor="let dot of dotsData?.dots" class="owl-dot" [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" (click)="moveByDot(dot.id);  $event.stopPropagation()">
+		<div *ngFor="let dot of dotsData?.dots" class="owl-dot" [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" (click)="moveByDot(dot.id)">
 			<span [innerHTML]="dot.innerContent"></span>
 		</div>
 	</div> <!-- /.owl-dots -->
