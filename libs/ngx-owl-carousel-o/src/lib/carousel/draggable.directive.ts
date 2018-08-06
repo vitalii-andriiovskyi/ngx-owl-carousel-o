@@ -294,6 +294,22 @@ export class DraggableDirective implements OnInit, OnDestroy{
   }
 
   /**
+   * Attaches handler for 'click' event on any element in .owl-stage in order to prevent dragging when moving of cursor is less than 3px
+   */
+  private _oneClickHandler = () => {
+    this.listenerOneClick = this.renderer.listen(this._drag.target, 'click', () => false)
+    this.listenerOneClick();
+  }
+
+  /**
+   * Finishes dragging
+   * @param event object event of 'mouseUp' of 'touchend' events
+   */
+  private _finishDragging(event: any) {
+    this.carouselService.finishDrag(event, this._drag, this._oneClickHandler);
+  }
+
+  /**
 	 * Gets unified pointer coordinates from event.
 	 * @param event - The `mousedown` or `touchstart` event.
 	 * @returns - Contains `x` and `y` coordinates of current pointer position.
