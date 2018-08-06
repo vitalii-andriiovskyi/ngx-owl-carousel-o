@@ -233,35 +233,13 @@ export class DraggableDirective implements OnInit, OnDestroy{
 	 */
 	private _onDragEnd(event) {
     this.carouselService.owlDOMData.isGrab = false;
-    if(this._drag.moving) {
 
-      const delta = this.carouselService.difference(this._drag.pointer, this.carouselService.pointer(event)),
-        stage = this._drag.stage.current,
-        direction = delta.x > +this.carouselService.settings.rtl ? 'left' : 'right';
-      console.log(stage);
-
+    if (this._drag.moving) {
       this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transform', ``);
       this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transition', this.carouselService.speed(+this.carouselService.settings.dragEndSpeed || this.carouselService.settings.smartSpeed)/1000 +'s');
 
-      if (delta.x !== 0 && this.carouselService.is('dragging') || !this.carouselService.is('valid')) {
-        this.carouselService.speed(+this.carouselService.settings.dragEndSpeed || this.carouselService.settings.smartSpeed);
-        const currentSlideI = this.carouselService.closest(stage.x, delta.x !== 0 ? direction : this._drag.direction);
-        this.carouselService.current(currentSlideI === -1 ? undefined : currentSlideI);
-        this.carouselService.invalidate('position');
-        this.carouselService.update();
-
-        this._drag.direction = direction;
-
-        if (Math.abs(delta.x) > 3 || new Date().getTime() - this._drag.time > 300) {
-          this.listenerOneClick = this.renderer.listen(this._drag.target, 'click', () => false)
-          this.listenerOneClick();
-        }
-      }
+      this._finishDragging(event);
       this.listenerMouseMove();
-      if (!this.carouselService.is('dragging')) {
-        return;
-      }
-      this.carouselService.leave('dragging');
     }
 
     this._drag = {
@@ -276,8 +254,6 @@ export class DraggableDirective implements OnInit, OnDestroy{
       active: false,
       moving: false
     };
-
-
 
     // this.carouselService.trigger('dragged');
     this.listenerMouseUp();
@@ -306,7 +282,7 @@ export class DraggableDirective implements OnInit, OnDestroy{
    * @param event object event of 'mouseUp' of 'touchend' events
    */
   private _finishDragging(event: any) {
-    this.carouselService.finishDrag(event, this._drag, this._oneClickHandler);
+    this.carouselService.finishDragging(event, this._drag, this._oneClickHandler);
   }
 
   /**
