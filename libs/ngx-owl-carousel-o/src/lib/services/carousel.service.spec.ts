@@ -68,7 +68,6 @@ describe('CarouselService in context of TestComponent', () => {
   let testComponent: TestComponent;
 
   let fixtureHost: ComponentFixture<TestComponent>;
-
   let deCarouselComponent: DebugElement;
 
   beforeEach(
@@ -85,8 +84,36 @@ describe('CarouselService in context of TestComponent', () => {
     })
   );
 
+  it('should be correct result after calling closest() method with 2th argument "null"', fakeAsync(() => {
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o>
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
 
-}
+    let closestItem: number;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    carouselService = deCarouselComponent.injector.get(CarouselService);
+
+    closestItem = carouselService.closest(-100, null);
+    expect(closestItem).toBe(0, '0');
+
+    closestItem = carouselService.closest(-6, null);
+    expect(closestItem).toBe(0, '0');
+
+    closestItem = carouselService.closest(50, null);
+    expect(closestItem).toBe(0, '0');
+  }));
+
+});
 
 @Component({
   selector: 'test-dom',
