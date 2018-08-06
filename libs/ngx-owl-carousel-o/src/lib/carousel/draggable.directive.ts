@@ -1,10 +1,12 @@
-import { Directive, NgZone, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import { Directive, NgZone, ElementRef, HostListener, Renderer2, OnInit, OnDestroy } from '@angular/core';
 import { CarouselService, Coords } from '../services/carousel.service';
+import { Subject, Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 @Directive({
   selector: '[owlDraggable]'
 })
-export class DraggableDirective {
+export class DraggableDirective implements OnInit, OnDestroy{
   /**
    * Function wich will be returned after attaching listener to 'mousemove' event
    */
@@ -52,6 +54,16 @@ export class DraggableDirective {
     moving: false
   };
 
+  /**
+   * Subject for notification when the carousel's rebuilding caused by resize event starts
+   */
+  private _oneDragMove$ = new Subject<any>();
+
+  /**
+   * Subsctiption to _oneDragMove$ Subject
+   */
+  private _oneMoveSubsription: Subscription;
+
   constructor(private zone: NgZone,
               private el: ElementRef,
               private renderer: Renderer2,
@@ -85,6 +97,18 @@ export class DraggableDirective {
 
   @HostListener('selectstart') onSelectStart() {
     return false;
+  }
+
+  ngOnInit() {
+    this._oneMoveSubsription = this._oneDragMove$
+      .pipe(first())
+      .subscribe(() => {
+        this._sendChanges();
+      });
+  }
+
+  ngOnDestroy() {
+    this._oneMoveSubsription.unsubscribe();
   }
 
   /**
@@ -166,7 +190,8 @@ export class DraggableDirective {
 
     this._enter('dragging');
     // this.carouselService._trigger('drag');
-    this._sendChanges();
+    this._oneDragMove$.next(event);
+    // this._sendChanges();
   }
 
   	/**
@@ -283,8 +308,8 @@ export class DraggableDirective {
 	 * @param second- The second vector.
 	 * @returns - The difference.
 	 */
-  private _difference(first: Coords, second: Coords): any {
-    return this.carouselService.difference(first, second);
+  private _difference(firstC: Coords, second: Coords): any {
+    return this.carouselService.difference(firstC, second);
   }
 
   /**
