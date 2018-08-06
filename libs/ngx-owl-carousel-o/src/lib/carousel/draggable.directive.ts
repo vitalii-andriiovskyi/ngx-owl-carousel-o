@@ -35,7 +35,16 @@ export class DraggableDirective {
    * Object with data needed for dragging
    */
   private _drag: any = {
-    stage: {}
+    time: null,
+    target: null,
+    pointer: null,
+    stage: {
+      start: null,
+      current: null
+    },
+    direction: null,
+    active: false,
+    moving: false
   };
 
   constructor(private zone: NgZone,
@@ -116,6 +125,7 @@ export class DraggableDirective {
 		this._drag.stage.start = stage;
 		this._drag.stage.current = stage;
     this._drag.pointer = this._pointer(event);
+    this._drag.active = true;
 
     this.listenerMouseUp = this.renderer.listen(document, 'mouseup', this.bindOnDragEnd);
     this.listenerTouchEnd = this.renderer.listen(document, 'touchend', this.bindOnDragEnd);
@@ -132,22 +142,26 @@ export class DraggableDirective {
    * @param event event objech of mouse or touch event
    */
   private _oneMouseTouchMove(event) {
+    if (!this._drag.active) return false;
     const delta = this._difference(this._drag.pointer, this._pointer(event));
 
-    this.listenerMouseMove = this.renderer.listen(document, 'mousemove', this.bindOnDragMove);
-    this.listenerTouchMove = this.renderer.listen(document, 'touchmove', this.bindOnDragMove);
+    this._drag.moving = true;
+
+    this.listenerOneMouseMove();
+    this.listenerOneTouchMove();
 
     if (Math.abs(delta.x) < Math.abs(delta.y) && this._is('valid')) {
+      this._drag.active = false;
       return;
     }
+    this.listenerMouseMove = this.renderer.listen(document, 'mousemove', this.bindOnDragMove);
+    this.listenerTouchMove = this.renderer.listen(document, 'touchmove', this.bindOnDragMove);
 
     event.preventDefault();
 
     this._enter('dragging');
     // this.carouselService._trigger('drag');
     this._sendChanges();
-    this.listenerOneMouseMove();
-    this.listenerOneTouchMove();
   }
 
   	/**
@@ -156,6 +170,8 @@ export class DraggableDirective {
 	 * @param event - The event arguments.
 	 */
 	private _onDragMove(event) {
+    if (!this._drag.active) return false;
+
     let stage: Coords;
     const stageOrExit: boolean | Coords = this.carouselService.defineNewCoordsDrag(event, this._drag);
 
@@ -186,32 +202,51 @@ export class DraggableDirective {
 	 * @param event - The event arguments.
 	 */
 	private _onDragEnd(event) {
-		const delta = this.carouselService.difference(this._drag.pointer, this.carouselService.pointer(event)),
-			stage = this._drag.stage.current,
-			direction = delta.x > +this.carouselService.settings.rtl ? 'left' : 'right';
-    console.log(stage);
     this.carouselService.owlDOMData.isGrab = false;
+    if(this._drag.moving) {
 
-    this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transform', ``);
-    this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transition', this.carouselService.speed(+this.carouselService.settings.dragEndSpeed || this.carouselService.settings.smartSpeed)/1000 +'s');
-		if (delta.x !== 0 && this.carouselService.is('dragging') || !this.carouselService.is('valid')) {
-			this.carouselService.speed(+this.carouselService.settings.dragEndSpeed || this.carouselService.settings.smartSpeed);
-			this.carouselService.current(this.carouselService.closest(stage.x, delta.x !== 0 ? direction : this._drag.direction));
-      this.carouselService.invalidate('position');
-			this.carouselService.update();
+      const delta = this.carouselService.difference(this._drag.pointer, this.carouselService.pointer(event)),
+        stage = this._drag.stage.current,
+        direction = delta.x > +this.carouselService.settings.rtl ? 'left' : 'right';
+      console.log(stage);
 
-			this._drag.direction = direction;
+      this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transform', ``);
+      this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transition', this.carouselService.speed(+this.carouselService.settings.dragEndSpeed || this.carouselService.settings.smartSpeed)/1000 +'s');
+      if (delta.x !== 0 && this.carouselService.is('dragging') || !this.carouselService.is('valid')) {
+        this.carouselService.speed(+this.carouselService.settings.dragEndSpeed || this.carouselService.settings.smartSpeed);
+        const newSlideI = this.carouselService.closest(stage.x, delta.x !== 0 ? direction : this._drag.direction);
+        this.carouselService.current(newSlideI === -1 ? undefined : newSlideI);
+        this.carouselService.invalidate('position');
+        this.carouselService.update();
 
-			if (Math.abs(delta.x) > 3 || new Date().getTime() - this._drag.time > 300) {
-				// this._drag.target.one('click.owl.core', function() { return false; });
-			}
-		}
+        this._drag.direction = direction;
 
-		if (!this.carouselService.is('dragging')) {
-			return;
-		}
+        if (Math.abs(delta.x) > 3 || new Date().getTime() - this._drag.time > 300) {
+          // this._drag.target.one('click.owl.core', function() { return false; });
+        }
+      }
+      this.listenerMouseMove();
+      if (!this.carouselService.is('dragging')) {
+        return;
+      }
+      this.carouselService.leave('dragging');
+    }
 
-		this.carouselService.leave('dragging');
+    this._drag = {
+      time: null,
+      target: null,
+      pointer: null,
+      stage: {
+        start: null,
+        current: null
+      },
+      direction: null,
+      active: false,
+      moving: false
+    };
+
+
+
     // this.carouselService.trigger('dragged');
     this.listenerMouseUp();
     this.listenerTouchEnd();
