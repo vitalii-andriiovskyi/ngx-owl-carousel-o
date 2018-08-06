@@ -32,6 +32,11 @@ export class DraggableDirective {
   listenerTouchEnd: () => void;
 
   /**
+   * Function wich will be returned after attaching listener to 'click' event
+   */
+  listenerOneClick: () => void;
+
+  /**
    * Object with data needed for dragging
    */
   private _drag: any = {
@@ -212,17 +217,19 @@ export class DraggableDirective {
 
       this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transform', ``);
       this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transition', this.carouselService.speed(+this.carouselService.settings.dragEndSpeed || this.carouselService.settings.smartSpeed)/1000 +'s');
+
       if (delta.x !== 0 && this.carouselService.is('dragging') || !this.carouselService.is('valid')) {
         this.carouselService.speed(+this.carouselService.settings.dragEndSpeed || this.carouselService.settings.smartSpeed);
-        const newSlideI = this.carouselService.closest(stage.x, delta.x !== 0 ? direction : this._drag.direction);
-        this.carouselService.current(newSlideI === -1 ? undefined : newSlideI);
+        const currentSlideI = this.carouselService.closest(stage.x, delta.x !== 0 ? direction : this._drag.direction);
+        this.carouselService.current(currentSlideI === -1 ? undefined : currentSlideI);
         this.carouselService.invalidate('position');
         this.carouselService.update();
 
         this._drag.direction = direction;
 
         if (Math.abs(delta.x) > 3 || new Date().getTime() - this._drag.time > 300) {
-          // this._drag.target.one('click.owl.core', function() { return false; });
+          this.listenerOneClick = this.renderer.listen(this._drag.target, 'click', () => false)
+          this.listenerOneClick();
         }
       }
       this.listenerMouseMove();
