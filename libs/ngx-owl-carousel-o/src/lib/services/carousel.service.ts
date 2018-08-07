@@ -994,7 +994,12 @@ export class CarouselService {
 			coordinates: number[] = this.coordinates() as number[];
 		let position = -1;
 
-		if (!this.settings.freeDrag) {
+		// option 'freeDrag' doesn't have realization and using it here creates problem:
+		// variable 'position' stays unchanged (it equals -1 at the begging) and thus method returns -1
+		// Returning value is consumed by method current(), which taking -1 as argument calculates the index of new current slide
+		// In case of having 5 slides ans 'loop=false; calling 'current(-1)' sets props '_current' as 4. Just last slide remains visible instead of 3 last slides. 
+
+		// if (!this.settings.freeDrag) {
 			// check closest item
 			for (let i = 0; i < coordinates.length; i++) {
 
@@ -1013,7 +1018,7 @@ export class CarouselService {
 
 				if (position !== -1) { break };
 			}
-		}
+		// }
 
 		if (!this.settings.loop) {
 			// non loop boundries
