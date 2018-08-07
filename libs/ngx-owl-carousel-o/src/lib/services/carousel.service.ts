@@ -939,14 +939,18 @@ export class CarouselService {
 		const delta = this.difference(dragObj.pointer, this.pointer(event)),
         stage = dragObj.stage.current,
 				direction = delta.x > +this.settings.rtl ? 'left' : 'right';
-		let currentSlideI: number;
+		let currentSlideI: number, current: number, newCurrent: number;
 
       if (delta.x !== 0 && this.is('dragging') || !this.is('valid')) {
         this.speed(+this.settings.dragEndSpeed || this.settings.smartSpeed);
-        currentSlideI = this.closest(stage.x, delta.x !== 0 ? direction : dragObj.direction);
-        this.current(currentSlideI === -1 ? undefined : currentSlideI);
-        this.invalidate('position');
-        this.update();
+				currentSlideI = this.closest(stage.x, delta.x !== 0 ? direction : dragObj.direction);
+				current = this.current();
+        newCurrent = this.current(currentSlideI === -1 ? undefined : currentSlideI);
+
+				if (current !== newCurrent) {
+					this.invalidate('position');
+					this.update();
+				}
 
         dragObj.direction = direction;
 
