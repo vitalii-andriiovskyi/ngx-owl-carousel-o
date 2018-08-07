@@ -13,6 +13,7 @@ import { CarouselService } from '../services/carousel.service';
 import { createGenericTestComponent } from './test/common';
 import { cold, getTestScheduler, hot } from 'jasmine-marbles';
 import { NavigationService } from '../services/navigation.service';
+import { DraggableDirective } from './draggable.directive';
 import 'zone.js/dist/zone-patch-rxjs-fake-async';
 // import 'zone.js/lib/rxjs/rxjs-fake-async';
 const createTestComponent = (html: string) =>
@@ -46,7 +47,8 @@ describe('CarouselComponent', () => {
         declarations: [
           CarouselComponent,
           TestComponent,
-          CarouselSlideDirective
+          CarouselSlideDirective,
+          DraggableDirective
         ],
         providers: [ResizeService, WINDOW_PROVIDERS, CarouselService, NavigationService]
       });
@@ -76,19 +78,19 @@ describe('CarouselComponent', () => {
       carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
       expect(carouselComponent).toBeTruthy();
 
-      expect(carouselComponent.owlDOMData.isDragable).toBeTruthy('isDragable should be true');
+      expect(carouselComponent.owlDOMData.isMouseDragable).toBeTruthy('isMouseDragable should be true');
       expect(carouselHTML.classList.contains('owl-drag')).toBeTruthy('has .owl-drag');
 
-      expect(carouselComponent.owlDOMData.rtl).toBeFalsy('isDragable should be true');
+      expect(carouselComponent.owlDOMData.rtl).toBeFalsy('rtl should be true');
       expect(carouselHTML.classList.contains('owl-rtl')).toBeFalsy('has .owl-rtl');
 
-      expect(carouselComponent.owlDOMData.isResponsive).toBeFalsy('isDragable should be true');
+      expect(carouselComponent.owlDOMData.isResponsive).toBeFalsy('isResponsive should be true');
       expect(carouselHTML.classList.contains('owl-responsive')).toBeFalsy('has .owl-responsive');
 
-      expect(carouselComponent.owlDOMData.isLoaded).toBe(true, 'isDragable should be true');
+      expect(carouselComponent.owlDOMData.isLoaded).toBe(true, 'isLoaded should be true');
       expect(carouselHTML.classList.contains('owl-loaded')).toBeTruthy('has .owl-loaded');
 
-      expect(carouselComponent.owlDOMData.isGrab).toBe(false, 'isDragable should be true');
+      expect(carouselComponent.owlDOMData.isGrab).toBe(false, 'isGrab should be true');
       expect(carouselHTML.classList.contains('owl-grab')).toBeFalsy('has .owl-grab');
 
       expect(carouselComponent.carouselLoaded).toBeTruthy('owlVisible should be true; this means stage is created')
@@ -98,7 +100,7 @@ describe('CarouselComponent', () => {
       expect(deStage.nativeElement.clientWidth).toBe(2000, 'width of stage');
 
       expect(carouselComponent.stageData.transition).toBe('0s', 'transition of stage');
-      expect(deStage.nativeElement.style.transition).toBe('0s', 'transition of stage');
+      expect(deStage.nativeElement.style.transitionDuration).toBe('0s', 'transition of stage');
 
       expect(carouselComponent.stageData.transform).toBe('translate3d(0px,0px,0px)', 'transform of stage');
       expect(deStage.nativeElement.style.transform).toBe('translate3d(0px, 0px, 0px)', 'transform of stage');
