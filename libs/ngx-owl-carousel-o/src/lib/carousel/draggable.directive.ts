@@ -77,8 +77,9 @@ export class DraggableDirective implements OnInit, OnDestroy{
               private carouselService: CarouselService) { }
 
   @HostListener('mousedown', ['$event']) onMouseDown(event) {
-    this._onDragStart(event);
-    return false;
+    if (this.owlDraggable.isMouseDragable) {
+      this._onDragStart(event);
+    }
   }
 
   @HostListener('mouseup', ['$event']) onMouseUp(event) {
@@ -86,8 +87,9 @@ export class DraggableDirective implements OnInit, OnDestroy{
   }
 
   @HostListener('touchstart', ['$event']) onTouchStart(event) {
-    this._onDragStart(event);
-    return false;
+    if (this.owlDraggable.isTouchDragable) {
+      this._onDragStart(event);
+    }
   }
 
   @HostListener('touchcancel', ['$event']) onTouchCancel(event) {
@@ -99,11 +101,11 @@ export class DraggableDirective implements OnInit, OnDestroy{
   }
 
   @HostListener('dragstart') onDragStart() {
-    return false;
+      return false;
   }
 
   @HostListener('selectstart') onSelectStart() {
-    return false;
+      return false;
   }
 
   ngOnInit() {
