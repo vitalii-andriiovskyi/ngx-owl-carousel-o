@@ -82,10 +82,6 @@ export class DraggableDirective implements OnInit, OnDestroy{
     }
   }
 
-  @HostListener('mouseup', ['$event']) onMouseUp(event) {
-    return false;
-  }
-
   @HostListener('touchstart', ['$event']) onTouchStart(event) {
     if (this.owlDraggable.isTouchDragable) {
       this._onDragStart(event);
@@ -93,11 +89,7 @@ export class DraggableDirective implements OnInit, OnDestroy{
   }
 
   @HostListener('touchcancel', ['$event']) onTouchCancel(event) {
-    return false;
-  }
-
-  @HostListener('touchend', ['$event']) onTouchEnd(event) {
-    return false;
+    this._onDragEnd(event);
   }
 
   @HostListener('dragstart') onDragStart() {
