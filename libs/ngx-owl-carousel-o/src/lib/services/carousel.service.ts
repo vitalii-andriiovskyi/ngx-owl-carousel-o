@@ -862,34 +862,6 @@ export class CarouselService {
 	}
 
   /**
-	 * Registers event handlers.
-	 * @todo Check `msPointerEnabled`
-	 * @todo #261
-	 */
-  private _registerEventHandlers() {
-		// if ($.support.transition) {
-		// 	console.log($.support.transition);
-		// 	this.$stage.on($.support.transition.end + '.owl.core', $.proxy(this.onTransitionEnd, this));
-		// }
-
-		// if (this.settings.responsive !== false) {
-		// 	this.on(window, 'resize', this._handlers.onThrottledResize);
-		// }
-
-		if (this.settings.mouseDrag) {
-			this.owlDOMData.isMouseDragable = true;
-			// this.$element.addClass(this.options.dragClass);
-			// this.$stage.on('mousedown.owl.core', $.proxy(this.onDragStart, this));
-			// this.$stage.on('dragstart.owl.core selectstart.owl.core', function() { return false });
-		}
-
-		// if (this.settings.touchDrag){
-		// 	this.$stage.on('touchstart.owl.core', $.proxy(this.onDragStart, this));
-		// 	this.$stage.on('touchcancel.owl.core', $.proxy(this.onDragEnd, this));
-		// }
-	 }
-
-  /**
 	 * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
 	 * @todo Horizontal swipe threshold as option
 	 * @todo #261
