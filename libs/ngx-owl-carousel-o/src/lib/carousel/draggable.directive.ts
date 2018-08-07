@@ -1,4 +1,4 @@
-import { Directive, NgZone, ElementRef, HostListener, Renderer2, OnInit, OnDestroy } from '@angular/core';
+import { Directive, NgZone, ElementRef, HostListener, Renderer2, OnInit, OnDestroy, Input } from '@angular/core';
 import { CarouselService, Coords } from '../services/carousel.service';
 import { Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -7,6 +7,13 @@ import { first } from 'rxjs/operators';
   selector: '[owlDraggable]'
 })
 export class DraggableDirective implements OnInit, OnDestroy{
+  /**
+   * Object with settings which make carousel draggable by touch or mouse
+   */
+  @Input() owlDraggable: {
+    isMouseDragable: boolean,
+    isTouchDragable: boolean
+  };
   /**
    * Function wich will be returned after attaching listener to 'mousemove' event
    */
