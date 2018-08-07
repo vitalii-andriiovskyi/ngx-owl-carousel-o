@@ -101,11 +101,15 @@ export class DraggableDirective implements OnInit, OnDestroy{
   }
 
   @HostListener('dragstart') onDragStart() {
+    if (this.owlDraggable.isMouseDragable) {
       return false;
+    }
   }
 
   @HostListener('selectstart') onSelectStart() {
+    if (this.owlDraggable.isMouseDragable) {
       return false;
+    }
   }
 
   ngOnInit() {
