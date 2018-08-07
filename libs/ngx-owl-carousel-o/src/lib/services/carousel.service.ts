@@ -43,41 +43,46 @@ export class Coords {
 }
 
 /**
- * data model for managing classes of .owl-carousel DOM element
+ * Data model for managing classes of .owl-carousel DOM element
  */
 export class OwlDOMData {
 	/**
-	 * is needed for setting class .owl-rtl
+	 * Defines whether to set class .owl-rtl or not
 	 */
 	rtl: boolean;
 
 	/**
-	 * is needed for setting class .owl-responsive
+	 * Defines whether to set class .owl-responsive or not
 	 */
 	isResponsive: boolean;
 
 	/**
-	 * is needed for setting class .owl-refreshed
+	 * Defines whether to set class .owl-refreshed or not
 	 */
 	isRefreshed: boolean;
 
 	/**
-	 * is needed for setting class .owl-loaded
+	 * Defines whether to set class .owl-loaded or not
 	*/
 	isLoaded: boolean;
 
 	/**
-	 * is needed for setting class .owl-loading
+	 * Defines whether to set class .owl-loading or not
 	 */
 	isLoading: boolean;
 
 	/**
-	 * is needed for setting class .owl-drag
+	 * Defines whether to set class .owl-drag or not and makes carousel draggable by mouse moving
 	 */
-	isDragable: boolean;
+	isMouseDragable: boolean;
 
 	/**
-	 * is needed for setting class .owl-grab
+	 * Makes carousel draggable by touch moving
+	 */
+	isTouchDragable: boolean;
+
+	/**
+	 * Defines whether to set class .owl-grab or not
 	 */
 	isGrab: boolean;
 }
@@ -161,8 +166,9 @@ export class CarouselService {
 		isRefreshed: false,
 		isLoaded: false,
 		isLoading: false,
-		isDragable: false,
-		isGrab: false
+		isMouseDragable: false,
+		isGrab: false,
+		isTouchDragable: false
 	};
 
 	/**
@@ -870,7 +876,7 @@ export class CarouselService {
 		// }
 
 		if (this.settings.mouseDrag) {
-			this.owlDOMData.isDragable = true;
+			this.owlDOMData.isMouseDragable = true;
 			// this.$element.addClass(this.options.dragClass);
 			// this.$stage.on('mousedown.owl.core', $.proxy(this.onDragStart, this));
 			// this.$stage.on('dragstart.owl.core selectstart.owl.core', function() { return false });
@@ -997,7 +1003,7 @@ export class CarouselService {
 		// option 'freeDrag' doesn't have realization and using it here creates problem:
 		// variable 'position' stays unchanged (it equals -1 at the begging) and thus method returns -1
 		// Returning value is consumed by method current(), which taking -1 as argument calculates the index of new current slide
-		// In case of having 5 slides ans 'loop=false; calling 'current(-1)' sets props '_current' as 4. Just last slide remains visible instead of 3 last slides. 
+		// In case of having 5 slides ans 'loop=false; calling 'current(-1)' sets props '_current' as 4. Just last slide remains visible instead of 3 last slides.
 
 		// if (!this.settings.freeDrag) {
 			// check closest item

@@ -2,7 +2,7 @@
 	[ngClass]="{'owl-rtl': owlDOMData?.rtl,
 							'owl-loaded': owlDOMData?.isLoaded,
 							'owl-responsive': owlDOMData?.isResponsive,
-							'owl-drag': owlDOMData?.isDragable,
+							'owl-drag': owlDOMData?.isMouseDragable,
 							'owl-grab': owlDOMData?.isGrab}" #owlCarousel>
 
 	<div *ngIf="carouselLoaded" class="owl-stage-outer">
