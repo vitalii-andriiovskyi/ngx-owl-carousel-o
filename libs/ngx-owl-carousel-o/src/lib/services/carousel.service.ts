@@ -732,9 +732,10 @@ export class CarouselService {
 		this.refresh();
 
 		this.owlDOMData.isLoaded = true;
+		this.owlDOMData.isMouseDragable = this.settings.mouseDrag;
+		this.owlDOMData.isTouchDragable = this.settings.touchDrag;
+
 		this.sendChanges();
-		// register event handlers
-		this._registerEventHandlers();
 
 		this.leave('initializing');
 		this._trigger('initialized');
