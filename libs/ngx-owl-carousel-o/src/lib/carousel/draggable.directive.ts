@@ -174,8 +174,6 @@ export class DraggableDirective implements OnInit, OnDestroy{
     if (!this._drag.active) return false;
     const delta = this._difference(this._drag.pointer, this._pointer(event));
 
-    this._drag.moving = true;
-
     this.listenerOneMouseMove();
     this.listenerOneTouchMove();
 
@@ -183,6 +181,8 @@ export class DraggableDirective implements OnInit, OnDestroy{
       this._drag.active = false;
       return;
     }
+    this._drag.moving = true;
+
     this.listenerMouseMove = this.renderer.listen(document, 'mousemove', this.bindOnDragMove);
     this.listenerTouchMove = this.renderer.listen(document, 'touchmove', this.bindOnDragMove);
 
