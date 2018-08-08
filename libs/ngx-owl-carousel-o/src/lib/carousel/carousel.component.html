@@ -7,12 +7,13 @@
 
 	<div *ngIf="carouselLoaded" class="owl-stage-outer">
 		<div>
-			<div owlDraggable class="owl-stage" [ngStyle]="{'width': stageData.width + 'px',
+			<div [owlDraggable]="{'isMouseDragable': owlDOMData?.isMouseDragable, 'isTouchDragable': owlDOMData?.isTouchDragable}"
+					class="owl-stage" [ngStyle]="{'width': stageData.width + 'px',
 																				'transform': stageData.transform,
 																				'transition': stageData.transition,
 																				'padding-left': stageData.paddingL + 'px',
 																				'padding-right': stageData.paddingR + 'px' }"
-				(transitionend)="onTransitionEnd()">
+					(transitionend)="onTransitionEnd()">
 				<ng-container *ngFor="let slide of slidesData; let i = index">
 					<div class="owl-item" [ngClass]="{'active': slide.active, 
 																						'center': slide.center,
