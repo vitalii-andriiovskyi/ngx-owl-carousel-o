@@ -973,9 +973,18 @@ export class CarouselService {
 	 */
   closest(coordinate: number, direction: string): number {
 		const pull = 30,
-			width = this.width(),
-			coordinates: number[] = this.coordinates() as number[];
-		let position = -1;
+			width = this.width();
+		let	coordinates: number[] = this.coordinates() as number[],
+		 position = -1;
+		
+		if (this.settings.center) {
+			coordinates = coordinates.map(item => {
+				if (item === 0) {
+					item += 0.000001;
+				}
+				return item;
+			})
+		}
 
 		// option 'freeDrag' doesn't have realization and using it here creates problem:
 		// variable 'position' stays unchanged (it equals -1 at the begging) and thus method returns -1
