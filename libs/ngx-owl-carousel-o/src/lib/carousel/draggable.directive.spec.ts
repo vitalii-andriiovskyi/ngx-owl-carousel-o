@@ -964,6 +964,91 @@ describe('DraggableDirective in context of CarouselComponent (integrated tests):
   }));
 
 
+  it(`should drag carousel with transition-duration=350ms by touch (finger) [options]="{dragEndSpeed: 350}`, fakeAsync(() => {
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{dragEndSpeed: 350}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    testComponent = fixtureHost.componentInstance;
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    coords = findCoordsInElem(deSlides[1].nativeElement, getCoords(deSlides[1].nativeElement));
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+    // drag carousel to left hand-side; current first active slide is Slide 1;
+    let evtObj = {clientX: coords.x, clientY: coords.y, pageX: coords.x, pageY: coords.y}
+    triggerTouchEvent(deStage.nativeElement, 'touchstart', evtObj);
+    triggerMouseEvent(document, 'touchmove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    evtObj = {clientX: coords.x - 10, clientY: coords.y, pageX: coords.x - 10, pageY: coords.y}
+    triggerMouseEvent(document, 'touchmove', evtObj);
+    tick();
+    evtObj = {clientX: coords.x - 300, clientY: coords.y, pageX: coords.x - 300, pageY: coords.y}
+    triggerMouseEvent(document, 'touchmove', evtObj);
+    tick();
+    triggerMouseEvent(document, 'touchend', evtObj);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.35s', 'transition-duration: 0.35s');
+
+    // drag carousel to left hand-side; current first active slide is Slide 2;
+    evtObj = {clientX: coords.x, clientY: coords.y, pageX: coords.x, pageY: coords.y}
+    triggerTouchEvent(deStage.nativeElement, 'touchstart', evtObj);
+    triggerMouseEvent(document, 'touchmove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    evtObj = {clientX: coords.x - 10, clientY: coords.y, pageX: coords.x - 10, pageY: coords.y}
+    triggerMouseEvent(document, 'touchmove', evtObj);
+    tick();
+    evtObj = {clientX: coords.x - 300, clientY: coords.y, pageX: coords.x - 300, pageY: coords.y}
+    triggerMouseEvent(document, 'touchmove', evtObj);
+    tick();
+    triggerMouseEvent(document, 'touchend', evtObj);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.35s', 'transition-duration: 0.35s');
+
+    // drag carousel to right hand-side; current first active slide is Slide 3;
+    evtObj = {clientX: coords.x, clientY: coords.y, pageX: coords.x, pageY: coords.y}
+    triggerTouchEvent(deStage.nativeElement, 'touchstart', evtObj);
+    triggerMouseEvent(document, 'touchmove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    evtObj = {clientX: coords.x + 10, clientY: coords.y, pageX: coords.x + 10, pageY: coords.y}
+    triggerMouseEvent(document, 'touchmove', evtObj);
+    tick();
+    evtObj = {clientX: coords.x + 650, clientY: coords.y, pageX: coords.x + 650, pageY: coords.y}
+    triggerMouseEvent(document, 'touchmove', evtObj);
+    tick();
+    triggerMouseEvent(document, 'touchend', evtObj);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.35s', 'transition-duration: 0.35s');
+    discardPeriodicTasks();
+  }));
+
   // the ending of tests
 });
 
@@ -1016,4 +1101,28 @@ function findCoordsInElem(elem: HTMLElement, coords: any) {
     x: coords.left + elem.clientWidth - 30,
     y: coords.top + 10
   }
+}
+
+function triggerTouchEvent(element: HTMLElement, eventType: string, evtObj: any) {
+  const evtSet = {
+    identifier: Date.now(),
+    target: element,
+    radiusX: 2.5,
+    radiusY: 2.5,
+    rotationAngle: 10,
+    force: 0.5,
+  };
+
+  const touchObj = new Touch({...evtSet, ...evtObj});
+
+  const touchEvent = new TouchEvent(eventType, {
+    cancelable: true,
+    bubbles: true,
+    touches: [touchObj],
+    targetTouches: [],
+    changedTouches: [touchObj],
+    shiftKey: true,
+  });
+
+  element.dispatchEvent(touchEvent);
 }
