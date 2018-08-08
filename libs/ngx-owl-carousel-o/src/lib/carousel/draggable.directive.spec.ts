@@ -725,6 +725,83 @@ describe('DraggableDirective in context of CarouselComponent (integrated tests)'
     discardPeriodicTasks();
   }));
 
+  it(`shouldn\'t make smooth drag of carousel by mouse right when Slide 1 is active and left when Slide 5 is active[options]="{pullDrag: false}`, fakeAsync(() => {
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{pullDrag: false}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    testComponent = fixtureHost.componentInstance;
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    coords = findCoordsInElem(deSlides[1].nativeElement, getCoords(deSlides[1].nativeElement));
+
+    const stageParent: HTMLElement = deStage.parent.nativeElement; // css rules for this element are being changed outer of angular zone. Thus there's no need to call detectChanges();
+
+    expect(deDots.length).toBe(2, '2 dots');
+
+    // drag carousel to right hand-side; current first active slide is Slide 1;
+    triggerMouseEvent(deStage.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x +10, clientY: coords.y});
+    tick();
+    expect(stageParent.style.transform).toBe('translate3d(0px, 0px, 0px)', 'translate3d(0px, 0px, 0px)');
+
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x + 300, clientY: coords.y});
+    tick();
+    expect(stageParent.style.transform).toBe('translate3d(0px, 0px, 0px)', 'translate3d(0px, 0px, 0px)');
+
+    triggerMouseEvent(document, 'mouseup', {clientX: coords.x + 300, clientY: coords.y});
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
+    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
+
+    deDots[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[2].nativeElement.innerHTML).toContain('Slide 5', 'Slide 5');
+
+    // drag carousel to right hand-side; current first active slide is Slide 1;
+    triggerMouseEvent(deStage.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x -10, clientY: coords.y});
+    tick();
+    expect(stageParent.style.transform).toBe('translate3d(0px, 0px, 0px)', 'translate3d(0px, 0px, 0px)');
+
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x - 300, clientY: coords.y});
+    tick();
+    expect(stageParent.style.transform).toBe('translate3d(0px, 0px, 0px)', 'translate3d(0px, 0px, 0px)');
+
+    triggerMouseEvent(document, 'mouseup', {clientX: coords.x - 300, clientY: coords.y});
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[2].nativeElement.innerHTML).toContain('Slide 5', 'Slide 5');
+    discardPeriodicTasks();
+  }));
+
   // the ending of tests
 });
 
