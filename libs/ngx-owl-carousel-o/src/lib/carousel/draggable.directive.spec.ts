@@ -72,7 +72,6 @@ describe('DraggableDirective in context of CarouselComponent (integrated tests)'
     tick();
 
     fixtureHost.detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
     deStage = deCarouselComponent.query(By.css('.owl-stage'));
     deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
 
@@ -218,7 +217,6 @@ describe('DraggableDirective in context of CarouselComponent (integrated tests)'
     tick();
 
     fixtureHost.detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
     deStage = deCarouselComponent.query(By.css('.owl-stage'));
     deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
 
@@ -330,7 +328,6 @@ describe('DraggableDirective in context of CarouselComponent (integrated tests)'
     tick();
 
     fixtureHost.detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
     deStage = deCarouselComponent.query(By.css('.owl-stage'));
     deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
     let centeredSlide: HTMLElement = deCarouselComponent.query(By.css('.owl-item.active.center')).nativeElement;
@@ -445,7 +442,6 @@ describe('DraggableDirective in context of CarouselComponent (integrated tests)'
     tick();
 
     fixtureHost.detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
     deStage = deCarouselComponent.query(By.css('.owl-stage'));
     deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
     coords = findCoordsInElem(deSlides[1].nativeElement, getCoords(deSlides[1].nativeElement));
@@ -524,7 +520,6 @@ describe('DraggableDirective in context of CarouselComponent (integrated tests)'
     tick();
 
     fixtureHost.detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
     deStage = deCarouselComponent.query(By.css('.owl-stage'));
     deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
     coords = findCoordsInElem(deSlides[1].nativeElement, getCoords(deSlides[1].nativeElement));
@@ -533,7 +528,7 @@ describe('DraggableDirective in context of CarouselComponent (integrated tests)'
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
 
     expect(deNavButtons[0].nativeElement.classList.contains('disabled')).toBeTruthy('prev button has .disabled');
-    expect(deDots.length).toBe(3, '2 dots');
+    expect(deDots.length).toBe(3, '3 dots');
 
     // drag carousel to left hand-side; current first active slide is Slide 1;
     triggerMouseEvent(deStage.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
