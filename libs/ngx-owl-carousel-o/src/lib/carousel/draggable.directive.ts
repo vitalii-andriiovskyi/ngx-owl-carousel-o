@@ -245,6 +245,7 @@ export class DraggableDirective implements OnInit, OnDestroy{
 
       this._finishDragging(event);
       this.listenerMouseMove();
+      this.listenerTouchMove();
     }
 
     this._drag = {
