@@ -846,6 +846,51 @@ describe('DraggableDirective in context of CarouselComponent (integrated tests):
     expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.4s', 'transition-duration: 0.4s');
   }));
 
+  it(`should drag carousel with transition-duration=350ms [options]="{dragEndSpeed: 350}`, fakeAsync(() => {
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{dragEndSpeed: 350}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    testComponent = fixtureHost.componentInstance;
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    coords = findCoordsInElem(deSlides[1].nativeElement, getCoords(deSlides[1].nativeElement));
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+    // drag carousel to left hand-side; current first active slide is Slide 1;
+    triggerMouseEvent(deStage.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x - 10, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x - 300, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mouseup', {clientX: coords.x - 300, clientY: coords.y});
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.35s', 'transition-duration: 0.4s');
+    discardPeriodicTasks();
+  }));
+
 
   // the ending of tests
 });
