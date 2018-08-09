@@ -11,6 +11,7 @@ import { NavigationService } from './navigation.service';
 
 import 'zone.js/dist/zone-patch-rxjs-fake-async';
 import { By } from '@angular/platform-browser';
+import { DOCUMENT_PROVIDERS } from './document-ref.service';
 
 describe('CarouselService', () => {
   let carouselService: CarouselService;
@@ -78,7 +79,7 @@ describe('CarouselService in context of TestComponent', () => {
           CarouselSlideDirective,
           DraggableDirective
         ],
-        providers: [ResizeService, WINDOW_PROVIDERS, CarouselService, NavigationService]
+        providers: [ResizeService, WINDOW_PROVIDERS, CarouselService, NavigationService, DOCUMENT_PROVIDERS]
       });
     })
   );

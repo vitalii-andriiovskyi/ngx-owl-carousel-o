@@ -15,6 +15,8 @@ import { cold, getTestScheduler, hot } from 'jasmine-marbles';
 import { NavigationService } from '../services/navigation.service';
 import { DraggableDirective } from './draggable.directive';
 import 'zone.js/dist/zone-patch-rxjs-fake-async';
+import { AutoplayService } from '../services/autoplay.service';
+import { DOCUMENT_PROVIDERS } from '../services/document-ref.service';
 // import 'zone.js/lib/rxjs/rxjs-fake-async';
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>
@@ -50,7 +52,7 @@ describe('CarouselComponent', () => {
           CarouselSlideDirective,
           DraggableDirective
         ],
-        providers: [ResizeService, WINDOW_PROVIDERS, CarouselService, NavigationService]
+        providers: [ResizeService, WINDOW_PROVIDERS, CarouselService, NavigationService, AutoplayService, DOCUMENT_PROVIDERS]
       });
     })
   );
