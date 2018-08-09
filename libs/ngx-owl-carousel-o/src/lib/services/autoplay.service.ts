@@ -27,27 +27,30 @@ export class AutoplayService {
   constructor(private carouselService: CarouselService,
               @Inject(WINDOW) private winRef: Window,
               @Inject(DOCUMENT) private docRef: Document,
-  ) { }
+  ) {
+    this.spyDataStreams();
+  }
 
   /**
    * Defines Observables which service must observe
    */
   spyDataStreams() {
-
     const initializedCarousel$: Observable<string> = this.carouselService.getInitializedState().pipe(
-      tap(state => {
-        // this.initialize();
-        this.carouselService.sendChanges();
+      tap(() => {
+        if (this.carouselService.settings.autoplay) {
+					this.play();
+				}
       })
     );
 
-    // mostly changes in carouselService and carousel at all causes carouselService.to(). It moves stage right-left by its code and calling needed functions
-    // Thus this method by calling carouselService.current(position) notifies about changes
     const changedSettings$: Observable<any> = this.carouselService.getChangedState().pipe(
       tap(data => {
         this._handleChangeObservable(data);
       })
     );
+
+    // original Autoplay Plugin has listeners on play.owl.core and stop.owl.core events.
+    // They are triggered by Video Plugin
 
     const autoplayMerge$: Observable<string> = merge(initializedCarousel$, changedSettings$);
     this.autoplaySubscription = autoplayMerge$.subscribe(
