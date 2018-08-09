@@ -123,5 +123,27 @@ export class OwlOptions {
    */
   dotsSpeed?: number | boolean;
 
+
+  // AUTOPLAY ****************************************
+  /**
+   * Autoplay.
+   */
+  autoplay?: boolean;
+
+  /**
+   * Autoplay interval timeout
+   */
+  autoplayTimeout?: number;
+
+  /**
+   * Pause on mouse hover
+   */
+  autoplayHoverPause?: boolean;
+
+  /**
+   * Autoplay speed
+   */
+  autoplaySpeed?: number | boolean;
+
   constructor() { }
 }
