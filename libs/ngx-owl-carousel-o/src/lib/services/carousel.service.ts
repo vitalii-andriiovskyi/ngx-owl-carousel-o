@@ -652,10 +652,9 @@ export class CarouselService {
 
 		this.setViewportItemsN();
 
-		// trigger can be deleted
-		// this.trigger('change', { property: { name: 'settings', value: settings } });
+		this._trigger('change', { property: { name: 'settings', value: this.settings } });
 		this.invalidate('settings'); // must be call of this function;
-		// this.trigger('changed', { property: { name: 'settings', value: this.settings } });
+		this._trigger('changed', { property: { name: 'settings', value: this.settings } });
 	}
 
 	/**
