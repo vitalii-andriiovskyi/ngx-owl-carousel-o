@@ -293,8 +293,8 @@ export class DraggableDirective implements OnInit, OnDestroy{
 
   /**
 	 * Gets unified pointer coordinates from event.
-	 * @param event - The `mousedown` or `touchstart` event.
-	 * @returns - Contains `x` and `y` coordinates of current pointer position.
+	 * @param event The `mousedown` or `touchstart` event.
+	 * @returns Contains `x` and `y` coordinates of current pointer position.
 	 */
   private _pointer(event: any): any {
     return this.carouselService.pointer(event);
@@ -302,9 +302,9 @@ export class DraggableDirective implements OnInit, OnDestroy{
 
   /**
 	 * Gets the difference of two vectors.
-	 * @param first - The first vector.
+	 * @param first The first vector.
 	 * @param second- The second vector.
-	 * @returns - The difference.
+	 * @returns The difference.
 	 */
   private _difference(firstC: Coords, second: Coords): any {
     return this.carouselService.difference(firstC, second);
@@ -312,8 +312,8 @@ export class DraggableDirective implements OnInit, OnDestroy{
 
   /**
 	 * Checks whether the carousel is in a specific state or not.
-	 * @param state - The state to check.
-	 * @return} - The flag which indicates if the carousel is busy.
+	 * @param state The state to check.
+	 * @returns The flag which indicates if the carousel is busy.
 	 */
   private _is(state: string): boolean {
     return this.carouselService.is(state);
@@ -321,7 +321,7 @@ export class DraggableDirective implements OnInit, OnDestroy{
 
   /**
   * Enters a state.
-  * @param name - The state name.
+  * @param name The state name.
   */
   private _enter(name: string) {
     this.carouselService.enter(name);
