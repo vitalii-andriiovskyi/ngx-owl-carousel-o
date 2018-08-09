@@ -64,7 +64,10 @@ export class AutoplayService {
 	 * @param speed The animation speed for the animations.
 	 */
 	play(timeout?: number, speed?: number) {
-		this._paused = false;
+    if (this._paused) {
+			this._paused = false;
+			this._setAutoPlayInterval();
+    }
 
 		if (this.carouselService.is('rotating')) {
 			return;
