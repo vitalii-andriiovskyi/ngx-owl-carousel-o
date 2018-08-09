@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Subscription, Observable, merge } from 'rxjs';
 import { CarouselService } from './carousel.service';
 import { tap } from 'rxjs/operators';
+import { WINDOW } from './window-ref.service';
+import { DOCUMENT } from './document-ref.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +24,10 @@ export class AutoplayService {
    */
   private _paused = false;
 
-  constructor(private carouselService: CarouselService) { }
+  constructor(private carouselService: CarouselService,
+              @Inject(WINDOW) private winRef: Window,
+              @Inject(DOCUMENT) private docRef: Document,
+  ) { }
 
   /**
    * Defines Observables which service must observe
@@ -66,5 +71,23 @@ export class AutoplayService {
 		this.carouselService.enter('rotating');
 
 		this._setAutoPlayInterval();
+  };
+
+  /**
+	 * Gets a new timeout
+	 * @param timeout - The interval before the next animation starts.
+	 * @param speed - The animation speed for the animations.
+	 * @return
+	 */
+	private _getNextTimeout(timeout: number, speed: number): number {
+		if ( this._timeout ) {
+			this.winRef.clearTimeout(this._timeout);
+		}
+		return this.winRef.setTimeout(() =>{
+      if (this._paused || this.carouselService.is('busy') || this.carouselService.is('interacting') || this.docRef.hidden) {
+				return;
+			}
+			this.carouselService.next(speed || this.carouselService.settings.autoplaySpeed);
+    }, timeout || this.carouselService.settings.autoplayTimeout);
 	};
 }
