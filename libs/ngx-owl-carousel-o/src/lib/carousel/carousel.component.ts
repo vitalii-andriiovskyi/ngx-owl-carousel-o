@@ -38,7 +38,7 @@ export class CarouselSlideDirective {
   @Input() id = `owl-slide-${nextId++}`;
 
   /**
-   * defines how much widths of common slide will current slide have
+   * Defines how much widths of common slide will current slide have
    * e.g. if _mergeData=2, the slide will twice wider then slides with _mergeData=1
    */
   private _dataMerge = 1;
@@ -49,24 +49,29 @@ export class CarouselSlideDirective {
   get dataMerge(): number { return this._dataMerge }
 
   /**
-   * width of slide
+   * Width of slide
    */
   @Input() width = 0;
 
   /**
-   * inner content of dot for certain slide; can be html-markup
+   * Inner content of dot for certain slide; can be html-markup
    */
   @Input() dotContent = '';
 
   constructor(public tplRef: TemplateRef<any>) {}
 
+  /**
+	 * Determines if the input is a Number or something that can be coerced to a Number
+	 * @param - The input to be tested
+	 * @returns - An indication if the input is a Number or can be coerced to a Number
+	 */
   isNumeric(number: any): boolean {
 		return !isNaN(parseFloat(number));
 	}
 }
 
 /**
- * data which will be passed out after ending of transition of carousel
+ * Data which will be passed out after ending of transition of carousel
  */
 export class SlidesOutputData {
   startPosition?: number;
@@ -106,32 +111,32 @@ export class CarouselComponent
   owlDOMData: OwlDOMData;
 
   /**
-   * data of owl-stage
+   * Data of owl-stage
    */
 	stageData: StageData;
 
 	/**
-	 *  data of every slide
+	 *  Data of every slide
 	 */
   slidesData: SliderModel[];
 
   /**
-	 * data of navigation block
+	 * Data of navigation block
 	 */
 	navData: NavData;
 
 	/**
-	 * data of dots block
+	 * Data of dots block
 	 */
   dotsData: DotsData;
 
   /**
-   * data, wich are passed out of carousel after ending of transioning of carousel
+   * Data, wich are passed out of carousel after ending of transioning of carousel
    */
   slidesOutputData: SlidesOutputData;
 
   /**
-   * shows whether carousel is loaded of not.
+   * Shows whether carousel is loaded of not.
    */
   carouselLoaded = false;
 
@@ -141,17 +146,17 @@ export class CarouselComponent
   @Input() options: OwlOptions;
 
   /**
-   * observable for getting current View Settings
+   * Observable for getting current View Settings
    */
   private _viewCurSettings$: Observable<CarouselCurrentData>;
 
   /**
-   * observable for catching the end of transition of carousel
+   * Observable for catching the end of transition of carousel
    */
   private _translatedCarousel$: Observable<string>;
 
   /**
-   * observable for merging all Observables and creating one subscription
+   * Observable for merging all Observables and creating one subscription
    */
   private _carouselMerge$: Observable<CarouselCurrentData | string>;
 
@@ -222,7 +227,7 @@ export class CarouselComponent
   }
 
   /**
-   * init subscription to resize event and attaches handler for this event
+   * Init subscription to resize event and attaches handler for this event
    */
   private _winResizeWatcher() {
     if (Object.keys(this.carouselService._options.responsive).length) {
@@ -267,7 +272,7 @@ export class CarouselComponent
   }
 
   /**
-   * gathers and prepares data intended for passing to the user by means of firing event translatedCarousel
+   * Gathers and prepares data intended for passing to the user by means of firing event translatedCarousel
    */
   gatherTranslatedData() {
     let startPosition: number;
