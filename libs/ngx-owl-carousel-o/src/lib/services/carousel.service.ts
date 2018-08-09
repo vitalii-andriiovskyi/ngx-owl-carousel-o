@@ -5,7 +5,6 @@ import { OwlDOMData } from '../models/owlDOM-data.model';
 
 import { Injectable } from '@angular/core';
 
-import { CustomEventsService } from './custom-events.service';
 import { CarouselSlideDirective } from '../carousel/carousel.module';
 import { SliderModel } from '../models/slider.model';
 import { Subject, Observable } from 'rxjs';
@@ -469,7 +468,7 @@ export class CarouselService {
     }
   ];
 
-	constructor(private customEventsCreator: CustomEventsService) { }
+	constructor() { }
 
 	/**
 	 * makes _viewSettingsShipper$ Subject become Observable

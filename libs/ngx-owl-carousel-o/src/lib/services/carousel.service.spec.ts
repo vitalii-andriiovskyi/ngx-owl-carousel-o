@@ -1,7 +1,6 @@
 import { TestBed, inject, ComponentFixture, fakeAsync, async, tick } from '@angular/core/testing';
 
 import { CarouselService } from './carousel.service';
-import { CustomEventsService } from './custom-events.service';
 import { Component, DebugElement } from '@angular/core';
 import { SlidesOutputData, CarouselComponent, CarouselSlideDirective } from '../carousel/carousel.component';
 import { createGenericTestComponent } from '../carousel/test/common';
@@ -11,14 +10,14 @@ import { WINDOW_PROVIDERS } from './window-ref.service';
 import { NavigationService } from './navigation.service';
 
 import 'zone.js/dist/zone-patch-rxjs-fake-async';
-import { By } from '../../../../../node_modules/@angular/platform-browser';
+import { By } from '@angular/platform-browser';
 
 describe('CarouselService', () => {
   let carouselService: CarouselService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CarouselService, CustomEventsService]
+      providers: [CarouselService]
     });
     carouselService = TestBed.get(CarouselService);
   });

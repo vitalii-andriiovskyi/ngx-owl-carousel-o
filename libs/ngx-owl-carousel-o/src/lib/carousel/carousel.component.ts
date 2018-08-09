@@ -20,7 +20,6 @@ import { Subscription, Observable, merge } from 'rxjs';
 import { ResizeService } from '../services/resize.service';
 import { WINDOW } from '../services/window-ref.service';
 import { tap, delay, filter } from 'rxjs/operators';
-import { CustomEventsService } from '../services/custom-events.service';
 import { CarouselService, CarouselCurrentData } from '../services/carousel.service';
 import { StageData } from "../models/stage-data.model";
 import { OwlDOMData } from "../models/owlDOM-data.model";
@@ -166,7 +165,6 @@ export class CarouselComponent
     private el: ElementRef,
     private resizeService: ResizeService,
     @Inject(WINDOW) private winRef: Window,
-    private customEventsCreator: CustomEventsService,
     private carouselService: CarouselService,
     private navigationService: NavigationService
   ) {}
