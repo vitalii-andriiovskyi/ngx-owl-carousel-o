@@ -8,7 +8,8 @@ import { DraggableDirective } from './carousel/draggable.directive';
 export {
   CarouselModule,
   CarouselComponent,
-  CarouselSlideDirective
+  CarouselSlideDirective,
+  SlidesOutputData
 } from './carousel/carousel.module';
 export { ResizeService } from './services/resize.service';
 export {

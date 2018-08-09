@@ -10,7 +10,8 @@ import { DraggableDirective } from './draggable.directive';
 
 export {
   CarouselComponent,
-  CarouselSlideDirective
+  CarouselSlideDirective,
+  SlidesOutputData
 } from './carousel.component';
 
 @NgModule({
