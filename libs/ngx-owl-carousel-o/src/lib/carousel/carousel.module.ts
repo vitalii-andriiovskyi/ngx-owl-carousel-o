@@ -7,6 +7,7 @@ import {
 import { WINDOW_PROVIDERS } from '../services/window-ref.service';
 import { ResizeService } from '../services/resize.service';
 import { DraggableDirective } from './draggable.directive';
+import { DOCUMENT_PROVIDERS } from '../services/document-ref.service';
 
 export {
   CarouselComponent,
@@ -18,6 +19,6 @@ export {
   imports: [CommonModule],
   declarations: [CarouselComponent, CarouselSlideDirective, DraggableDirective],
   exports: [CarouselComponent, CarouselSlideDirective],
-  providers: [WINDOW_PROVIDERS, ResizeService]
+  providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS]
 })
 export class CarouselModule {}
