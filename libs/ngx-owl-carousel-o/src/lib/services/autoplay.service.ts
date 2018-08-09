@@ -108,5 +108,16 @@ export class AutoplayService {
 
 		this.winRef.clearTimeout(this._timeout);
 		this.carouselService.leave('rotating');
+  };
+
+  /**
+	 * Stops the autoplay.
+	 */
+	pause() {
+		if (!this.carouselService.is('rotating')) {
+			return;
+		}
+
+		this._paused = true;
 	};
 }
