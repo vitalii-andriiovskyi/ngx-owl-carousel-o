@@ -141,4 +141,31 @@ export class AutoplayService {
       }
     }
   }
+
+  /**
+   * Starts pausing
+   */
+  startPausing() {
+    if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
+      this.pause();
+    }
+  }
+
+  /**
+   * Starts playing after mouse leaves carousel
+   */
+  startPlayingMouseLeave() {
+    if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
+      this.pause();
+    }
+  }
+
+  /**
+   * Starts playing after touch ends
+   */
+  startPlayingTouchEnd() {
+    if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
+      this.pause();
+    }
+  }
 }
