@@ -73,6 +73,12 @@ export class CarouselService {
    * Subject for notification when the carousel got initializes
    */
 	private _initializedCarousel$ = new Subject<string>();
+
+	/**
+   * Subject for notification when the carousel's settings start changinf
+   */
+	private _changeSettingsCarousel$ = new Subject<any>();
+
 	/**
    * Subject for notification when the carousel's settings have changed
    */
@@ -471,7 +477,7 @@ export class CarouselService {
 	constructor() { }
 
 	/**
-	 * makes _viewSettingsShipper$ Subject become Observable
+	 * Makes _viewSettingsShipper$ Subject become Observable
 	 * @returns Observable of _viewSettingsShipper$ Subject
 	 */
 	getViewCurSettings(): Observable<CarouselCurrentData> {
@@ -479,7 +485,7 @@ export class CarouselService {
 	}
 
 	/**
-	 * makes _initializedCarousel$ Subject become Observable
+	 * Makes _initializedCarousel$ Subject become Observable
 	 * @returns Observable of _initializedCarousel$ Subject
 	 */
 	getInitializedState(): Observable<string> {
@@ -487,15 +493,23 @@ export class CarouselService {
 	}
 
 	/**
-	 * makes _changedSettingsCarousel$ Subject become Observable
+	 * Makes _changeSettingsCarousel$ Subject become Observable
+	 * @returns Observable of _changeSettingsCarousel$ Subject
+	 */
+	getChangeState(): Observable<any> {
+		return this._changeSettingsCarousel$.asObservable();
+	}
+
+	/**
+	 * Makes _changedSettingsCarousel$ Subject become Observable
 	 * @returns Observable of _changedSettingsCarousel$ Subject
 	 */
-	getChangedState(): Observable<string> {
+	getChangedState(): Observable<any> {
 		return this._changedSettingsCarousel$.asObservable();
 	}
 
 	/**
-	 * makes _translatedCarousel$ Subject become Observable
+	 * Makes _translatedCarousel$ Subject become Observable
 	 * @returns Observable of _translatedCarousel$ Subject
 	 */
 	getTranslatedState(): Observable<string> {
@@ -503,7 +517,7 @@ export class CarouselService {
 	}
 
 	/**
-	 * makes _resizeCarousel$ Subject become Observable
+	 * Makes _resizeCarousel$ Subject become Observable
 	 * @returns Observable of _resizeCarousel$ Subject
 	 */
 	getResizeState(): Observable<string> {
@@ -511,7 +525,7 @@ export class CarouselService {
 	}
 
 	/**
-	 * makes _resizedCarousel$ Subject become Observable
+	 * Makes _resizedCarousel$ Subject become Observable
 	 * @returns Observable of _resizedCarousel$ Subject
 	 */
 	getResizedState(): Observable<string> {
@@ -519,7 +533,7 @@ export class CarouselService {
 	}
 
 	/**
-	 * makes _refreshCarousel$ Subject become Observable
+	 * Makes _refreshCarousel$ Subject become Observable
 	 * @returns Observable of _refreshCarousel$ Subject
 	 */
 	getRefreshState(): Observable<string> {
@@ -527,7 +541,7 @@ export class CarouselService {
 	}
 
 	/**
-	 * makes _refreshedCarousel$ Subject become Observable
+	 * Makes _refreshedCarousel$ Subject become Observable
 	 * @returns Observable of _refreshedCarousel$ Subject
 	 */
 	getRefreshedState(): Observable<string> {
