@@ -65,31 +65,6 @@ export class CarouselSlideDirective {
 	}
 }
 
-class SlidersData {
-  id: string;
-  active: boolean;
-  activeDot?: boolean;
-  sequenceN?: number;
-
-  constructor(
-    id: string,
-    active: boolean,
-    sequenceN?: number,
-    activeDot?: boolean
-  ) {
-    this.id = id;
-    this.active = active;
-    this.sequenceN = sequenceN || 0;
-    this.activeDot = activeDot || false;
-  }
-}
-
-class FirstActiveSlide {
-  stage: string; // either 'first' or 'second'
-  item: SlidersData;
-  index: number;
-}
-
 /**
  * data which will be passed out after ending of transition of carousel
  */
@@ -97,17 +72,6 @@ export class SlidesOutputData {
   startPosition?: number;
   slides?: SliderModel[];
 };
-
-class ResolutionCarouselData {
-  [resolution: string]: number;
-}
-
-class States {
-  current: {};
-  tags: {
-    [key: string]: string[];
-  };
-}
 
 @Component({
   selector: 'owl-carousel-o',
@@ -121,25 +85,20 @@ export class CarouselComponent
 
   @Output() translated = new EventEmitter<SlidesOutputData>();
 
-  // number of visible sliders in carousel; it's needed for defining width of each slider
-  private _slidersQuantity = 1;
-
-  // width of carousel window (tag with class .surf-carousel-2-sliders-wrapper), in wich we can see moving sliders
+  /**
+   * Width of carousel window (tag with class .owl-carousel), in wich we can see moving sliders
+   */
   carouselWindowWidth: number;
 
-  // width of each slider
-  sliderWidth: number;
-
-  // width of carousel stage;
-  stageWidth: number;
-
-  // info about id and active/inactive state of each slider in first stage
-  slidersStageData: SlidersData[] = [];
-
+  /**
+   * Subscription to 'resize' event
+   */
   resizeSubscription: Subscription;
-  private _allObservSubscription: Subscription;
 
-  owlVisible: true;
+  /**
+   * Subscription merge Observable, which merges all Observables in the component except 'resize' Observable
+   */
+  private _allObservSubscription: Subscription;
 
   /**
    * Current settings for the carousel.
@@ -177,118 +136,9 @@ export class CarouselComponent
   carouselLoaded = false;
 
   /**
-	 * Default options for the carousel.
-	 * @public
-	 */
-  defaults = {
-		items: 3,
-		loop: false,
-		center: false,
-		rewind: false,
-
-		mouseDrag: true,
-		touchDrag: true,
-		pullDrag: true,
-		freeDrag: false,
-
-		margin: 0,
-		stagePadding: 0,
-
-		merge: false,
-		mergeFit: true,
-		autoWidth: false,
-
-		startPosition: 0,
-		rtl: false,
-
-		smartSpeed: 250,
-		fluidSpeed: false,
-		dragEndSpeed: false,
-
-		responsive: {},
-		responsiveRefreshRate: 200,
-		responsiveBaseElement: window,
-
-		fallbackEasing: 'swing',
-
-		info: false,
-
-		nestedItemSelector: false,
-
-		refreshClass: 'owl-refresh',
-    loadedClass: 'owl-loaded',
-    isLoadedClass: false,
-    loadingClass: 'owl-loading',
-    isLoadingClass: false,
-		// loadingClass: 'owl-loading',
-		rtlClass: 'owl-rtl',
-		responsiveClass: 'owl-responsive',
-		dragClass: 'owl-drag',
-		itemClass: 'owl-item',
-		grabClass: 'owl-grab'
-	};
-
-  /**
    * User's options
    */
   @Input() options: OwlOptions;
-
-  // this.$element = $(element); use this.el.
-
-  /**
-   * Proxied event handlers.
-   */
-  protected _handlers: any = {};
-
-  /**
-   * Current width of the plugin element.
-   */
-  _width: number | null = null;
-
-  // protected _items = []; use this.slides
-
-  /**
-   * All cloned items.
-   */
-  protected _clones: any[] = [];
-
-  /**
-   * Widths of all items.
-   */
-  _widths: any[] = [];
-
-  /**
-   * Current state information for the drag operation.
-   * @todo #261
-   */
-  protected _drag: any = {
-    time: null,
-    target: null,
-    pointer: null,
-    stage: {
-      start: null,
-      current: null
-    },
-    direction: null
-  };
-
-  /**
-   * Current state information and their tags.
-   * @type ff {Object}
-   */
-  protected _states: States = {
-    current: {},
-    tags: {
-      initializing: ['busy'],
-      animating: ['busy'],
-      dragging: ['interacting']
-    }
-  };
-
-  /**
-   * Visibility of carousel
-   */
-  isVisible = false;
 
   /**
    * observable for getting current View Settings
@@ -316,38 +166,12 @@ export class CarouselComponent
 
   ngOnInit() {
     this.spyDataStreams();
-
-    // this.options = Object.assign({}, this.defaults, this.options);
-
-    // ['onResize', 'onThrottledResize'].forEach(handler => {
-    //   this._handlers[handler] = this[handler];
-    // });
-
-    // all plugins have to be added manually
-    // $.each(Owl.Plugins, $.proxy(function(key, plugin) {
-    // 	this._plugins[key.charAt(0).toLowerCase() + key.slice(1)]
-    // 		= new plugin(this);
-    // }, this));
-
-    // $.each(Owl.Workers, $.proxy(function(priority, worker) {
-    // 	this._pipe.push({
-    // 		'filter': worker.filter,
-    // 		'run': $.proxy(worker.run, this)
-    // 	});
-    // }, this));
-
-    // set quantity of sliders in initialization of component
     this.carouselWindowWidth = this.el.nativeElement.querySelector(
       '.owl-carousel'
     ).clientWidth;
-
   }
 
   ngAfterContentChecked() {
-    // this.carouselService.setup();
-    // this.initialize();
-    // this.slides.toArray()
-    // console.log(this.slides.toArray()[1].mergeData);
   }
   // ngAfterContentChecked() END
 
@@ -366,15 +190,6 @@ export class CarouselComponent
     this._allObservSubscription.unsubscribe();
   }
 
-  // type checking
-  isNumber(x: any): x is number {
-    return typeof x === 'number';
-  }
-
-  isResolutionObj(x: any): x is ResolutionCarouselData {
-    return typeof x === 'object';
-  }
-
   /**
    * Joins the observable login in one place: sets values to some observables, merges this observables and
    * subcribes to merge func
@@ -390,7 +205,7 @@ export class CarouselComponent
         }
         this.navData = data.navData;
         this.dotsData = data.dotsData;
-        console.log(this.stageData);
+        // console.log(this.stageData);
       })
     );
 
