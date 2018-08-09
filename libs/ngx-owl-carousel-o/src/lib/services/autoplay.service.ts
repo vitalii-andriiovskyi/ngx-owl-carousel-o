@@ -79,7 +79,7 @@ export class AutoplayService {
 	 * @param speed - The animation speed for the animations.
 	 * @return
 	 */
-	private _getNextTimeout(timeout: number, speed: number): number {
+	private _getNextTimeout(timeout?: number, speed?: number): number {
 		if ( this._timeout ) {
 			this.winRef.clearTimeout(this._timeout);
 		}
@@ -89,5 +89,24 @@ export class AutoplayService {
 			}
 			this.carouselService.next(speed || this.carouselService.settings.autoplaySpeed);
     }, timeout || this.carouselService.settings.autoplayTimeout);
+  };
+
+  /**
+	 * Sets autoplay in motion.
+	 */
+	private _setAutoPlayInterval() {
+		this._timeout = this._getNextTimeout();
+	};
+
+	/**
+	 * Stops the autoplay.
+	 */
+	stop() {
+		if (!this.carouselService.is('rotating')) {
+			return;
+		}
+
+		this.winRef.clearTimeout(this._timeout);
+		this.carouselService.leave('rotating');
 	};
 }
