@@ -3,7 +3,7 @@ import { NavData, DotsData } from '../models/navigation-data.models';
 import { CarouselSlideDirective } from '../carousel/carousel.module';
 import { CarouselService } from './carousel.service';
 import { Subscription, Observable, merge } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, filter } from 'rxjs/operators';
 import { OwlOptions } from '../models/owl-options.model';
 
 @Injectable({
@@ -56,7 +56,6 @@ export class NavigationService {
    * Defines Observables which service must observe
    */
   spyDataStreams() {
-
     const initializedCarousel$: Observable<string> = this.carouselService.getInitializedState().pipe(
       tap(state => {
         this.initialize();
@@ -70,7 +69,8 @@ export class NavigationService {
     // mostly changes in carouselService and carousel at all causes carouselService.to(). It moves stage right-left by its code and calling needed functions
     // Thus this method by calling carouselService.current(position) notifies about changes
     const changedSettings$: Observable<any> = this.carouselService.getChangedState().pipe(
-      tap(state => {
+      filter(data => data.property.name === 'position'),
+      tap(data => {
         this.update();
         // should be the call of the function written at the end of comment
         // but the method carouselServive.to() has setTimeout(f, 0) which contains carouselServive.update() which calls sendChanges() method.
