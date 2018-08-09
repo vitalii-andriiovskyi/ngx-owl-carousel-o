@@ -22,16 +22,11 @@ describe('DraggableDirective in context of CarouselComponent (integrated tests):
   let testComponent: TestComponent;
   let fixtureHost: ComponentFixture<TestComponent>;
 
-  let carouselComponent: CarouselComponent;
   let deCarouselComponent: DebugElement;
-  let carouselHTML: HTMLElement;
-  let carouselService: CarouselService;
 
   let deStage: DebugElement;
 
   let deNavButtons: DebugElement[];
-  let nextButton: HTMLElement;
-  let prevButton: HTMLElement;
   let deDots: DebugElement[];
 
   let deSlides: DebugElement[];
