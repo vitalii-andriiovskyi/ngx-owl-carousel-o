@@ -1442,6 +1442,9 @@ export class CarouselService {
 			case 'translated':
 				this._translatedCarousel$.next(name);
 				break;
+			case 'change':
+				this._changedSettingsCarousel$.next(data);
+				break;
 			case 'changed':
 				this._changedSettingsCarousel$.next(data);
 				break;
