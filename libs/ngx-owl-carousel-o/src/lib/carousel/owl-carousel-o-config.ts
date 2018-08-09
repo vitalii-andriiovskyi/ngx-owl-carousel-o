@@ -37,6 +37,12 @@ export class OwlCarouselOConfig implements OwlOptions {
   dotsEach = false;
   dotsData = false;
   dotsSpeed = false;
+
+  // defaults to Autoplay
+  autoplay: false;
+  autoplayTimeout: 5000;
+  autoplayHoverPause: false;
+  autoplaySpeed: false;
   constructor() { }
 }
 
@@ -80,5 +86,11 @@ export class OwlOptionsMockedTypes {
   dotsEach = 'number|boolean';
   dotsData = 'boolean';
   dotsSpeed = 'number|boolean';
+
+  // defaults to Autoplay
+  autoplay: 'boolean';
+  autoplayTimeout: 'number';
+  autoplayHoverPause: 'boolean';
+  autoplaySpeed: 'number|boolean';
   constructor() { }
 }
