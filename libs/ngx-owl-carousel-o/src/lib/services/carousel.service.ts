@@ -76,7 +76,7 @@ export class CarouselService {
 	/**
    * Subject for notification when the carousel's settings have changed
    */
-	private _changedSettingsCarousel$ = new Subject<string>();
+	private _changedSettingsCarousel$ = new Subject<any>();
 	/**
    * Subject for notification when the carousel stopped translating or moving
    */
@@ -1429,7 +1429,7 @@ export class CarouselService {
 				this._translatedCarousel$.next(name);
 				break;
 			case 'changed':
-				this._changedSettingsCarousel$.next(name);
+				this._changedSettingsCarousel$.next(data);
 				break;
 			case 'resize':
 				this._resizeCarousel$.next(name);
