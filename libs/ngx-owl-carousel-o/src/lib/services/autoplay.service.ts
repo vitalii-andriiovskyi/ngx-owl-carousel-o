@@ -45,8 +45,7 @@ export class AutoplayService {
     // Thus this method by calling carouselService.current(position) notifies about changes
     const changedSettings$: Observable<any> = this.carouselService.getChangedState().pipe(
       tap(data => {
-        // this.update();
-        // this.carouselService.sendChanges();
+        this._handleChangeObservable(data);
       })
     );
 
@@ -61,7 +60,7 @@ export class AutoplayService {
 	 * @param timeout The interval before the next animation starts.
 	 * @param speed The animation speed for the animations.
 	 */
-	play(timeout: number, speed: number) {
+	play(timeout?: number, speed?: number) {
 		this._paused = false;
 
 		if (this.carouselService.is('rotating')) {
@@ -119,5 +118,24 @@ export class AutoplayService {
 		}
 
 		this._paused = true;
-	};
+  };
+
+  /**
+   * Manages by autoplaying according to data passed by _changedSettingsCarousel$ Obsarvable
+   * @param data object with current position of carousel and type of change
+   */
+  private _handleChangeObservable(data) {
+    if (data.property.name === 'settings') {
+      if (this.carouselService.settings.autoplay) {
+        this.play();
+      } else {
+        this.stop();
+      }
+    } else if (data.property.name === 'position') {
+      //console.log('play?', e);
+      if (this.carouselService.settings.autoplay) {
+        this._setAutoPlayInterval();
+      }
+    }
+  }
 }
