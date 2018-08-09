@@ -2610,6 +2610,66 @@ describe('CarouselComponent', () => {
     // autoplayService.stop();
   }));
 
+  it('should stop autoplaying carousel by \'mouseover\' and \'touchstart\'[options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 100, autoplayHoverPause: true}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 100, autoplayHoverPause: true}" (translated)="getPassedData($event)">
+          <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+          <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+          <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+          <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+          <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+    autoplayService = deCarouselComponent.injector.get(AutoplayService);
+    spyOn(autoplayService, 'startPausing');
+    spyOn(autoplayService, 'startPlayingMouseLeave');
+    spyOn(autoplayService, 'startPlayingTouchEnd');
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+    tick(1500);
+    fixtureHost.detectChanges();
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+
+    triggerMouseEvent(carouselHTML, 'mouseover', {});
+    expect(autoplayService.startPausing).toHaveBeenCalled();
+
+    tick();
+    fixtureHost.detectChanges();
+
+    triggerMouseEvent(carouselHTML, 'mouseleave', {});
+    expect(autoplayService.startPlayingMouseLeave).toHaveBeenCalled();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+
+    tick();
+    fixtureHost.detectChanges();
+
+    triggerTouchEvent(carouselHTML, 'touchstart', {});
+    expect(autoplayService.startPausing).toHaveBeenCalled();
+
+    tick(1500);
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+    triggerTouchEvent(carouselHTML, 'touchend', {});
+    expect(autoplayService.startPlayingTouchEnd).toHaveBeenCalled();
+    autoplayService.stop();
+  }));
+
 
   // the ending of tests
 });
@@ -2630,4 +2690,28 @@ class TestComponent {
 function triggerMouseEvent(node: any, eventType: string, evtObj: any) {
   const evt = new MouseEvent(eventType, evtObj);
   node.dispatchEvent(evt);
+}
+
+function triggerTouchEvent(element: HTMLElement, eventType: string, evtObj: any) {
+  const evtSet = {
+    identifier: Date.now(),
+    target: element,
+    radiusX: 2.5,
+    radiusY: 2.5,
+    rotationAngle: 10,
+    force: 0.5,
+  };
+
+  const touchObj = new Touch({...evtSet, ...evtObj});
+
+  const touchEvent = new TouchEvent(eventType, {
+    cancelable: true,
+    bubbles: true,
+    touches: [touchObj],
+    targetTouches: [],
+    changedTouches: [touchObj],
+    shiftKey: true,
+  });
+
+  element.dispatchEvent(touchEvent);
 }
