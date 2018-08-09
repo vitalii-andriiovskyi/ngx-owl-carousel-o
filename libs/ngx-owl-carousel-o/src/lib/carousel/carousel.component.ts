@@ -296,4 +296,25 @@ export class CarouselComponent
     }
   }
 
+  /**
+   * Starts pausing
+   */
+  startPausing() {
+    this.autoplayService.startPausing();
+  }
+
+  /**
+   * Starts playing after mouse leaves carousel
+   */
+  startPlayML() {
+    this.autoplayService.startPlayingMouseLeave();
+  }
+
+  /**
+   * Starts playing after touch ends
+   */
+  startPlayTE() {
+    this.autoplayService.startPlayingTouchEnd();
+  }
+
 }
