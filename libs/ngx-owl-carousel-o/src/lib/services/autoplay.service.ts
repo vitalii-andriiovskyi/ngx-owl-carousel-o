@@ -38,8 +38,8 @@ export class AutoplayService {
 
     // mostly changes in carouselService and carousel at all causes carouselService.to(). It moves stage right-left by its code and calling needed functions
     // Thus this method by calling carouselService.current(position) notifies about changes
-    const changedSettings$: Observable<string> = this.carouselService.getChangedState().pipe(
-      tap(state => {
+    const changedSettings$: Observable<any> = this.carouselService.getChangedState().pipe(
+      tap(data => {
         // this.update();
         // this.carouselService.sendChanges();
       })
@@ -50,4 +50,21 @@ export class AutoplayService {
       () => {}
     );
   }
+
+  /**
+	 * Starts the autoplay.
+	 * @param timeout The interval before the next animation starts.
+	 * @param speed The animation speed for the animations.
+	 */
+	play(timeout: number, speed: number) {
+		this._paused = false;
+
+		if (this.carouselService.is('rotating')) {
+			return;
+		}
+
+		this.carouselService.enter('rotating');
+
+		this._setAutoPlayInterval();
+	};
 }
