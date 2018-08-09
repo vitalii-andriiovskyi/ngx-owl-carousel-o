@@ -30,6 +30,7 @@ describe('CarouselComponent', () => {
   let deCarouselComponent: DebugElement;
   let carouselHTML: HTMLElement;
   let carouselService: CarouselService;
+  let autoplayService: AutoplayService;
 
   let deStage: DebugElement;
 
@@ -2572,6 +2573,43 @@ describe('CarouselComponent', () => {
     tick();
   }));
 
+  it('should autoplay carousel [options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 1000, autoplaySpeed: 500}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 1000, autoplaySpeed: 500}" (translated)="getPassedData($event)">
+          <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+          <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+          <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+          <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+          <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    autoplayService = deCarouselComponent.injector.get(AutoplayService);
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+    tick(1500);
+    fixtureHost.detectChanges();
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.5s', '0.5s');
+    tick(2000);
+    fixtureHost.detectChanges();
+
+    // can't imitate passage of time (tick(2000) doesn't wait). Thus next checking won't work
+    // deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    // expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 4', 'Slide 4');
+    // autoplayService.stop();
+  }));
+
 
   // the ending of tests
 });
@@ -2587,4 +2625,9 @@ class TestComponent {
   getPassedData(data: any) {
     this.translatedData = data;
   }
+}
+
+function triggerMouseEvent(node: any, eventType: string, evtObj: any) {
+  const evt = new MouseEvent(eventType, evtObj);
+  node.dispatchEvent(evt);
 }
