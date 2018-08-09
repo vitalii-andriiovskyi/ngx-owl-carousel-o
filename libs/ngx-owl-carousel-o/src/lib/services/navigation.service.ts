@@ -4,13 +4,14 @@ import { CarouselSlideDirective } from '../carousel/carousel.module';
 import { CarouselService } from './carousel.service';
 import { Subscription, Observable, merge } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { OwlOptions } from '../models/owl-options.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NavigationService {
   /**
-   * subscrioption to merge Observable  from CarouselService
+   * Subscrioption to merge Observable  from CarouselService
    */
   navSubscription: Subscription;
 
@@ -25,7 +26,7 @@ export class NavigationService {
   protected _pages: any[] = [];
 
   /**
-   * Navigation elements of the user interface.
+   * Data for navigation elements of the user interface.
    */
   protected _navData: NavData = {
     disabled: false,
@@ -40,24 +41,19 @@ export class NavigationService {
   };
 
   /**
-   * dot elements of the user interface.
+   * Data for dot elements of the user interface.
    */
   protected _dotsData: DotsData = {
     disabled: false,
     dots: []
   };
 
-  /**
-   * Markup for an indicator.
-   */
-  protected _templates: string[] = [];
-
   constructor(private carouselService: CarouselService) {
     this.spyDataStreams();
   }
 
   /**
-   * defines Observables which service must observe
+   * Defines Observables which service must observe
    */
   spyDataStreams() {
 
@@ -115,15 +111,15 @@ export class NavigationService {
   }
 
   /**
-   * calculates the internal state and updates prop _pages
+   * Calculates internal states and updates prop _pages
    */
 	private _updateNavPages() {
-		let i, j, k;
-		const lower = this.carouselService.clones().length / 2,
-      upper = lower + this.carouselService.items().length,
-      maximum = this.carouselService.maximum(true),
-      pages = [],
-      settings = this.carouselService.settings;
+		let i: number, j: number, k: number;
+		const lower: number = this.carouselService.clones().length / 2,
+      upper: number = lower + this.carouselService.items().length,
+      maximum: number = this.carouselService.maximum(true),
+      pages: any[] = [],
+      settings: OwlOptions = this.carouselService.settings;
      let size = settings.center || settings.autoWidth || settings.dotsData
         ? 1 : settings.dotsEach || settings.items;
       size = +size;
@@ -144,7 +140,7 @@ export class NavigationService {
 					}
 					j = 0, ++k;
 				}
-				j += this.carouselService.mergers(this.carouselService.relative(i));
+				j += this.carouselService.mergers(this.carouselService.relative(i)) as number;
 			}
 		}
 		this._pages = pages;
@@ -155,9 +151,9 @@ export class NavigationService {
 	 * @todo The option `dotsData` wont work.
 	 */
   draw() {
-		let difference;
-    const	settings = this.carouselService.settings,
-      items = this.carouselService.items(),
+		let difference: number;
+    const	settings: OwlOptions = this.carouselService.settings,
+      items: CarouselSlideDirective[] = this.carouselService.items(),
       disabled = items.length <= settings.items;
 
 		this._navData.disabled = !settings.nav || disabled;
@@ -177,7 +173,7 @@ export class NavigationService {
           });
         });
 			} else if (difference > 0) {
-        const startI = this._dotsData.dots.length > 0 ? this._dotsData.dots.length : 0;
+        const startI: number = this._dotsData.dots.length > 0 ? this._dotsData.dots.length : 0;
         for (let i = 0; i < difference; i++) {
           this._dotsData.dots.push({
             active: false,
@@ -195,7 +191,7 @@ export class NavigationService {
   };
 
   /**
-   * updates navigation buttons's and dots's states
+   * Updates navigation buttons's and dots's states
    */
   update() {
     this._updateNavButtons();
@@ -203,12 +199,12 @@ export class NavigationService {
   }
 
   /**
-   * changes state of nav buttons (disabled, enabled)
+   * Changes state of nav buttons (disabled, enabled)
    */
   private _updateNavButtons() {
-    const	settings = this.carouselService.settings,
-      loop = settings.loop || settings.rewind,
-      index = this.carouselService.relative(this.carouselService.current());
+    const	settings: OwlOptions = this.carouselService.settings,
+      loop: boolean = settings.loop || settings.rewind,
+      index: number = this.carouselService.relative(this.carouselService.current());
 
     if (settings.nav) {
       this._navData.prev.disabled = !loop && index <= this.carouselService.minimum(true);
@@ -219,7 +215,7 @@ export class NavigationService {
   }
 
   /**
-   * changes active dot if page becomes changed
+   * Changes active dot if page becomes changed
    */
   private _updateDots() {
     let curActiveDotI: number;
@@ -241,7 +237,7 @@ export class NavigationService {
 	 * @returns the current page position of the carousel
 	 */
 	private _current(): any {
-    const current = this.carouselService.relative(this.carouselService.current());
+    const current: number = this.carouselService.relative(this.carouselService.current());
     let finalCurrent: number;
     const pages: any = this._pages.filter((page, index) => {
       return page.start <= current && page.end >= current;
@@ -256,11 +252,12 @@ export class NavigationService {
 
   /**
 	 * Gets the current succesor/predecessor position.
+   * @param sussessor position of slide
 	 * @returns the current succesor/predecessor position
 	 */
-	private _getPosition(successor): number {
-		let position, length;
-		const	settings = this.carouselService.settings;
+	private _getPosition(successor: number | boolean): number {
+		let position: number, length: number;
+		const	settings: OwlOptions = this.carouselService.settings;
 
 		if (settings.slideBy === 'page') {
 			position = this._current();
@@ -270,7 +267,7 @@ export class NavigationService {
 		} else {
 			position = this.carouselService.relative(this.carouselService.current());
 			length = this.carouselService.items().length;
-			successor ? position += settings.slideBy : position -= +settings.slideBy;
+			successor ? position += +settings.slideBy : position -= +settings.slideBy;
 		}
 
 		return position;
@@ -278,7 +275,7 @@ export class NavigationService {
 
   /**
 	 * Slides to the next item or page.
-	 * @param [speed=false] - The time in milliseconds for the transition.
+	 * @param speed The time in milliseconds for the transition.
 	 */
 	next(speed: number | boolean) {
     this.carouselService.to(this._getPosition(true), speed);
@@ -286,7 +283,7 @@ export class NavigationService {
 
 	/**
 	 * Slides to the previous item or page.
-	 * @param [speed=false] - The time in milliseconds for the transition.
+	 * @param speed The time in milliseconds for the transition.
 	 */
 	prev(speed: number | boolean) {
     this.carouselService.to(this._getPosition(false), speed);
@@ -299,7 +296,7 @@ export class NavigationService {
 	 * @param standard - Whether to use the standard behaviour or not. Default meaning false
 	 */
 	to(position: number, speed: number | boolean, standard?: boolean) {
-		let length;
+		let length: number;
 		if (!standard && this._pages.length) {
       length = this._pages.length;
       this.carouselService.to(this._pages[((position % length) + length) % length].start, speed);
@@ -308,8 +305,11 @@ export class NavigationService {
 		}
   };
 
+  /**
+   * Moves carousel after user's clicking on any dots
+   */
   moveByDot(dotId: string) {
-    const index = this._dotsData.dots.findIndex(dot => dotId === dot.id);
+    const index: number = this._dotsData.dots.findIndex(dot => dotId === dot.id);
     this.to(index, this.carouselService.settings.dotsSpeed);
   }
 
