@@ -1,4 +1,8 @@
 
+import { StageData } from '../models/stage-data.model';
+
+import { OwlDOMData } from '../models/owlDOM-data.model';
+
 import { Injectable } from '@angular/core';
 
 import { CustomEventsService } from './custom-events.service';
@@ -40,77 +44,6 @@ export enum Width {
 export class Coords {
 	x: number;
 	y: number;
-}
-
-/**
- * Data model for managing classes of .owl-carousel DOM element
- */
-export class OwlDOMData {
-	/**
-	 * Defines whether to set class .owl-rtl or not
-	 */
-	rtl: boolean;
-
-	/**
-	 * Defines whether to set class .owl-responsive or not
-	 */
-	isResponsive: boolean;
-
-	/**
-	 * Defines whether to set class .owl-refreshed or not
-	 */
-	isRefreshed: boolean;
-
-	/**
-	 * Defines whether to set class .owl-loaded or not
-	*/
-	isLoaded: boolean;
-
-	/**
-	 * Defines whether to set class .owl-loading or not
-	 */
-	isLoading: boolean;
-
-	/**
-	 * Defines whether to set class .owl-drag or not and makes carousel draggable by mouse moving
-	 */
-	isMouseDragable: boolean;
-
-	/**
-	 * Makes carousel draggable by touch moving
-	 */
-	isTouchDragable: boolean;
-
-	/**
-	 * Defines whether to set class .owl-grab or not
-	 */
-	isGrab: boolean;
-}
-
-/**
- * data model for managing classes of .owl-stage DOM element
- */
-export class StageData {
-	/**
-	 * determines css-rule transform
-	 */
-	transform: string;
-	/**
-	 *  determines css-rule transition
-   */
-	transition: string;
-	/**
-	 *  determines css-rule width
-   */
-	width: number | string;
-	/**
-	 *  determines css-rule padding-left
-   */
-	paddingL: number | string;
-	/**
-	 *  determines css-rule padding-right
-   */
-	paddingR: number | string;
 }
 
 /**
@@ -976,7 +909,7 @@ export class CarouselService {
 			width = this.width();
 		let	coordinates: number[] = this.coordinates() as number[],
 		 position = -1;
-		
+
 		if (this.settings.center) {
 			coordinates = coordinates.map(item => {
 				if (item === 0) {
