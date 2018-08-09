@@ -27,6 +27,7 @@ import { SliderModel } from '../models/slider.model';
 import { OwlOptions } from '../models/owl-options.model';
 import { NavData, DotsData } from '../models/navigation-data.models';
 import { NavigationService } from '../services/navigation.service';
+import { AutoplayService } from '../services/autoplay.service';
 
 let nextId = 0;
 
@@ -164,9 +165,9 @@ export class CarouselComponent
   constructor(
     private el: ElementRef,
     private resizeService: ResizeService,
-    @Inject(WINDOW) private winRef: Window,
     private carouselService: CarouselService,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    private autoplayService: AutoplayService
   ) {}
 
   ngOnInit() {
