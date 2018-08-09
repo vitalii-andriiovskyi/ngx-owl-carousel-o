@@ -1,9 +1,13 @@
-<div class="owl-carousel owl-theme" 
+<div class="owl-carousel owl-theme" #owlCarousel
 	[ngClass]="{'owl-rtl': owlDOMData?.rtl,
 							'owl-loaded': owlDOMData?.isLoaded,
 							'owl-responsive': owlDOMData?.isResponsive,
 							'owl-drag': owlDOMData?.isMouseDragable,
-							'owl-grab': owlDOMData?.isGrab}" #owlCarousel>
+							'owl-grab': owlDOMData?.isGrab}"
+	(mouseover)="startPausing()"
+	(mouseleave)="startPlayML()"
+	(touchstart)="startPausing()"
+	(touchend)="startPlayTE()">
 
 	<div *ngIf="carouselLoaded" class="owl-stage-outer">
 		<div>
