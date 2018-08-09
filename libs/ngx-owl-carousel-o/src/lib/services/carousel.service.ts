@@ -13,6 +13,10 @@ import { OwlCarouselOConfig, OwlOptionsMockedTypes } from '../carousel/owl-carou
 import { OwlOptions } from '../models/owl-options.model';
 
 import { NavData, DotsData } from '../models/navigation-data.models';
+
+/**
+ * Current state information and their tags.
+ */
 export class States {
   current: {};
   tags: {
@@ -22,7 +26,6 @@ export class States {
 
 /**
  * Enumeration for types.
- * @public
  * @enum {String}
  */
 export enum Type {
@@ -32,7 +35,6 @@ export enum Type {
 
 /**
  * Enumeration for width.
- * @public
  * @enum {String}
  */
 export enum Width {
@@ -41,13 +43,16 @@ export enum Width {
 	Outer = 'outer'
 };
 
+/**
+ * Model for coords of .owl-stage
+ */
 export class Coords {
 	x: number;
 	y: number;
 }
 
 /**
- * model for all current data of carousel
+ * Model for all current data of carousel
  */
 export class CarouselCurrentData {
 	owlDOMData: OwlDOMData;
@@ -61,17 +66,28 @@ export class CarouselCurrentData {
   providedIn: 'root'
 })
 export class CarouselService {
-
+	/**
+   * Subject for passing data needed for managing View
+   */
 	private _viewSettingsShipper$ = new Subject<CarouselCurrentData>();
+	/**
+   * Subject for notification when the carousel got initializes
+   */
 	private _initializedCarousel$ = new Subject<string>();
+	/**
+   * Subject for notification when the carousel's settings have changed
+   */
 	private _changedSettingsCarousel$ = new Subject<string>();
+	/**
+   * Subject for notification when the carousel stopped translating or moving
+   */
 	private _translatedCarousel$ = new Subject<string>();
 	/**
-   * Subject for notification when the carousel's rebuilding caused by resize event starts
+   * Subject for notification when the carousel's rebuilding caused by 'resize' event starts
    */
 	private _resizeCarousel$ = new Subject<string>();
 	/**
-   * Subject for notification  when the carousel's rebuilding caused by resize event is ended
+   * Subject for notification  when the carousel's rebuilding caused by 'resize' event is ended
    */
 	private _resizedCarousel$ = new Subject<string>();
 	/**
@@ -91,7 +107,7 @@ export class CarouselService {
 	};
 
 	/**
-   * data containing true/false for setting classes to element .owl-carousel
+   * Initial data for setting classes to element .owl-carousel
    */
 	owlDOMData: OwlDOMData = {
 		rtl: false,
@@ -105,7 +121,7 @@ export class CarouselService {
 	};
 
 	/**
-   * data of owl-stage
+   * Initial data of .owl-stage
    */
 	stageData: StageData = {
 		transform: 'translate3d(0px,0px,0px)',
@@ -116,22 +132,22 @@ export class CarouselService {
 	};
 
 	/**
-	 *  data of every slide
+	 *  Data of every slide
 	 */
 	slidesData: SliderModel[];
 
 	/**
-	 * data of navigation block
+	 * Data of navigation block
 	 */
 	navData: NavData;
 
 	/**
-	 * data of dots block
+	 * Data of dots block
 	 */
 	dotsData: DotsData;
 
 	/**
-	 * carousel width
+	 * Carousel width
 	 */
 	private _width: number;
 
@@ -141,7 +157,7 @@ export class CarouselService {
 	private _items: CarouselSlideDirective[] = []; // is equal to this.slides
 
 	/**
-   * array with width of every slide.
+   * Array with width of every slide.
    */
   private _widths: any[] = [];
 
@@ -198,13 +214,12 @@ export class CarouselService {
    */
   private _invalidated: any = {};
 
-  // is needed for tests
+  // Is needed for tests
   get invalidated() {
     return this._invalidated;
   }
   /**
    * Current state information and their tags.
-   * @type ff {Object}
    */
   private _states: States = {
     current: {},
@@ -220,8 +235,8 @@ export class CarouselService {
     return this._states;
 	}
 
-	 /**
-   * Ordered list of workers for the update process.
+	/**
+ 	 * Ordered list of workers for the update process.
    */
   private _pipe: any[] = [
     // {
@@ -457,20 +472,33 @@ export class CarouselService {
 	constructor(private customEventsCreator: CustomEventsService) { }
 
 	/**
-	 * returns all needed data for showing carousel
+	 * makes _viewSettingsShipper$ Subject become Observable
+	 * @returns Observable of _viewSettingsShipper$ Subject
 	 */
 	getViewCurSettings(): Observable<CarouselCurrentData> {
 		return this._viewSettingsShipper$.asObservable();
 	}
 
+	/**
+	 * makes _initializedCarousel$ Subject become Observable
+	 * @returns Observable of _initializedCarousel$ Subject
+	 */
 	getInitializedState(): Observable<string> {
 		return this._initializedCarousel$.asObservable()
 	}
 
+	/**
+	 * makes _changedSettingsCarousel$ Subject become Observable
+	 * @returns Observable of _changedSettingsCarousel$ Subject
+	 */
 	getChangedState(): Observable<string> {
 		return this._changedSettingsCarousel$.asObservable();
 	}
 
+	/**
+	 * makes _translatedCarousel$ Subject become Observable
+	 * @returns Observable of _translatedCarousel$ Subject
+	 */
 	getTranslatedState(): Observable<string> {
 		return this._translatedCarousel$.asObservable();
 	}
@@ -518,9 +546,13 @@ export class CarouselService {
 	}
 
 	/**
-	 * checks whether user's option are set properly. Cheking is based on typings;
+	 * Checks whether user's option are set properly. Cheking is based on typings;
 	 * @param options options set by user
 	 * @param configOptions default options
+	 * @returns checked and modified (if it's needed) user's options
+	 *
+	 * Notes:
+	 * 	- if user set option with wrong type, it'll be written in console
 	 */
 	private _validateOptions(options: OwlOptions, configOptions: OwlOptions): OwlOptions {
 		const checkedOptions: OwlOptions = { ...options};
@@ -566,7 +598,7 @@ export class CarouselService {
 	}
 
 	/**
-	 * checks option items set by user and if it bigger than number of slides then returns number of slides
+	 * Checks option items set by user and if it bigger than number of slides then returns number of slides
 	 * @param items option items set by user
 	 * @returns right number of items
 	 */
@@ -582,7 +614,7 @@ export class CarouselService {
 	}
 
 	/**
-	 * set current width of carousel
+	 * Set current width of carousel
 	 * @param width width of carousel Window
 	 */
 	setCarouselWidth(width: number) {
@@ -596,7 +628,6 @@ export class CarouselService {
 	 * @param carouselWidth width of carousel
 	 * @param slides array of slides
 	 * @param options options set by user
-	 * @public
 	 */
   setup(carouselWidth: number, slides: CarouselSlideDirective[], options: OwlOptions) {
 		this.setCarouselWidth(carouselWidth);
@@ -615,7 +646,7 @@ export class CarouselService {
 	}
 
 	/**
-	 * set number of items for current viewport
+	 * Set number of items for current viewport
 	 */
 	setViewportItemsN() {
 		const viewport = this._width,
@@ -647,6 +678,7 @@ export class CarouselService {
 
 	/**
 	 * Initializes the carousel.
+	 * @param slides array of CarouselSlideDirective
 	 */
   initialize(slides: CarouselSlideDirective[]) {
 		this.enter('initializing');
@@ -675,7 +707,7 @@ export class CarouselService {
 	};
 
 	/**
-	 * Sends all data needed for View.
+	 * Sends all data needed for View
 	 */
 	sendChanges() {
 		this._viewSettingsShipper$.next({
@@ -689,7 +721,7 @@ export class CarouselService {
 
 
   /**
-	 * Updates option logic if necessery.
+	 * Updates option logic if necessery
 	 */
   private _optionsLogic() {
 		if (this.settings.autoWidth) {
@@ -699,8 +731,7 @@ export class CarouselService {
 	}
 
   /**
-   * Updates the view.
-   * @param - list of functions: workers
+   * Updates the view
    */
   update() {
     let i = 0;
@@ -727,9 +758,8 @@ export class CarouselService {
 
   /**
 	 * Gets the width of the view.
-	 * @public
-	 * @param [dimension=Width.Default] - The dimension to return.
-	 * @returns - The width of the view in pixel.
+	 * @param [dimension=Width.Default] The dimension to return
+	 * @returns The width of the view in pixel.
 	 */
   width(dimension?: Width): number {
 		dimension = dimension || Width.Default;
@@ -744,7 +774,6 @@ export class CarouselService {
 
   /**
 	 * Refreshes the carousel primarily for adaptive purposes.
-	 * @public
 	 */
   refresh() {
 		this.enter('refreshing');
@@ -766,11 +795,7 @@ export class CarouselService {
 
   /**
 	 * Checks window `resize` event.
-	 */
-	private _onThrottledResize() { }
-
-  /**
-	 * Checks window `resize` event.
+	 * @param curWidth width of .owl-carousel
 	 */
   onResize(curWidth: number) {
 		if (!this._items.length) {
@@ -805,7 +830,7 @@ export class CarouselService {
 		let stage: Coords = null,
 				transformArr: string[];
 
-		// could be 5 commented lines below; However we have stage transform in stageData and in updates after each move of stage
+		// could be 5 commented lines below; However there's stage transform in stageData and in updates after each move of stage
     // stage = getComputedStyle(this.el.nativeElement).transform.replace(/.*\(|\)| /g, '').split(',');
     // stage = {
     //   x: stage[stage.length === 16 ? 12 : 4],
@@ -831,11 +856,11 @@ export class CarouselService {
 	}
 
   /**
-	 * defines new coords for .owl-stage while dragging it
+	 * Defines new coords for .owl-stage while dragging it
 	 * @todo #261
-	 * @param event - The event arguments.
-	 * @param dragData - initial data got after starting dragging
-	 * @returns coords of false
+	 * @param event the event arguments.
+	 * @param dragData initial data got after starting dragging
+	 * @returns coords or false
 	 */
   defineNewCoordsDrag(event: any, dragData: any): boolean | Coords {
 		let minimum = null,
@@ -863,10 +888,12 @@ export class CarouselService {
 	}
 
   /**
-	 * Handles the `touchend` and `mouseup` events.
+	 * Finishes dragging of carousel when `touchend` and `mouseup` events fire.
 	 * @todo #261
 	 * @todo Threshold for click event
-	 * @param {Event} event - The event arguments.
+	 * @param event the event arguments.
+	 * @param dragObj the object with dragging settings and states
+	 * @param clickAttacher function which attaches click handler to slide or its children elements in order to prevent event bubling
 	 */
   finishDragging(event: any, dragObj: any, clickAttacher: () => void) {
 		const delta = this.difference(dragObj.pointer, this.pointer(event)),
@@ -897,12 +924,12 @@ export class CarouselService {
       this.leave('dragging');
 	 }
 
-  	/**
+  /**
 	 * Gets absolute position of the closest item for a coordinate.
 	 * @todo Setting `freeDrag` makes `closest` not reusable. See #165.
-	 * @param coordinate - The coordinate in pixel.
-	 * @param direction - The direction to check for the closest item. Ether `left` or `right`.
-	 * @return - The absolute position of the closest item.
+	 * @param coordinate The coordinate in pixel.
+	 * @param direction The direction to check for the closest item. Ether `left` or `right`.
+	 * @returns The absolute position of the closest item.
 	 */
   closest(coordinate: number, direction: string): number {
 		const pull = 30,
@@ -960,8 +987,7 @@ export class CarouselService {
   /**
 	 * Animates the stage.
 	 * @todo #270
-	 * @public
-	 * @param coordinate - The coordinate in pixels.
+	 * @param coordinate The coordinate in pixels.
 	 */
   animate(coordinate: number | number[]) {
 		const animate = this.speed() > 0;
@@ -983,8 +1009,8 @@ export class CarouselService {
 
   /**
 	 * Checks whether the carousel is in a specific state or not.
-	 * @param state - The state to check.
-	 * @return} - The flag which indicates if the carousel is busy.
+	 * @param state The state to check.
+	 * @returns The flag which indicates if the carousel is busy.
 	 */
   is(state: string): boolean {
 		return this._states.current[state] && this._states.current[state] > 0;
@@ -993,8 +1019,8 @@ export class CarouselService {
   /**
 	 * Sets the absolute position of the current item.
 	 * @public
-	 * @param {Number} [position] - The new absolute position or nothing to leave it unchanged.
-	 * @returns {Number} - The absolute position of the current item.
+	 * @param position The new absolute position or nothing to leave it unchanged.
+	 * @returns The absolute position of the current item.
 	 */
   current(position?: number): number {
 		if (position === undefined) {
@@ -1025,8 +1051,8 @@ export class CarouselService {
 
   /**
 	 * Invalidates the given part of the update routine.
-	 * @param [part] - The part to invalidate.
-	 * @returns - The invalidated parts.
+	 * @param part The part to invalidate.
+	 * @returns The invalidated parts.
 	 */
   invalidate(part: string): string[] {
 		if (typeof part === 'string') {
@@ -1038,8 +1064,7 @@ export class CarouselService {
 
 	/**
 	 * Resets the absolute position of the current item.
-	 * @public
-	 * @param position - The absolute position of the new item.
+	 * @param position the absolute position of the new item.
 	 */
   reset(position: number) {
 		position = this.normalize(position);
@@ -1060,10 +1085,9 @@ export class CarouselService {
 
   /**
 	 * Normalizes an absolute or a relative position of an item.
-	 * @public
-	 * @param position - The absolute or relative position to normalize.
-	 * @param [relative=false] - Whether the given position is relative or not.
-	 * @returns Number - The normalized position.
+	 * @param position The absolute or relative position to normalize.
+	 * @param relative Whether the given position is relative or not.
+	 * @returns The normalized position.
 	 */
   normalize(position: number, relative?: boolean): number {
 		const n = this._items.length,
@@ -1080,19 +1104,17 @@ export class CarouselService {
 
   /**
 	 * Converts an absolute position of an item into a relative one.
-	 * @public
-	 * @param position - The absolute position to convert.
-	 * @returns - The converted position.
+	 * @param position The absolute position to convert.
+	 * @returns The converted position.
 	 */
   relative(position: number): number {
 		position -= this._clones.length / 2;
 		return this.normalize(position, true);
-	 }
+	}
 
   /**
 	 * Gets the maximum position for the current item.
-	 * @public
-	 * @param [relative=false] - Whether to return an absolute position or a relative position.
+	 * @param relative Whether to return an absolute position or a relative position.
 	 * @returns number of maximum position
 	 */
   maximum(relative: boolean = false): number {
@@ -1131,8 +1153,7 @@ export class CarouselService {
 
   /**
 	 * Gets the minimum position for the current item.
-	 * @public
-	 * @param [relative=false] - Whether to return an absolute position or a relative position.
+	 * @param relative Whether to return an absolute position or a relative position.
 	 * @returns number of minimum position
 	 */
   minimum(relative: boolean = false): number {
@@ -1141,9 +1162,8 @@ export class CarouselService {
 
   /**
 	 * Gets an item at the specified relative position.
-	 * @public
-	 * @param [position] - The relative position of the item.
-	 * @return - The item at the given position or all items if no position was given.
+	 * @param position The relative position of the item.
+	 * @returns The item at the given position or all items if no position was given.
 	 */
   items(position?: number): CarouselSlideDirective[] {
 		if (position === undefined) {
@@ -1157,8 +1177,8 @@ export class CarouselService {
   /**
 	 * Gets an item at the specified relative position.
 	 * @public
-	 * @param [position] - The relative position of the item.
-	 * @return - The item at the given position or all items if no position was given.
+	 * @param position The relative position of the item.
+	 * @returns The item at the given position or all items if no position was given.
 	 */
   mergers(position: number): number | number[] {
 		if (position === undefined) {
@@ -1171,8 +1191,7 @@ export class CarouselService {
 
   /**
 	 * Gets the absolute positions of clones for an item.
-	 * @public
-	 * @param position - The relative position of the item.
+	 * @param position The relative position of the item.
 	 * @returns The absolute positions of clones for the item or all if no position was given.
 	 */
   clones(position?: number): number[] {
@@ -1189,9 +1208,8 @@ export class CarouselService {
 
   /**
 	 * Sets the current animation speed.
-	 * @public
-	 * @param {Number} [speed] - The animation speed in milliseconds or nothing to leave it unchanged.
-	 * @returns {Number} - The current animation speed in milliseconds.
+	 * @param speed The animation speed in milliseconds or nothing to leave it unchanged.
+	 * @returns The current animation speed in milliseconds.
 	 */
   speed(speed?: number): number {
 		if (speed !== undefined) {
@@ -1204,8 +1222,8 @@ export class CarouselService {
   /**
 	 * Gets the coordinate of an item.
 	 * @todo The name of this method is missleanding.
-	 * @param position - The absolute position of the item within `minimum()` and `maximum()`.
-	 * @returns - The coordinate of the item in pixel or all coordinates.
+	 * @param position The absolute position of the item within `minimum()` and `maximum()`.
+	 * @returns The coordinate of the item in pixel or all coordinates.
 	 */
   coordinates(position?: number): number | number[] {
 		let multiplier = 1,
@@ -1239,10 +1257,10 @@ export class CarouselService {
 
   /**
 	 * Calculates the speed for a translation.
-	 * @param from - The absolute position of the start item.
-	 * @param to - The absolute position of the target item.
+	 * @param from The absolute position of the start item.
+	 * @param to The absolute position of the target item.
 	 * @param factor [factor=undefined] - The time factor in milliseconds.
-	 * @returns - The time in milliseconds for the translation.
+	 * @returns The time in milliseconds for the translation.
 	 */
   private _duration(from: number, to: number, factor?: number | boolean): number {
 		if (factor === 0) {
@@ -1252,11 +1270,10 @@ export class CarouselService {
 		return Math.min(Math.max(Math.abs(to - from), 1), 6) * Math.abs((+factor || this.settings.smartSpeed));
 	}
 
-  	/**
+  /**
 	 * Slides to the specified item.
-	 * @public
-	 * @param {Number} position - The position of the item.
-	 * @param {Number} [speed] - The time in milliseconds for the transition.
+	 * @param position The position of the item.
+	 * @param speed The time in milliseconds for the transition.
 	 */
   to(position: number, speed: number | boolean) {
 		let current = this.current(),
@@ -1299,8 +1316,7 @@ export class CarouselService {
 
   /**
 	 * Slides to the next item.
-	 * @public
-	 * @param [speed] - The time in milliseconds for the transition.
+	 * @param speed The time in milliseconds for the transition.
 	 */
   next(speed: number | boolean) {
 		speed = speed || false;
@@ -1309,8 +1325,7 @@ export class CarouselService {
 
   /**
 	 * Slides to the previous item.
-	 * @public
-	 * @param [speed] - The time in milliseconds for the transition.
+	 * @param speed The time in milliseconds for the transition.
 	 */
   prev(speed: number | boolean) {
 		speed = speed || false;
@@ -1319,7 +1334,7 @@ export class CarouselService {
 
   /**
 	 * Handles the end of an animation.
-	 * @param {Event} event - The event arguments.
+	 * @param event - The event arguments.
 	 */
   onTransitionEnd(event?: any) {
 		// if css2 animation then event object is undefined
@@ -1338,7 +1353,7 @@ export class CarouselService {
 
   /**
 	 * Gets viewport width.
-	 * @return - The width in pixel.
+	 * @returns - The width in pixel.
 	 */
   private _viewport(): number {
 		let width;
@@ -1351,15 +1366,15 @@ export class CarouselService {
 	}
 
   /**
-	 * sets _items
-	 * @param content - The new content.
+	 * Sets _items
+	 * @param content The list of slides put into CarouselSlideDirectives.
 	 */
   setItems(content: CarouselSlideDirective[]) {
 		this._items = content;
 	}
 
 	/**
-	 * sets slidesData using this.items
+	 * Sets slidesData using this._items
 	 */
 	private _defineSlidesData() {
 		this.slidesData = this._items.map(slide => {
@@ -1374,41 +1389,11 @@ export class CarouselService {
 		});
 	}
 
-  	/**
-	 * Adds an item.
-	 * @todo Use `item` instead of `content` for the event arguments.
-	 * @public
-	 * @param {HTMLElement|jQuery|String} content - The item content to add.
-	 * @param {Number} [position] - The relative position at which to insert the item otherwise the item will be added to the end.
-	 */
-  add(content, position) { }
-
-  /**
-	 * Removes an item by its position.
-	 * @todo Use `item` instead of `content` for the event arguments.
-	 * @public
-	 * @param {Number} position - The relative position of the item to remove.
-	 */
-  remove(position) { }
-
-  /**
-	 * Preloads images with auto width.
-	 * @todo Replace by a more generic approach
-	 * @private
-	 */
-	preloadAutoWidthImages(images) { }
-
-  /**
-	 * Destroys the carousel.
-	 * @public
-	 */
-  destroy() { }
-
   /**
 	 * Operators to calculate right-to-left and left-to-right.
-	 * @param [a] - The left side operand.
-	 * @param [o] - The operator.
-	 * @param [b] - The right side operand.
+	 * @param a - The left side operand.
+	 * @param o - The operator.
+	 * @param b - The right side operand.
 	 * @returns true/false meaning right-to-left or left-to-right
 	 */
   private _op(a: number, o: string, b: number): boolean {
@@ -1427,32 +1412,14 @@ export class CarouselService {
 		}
 	}
 
-  	/**
-	 * Attaches to an internal event.
-	 * @param {HTMLElement} element - The event source.
-	 * @param {String} event - The event name.
-	 * @param {Function} listener - The event handler to attach.
-	 * @param {Boolean} capture - Wether the event should be handled at the capturing phase or not.
-	 */
-  private _on(element, event, listener, capture) { }
-
-  /**
-	 * Detaches from an internal event.
-	 * @param {HTMLElement} element - The event source.
-	 * @param {String} event - The event name.
-	 * @param {Function} listener - The attached event handler to detach.
-	 * @param {Boolean} capture - Wether the attached event handler was registered as a capturing listener or not.
-	 */
-  private _off(element, event, listener, capture) { }
-
   /**
 	 * Triggers a public event.
 	 * @todo Remove `status`, `relatedTarget` should be used instead.
-	 * @param name - The event name.
-	 * @param [data=null] - The event data.
-	 * @param [namespace=carousel] - The event namespace.
-	 * @param [state] - The state which is associated with the event.
-	 * @param [enter=false] - Indicates if the call enters the specified state or not.
+	 * @param name The event name.
+	 * @param data The event data.
+	 * @param namespace The event namespace.
+	 * @param state The state which is associated with the event.
+	 * @param enter Indicates if the call enters the specified state or not.
 	 */
   private _trigger(name: string, data?: any, namespace?: string, state?: string, enter?: boolean) {
 		switch (name) {
@@ -1511,7 +1478,6 @@ export class CarouselService {
 
   /**
 	 * Registers an event or state.
-	 * @public
 	 * @param object - The event or state to register.
 	 */
   register(object: any) {
@@ -1530,7 +1496,7 @@ export class CarouselService {
 
   /**
 	 * Suppresses events.
-	 * @param events - The events to suppress.
+	 * @param events The events to suppress.
 	 */
   private _suppress(events: string[]) {
 		events.forEach(event => {
@@ -1540,7 +1506,7 @@ export class CarouselService {
 
   /**
 	 * Releases suppressed events.
-	 * @param events - The events to release.
+	 * @param events The events to release.
 	 */
   private _release(events: string[]) {
 		events.forEach(event => {
@@ -1551,8 +1517,8 @@ export class CarouselService {
   /**
 	 * Gets unified pointer coordinates from event.
 	 * @todo #261
-	 * @param event - The `mousedown` or `touchstart` event.
-	 * @returns - Contains `x` and `y` coordinates of current pointer position.
+	 * @param event The `mousedown` or `touchstart` event.
+	 * @returns Object Coords which contains `x` and `y` coordinates of current pointer position.
 	 */
 	pointer(event: any): Coords {
 		const result = { x: null, y: null };
@@ -1571,14 +1537,13 @@ export class CarouselService {
 			result.y = event.clientY;
 		}
 
-		// console.log(result);
 		return result;
 	 }
 
-  	/**
+  /**
 	 * Determines if the input is a Number or something that can be coerced to a Number
-	 * @param - {Number|String|Object|Array|Boolean|RegExp|Function|Symbol} - The input to be tested
-	 * @returns - An indication if the input is a Number or can be coerced to a Number
+	 * @param number The input to be tested
+	 * @returns An indication if the input is a Number or can be coerced to a Number
 	 */
   private _isNumeric(number: any): boolean {
 		return !isNaN(parseFloat(number));
@@ -1587,6 +1552,7 @@ export class CarouselService {
 	/**
 	 * Determines whether value is number or boolean type
 	 * @param value The input to be tested
+	 * @returns An indication if the input is a Number or can be coerced to a Number, or Boolean
 	 */
 	private _isNumberOrBoolean(value: number | boolean): boolean {
 		return this._isNumeric(value) || typeof value === 'boolean';
@@ -1595,17 +1561,18 @@ export class CarouselService {
 	/**
 	 * Determines whether value is number or string type
 	 * @param value The input to be tested
+	 * @returns An indication if the input is a Number or can be coerced to a Number, or String
 	 */
 	private _isNumberOrString(value: number | string): boolean {
 		return this._isNumeric(value) || typeof value === 'string';
 	}
 
-  	/**
+  /**
 	 * Gets the difference of two vectors.
 	 * @todo #261
-	 * @param first - The first vector.
+	 * @param first The first vector.
 	 * @param second- The second vector.
-	 * @returns - The difference.
+	 * @returns The difference.
 	 */
   difference(first: Coords, second: Coords): Coords {
 		return {
