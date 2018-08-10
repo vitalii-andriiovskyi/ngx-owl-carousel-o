@@ -11,7 +11,7 @@
 
 	<div *ngIf="carouselLoaded" class="owl-stage-outer">
 		
-		<owl-stage [owlDraggableI]="{'isMouseDragable': owlDOMData?.isMouseDragable, 'isTouchDragable': owlDOMData?.isTouchDragable}"
+		<owl-stage [owlDraggable]="{'isMouseDragable': owlDOMData?.isMouseDragable, 'isTouchDragable': owlDOMData?.isTouchDragable}"
 								[stageData]="stageData"
 								[slidesData]="slidesData"></owl-stage>
   </div> <!-- /.owl-stage-outer -->
