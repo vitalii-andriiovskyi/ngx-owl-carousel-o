@@ -61,9 +61,7 @@ export class CarouselCurrentData {
 	dotsData: DotsData;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CarouselService {
 	/**
    * Subject for passing data needed for managing View

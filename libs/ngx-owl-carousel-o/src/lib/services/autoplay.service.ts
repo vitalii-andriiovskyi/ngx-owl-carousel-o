@@ -5,9 +5,7 @@ import { tap } from 'rxjs/operators';
 import { WINDOW } from './window-ref.service';
 import { DOCUMENT } from './document-ref.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AutoplayService {
   /**
    * Subscrioption to merge Observables from CarouselService

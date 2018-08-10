@@ -83,7 +83,8 @@ export class SlidesOutputData {
 @Component({
   selector: 'owl-carousel-o',
   templateUrl: './carousel.component.html',
-  styleUrls: ['./carousel.component.scss']
+  styleUrls: ['./carousel.component.scss'],
+  providers: [ NavigationService, AutoplayService, CarouselService ]
 })
 export class CarouselComponent
   implements OnInit, AfterContentChecked, AfterContentInit, OnDestroy {

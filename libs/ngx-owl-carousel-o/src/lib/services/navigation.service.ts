@@ -6,9 +6,7 @@ import { Subscription, Observable, merge } from 'rxjs';
 import { tap, filter } from 'rxjs/operators';
 import { OwlOptions } from '../models/owl-options.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class NavigationService {
   /**
    * Subscrioption to merge Observable  from CarouselService
