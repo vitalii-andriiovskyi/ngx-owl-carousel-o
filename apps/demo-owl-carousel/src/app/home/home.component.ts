@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { CarouselData } from '../app.component';
 
 @Component({
   selector: 'owl-carousel-libdemo-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.sass']
 })
 export class HomeComponent implements OnInit {
   carouselData: CarouselData[] = [
@@ -64,9 +64,11 @@ export class HomeComponent implements OnInit {
     // stagePadding: 40,
     nav: true
   }
-  constructor() { }
+  constructor(private el: ElementRef) { }
 
   ngOnInit() {
+    console.log(this.el.nativeElement.clientWidth);
+    console.log('HomeComponent');
   }
 
 
