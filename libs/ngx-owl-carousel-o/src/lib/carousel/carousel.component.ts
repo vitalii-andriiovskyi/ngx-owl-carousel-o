@@ -172,24 +172,21 @@ export class CarouselComponent
 
   ngOnInit() {
     this.spyDataStreams();
+
     this.carouselWindowWidth = this.el.nativeElement.querySelector(
       '.owl-carousel'
     ).clientWidth;
   }
 
   ngAfterContentChecked() {
-    if (!this.carouselWindowWidth) {
-      this.carouselWindowWidth = this.el.nativeElement.querySelector(
-        '.owl-carousel'
-      ).clientWidth;
-      this.carouselService.setup(this.carouselWindowWidth, this.slides.toArray(), this.options);
-      this.carouselService.initialize(this.slides.toArray());
-      this._winResizeWatcher();
-    }
   }
   // ngAfterContentChecked() END
 
   ngAfterContentInit() {
+    this.carouselService.setup(this.carouselWindowWidth, this.slides.toArray(), this.options);
+    this.carouselService.initialize(this.slides.toArray());
+
+    this._winResizeWatcher();
   }
 
   ngOnDestroy() {

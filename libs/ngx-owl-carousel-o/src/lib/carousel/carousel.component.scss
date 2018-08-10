@@ -1,6 +1,10 @@
-@import 'core';
-@import 'animate';
-@import 'autoheight';
-@import 'lazyload';
-@import 'video';
-@import 'theme.default';
+// @import '../styles/scss/core';
+// @import '../styles/scss/animate';
+// @import '../styles/scss/autoheight';
+// @import '../styles/scss/lazyload';
+// @import '../styles/scss/video';
+// @import '../styles/scss/theme.default';
+
+.owl-theme {
+  display: block;
+}
