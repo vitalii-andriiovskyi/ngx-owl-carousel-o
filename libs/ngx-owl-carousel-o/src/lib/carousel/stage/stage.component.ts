@@ -7,7 +7,27 @@ import { SliderModel } from '../../models/slider.model';
 
 @Component({
   selector: 'owl-stage',
-  templateUrl: './stage.component.html'
+  template: `
+    <div>
+      <div class="owl-stage" [ngStyle]="{'width': stageData.width + 'px',
+                                        'transform': stageData.transform,
+                                        'transition': stageData.transition,
+                                        'padding-left': stageData.paddingL + 'px',
+                                        'padding-right': stageData.paddingR + 'px' }"
+          (transitionend)="onTransitionEnd()">
+        <ng-container *ngFor="let slide of slidesData; let i = index">
+          <div class="owl-item" [ngClass]="{'active': slide.active, 
+                                            'center': slide.center,
+                                            'cloned': slide.cloned}" 
+                                [ngStyle]="{'width': slide.width + 'px',
+                                            'margin-left': slide.marginL + 'px',
+                                            'margin-right': slide.marginR + 'px'}">
+            <ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
+          </div><!-- /.owl-item -->
+        </ng-container>
+      </div><!-- /.owl-stage -->
+    </div>
+  `
 })
 export class StageComponent implements OnInit, OnDestroy {
   /**
