@@ -9,7 +9,7 @@ import { PresentModule } from './present/present.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, NxModule.forRoot(), HomeModule, PresentModule],
+  imports: [BrowserModule, NxModule.forRoot(), HomeModule, PresentModule, CarouselModule],
   providers: [],
   bootstrap: [AppComponent]
 })
