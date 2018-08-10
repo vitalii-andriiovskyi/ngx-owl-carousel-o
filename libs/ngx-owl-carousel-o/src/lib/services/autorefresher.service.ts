@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { CustomEventsService } from './custom-events.service';
 // import { CarouselComponent } from '../carousel/carousel.module';
 
 export class Defaults {
@@ -55,19 +54,8 @@ export class AutorefresherService {
     autoRefreshInterval: 500
   };
 
-  constructor(private customEventsCreator: CustomEventsService) {
+  constructor() {
     // set default options
-    this.core.options = Object.assign({}, this.defaults, this.core.options);
-
-    // register event handlers
-    for (const key in this._handlers) {
-      if (this._handlers.hasOwnProperty(key)) {
-        const eventsList = key.split(' ');
-        eventsList.forEach(item => {
-          this.customEventsCreator.listen(item, this._handlers[key]);
-        });
-      }
-    }
   }
 
   /**
@@ -105,24 +93,4 @@ export class AutorefresherService {
     }
   }
 
-  /**
-   * Destroys the plugin.
-   */
-  destroy() {
-    let handler;
-
-    clearInterval(this._interval);
-
-    for (handler in this._handlers) {
-      if (this._handlers.hasOwnProperty(handler)) {
-        const eventsList = handler.split(' ');
-        eventsList.forEach(item => {
-          this.customEventsCreator.off(handler, this._handlers[handler]);
-        });
-      }
-    }
-    // for (property in Object.getOwnPropertyNames(this)) {
-    // 	typeof this[property] != 'function' && (this[property] = null);
-    // }
-  }
 }
