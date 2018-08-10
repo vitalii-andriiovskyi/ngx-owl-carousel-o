@@ -13,10 +13,10 @@ import { CarouselService } from '../services/carousel.service';
 import { createGenericTestComponent } from './test/common';
 import { cold, getTestScheduler, hot } from 'jasmine-marbles';
 import { NavigationService } from '../services/navigation.service';
-import { DraggableDirective } from './draggable.directive';
-import 'zone.js/dist/zone-patch-rxjs-fake-async';
 import { AutoplayService } from '../services/autoplay.service';
 import { DOCUMENT_PROVIDERS } from '../services/document-ref.service';
+import 'zone.js/dist/zone-patch-rxjs-fake-async';
+import { StageComponent } from './stage/stage.component';
 // import 'zone.js/lib/rxjs/rxjs-fake-async';
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>
@@ -51,7 +51,7 @@ describe('CarouselComponent', () => {
           CarouselComponent,
           TestComponent,
           CarouselSlideDirective,
-          DraggableDirective
+          StageComponent
         ],
         providers: [ResizeService, WINDOW_PROVIDERS, CarouselService, NavigationService, AutoplayService, DOCUMENT_PROVIDERS]
       });
@@ -492,7 +492,7 @@ describe('CarouselComponent', () => {
       expect(carouselHTML.classList.contains('owl-rtl')).toBeTruthy('should have class .owl-rtl');
 
       deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
-      expect(getComputedStyle(deSlides[0].nativeElement).cssFloat).toBe('right', '.owl-item should have css-rule float: right');
+      // expect(getComputedStyle(deSlides[0].nativeElement).cssFloat).toBe('right', '.owl-item should have css-rule float: right');
       expect(deSlides[0].nativeElement.classList.contains('active')).toBeTruthy('1th slide should be active');
 
     });
