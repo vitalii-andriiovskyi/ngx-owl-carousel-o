@@ -8,11 +8,11 @@ import { CarouselData } from '../app.component';
 })
 export class PresentComponent implements OnInit {
   carouselData: CarouselData[] = [
-    { text: 'Slide 1', dataMerge: 2, width: 300, dotContent: 'text1'},
-    { text: 'Slide 2', dataMerge: 1, width: 500, dotContent: 'text2'},
-    { text: 'Slide 3', dataMerge: 3, dotContent: 'text3'},
-    { text: 'Slide 4', width: 450, dotContent: 'text4'},
-    { text: 'Slide 5', dataMerge: 2, dotContent: 'text5'},
+    { text: 'Slide 1 PM', dataMerge: 2, width: 300, dotContent: 'text1'},
+    { text: 'Slide 2 PM', dataMerge: 1, width: 500, dotContent: 'text2'},
+    { text: 'Slide 3 PM', dataMerge: 3, dotContent: 'text3'},
+    { text: 'Slide 4 PM', width: 450, dotContent: 'text4'},
+    { text: 'Slide 5 PM', dataMerge: 2, dotContent: 'text5'},
     // { text: 'Slide 6', dotContent: 'text5'},
     // { text: 'Slide 7', dotContent: 'text5'},
     // { text: 'Slide 8', dotContent: 'text5'},
@@ -32,9 +32,9 @@ export class PresentComponent implements OnInit {
     // slideBy: 'page',
     // merge: true,
     // autoplay: true,
-    autoplayTimeout: 5000,
+    autoplayTimeout: 3000,
     // autoplayHoverPause: true,
-		autoplaySpeed: 4000,
+		autoplaySpeed: 2000,
     dotsSpeed: 500,
     // dots: false,
     // dotsData: true,
@@ -73,7 +73,7 @@ export class PresentComponent implements OnInit {
 
   getPassedData(data: any) {
     this.activeSlides = data;
-    console.log(this.activeSlides);
+    // console.log(this.activeSlides);
   }
 
 }
