@@ -16,9 +16,9 @@ import { SliderModel } from '../../models/slider.model';
                                         'padding-right': stageData.paddingR + 'px' }"
           (transitionend)="onTransitionEnd()">
         <ng-container *ngFor="let slide of slidesData; let i = index">
-          <div class="owl-item" [ngClass]="{'active': slide.active, 
+          <div class="owl-item" [ngClass]="{'active': slide.active,
                                             'center': slide.center,
-                                            'cloned': slide.cloned}" 
+                                            'cloned': slide.cloned}"
                                 [ngStyle]="{'width': slide.width + 'px',
                                             'margin-left': slide.marginL + 'px',
                                             'margin-right': slide.marginR + 'px'}">
