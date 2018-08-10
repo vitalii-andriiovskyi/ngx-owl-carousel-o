@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { CarouselModule } from './carousel/carousel.module';
 import { WINDOW_PROVIDERS } from './services/window-ref.service';
 import { ResizeService } from './services/resize.service';
-import { DraggableDirective } from './carousel/draggable.directive';
 
 export {
   CarouselModule,
@@ -21,7 +20,6 @@ export {
   windowProvider,
   WINDOW_PROVIDERS
 } from './services/window-ref.service';
-export { DraggableDirective } from './carousel/draggable.directive';
 
 @NgModule({
   imports: [CommonModule, CarouselModule],
