@@ -1,0 +1,26 @@
+<hr><br>
+<div style="text-align:center">
+  <h1>Owl Carousel in another module</h1>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-10 offset-1">
+      
+      <owl-carousel-o [options]="customOptions">
+        
+        <ng-container *ngFor="let item of carouselData">
+          <ng-template carouselSlide>
+            <div class="slider">
+              <p>{{item.text}}</p>
+                
+            </div><!-- /.carousel-item team-member -->
+          </ng-template>
+        </ng-container>
+        
+      </owl-carousel-o>
+
+    </div> <!-- /.col-sm-10 col-sm-offset-1 -->
+    
+  </div> <!-- row -->
+  
+</div> <!-- /.container -->
