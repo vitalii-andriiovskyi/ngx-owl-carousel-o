@@ -22,10 +22,15 @@ export class AutoplayService {
    */
   private _paused = false;
 
+  private winRef: Window;
+  private docRef: Document;
+
   constructor(private carouselService: CarouselService,
-              @Inject(WINDOW) private winRef: Window,
-              @Inject(DOCUMENT) private docRef: Document,
+              @Inject(WINDOW) winRef: any,
+              @Inject(DOCUMENT) docRef: any,
   ) {
+    this.winRef = winRef as Window;
+    this.docRef = docRef as Document;
     this.spyDataStreams();
   }
 
