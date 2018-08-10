@@ -1028,7 +1028,6 @@ export class CarouselService {
 
   /**
 	 * Sets the absolute position of the current item.
-	 * @public
 	 * @param position The new absolute position or nothing to leave it unchanged.
 	 * @returns The absolute position of the current item.
 	 */
@@ -1186,7 +1185,6 @@ export class CarouselService {
 
   /**
 	 * Gets an item at the specified relative position.
-	 * @public
 	 * @param position The relative position of the item.
 	 * @returns The item at the given position or all items if no position was given.
 	 */
