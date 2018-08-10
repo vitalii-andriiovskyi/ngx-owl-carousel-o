@@ -2,6 +2,8 @@ import { Component, NgZone, ElementRef, HostListener, Renderer2, OnInit, OnDestr
 import { CarouselService, Coords } from '../../services/carousel.service';
 import { Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { StageData } from '../../models/stage-data.model';
+import { SliderModel } from '../../models/slider.model';
 
 @Component({
   selector: 'owl-stage',
@@ -15,6 +17,17 @@ export class StageComponent implements OnInit, OnDestroy {
     isMouseDragable: boolean,
     isTouchDragable: boolean
   };
+
+  /**
+   * Data of owl-stage
+   */
+  @Input() stageData: StageData;
+
+	/**
+	 *  Data of every slide
+	 */
+  @Input() slidesData: SliderModel[];
+
   /**
    * Function wich will be returned after attaching listener to 'mousemove' event
    */
@@ -333,5 +346,12 @@ export class StageComponent implements OnInit, OnDestroy {
 	 */
   private _sendChanges() {
     this.carouselService.sendChanges();
+  }
+
+  /**
+   * Handler for transitioend event
+   */
+  onTransitionEnd() {
+    this.carouselService.onTransitionEnd();
   }
 }
