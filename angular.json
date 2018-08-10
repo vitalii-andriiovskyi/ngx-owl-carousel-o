@@ -23,6 +23,8 @@
               "apps/demo-owl-carousel/src/assets"
             ],
             "styles": [
+              "libs/ngx-owl-carousel-o/src/lib/styles/prebuilt-themes/owl.carousel.min.css",
+              "libs/ngx-owl-carousel-o/src/lib/styles/prebuilt-themes/owl.theme.default.min.css",
               "apps/demo-owl-carousel/src/styles.css"
             ],
             "scripts": []
