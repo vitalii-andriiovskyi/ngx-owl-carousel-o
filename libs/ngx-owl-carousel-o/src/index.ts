@@ -1,1 +1,1 @@
-export * from './lib/ngx-owl-carousel-o.module';
+export * from './public_api';
