@@ -240,10 +240,8 @@ export class StageComponent implements OnInit, OnDestroy {
    * @param coordinate coordinate to be set to .owl-stage
    */
   private _animate(coordinate: number) {
-    this.renderer.setStyle(this.el.nativeElement, 'transform', `translate3d(${coordinate}px,0px,0px`);
-    this.renderer.setStyle(this.el.nativeElement, 'transition', '0s');
-    // this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transform', `translate3d(${coordinate}px,0px,0px`);
-    // this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transition', '0s');
+    this.renderer.setStyle(this.el.nativeElement.children[0], 'transform', `translate3d(${coordinate}px,0px,0px`);
+    this.renderer.setStyle(this.el.nativeElement.children[0], 'transition', '0s');
   }
 
   /**
@@ -256,8 +254,8 @@ export class StageComponent implements OnInit, OnDestroy {
     this.carouselService.owlDOMData.isGrab = false;
 
     if (this._drag.moving) {
-      this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transform', ``);
-      this.renderer.setStyle(this.renderer.parentNode(this.el.nativeElement), 'transition', this.carouselService.speed(+this.carouselService.settings.dragEndSpeed || this.carouselService.settings.smartSpeed)/1000 +'s');
+      this.renderer.setStyle(this.el.nativeElement.children[0], 'transform', ``);
+      this.renderer.setStyle(this.el.nativeElement.children[0], 'transition', this.carouselService.speed(+this.carouselService.settings.dragEndSpeed || this.carouselService.settings.smartSpeed)/1000 +'s');
 
       this._finishDragging(event);
       this.listenerMouseMove();
