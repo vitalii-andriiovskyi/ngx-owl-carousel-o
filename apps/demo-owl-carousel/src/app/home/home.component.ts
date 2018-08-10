@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CarouselData } from '../app.component';
 
 @Component({
@@ -8,11 +8,11 @@ import { CarouselData } from '../app.component';
 })
 export class HomeComponent implements OnInit {
   carouselData: CarouselData[] = [
-    { text: 'Slide 1th', dataMerge: 2, width: 300, dotContent: 'text1'},
-    { text: 'Slide 2th', dataMerge: 1, width: 500, dotContent: 'text2'},
-    { text: 'Slide 3th', dataMerge: 3, dotContent: 'text3'},
-    { text: 'Slide 4th', width: 450, dotContent: 'text4'},
-    { text: 'Slide 5th', dataMerge: 2, dotContent: 'text5'},
+    { text: 'Slide 1 HM', dataMerge: 2, width: 300, dotContent: 'text1'},
+    { text: 'Slide 2 HM', dataMerge: 1, width: 500, dotContent: 'text2'},
+    { text: 'Slide 3 HM', dataMerge: 3, dotContent: 'text3'},
+    { text: 'Slide 4 HM', width: 450, dotContent: 'text4'},
+    { text: 'Slide 5 HM', dataMerge: 2, dotContent: 'text5'},
     // { text: 'Slide 6', dotContent: 'text5'},
     // { text: 'Slide 7', dotContent: 'text5'},
     // { text: 'Slide 8', dotContent: 'text5'},
@@ -25,16 +25,16 @@ export class HomeComponent implements OnInit {
 
 
   customOptions: any = {
-    // autoWidth: true,
+    autoWidth: true,
     loop: true,
     // items: '10',
     // margin: 10,
     // slideBy: 'page',
     // merge: true,
     // autoplay: true,
-    autoplayTimeout: 5000,
+    // autoplayTimeout: 5000,
     // autoplayHoverPause: true,
-		autoplaySpeed: 4000,
+		// autoplaySpeed: 4000,
     dotsSpeed: 500,
     // dots: false,
     // dotsData: true,
@@ -64,12 +64,9 @@ export class HomeComponent implements OnInit {
     // stagePadding: 40,
     nav: true
   }
-  constructor(private el: ElementRef) { }
+  constructor() { }
 
-  ngOnInit() {
-    console.log(this.el.nativeElement.clientWidth);
-    console.log('HomeComponent');
-  }
+  ngOnInit() { }
 
 
 }

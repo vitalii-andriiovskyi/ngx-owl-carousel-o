@@ -1,6 +1,6 @@
 <hr><br>
 <div style="text-align:center">
-  <h1>Owl Carousel in another module</h1>
+  <h1>Owl Carousel - HomeModule</h1>
 </div>
 <div class="container">
   <div class="row">
@@ -9,7 +9,7 @@
       <owl-carousel-o [options]="customOptions">
         
         <ng-container *ngFor="let item of carouselData">
-          <ng-template carouselSlide>
+          <ng-template carouselSlide [width]="item.width">
             <div class="slider">
               <p>{{item.text}}</p>
                 
