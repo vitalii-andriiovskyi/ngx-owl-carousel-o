@@ -10,21 +10,20 @@ export class LazyLoadService {
    */
   lazyLoadSubscription: Subscription;
 
-  constructor(private carouselService: CarouselService) { }
+  constructor(private carouselService: CarouselService) {
+    this.spyDataStreams();
+   }
 
   /**
    * Defines Observables which service must observe
    */
   spyDataStreams() {
     const initializedCarousel$: Observable<string> = this.carouselService.getInitializedState().pipe(
-      tap(() => {
-
-      })
+      tap(data => this._defineLazyLoadSlides(data))
     );
 
     const changeSettings$: Observable<any> = this.carouselService.getChangeState().pipe(
-      tap(data => {
-      })
+      tap(data => this._defineLazyLoadSlides(data))
     );
 
 
