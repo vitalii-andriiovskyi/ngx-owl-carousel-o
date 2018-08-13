@@ -43,6 +43,10 @@ export class OwlCarouselOConfig implements OwlOptions {
   autoplayTimeout: 5000;
   autoplayHoverPause: false;
   autoplaySpeed: false;
+
+  // defaults to LazyLoading
+  lazyLoad: false;
+	lazyLoadEager: 0;
   constructor() { }
 }
 
@@ -92,5 +96,9 @@ export class OwlOptionsMockedTypes {
   autoplayTimeout: 'number';
   autoplayHoverPause: 'boolean';
   autoplaySpeed: 'number|boolean';
+
+  // defaults to LazyLoading
+  lazyLoad: 'boolean';
+	lazyLoadEager: 'number';
   constructor() { }
 }

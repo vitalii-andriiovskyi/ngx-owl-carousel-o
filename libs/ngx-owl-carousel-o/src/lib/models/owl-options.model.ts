@@ -145,5 +145,16 @@ export class OwlOptions {
    */
   autoplaySpeed?: number | boolean;
 
+  // LAZY LOADING ****************************************
+  /**
+   * Lazy loading of slides with images
+   */
+  lazyLoad?: boolean;
+
+  /**
+   * Indicates how many items (slides with images) to the right (and left, when loop is true) will be pre-loaded
+   */
+  lazyLoadEager?: number;
+
   constructor() { }
 }
