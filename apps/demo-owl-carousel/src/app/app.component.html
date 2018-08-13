@@ -10,7 +10,8 @@
         <ng-container *ngFor="let item of carouselData">
           <ng-template carouselSlide [width]="item.width">
             <div class="slider">
-              <p>{{item.text}}</p>
+              <!-- <p>{{item.text}}</p> -->
+              <img [src]="[item.src]" alt="">
                 
             </div><!-- /.carousel-item team-member -->
           </ng-template>

@@ -8,6 +8,7 @@ export class CarouselData {
   dataMerge?: number;
   width?: number;
   dotContent?: string;
+  src?: string;
 }
 
 @Component({
@@ -17,11 +18,11 @@ export class CarouselData {
 })
 export class AppComponent implements OnInit {
   carouselData: CarouselData[] = [
-    { text: 'Slide 1', dataMerge: 2, width: 300, dotContent: 'text1'},
-    { text: 'Slide 2', dataMerge: 1, width: 500, dotContent: 'text2'},
-    { text: 'Slide 3', dataMerge: 3, dotContent: 'text3'},
-    { text: 'Slide 4', width: 450, dotContent: 'text4'},
-    { text: 'Slide 5', dataMerge: 2, dotContent: 'text5'},
+    { text: 'Slide 1', src: 'assets/images/350x450&text=1.png', dataMerge: 2, width: 300, dotContent: 'text1'},
+    { text: 'Slide 2', src: 'assets/images/350x650&text=2.png', dataMerge: 1, width: 500, dotContent: 'text2'},
+    { text: 'Slide 3', src: 'assets/images/350x250&text=3-fallback.png', dataMerge: 3, dotContent: 'text3'},
+    { text: 'Slide 4', src: 'assets/images/350x250&text=4.png', width: 450, dotContent: 'text4'},
+    { text: 'Slide 5', src: 'assets/images/350x250&text=5.png', dataMerge: 2, dotContent: 'text5'},
     // { text: 'Slide 6', dotContent: 'text5'},
     // { text: 'Slide 7', dotContent: 'text5'},
     // { text: 'Slide 8', dotContent: 'text5'},
