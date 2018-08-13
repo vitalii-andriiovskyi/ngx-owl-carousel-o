@@ -46,4 +46,9 @@ export class SliderModel {
    * Cloned slide. It's being used when 'loop'=true
    */
   cloned?: boolean;
+
+  /**
+   * Indicates whether slide should be lazy loaded
+   */
+  lazyLoad?: boolean;
 }
