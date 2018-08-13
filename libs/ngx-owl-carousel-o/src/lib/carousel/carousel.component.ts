@@ -28,6 +28,7 @@ import { OwlOptions } from '../models/owl-options.model';
 import { NavData, DotsData } from '../models/navigation-data.models';
 import { NavigationService } from '../services/navigation.service';
 import { AutoplayService } from '../services/autoplay.service';
+import { LazyLoadService } from '../services/lazyload.service';
 
 let nextId = 0;
 
@@ -111,7 +112,7 @@ export class SlidesOutputData {
     </div> <!-- /.owl-carousel owl-loaded -->
   `,
   styles: [`.owl-theme { display: block; }`],
-  providers: [ NavigationService, AutoplayService, CarouselService ]
+  providers: [ NavigationService, AutoplayService, CarouselService, LazyLoadService ]
 })
 export class CarouselComponent
   implements OnInit, AfterContentChecked, AfterContentInit, OnDestroy {
