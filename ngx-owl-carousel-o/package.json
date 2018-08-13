@@ -1,0 +1,36 @@
+{
+  "$schema": "../../node_modules/ng-packagr/package.schema.json",
+  "name": "ngx-owl-carousel-o",
+  "version": "0.0.1",
+  "description": "Angular powered owl-carousel",
+  "keywords": [
+    "angular",
+    "owl-carousel",
+    "components"
+  ],
+  "author": "someone",
+  "repository": {
+    "type": "git",
+    "url": "..."
+  },
+  "license": "MIT",
+  "private": true,
+  "peerDependencies": {
+    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
+    "rxjs": "6.0.1"
+  },
+  "main": "bundles/ngx-owl-carousel-o.umd.js",
+  "module": "fesm5/ngx-owl-carousel-o.js",
+  "es2015": "fesm2015/ngx-owl-carousel-o.js",
+  "esm5": "esm5/ngx-owl-carousel-o.js",
+  "esm2015": "esm2015/ngx-owl-carousel-o.js",
+  "fesm5": "fesm5/ngx-owl-carousel-o.js",
+  "fesm2015": "fesm2015/ngx-owl-carousel-o.js",
+  "typings": "ngx-owl-carousel-o.d.ts",
+  "metadata": "ngx-owl-carousel-o.metadata.json",
+  "sideEffects": false,
+  "dependencies": {
+    "tslib": "^1.9.0"
+  }
+}
