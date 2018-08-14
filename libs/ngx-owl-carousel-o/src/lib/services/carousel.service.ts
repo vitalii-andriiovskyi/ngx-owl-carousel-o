@@ -82,6 +82,10 @@ export class CarouselService {
    */
 	private _changedSettingsCarousel$ = new Subject<any>();
 	/**
+   * Subject for notification when the carousel starts translating or moving
+   */
+	private _translateCarousel$ = new Subject<string>();
+	/**
    * Subject for notification when the carousel stopped translating or moving
    */
 	private _translatedCarousel$ = new Subject<string>();
@@ -512,6 +516,14 @@ export class CarouselService {
 	 */
 	getChangedState(): Observable<any> {
 		return this._changedSettingsCarousel$.asObservable();
+	}
+
+	/**
+	 * Makes _translateCarousel$ Subject become Observable
+	 * @returns Observable of _translateCarousel$ Subject
+	 */
+	getTranslateState(): Observable<string> {
+		return this._translateCarousel$.asObservable();
 	}
 
 	/**
