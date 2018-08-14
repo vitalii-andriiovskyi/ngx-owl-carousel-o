@@ -58,4 +58,18 @@ export class AnimateService implements OnDestroy{
       () => {}
     );
   }
+
+  /**
+   * Handles the end of 'animationend' event
+   * @param id Id of slides
+   */
+  clear(id) {
+    this.carouselService.slidesData.forEach(slide => {
+      if (slide.id === id) {
+        slide.left = '';
+        slide.classes = {}
+      }
+    })
+		this.carouselService.onTransitionEnd();
+	};
 }
