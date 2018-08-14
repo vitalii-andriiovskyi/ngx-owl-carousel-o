@@ -196,7 +196,8 @@ export class CarouselComponent
     private resizeService: ResizeService,
     private carouselService: CarouselService,
     private navigationService: NavigationService,
-    private autoplayService: AutoplayService
+    private autoplayService: AutoplayService,
+    private lazyLoadService: LazyLoadService
   ) {}
 
   ngOnInit() {
@@ -236,6 +237,7 @@ export class CarouselComponent
         this.owlDOMData = data.owlDOMData;
         this.stageData = data.stageData;
         this.slidesData = data.slidesData;
+        console.log(this.slidesData);
         if (!this.carouselLoaded) {
           this.carouselLoaded = true;
         }
