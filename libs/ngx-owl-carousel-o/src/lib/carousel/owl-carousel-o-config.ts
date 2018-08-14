@@ -46,7 +46,11 @@ export class OwlCarouselOConfig implements OwlOptions {
 
   // defaults to LazyLoading
   lazyLoad = false;
-	lazyLoadEager = 0;
+  lazyLoadEager = 0;
+
+  // defaults to Animate
+  animateOut = false;
+  animateIn = false;
   constructor() { }
 }
 
@@ -99,6 +103,10 @@ export class OwlOptionsMockedTypes {
 
   // defaults to LazyLoading
   lazyLoad = 'boolean';
-	lazyLoadEager = 'number';
+  lazyLoadEager = 'number';
+
+  // defaults to Animate
+  animateOut = 'string|boolean';
+  animateIn = 'string|boolean';
   constructor() { }
 }

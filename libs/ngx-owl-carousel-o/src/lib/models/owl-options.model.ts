@@ -156,5 +156,14 @@ export class OwlOptions {
    */
   lazyLoadEager?: number;
 
+  // ANIMATE ****************************************
+  /**
+   * Class for CSS3 animation out.
+   */
+  animateOut?: string | boolean;
+
+  /**Class for CSS3 animation in. */
+	animateIn?: string | boolean;
+
   constructor() { }
 }
