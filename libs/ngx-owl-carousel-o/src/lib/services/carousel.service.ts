@@ -1385,6 +1385,21 @@ export class CarouselService {
 	 * Sets slidesData using this._items
 	 */
 	private _defineSlidesData() {
+		// Maybe creating and using loadMap would be better in LazyLoadService.
+		// Hovewer in that case when 'resize' event fires, prop 'load' of all slides will get 'false' and such state of prop will be seen by View during its updating. Accordingly the code will remove slides's content from DOM even if it was loaded before.
+		// Thus it would be needed to add that content into DOM again.
+		// In order to avoid additional removing/adding loaded slides's content we use loadMap here and set restore state of prop 'load' before the View will get it.
+		let loadMap: Map<string, boolean>;
+
+		if (this.slidesData && this.slidesData.length) {
+			loadMap = new Map();
+			this.slidesData.forEach(item => {
+				if (item.load) {
+					loadMap.set(item.id, item.load);
+				}
+			})
+		}
+
 		this.slidesData = this._items.map(slide => {
 			return {
 				id: `${slide.id}`,
@@ -1392,7 +1407,8 @@ export class CarouselService {
 				tplRef: slide.tplRef,
 				dataMerge: slide.dataMerge,
 				width: 0,
-				cloned: false
+				cloned: false,
+				load: loadMap ? loadMap.get(slide.id) : false
 			};
 		});
 	}
