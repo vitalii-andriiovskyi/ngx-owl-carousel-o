@@ -60,6 +60,59 @@ export class AnimateService implements OnDestroy{
   }
 
   /**
+	 * Toggles the animation classes whenever an translations starts.
+	 * @returns
+	 */
+	private _swap(): boolean {
+
+		if (this.carouselService.settings.items !== 1) {
+			return;
+		}
+
+		// if (!$.support.animation || !$.support.transition) {
+		// 	return;
+		// }
+
+		this.carouselService.speed(0);
+
+		let left;
+		const	previous = this.carouselService.slidesData[this.previous],
+			next = this.carouselService.slidesData[this.next],
+			incoming = this.carouselService.settings.animateIn,
+			outgoing = this.carouselService.settings.animateOut;
+
+		if (this.carouselService.current() === this.previous) {
+			return;
+		}
+
+		if (outgoing) {
+			left = +this.carouselService.coordinates(this.previous) - +this.carouselService.coordinates(this.next);
+      this.carouselService.slidesData.forEach(slide => {
+        if (slide.id === previous.id) {
+          slide.left = `${left}px`;
+          slide.classes = {
+            'animated': true,
+            'owl-animated-out': true,
+          }
+          slide.classes[outgoing as string] = true;
+        }
+      });
+		}
+
+		if (incoming) {
+      this.carouselService.slidesData.forEach(slide => {
+        if (slide.id === next.id) {
+          slide.classes = {
+            'animated': true,
+            'owl-animated-in': true,
+          }
+          slide.classes[incoming as string] = true;
+        }
+      });
+		}
+	};
+
+  /**
    * Handles the end of 'animationend' event
    * @param id Id of slides
    */
@@ -69,7 +122,7 @@ export class AnimateService implements OnDestroy{
         slide.left = '';
         slide.classes = {}
       }
-    })
+    });
 		this.carouselService.onTransitionEnd();
 	};
 }
