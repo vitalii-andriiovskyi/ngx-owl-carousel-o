@@ -1648,6 +1648,15 @@ export class CarouselService {
 		return this._isNumeric(value) || typeof value === 'string';
 	}
 
+	/**
+	 * Determines whether value is number or string type
+	 * @param value The input to be tested
+	 * @returns An indication if the input is a Number or can be coerced to a Number, or String
+	 */
+	private _isStringOrBoolean(value: number | string): boolean {
+		return typeof value === 'string' || typeof value === 'boolean';
+	}
+
   /**
 	 * Gets the difference of two vectors.
 	 * @todo #261
