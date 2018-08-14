@@ -10,6 +10,20 @@ export class AnimateService implements OnDestroy{
    */
   animateSubscription: Subscription;
 
+  /**
+   * s
+   */
+  swapping = true;
+
+  /**
+   * active slide before translating
+   */
+  previous = undefined;
+  /**
+   * new active slide after translating
+   */
+  next = undefined;
+
   constructor(private carouselService: CarouselService) { }
 
   ngOnDestroy() {
