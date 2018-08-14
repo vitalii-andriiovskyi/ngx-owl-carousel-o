@@ -22,7 +22,7 @@ import { SliderModel } from '../../models/slider.model';
                                 [ngStyle]="{'width': slide.width + 'px',
                                             'margin-left': slide.marginL + 'px',
                                             'margin-right': slide.marginR + 'px'}">
-            <ng-template [ngTemplateOutlet]="slide.tplRef"></ng-template>
+            <ng-template *ngIf="slide.load" [ngTemplateOutlet]="slide.tplRef"></ng-template>
           </div><!-- /.owl-item -->
         </ng-container>
       </div><!-- /.owl-stage -->
