@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { NavData, DotsData } from '../models/navigation-data.models';
 import { CarouselSlideDirective } from '../carousel/carousel.module';
 import { CarouselService } from './carousel.service';
@@ -7,7 +7,7 @@ import { tap, filter } from 'rxjs/operators';
 import { OwlOptions } from '../models/owl-options.model';
 
 @Injectable()
-export class NavigationService {
+export class NavigationService implements OnDestroy {
   /**
    * Subscrioption to merge Observable  from CarouselService
    */
@@ -48,6 +48,10 @@ export class NavigationService {
 
   constructor(private carouselService: CarouselService) {
     this.spyDataStreams();
+  }
+
+  ngOnDestroy() {
+    this.navSubscription.unsubscribe();
   }
 
   /**

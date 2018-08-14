@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, OnDestroy } from '@angular/core';
 import { Subscription, Observable, merge } from 'rxjs';
 import { CarouselService } from './carousel.service';
 import { tap } from 'rxjs/operators';
@@ -6,7 +6,7 @@ import { WINDOW } from './window-ref.service';
 import { DOCUMENT } from './document-ref.service';
 
 @Injectable()
-export class AutoplayService {
+export class AutoplayService implements OnDestroy{
   /**
    * Subscrioption to merge Observables from CarouselService
    */
@@ -32,6 +32,10 @@ export class AutoplayService {
     this.winRef = winRef as Window;
     this.docRef = docRef as Document;
     this.spyDataStreams();
+  }
+
+  ngOnDestroy() {
+    this.autoplaySubscription.unsubscribe();
   }
 
   /**

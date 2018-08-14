@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Subscription, Observable, merge } from 'rxjs';
 import { CarouselService } from './carousel.service';
 import { tap } from 'rxjs/operators';
 
 @Injectable()
-export class LazyLoadService {
+export class LazyLoadService implements OnDestroy {
   /**
    * Subscrioption to merge Observable  from CarouselService
    */
@@ -12,7 +12,11 @@ export class LazyLoadService {
 
   constructor(private carouselService: CarouselService) {
     this.spyDataStreams();
-   }
+  }
+
+  ngOnDestroy() {
+    this.lazyLoadSubscription.unsubscribe();
+  }
 
   /**
    * Defines Observables which service must observe
