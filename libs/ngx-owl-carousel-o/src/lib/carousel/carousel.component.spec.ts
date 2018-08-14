@@ -2778,6 +2778,68 @@ describe('CarouselComponent', () => {
   }));
 
 
+  it('should load content for 3 slides and its 3 clones [options]="{nav: true, lazyLoad: true, lazyLoadEager: 1, loop: true, items: 2}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{nav: true, lazyLoad: true, lazyLoadEager: 1, loop: true, items: 2}">
+          <ng-template carouselSlide id="owl-slide-1"><img class="owl-lazy" [src]="['assets/img-1.png']"></ng-template>
+          <ng-template carouselSlide id="owl-slide-2"><img class="owl-lazy" [src]="['assets/img-2.png']"></ng-template>
+          <ng-template carouselSlide id="owl-slide-3"><img class="owl-lazy" [src]="['assets/img-3.png']"></ng-template>
+          <ng-template carouselSlide id="owl-slide-4"><img class="owl-lazy" [src]="['assets/img-4.png']"></ng-template>
+          <ng-template carouselSlide id="owl-slide-5"><img class="owl-lazy" [src]="['assets/img-5.png']"></ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    fixtureHost.detectChanges();
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    expect(deSlides.length).toBe(11, '11 slides');
+
+    let deImages = deCarouselComponent.queryAll(By.css('.owl-item .owl-lazy'));
+    expect(deImages.length).toBe(8, '8 images');
+    let img: DebugElement = deSlides[0].query(By.css('.owl-lazy'));
+    expect(img).toBeFalsy('img in 1th slide isn\'t loaded');
+    img = deSlides[1].query(By.css('.owl-lazy'));
+    expect(img).toBeFalsy('img in 2th slide isn\'t loaded');
+    img = deSlides[2].query(By.css('.owl-lazy'));
+    expect(img).toBeTruthy('img in 3th slide is loaded');
+    img = deSlides[3].query(By.css('.owl-lazy'));
+    expect(img).toBeTruthy('img in 4th slide is loaded');
+    img = deSlides[4].query(By.css('.owl-lazy'));
+    expect(img).toBeTruthy('img in 5th slide is loaded');
+    img = deSlides[5].query(By.css('.owl-lazy'));
+    expect(img).toBeTruthy('img in 6th slide is loaded');
+
+    img = deSlides[6].query(By.css('.owl-lazy'));
+    expect(img).toBeFalsy('img in 7th slide isn\'t loaded');
+    img = deSlides[7].query(By.css('.owl-lazy'));
+    expect(img).toBeTruthy('img in 8th slide is loaded');
+    img = deSlides[8].query(By.css('.owl-lazy'));
+    expect(img).toBeTruthy('img in 9th slide is loaded');
+    img = deSlides[9].query(By.css('.owl-lazy'));
+    expect(img).toBeTruthy('img in 10th slide is loaded');
+    img = deSlides[10].query(By.css('.owl-lazy'));
+    expect(img).toBeTruthy('img in 11th slide is loaded');
+
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons[0].triggerEventHandler('click', null);
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deImages = deCarouselComponent.queryAll(By.css('.owl-item .owl-lazy'));
+    expect(deImages.length).toBe(10, '10 images');
+    img = deSlides[1].query(By.css('.owl-lazy'));
+    expect(img).toBeTruthy('img in 2th slide is loaded');
+    img = deSlides[6].query(By.css('.owl-lazy'));
+    expect(img).toBeTruthy('img in 7th slide is loaded');
+  }));
+
+
   // the ending of tests
 });
 
