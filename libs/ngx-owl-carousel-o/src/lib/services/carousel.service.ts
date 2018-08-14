@@ -1211,7 +1211,7 @@ export class CarouselService {
 			return this._clones.map((v, i) => map(i));
 		}
 
-		return this._clones.map((v, i) => v === position ? map(i) : null);
+		return this._clones.map((v, i) => v === position ? map(i) : null).filter(item => item);
 	}
 
   /**
