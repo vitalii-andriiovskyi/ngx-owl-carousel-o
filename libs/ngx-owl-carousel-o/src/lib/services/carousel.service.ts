@@ -901,6 +901,14 @@ export class CarouselService {
 		return stage;
 	}
 
+	/**
+	 * Enters into a 'dragging' state
+	 */
+	enterDragging() {
+		this.enter('dragging');
+    this._trigger('drag');
+	}
+
   /**
 	 * Defines new coords for .owl-stage while dragging it
 	 * @todo #261
@@ -967,7 +975,8 @@ export class CarouselService {
       if (!this.is('dragging')) {
         return;
       }
-      this.leave('dragging');
+			this.leave('dragging');
+			this._trigger('dragged')
 	 }
 
   /**
