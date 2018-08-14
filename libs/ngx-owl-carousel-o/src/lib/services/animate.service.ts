@@ -19,6 +19,7 @@ export class AnimateService implements OnDestroy{
    * active slide before translating
    */
   previous = undefined;
+
   /**
    * new active slide after translating
    */
@@ -34,7 +35,14 @@ export class AnimateService implements OnDestroy{
    * Defines Observables which service must observe
    */
   spyDataStreams() {
-    const changeSettings$: Observable<any> = this.carouselService.getChangeState();
+    const changeSettings$: Observable<any> = this.carouselService.getChangeState().pipe(
+      tap(data => {
+        if (data.property.name === 'position') {
+					this.previous = this.carouselService.current();
+					this.next = data.property.value;
+				}
+      })
+    );
 
     const dragCarousel$: Observable<string> = this.carouselService.getDragState();
     const draggedCarousel$: Observable<string> = this.carouselService.getDraggedState();
@@ -43,7 +51,7 @@ export class AnimateService implements OnDestroy{
     const translateCarousel$: Observable<string> = this.carouselService.getTranslateState();
 
     const dragTranslatedMerge$: Observable<string> = merge(dragCarousel$, draggedCarousel$, translatedCarousel$).pipe(
-      tap()
+      tap(data => this.swapping = data === 'translated')
     );
     const animateMerge$: Observable<string | any> = merge(changeSettings$, translateCarousel$, dragTranslatedMerge$).pipe();
     this.animateSubscription = animateMerge$.subscribe(
