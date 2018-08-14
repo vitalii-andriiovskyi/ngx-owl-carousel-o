@@ -51,4 +51,14 @@ export class SliderModel {
    * Indicates whether slide should be lazy loaded
    */
   load?: boolean;
+
+  /**
+   * Css-rule 'left'
+   */
+  left?: number | string;
+
+  /**
+   * Classes
+   */
+  classes?: {[key:string]: boolean}
 }
