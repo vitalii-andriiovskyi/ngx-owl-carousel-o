@@ -27,8 +27,10 @@ export class LazyLoadService {
 
     const changeSettings$: Observable<any> = this.carouselService.getChangeState();
 
+    const resizedCarousel$: Observable<string> = this.carouselService.getResizedState();
 
-    const lazyLoadMerge$: Observable<string | any> = merge(initializedCarousel$, changeSettings$).pipe(
+
+    const lazyLoadMerge$: Observable<string | any> = merge(initializedCarousel$, changeSettings$, resizedCarousel$).pipe(
       tap(data => this._defineLazyLoadSlides(data)),
       tap(() => this.carouselService.sendChanges())
     );
@@ -42,7 +44,7 @@ export class LazyLoadService {
       return;
     }
 
-    if ((data.property && data.property.name === 'position') || data === 'initialized') {
+    if ((data.property && data.property.name === 'position') || data === 'initialized' || data === "resized") {
       const settings = this.carouselService.settings,
             clones = this.carouselService.clones().length;
       let n = (settings.center && Math.ceil(settings.items / 2) || settings.items),
