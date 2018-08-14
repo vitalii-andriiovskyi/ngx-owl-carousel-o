@@ -101,6 +101,14 @@ export class CarouselService {
    * Subject for notification when the refresh of carousel is ended
    */
 	private _refreshedCarousel$ = new Subject<string>();
+	/**
+   * Subject for notification when the dragging of carousel starts
+   */
+	private _dragCarousel$ = new Subject<string>();
+	/**
+   * Subject for notification when the dragging of carousel is ended
+   */
+	private _draggedCarousel$ = new Subject<string>();
 
   /**
    * Current settings for the carousel.
@@ -544,6 +552,22 @@ export class CarouselService {
 	 */
 	getRefreshedState(): Observable<string> {
 		return this._refreshedCarousel$.asObservable();
+	}
+
+	/**
+	 * Makes _dragCarousel$ Subject become Observable
+	 * @returns Observable of _dragCarousel$ Subject
+	 */
+	getDragState(): Observable<string> {
+		return this._dragCarousel$.asObservable();
+	}
+
+	/**
+	 * Makes _draggedCarousel$ Subject become Observable
+	 * @returns Observable of _draggedCarousel$ Subject
+	 */
+	getDraggedState(): Observable<string> {
+		return this._draggedCarousel$.asObservable();
 	}
 
 	/**
