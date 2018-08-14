@@ -22,9 +22,16 @@ export class AnimateService implements OnDestroy{
   spyDataStreams() {
     const changeSettings$: Observable<any> = this.carouselService.getChangeState();
 
+    const dragCarousel$: Observable<string> = this.carouselService.getDragState();
+    const draggedCarousel$: Observable<string> = this.carouselService.getDraggedState();
     const translatedCarousel$: Observable<string> = this.carouselService.getTranslatedState();
 
-    const animateMerge$: Observable<string | any> = merge(changeSettings$).pipe();
+    const translateCarousel$: Observable<string> = this.carouselService.getTranslateState();
+
+    const dragTranslatedMerge$: Observable<string> = merge(dragCarousel$, draggedCarousel$, translatedCarousel$).pipe(
+      tap()
+    );
+    const animateMerge$: Observable<string | any> = merge(changeSettings$, translateCarousel$, dragTranslatedMerge$).pipe();
     this.animateSubscription = animateMerge$.subscribe(
       () => {}
     );
