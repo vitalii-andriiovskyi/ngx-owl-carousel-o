@@ -622,6 +622,8 @@ export class CarouselService {
 					checkedOptions[key] = setRightOption(mockedTypes[key], key);
 				} else if (mockedTypes[key] === 'number|string' && !this._isNumberOrString(checkedOptions[key])) {
 					checkedOptions[key] = setRightOption(mockedTypes[key], key);
+				} else if (mockedTypes[key] === 'string|boolean' && !this._isStringOrBoolean(checkedOptions[key])) {
+					checkedOptions[key] = setRightOption(mockedTypes[key], key);
 				} else if (mockedTypes[key] === 'string[]') {
 					if (Array.isArray(checkedOptions[key])) {
 						let isString = false;
