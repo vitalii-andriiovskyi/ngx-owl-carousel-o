@@ -17,6 +17,7 @@ import { AutoplayService } from '../services/autoplay.service';
 import { DOCUMENT_PROVIDERS } from '../services/document-ref.service';
 import 'zone.js/dist/zone-patch-rxjs-fake-async';
 import { StageComponent } from './stage/stage.component';
+import { LazyLoadService } from '../services/lazyload.service';
 // import 'zone.js/lib/rxjs/rxjs-fake-async';
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>
@@ -53,7 +54,15 @@ describe('CarouselComponent', () => {
           CarouselSlideDirective,
           StageComponent
         ],
-        providers: [ResizeService, WINDOW_PROVIDERS, CarouselService, NavigationService, AutoplayService, DOCUMENT_PROVIDERS]
+        providers: [
+          ResizeService,
+          WINDOW_PROVIDERS,
+          CarouselService,
+          NavigationService,
+          AutoplayService,
+          DOCUMENT_PROVIDERS,
+          LazyLoadService
+        ]
       });
     })
   );
