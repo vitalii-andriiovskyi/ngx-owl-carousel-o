@@ -19,25 +19,25 @@ export class LazyLoadService {
    */
   spyDataStreams() {
     const initializedCarousel$: Observable<string> = this.carouselService.getInitializedState().pipe(
-      tap(data => this._defineLazyLoadSlides(data))
+      tap(() => {
+        const isLazyLoad = this.carouselService.settings && !this.carouselService.settings.lazyLoad;
+        this.carouselService.slidesData.forEach(item => item.lazyLoad = isLazyLoad ? true : false);
+      })
     );
 
-    const changeSettings$: Observable<any> = this.carouselService.getChangeState().pipe(
-      tap(data => this._defineLazyLoadSlides(data))
+    const changeSettings$: Observable<any> = this.carouselService.getChangeState();
+
+
+    const lazyLoadMerge$: Observable<string | any> = merge(initializedCarousel$, changeSettings$).pipe(
+      tap(data => this._defineLazyLoadSlides(data)),
+      tap(() => this.carouselService.sendChanges())
     );
-
-
-    const lazyLoadMerge$: Observable<string | any> = merge(initializedCarousel$, changeSettings$);
     this.lazyLoadSubscription = lazyLoadMerge$.subscribe(
       () => {}
     );
   }
 
   private _defineLazyLoadSlides(data: any) {
-    if (this.carouselService.settings && !this.carouselService.settings.lazyLoad) {
-      this.carouselService.slidesData.forEach(item => item.lazyLoad === true);
-    }
-
     if (!this.carouselService.settings || !this.carouselService.settings.lazyLoad) {
       return;
     }
