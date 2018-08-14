@@ -50,5 +50,5 @@ export class SliderModel {
   /**
    * Indicates whether slide should be lazy loaded
    */
-  lazyLoad?: boolean;
+  load?: boolean;
 }

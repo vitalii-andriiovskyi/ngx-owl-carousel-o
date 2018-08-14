@@ -21,7 +21,7 @@ export class LazyLoadService {
     const initializedCarousel$: Observable<string> = this.carouselService.getInitializedState().pipe(
       tap(() => {
         const isLazyLoad = this.carouselService.settings && !this.carouselService.settings.lazyLoad;
-        this.carouselService.slidesData.forEach(item => item.lazyLoad = isLazyLoad ? true : false);
+        this.carouselService.slidesData.forEach(item => item.load = isLazyLoad ? true : false);
       })
     );
 
@@ -75,10 +75,10 @@ export class LazyLoadService {
 	 * @param position - The absolute position of the item.
 	 */
   private _load(position: number) {
-    if (this.carouselService.slidesData[position].lazyLoad) {
+    if (this.carouselService.slidesData[position].load) {
       return;
     }
 
-    this.carouselService.slidesData[position].lazyLoad = true;
+    this.carouselService.slidesData[position].load = true;
   }
 }
