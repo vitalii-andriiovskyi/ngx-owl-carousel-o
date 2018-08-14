@@ -1486,14 +1486,17 @@ export class CarouselService {
 			case 'initialized':
 				this._initializedCarousel$.next(name);
 				break;
-			case 'translated':
-				this._translatedCarousel$.next(name);
-				break;
 			case 'change':
 				this._changeSettingsCarousel$.next(data);
 				break;
 			case 'changed':
 				this._changedSettingsCarousel$.next(data);
+				break;
+			case 'drag':
+				this._dragCarousel$.next(name);
+				break;
+			case 'dragged':
+				this._draggedCarousel$.next(name);
 				break;
 			case 'resize':
 				this._resizeCarousel$.next(name);
@@ -1506,6 +1509,12 @@ export class CarouselService {
 				break;
 			case 'refreshed':
 				this._refreshedCarousel$.next(name);
+				break;
+			case 'translate':
+				this._translateCarousel$.next(name);
+				break;
+			case 'translated':
+				this._translatedCarousel$.next(name);
 				break;
 			default:
 				break;
