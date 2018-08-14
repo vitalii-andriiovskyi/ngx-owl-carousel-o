@@ -39,14 +39,14 @@ export class OwlCarouselOConfig implements OwlOptions {
   dotsSpeed = false;
 
   // defaults to Autoplay
-  autoplay: false;
-  autoplayTimeout: 5000;
-  autoplayHoverPause: false;
-  autoplaySpeed: false;
+  autoplay = false;
+  autoplayTimeout = 5000;
+  autoplayHoverPause = false;
+  autoplaySpeed = false;
 
   // defaults to LazyLoading
-  lazyLoad: false;
-	lazyLoadEager: 0;
+  lazyLoad = false;
+	lazyLoadEager = 0;
   constructor() { }
 }
 
@@ -92,13 +92,13 @@ export class OwlOptionsMockedTypes {
   dotsSpeed = 'number|boolean';
 
   // defaults to Autoplay
-  autoplay: 'boolean';
-  autoplayTimeout: 'number';
-  autoplayHoverPause: 'boolean';
-  autoplaySpeed: 'number|boolean';
+  autoplay = 'boolean';
+  autoplayTimeout = 'number';
+  autoplayHoverPause = 'boolean';
+  autoplaySpeed = 'number|boolean';
 
   // defaults to LazyLoading
-  lazyLoad: 'boolean';
-	lazyLoadEager: 'number';
+  lazyLoad = 'boolean';
+	lazyLoadEager = 'number';
   constructor() { }
 }
