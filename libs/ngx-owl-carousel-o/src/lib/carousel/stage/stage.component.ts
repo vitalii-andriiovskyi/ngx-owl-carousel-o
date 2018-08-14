@@ -227,8 +227,7 @@ export class StageComponent implements OnInit, OnDestroy {
 
     event.preventDefault();
 
-    this._enter('dragging');
-    // this.carouselService._trigger('drag');
+    this._enterDragging();
     this._oneDragMove$.next(event);
     // this._sendChanges();
   }
@@ -373,5 +372,12 @@ export class StageComponent implements OnInit, OnDestroy {
    */
   onTransitionEnd() {
     this.carouselService.onTransitionEnd();
+  }
+
+  /**
+	 * Enters into a 'dragging' state
+	 */
+  private _enterDragging() {
+    this.carouselService.enterDragging();
   }
 }
