@@ -17,12 +17,12 @@ import { AnimateService } from '../../services/animate.service';
                                         'padding-right': stageData.paddingR + 'px' }"
           (transitionend)="onTransitionEnd()">
         <ng-container *ngFor="let slide of slidesData; let i = index">
-          <div class="owl-item" [ngClass]="{'active': slide.isActive,
-                                            'center': slide.isCentered,
-                                            'cloned': slide.isCloned}"
+          <div class="owl-item" [ngClass]="slide.classes"
                                 [ngStyle]="{'width': slide.width + 'px',
                                             'margin-left': slide.marginL + 'px',
-                                            'margin-right': slide.marginR + 'px'}">
+                                            'margin-right': slide.marginR + 'px',
+                                            'left': slide.left}"
+                                (animationend)="clear(slide.id)">
             <ng-template *ngIf="slide.load" [ngTemplateOutlet]="slide.tplRef"></ng-template>
           </div><!-- /.owl-item -->
         </ng-container>
