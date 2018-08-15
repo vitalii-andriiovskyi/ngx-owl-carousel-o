@@ -40,6 +40,7 @@
     "@ngrx/store": "5.2.0",
     "@ngrx/store-devtools": "5.2.0",
     "@nrwl/nx": "6.1.0",
+    "animate.css": "^3.7.0",
     "core-js": "^2.5.4",
     "ng-packagr": "^4.0.0-rc.0",
     "ngrx-store-freeze": "0.2.2",
