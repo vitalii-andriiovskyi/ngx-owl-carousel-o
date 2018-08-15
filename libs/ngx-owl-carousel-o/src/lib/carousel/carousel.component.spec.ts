@@ -2959,7 +2959,7 @@ describe('CarouselComponent', () => {
     expect(newActiveSlide.classList.contains('flipInX')).toBeFalsy('2th slide hasn\'t .flipInX class');
   }));
 
-  it('shouldn\t animate slides; \'animateOut\' and  \'animateIn\' are absent [options]="{nav: true, items: 1}"', fakeAsync(() => {
+  it('shouldn\'t animate slides; \'animateOut\' and  \'animateIn\' are absent [options]="{nav: true, items: 1}"', fakeAsync(() => {
     discardPeriodicTasks();
     const html = `
       <div style="width: 920px; margin: auto">
