@@ -1,6 +1,6 @@
 import { TemplateRef } from "@angular/core";
 
-export class SliderModel {
+export class SlideModel {
 
   /**
    * Id of slide
@@ -10,7 +10,7 @@ export class SliderModel {
   /**
    * Active state of slide. If true slide gets css-class .active
    */
-  active?: boolean;
+  isActive?: boolean;
 
   /**
    * TemplateRef of slide. In other words its html-markup
@@ -40,12 +40,12 @@ export class SliderModel {
   /**
    * Make slide to be on center of the carousel
    */
-  center?: boolean;
+  isCentered?: boolean;
 
   /**
    * Cloned slide. It's being used when 'loop'=true
    */
-  cloned?: boolean;
+  isCloned?: boolean;
 
   /**
    * Indicates whether slide should be lazy loaded
@@ -60,5 +60,6 @@ export class SliderModel {
   /**
    * Classes
    */
-  classes?: {[key:string]: boolean}
+  classes?: {[key:string]: boolean};
+
 }

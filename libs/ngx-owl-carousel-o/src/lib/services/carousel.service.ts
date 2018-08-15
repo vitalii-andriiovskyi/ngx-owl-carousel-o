@@ -6,7 +6,7 @@ import { OwlDOMData } from '../models/owlDOM-data.model';
 import { Injectable } from '@angular/core';
 
 import { CarouselSlideDirective } from '../carousel/carousel.module';
-import { SliderModel } from '../models/slider.model';
+import { SlideModel } from '../models/slide.model';
 import { Subject, Observable } from 'rxjs';
 import { OwlCarouselOConfig, OwlOptionsMockedTypes } from '../carousel/owl-carousel-o-config';
 import { OwlOptions } from '../models/owl-options.model';
@@ -56,7 +56,7 @@ export class Coords {
 export class CarouselCurrentData {
 	owlDOMData: OwlDOMData;
 	stageData: StageData;
-	slidesData: SliderModel[];
+	slidesData: SlideModel[];
 	navData: NavData;
 	dotsData: DotsData;
 }
@@ -149,7 +149,7 @@ export class CarouselService {
 	/**
 	 *  Data of every slide
 	 */
-	slidesData: SliderModel[];
+	slidesData: SlideModel[];
 
 	/**
 	 * Data of navigation block
@@ -349,15 +349,15 @@ export class CarouselService {
 
 				append = append.map(slide => {
 					slide.id = `cloned-${slide.id}`;
-					slide.active = false;
-					slide.cloned = true;
+					slide.isActive = false;
+					slide.isCloned = true;
 					return slide;
 				});
 
 				prepend = prepend.map(slide => {
 					slide.id = `cloned-${slide.id}`;
-					slide.active = false;
-					slide.cloned = true;
+					slide.isActive = false;
+					slide.isCloned = true;
 					return slide;
 				});
 
@@ -466,19 +466,19 @@ export class CarouselService {
 				}
 
 				this.slidesData.forEach(slide => {
-					slide.active = false;
+					slide.isActive = false;
 					return slide;
 				});
 				matches.forEach(item => {
-					this.slidesData[item].active = true;
+					this.slidesData[item].isActive = true;
 				});
 
         if (this.settings.center) {
 					this.slidesData.forEach(slide => {
-						slide.center = false;
+						slide.isCentered = false;
 						return slide;
 					});
-					this.slidesData[this.current()].center = true;
+					this.slidesData[this.current()].isCentered = true;
         }
       }
     }
@@ -1450,11 +1450,11 @@ export class CarouselService {
 		this.slidesData = this._items.map(slide => {
 			return {
 				id: `${slide.id}`,
-				active: false,
+				isActive: false,
 				tplRef: slide.tplRef,
 				dataMerge: slide.dataMerge,
 				width: 0,
-				cloned: false,
+				isCloned: false,
 				load: loadMap ? loadMap.get(slide.id) : false
 			};
 		});

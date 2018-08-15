@@ -23,7 +23,7 @@ import { tap, delay, filter } from 'rxjs/operators';
 import { CarouselService, CarouselCurrentData } from '../services/carousel.service';
 import { StageData } from "../models/stage-data.model";
 import { OwlDOMData } from "../models/owlDOM-data.model";
-import { SliderModel } from '../models/slider.model';
+import { SlideModel } from '../models/slide.model';
 import { OwlOptions } from '../models/owl-options.model';
 import { NavData, DotsData } from '../models/navigation-data.models';
 import { NavigationService } from '../services/navigation.service';
@@ -79,7 +79,7 @@ export class CarouselSlideDirective {
  */
 export class SlidesOutputData {
   startPosition?: number;
-  slides?: SliderModel[];
+  slides?: SlideModel[];
 };
 
 @Component({
@@ -150,7 +150,7 @@ export class CarouselComponent
 	/**
 	 *  Data of every slide
 	 */
-  slidesData: SliderModel[];
+  slidesData: SlideModel[];
 
   /**
 	 * Data of navigation block
@@ -309,8 +309,8 @@ export class CarouselComponent
    */
   gatherTranslatedData() {
     let startPosition: number;
-    const activeSlides: SliderModel[] = this.slidesData
-      .filter(slide => slide.active === true)
+    const activeSlides: SlideModel[] = this.slidesData
+      .filter(slide => slide.isActive === true)
       .map(slide => {
         const id = slide.id.indexOf('cloned-') >= 0 ? slide.id.slice(7) : slide.id;
         return {
@@ -318,7 +318,7 @@ export class CarouselComponent
           width: slide.width,
           marginL: slide.marginL,
           marginR: slide.marginR,
-          center: slide.center
+          center: slide.isCentered
         }
       });
     startPosition = this.slides.toArray().findIndex(slide => slide.id === activeSlides[0].id);

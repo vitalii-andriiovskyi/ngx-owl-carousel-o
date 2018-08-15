@@ -3,7 +3,8 @@ import { CarouselService, Coords } from '../../services/carousel.service';
 import { Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { StageData } from '../../models/stage-data.model';
-import { SliderModel } from '../../models/slider.model';
+import { SlideModel } from '../../models/slide.model';
+import { AnimateService } from '../../services/animate.service';
 
 @Component({
   selector: 'owl-stage',
@@ -16,9 +17,9 @@ import { SliderModel } from '../../models/slider.model';
                                         'padding-right': stageData.paddingR + 'px' }"
           (transitionend)="onTransitionEnd()">
         <ng-container *ngFor="let slide of slidesData; let i = index">
-          <div class="owl-item" [ngClass]="{'active': slide.active,
-                                            'center': slide.center,
-                                            'cloned': slide.cloned}"
+          <div class="owl-item" [ngClass]="{'active': slide.isActive,
+                                            'center': slide.isCentered,
+                                            'cloned': slide.isCloned}"
                                 [ngStyle]="{'width': slide.width + 'px',
                                             'margin-left': slide.marginL + 'px',
                                             'margin-right': slide.marginR + 'px'}">
@@ -46,7 +47,7 @@ export class StageComponent implements OnInit, OnDestroy {
 	/**
 	 *  Data of every slide
 	 */
-  @Input() slidesData: SliderModel[];
+  @Input() slidesData: SlideModel[];
 
   /**
    * Function wich will be returned after attaching listener to 'mousemove' event
@@ -108,7 +109,8 @@ export class StageComponent implements OnInit, OnDestroy {
   constructor(private zone: NgZone,
               private el: ElementRef,
               private renderer: Renderer2,
-              private carouselService: CarouselService) { }
+              private carouselService: CarouselService,
+              private animateService: AnimateService) { }
 
   @HostListener('mousedown', ['$event']) onMouseDown(event) {
     if (this.owlDraggable.isMouseDragable) {
@@ -379,5 +381,13 @@ export class StageComponent implements OnInit, OnDestroy {
 	 */
   private _enterDragging() {
     this.carouselService.enterDragging();
+  }
+
+  /**
+   * Handles the end of 'animationend' event
+   * @param id Id of slides
+   */
+  clear(id) {
+    this.animateService.clear(id);
   }
 }
