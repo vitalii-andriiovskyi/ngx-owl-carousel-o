@@ -37,6 +37,10 @@ export class AppComponent implements OnInit {
   customOptions: any = {
     // autoWidth: true,
     loop: true,
+    lazyLoad: true,
+    lazyLoadEager: 1,
+    // animateOut: 'slideOutDown',
+    animateIn: 'flipInX',
     // items: '10',
     // margin: 10,
     // slideBy: 'page',
@@ -68,7 +72,7 @@ export class AppComponent implements OnInit {
         items: 2
       },
       900: {
-        items: 3
+        items: 1
       }
     },
     // stagePadding: 40,
@@ -76,6 +80,11 @@ export class AppComponent implements OnInit {
   }
 
   activeSlides: any;
+
+  classes: {[key:string]: boolean} = {
+    'animated': true,
+    'fadeIn': true
+  }
 
   constructor() {
 
@@ -86,6 +95,18 @@ export class AppComponent implements OnInit {
   getPassedData(data: any) {
     this.activeSlides = data;
     console.log(this.activeSlides);
+  }
+
+  addClassObj() {
+    const startClasses: any = { ...this.classes};
+    startClasses['fade-spin'] = true;
+    this.classes = startClasses;
+  }
+
+  deleteOneClass() {
+    const startClasses: any = { ...this.classes};
+    delete startClasses['fade-spin'];
+    this.classes = startClasses;
   }
 
 }
