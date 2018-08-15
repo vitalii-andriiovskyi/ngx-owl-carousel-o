@@ -99,11 +99,9 @@ export class AnimateService implements OnDestroy{
       this.carouselService.slidesData.forEach(slide => {
         if (slide.id === previous.id) {
           slide.left = `${left}px`;
-          slide.classes = {
-            'animated': true,
-            'owl-animated-out': true,
-          }
-          slide.classes[outgoing as string] = true;
+          slide.isAnimated = true;
+          slide.isDefAnimatedOut = true;
+          slide.isCustomAnimatedOut = true;
         }
       });
 		}
@@ -111,11 +109,9 @@ export class AnimateService implements OnDestroy{
 		if (incoming) {
       this.carouselService.slidesData.forEach(slide => {
         if (slide.id === next.id) {
-          slide.classes = {
-            'animated': true,
-            'owl-animated-in': true,
-          }
-          slide.classes[incoming as string] = true;
+          slide.isAnimated = true;
+          slide.isDefAnimatedIn = true;
+          slide.isCustomAnimatedIn = true;
         }
       });
 		}
@@ -129,9 +125,14 @@ export class AnimateService implements OnDestroy{
     this.carouselService.slidesData.forEach(slide => {
       if (slide.id === id) {
         slide.left = '';
-        slide.classes = {}
+        slide.isAnimated = false;
+        slide.isDefAnimatedOut = false;
+        slide.isCustomAnimatedOut = false;
+        slide.isDefAnimatedIn = false;
+        slide.isCustomAnimatedIn = false;
+        slide.classes = this.carouselService.setCurSlideClasses(slide);
       }
     });
-		this.carouselService.onTransitionEnd();
+    this.carouselService.onTransitionEnd();
 	};
 }
