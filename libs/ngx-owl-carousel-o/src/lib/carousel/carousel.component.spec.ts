@@ -2839,6 +2839,171 @@ describe('CarouselComponent', () => {
     expect(img).toBeTruthy('img in 7th slide is loaded');
   }));
 
+  it('should animate slides [options]="{nav: true, items: 1, animateOut: \'slideOutDown\', animateIn: \'flipInX\'}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{nav: true, smartSpeed: 1, items: 1, animateOut: 'slideOutDown', animateIn: 'flipInX'}">
+          <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+          <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+          <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+          <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+          <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(1, '1 slide');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons[1].triggerEventHandler('click', null);
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    let oldActiveSlide = deSlides[0].nativeElement;
+    expect(oldActiveSlide.classList.contains('animated')).toBeTruthy('1th slide has .animated class');
+    expect(oldActiveSlide.classList.contains('owl-animated-out')).toBeTruthy('1th slide has .owl-animated-out class');
+    expect(oldActiveSlide.classList.contains('slideOutDown')).toBeTruthy('1th slide has .slideOutDown class');
+    expect(getComputedStyle(oldActiveSlide).left).toBe('920px', '920px');
+
+    let newActiveSlide: HTMLElement = deSlides[1].nativeElement;
+    expect(newActiveSlide.classList.contains('animated')).toBeTruthy('2th slide has .animated class');
+    expect(newActiveSlide.classList.contains('owl-animated-in')).toBeTruthy('2th slide has .owl-animated-in class');
+    expect(newActiveSlide.classList.contains('flipInX')).toBeTruthy('2th slide has .flipInX class');
+    expect(newActiveSlide.classList.contains('active')).toBeTruthy('2th slide has .active class');
+
+    tick();
+    fixtureHost.detectChanges();
+
+    // Event 'animationend' should fire by itself after some period of time. But tests ends before firing event. Calling tick(2000) doesn't help.
+    deSlides[0].nativeElement.dispatchEvent(new Event('animationend'));
+    deSlides[1].nativeElement.dispatchEvent(new Event('animationend'));
+
+    tick();
+    fixtureHost.detectChanges();
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    oldActiveSlide = deSlides[0].nativeElement;
+    expect(deSlides[0].nativeElement.classList.contains('animated')).toBeFalsy('1th slide hasn\'t .animated class');
+    expect(oldActiveSlide.classList.contains('owl-animated-out')).toBeFalsy('1th slide hasn\'t .owl-animated-out class');
+    expect(oldActiveSlide.classList.contains('slideOutDown')).toBeFalsy('1th slide hasn\'t .slideOutDown class');
+    expect(getComputedStyle(oldActiveSlide).left).toBe('auto', 'auto');
+
+    newActiveSlide = deSlides[1].nativeElement;
+    expect(newActiveSlide.classList.contains('animated')).toBeFalsy('2th slide hasn\'t .animated class');
+    expect(newActiveSlide.classList.contains('owl-animated-in')).toBeFalsy('2th slide hasn\'t .owl-animated-in class');
+    expect(newActiveSlide.classList.contains('flipInX')).toBeFalsy('2th slide hasn\'t .flipInX class');
+  }));
+
+  it('should animate just new active slides; \'animateOut\' is absent [options]="{nav: true, items: 1, animateIn: \'flipInX\'}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{nav: true, smartSpeed: 1, items: 1, animateIn: 'flipInX'}">
+          <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+          <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+          <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+          <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+          <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(1, '1 slide');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons[1].triggerEventHandler('click', null);
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    const oldActiveSlide = deSlides[0].nativeElement;
+    expect(oldActiveSlide.classList.contains('animated')).toBeFalsy('1th slide hasn\'t .animated class');
+    expect(oldActiveSlide.classList.contains('owl-animated-out')).toBeFalsy('1th slide hasn\'t .owl-animated-out class');
+    expect(oldActiveSlide.classList.contains('slideOutDown')).toBeFalsy('1th slide hasn\'t .slideOutDown class');
+    expect(getComputedStyle(oldActiveSlide).left).toBe('auto', 'auto');
+
+    let newActiveSlide: HTMLElement = deSlides[1].nativeElement;
+    expect(newActiveSlide.classList.contains('animated')).toBeTruthy('2th slide has .animated class');
+    expect(newActiveSlide.classList.contains('owl-animated-in')).toBeTruthy('2th slide has .owl-animated-in class');
+    expect(newActiveSlide.classList.contains('flipInX')).toBeTruthy('2th slide has .flipInX class');
+    expect(newActiveSlide.classList.contains('active')).toBeTruthy('2th slide has .active class');
+
+    tick();
+    fixtureHost.detectChanges();
+
+    // Event 'animationend' should fire by itself after some period of time. But tests ends before firing event. Calling tick(2000) doesn't help.
+    deSlides[1].nativeElement.dispatchEvent(new Event('animationend'));
+
+    tick();
+    fixtureHost.detectChanges();
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+
+    newActiveSlide = deSlides[1].nativeElement;
+    expect(newActiveSlide.classList.contains('animated')).toBeFalsy('2th slide hasn\'t .animated class');
+    expect(newActiveSlide.classList.contains('owl-animated-in')).toBeFalsy('2th slide hasn\'t .owl-animated-in class');
+    expect(newActiveSlide.classList.contains('flipInX')).toBeFalsy('2th slide hasn\'t .flipInX class');
+  }));
+
+  it('shouldn\t animate slides; \'animateOut\' and  \'animateIn\' are absent [options]="{nav: true, items: 1}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{nav: true, smartSpeed: 1, items: 1}">
+          <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+          <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+          <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+          <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+          <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(1, '1 slide');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons[1].triggerEventHandler('click', null);
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    const oldActiveSlide = deSlides[0].nativeElement;
+    expect(oldActiveSlide.classList.contains('animated')).toBeFalsy('1th slide hasn\'t .animated class');
+    expect(oldActiveSlide.classList.contains('owl-animated-out')).toBeFalsy('1th slide hasn\'t .owl-animated-out class');
+    expect(oldActiveSlide.classList.contains('slideOutDown')).toBeFalsy('1th slide hasn\'t .slideOutDown class');
+    expect(getComputedStyle(oldActiveSlide).left).toBe('auto', 'auto');
+
+    const newActiveSlide: HTMLElement = deSlides[1].nativeElement;
+    expect(newActiveSlide.classList.contains('animated')).toBeFalsy('2th slide hasn\'t .animated class');
+    expect(newActiveSlide.classList.contains('owl-animated-in')).toBeFalsy('2th slide hasn\'t .owl-animated-in class');
+    expect(newActiveSlide.classList.contains('flipInX')).toBeFalsy('2th slide hasn\'t .flipInX class');
+    expect(newActiveSlide.classList.contains('active')).toBeTruthy('2th slide has .active class');
+
+    tick();
+    fixtureHost.detectChanges();
+
+  }));
 
   // the ending of tests
 });
