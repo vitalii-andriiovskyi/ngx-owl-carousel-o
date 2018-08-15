@@ -794,7 +794,7 @@ export class CarouselService {
       }
       i++;
 		}
-
+		this.slidesData.forEach(slide => slide.classes = this.setCurSlideClasses(slide));
 		this.sendChanges();
 
     this._invalidated = {};
