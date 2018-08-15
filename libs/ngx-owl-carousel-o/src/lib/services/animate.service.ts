@@ -25,7 +25,9 @@ export class AnimateService implements OnDestroy{
    */
   next = undefined;
 
-  constructor(private carouselService: CarouselService) { }
+  constructor(private carouselService: CarouselService) {
+    this.spyDataStreams();
+  }
 
   ngOnDestroy() {
     this.animateSubscription.unsubscribe();
@@ -48,11 +50,18 @@ export class AnimateService implements OnDestroy{
     const draggedCarousel$: Observable<string> = this.carouselService.getDraggedState();
     const translatedCarousel$: Observable<string> = this.carouselService.getTranslatedState();
 
-    const translateCarousel$: Observable<string> = this.carouselService.getTranslateState();
-
     const dragTranslatedMerge$: Observable<string> = merge(dragCarousel$, draggedCarousel$, translatedCarousel$).pipe(
       tap(data => this.swapping = data === 'translated')
     );
+
+    const translateCarousel$: Observable<string> = this.carouselService.getTranslateState().pipe(
+      tap(data => {
+        if (this.swapping && (this.carouselService._options.animateOut || this.carouselService._options.animateIn)) {
+          this._swap();
+        }
+      })
+    );
+
     const animateMerge$: Observable<string | any> = merge(changeSettings$, translateCarousel$, dragTranslatedMerge$).pipe();
     this.animateSubscription = animateMerge$.subscribe(
       () => {}
