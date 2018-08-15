@@ -1460,6 +1460,30 @@ export class CarouselService {
 		});
 	}
 
+	/**
+	 * Sets current classes for slide
+	 * @param slide Slide of carousel
+	 * @returns object with names of css-classes which are keys and true/false values
+	 */
+	setCurSlideClasses(slide: SlideModel): {[key: string]: boolean} {
+		// CSS classes: added/removed per current state of component properties
+		const currentClasses: {[key: string]: boolean} =  {
+			'active': slide.isActive,
+			'center': slide.isCentered,
+			'cloned': slide.isCloned,
+			'animated': slide.isAnimated,
+			'owl-animated-in': slide.isDefAnimatedIn,
+			'owl-animated-out': slide.isDefAnimatedOut
+		};
+		if (this.settings.animateIn) {
+			currentClasses[this.settings.animateIn as string] = slide.isCustomAnimatedIn;
+		}
+		if (this.settings.animateOut) {
+			currentClasses[this.settings.animateOut as string] = slide.isCustomAnimatedOut;
+		}
+		return currentClasses;
+	}
+
   /**
 	 * Operators to calculate right-to-left and left-to-right.
 	 * @param a - The left side operand.
