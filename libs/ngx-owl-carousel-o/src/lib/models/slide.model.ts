@@ -58,8 +58,30 @@ export class SlideModel {
   left?: number | string;
 
   /**
-   * Classes
+   * Changeable classes of slide
    */
   classes?: {[key:string]: boolean};
+
+  /**
+   * Shows whether slide could be animated and could have css-class '.animated'
+   */
+  isAnimated?: boolean;
+
+  /**
+   * Shows whether slide could be animated-in and could have css-class '.owl-animated-in'
+   */
+  isDefAnimatedIn?: boolean;
+  /**
+   * Shows whether slide could be animated-out and could have css-class '.owl-animated-out'
+   */
+  isDefAnimatedOut?: boolean;
+  /**
+   * Shows whether slide could be animated-in and could have animation css-class defined by user
+   */
+  isCustomAnimatedIn?: boolean;
+  /**
+   * Shows whether slide could be animated-out and could have animation css-class defined by user
+   */
+  isCustomAnimatedOut?: boolean;
 
 }
