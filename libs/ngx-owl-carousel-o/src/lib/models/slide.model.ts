@@ -84,4 +84,8 @@ export class SlideModel {
    */
   isCustomAnimatedOut?: boolean;
 
+  /**
+   * State for defining the height of slide.It's values could be 'full' and 'nulled'. 'Full' sets css-height to 'auto', 'nulled' sets height to '0'.
+   */
+  heightState?: string;
 }
