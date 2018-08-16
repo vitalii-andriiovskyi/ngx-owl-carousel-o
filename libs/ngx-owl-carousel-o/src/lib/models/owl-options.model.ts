@@ -162,8 +162,15 @@ export class OwlOptions {
    */
   animateOut?: string | boolean;
 
-  /**Class for CSS3 animation in. */
-	animateIn?: string | boolean;
+  /**
+   * Class for CSS3 animation in.
+   */
+  animateIn?: string | boolean;
 
+  // AUTOHEIGHT ****************************************
+  /**
+   * Enables changing carousel according to the biggest height of ass active slides providing slides have different height
+   */
+  autoHeight?: boolean;
   constructor() { }
 }

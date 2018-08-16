@@ -51,6 +51,9 @@ export class OwlCarouselOConfig implements OwlOptions {
   // defaults to Animate
   animateOut = false;
   animateIn = false;
+
+  // defaults to AutoHeight
+  autoHeight = false;
   constructor() { }
 }
 
@@ -108,5 +111,8 @@ export class OwlOptionsMockedTypes {
   // defaults to Animate
   animateOut = 'string|boolean';
   animateIn = 'string|boolean';
+
+  // defaults to AutoHeight
+  autoHeight = 'boolean';
   constructor() { }
 }
