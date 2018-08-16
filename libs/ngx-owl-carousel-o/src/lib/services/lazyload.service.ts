@@ -36,7 +36,7 @@ export class LazyLoadService implements OnDestroy {
 
     const lazyLoadMerge$: Observable<string | any> = merge(initializedCarousel$, changeSettings$, resizedCarousel$).pipe(
       tap(data => this._defineLazyLoadSlides(data)),
-      tap(() => this.carouselService.sendChanges())
+      // tap(() => this.carouselService.sendChanges())
     );
     this.lazyLoadSubscription = lazyLoadMerge$.subscribe(
       () => {}
