@@ -30,6 +30,7 @@ import { NavigationService } from '../services/navigation.service';
 import { AutoplayService } from '../services/autoplay.service';
 import { LazyLoadService } from '../services/lazyload.service';
 import { AnimateService } from '../services/animate.service';
+import { AutoHeightService } from '../services/autoheight.service';
 
 let nextId = 0;
 
@@ -113,7 +114,14 @@ export class SlidesOutputData {
     </div> <!-- /.owl-carousel owl-loaded -->
   `,
   styles: [`.owl-theme { display: block; }`],
-  providers: [ NavigationService, AutoplayService, CarouselService, LazyLoadService, AnimateService ]
+  providers: [
+    NavigationService,
+    AutoplayService,
+    CarouselService,
+    LazyLoadService,
+    AnimateService,
+    AutoHeightService
+  ]
 })
 export class CarouselComponent
   implements OnInit, AfterContentChecked, AfterContentInit, OnDestroy {
