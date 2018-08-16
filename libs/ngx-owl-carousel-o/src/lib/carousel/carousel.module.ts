@@ -9,7 +9,7 @@ import { ResizeService } from '../services/resize.service';
 import { DOCUMENT_PROVIDERS } from '../services/document-ref.service';
 import { StageComponent } from './stage/stage.component';
 import { OwlImageComponent } from './owl-image/owl-image.component';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 export {
   CarouselComponent,
   CarouselSlideDirective,
@@ -19,7 +19,7 @@ export {
 export { OwlImageComponent } from './owl-image/owl-image.component';
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [CommonModule, BrowserAnimationsModule],
   declarations: [CarouselComponent, CarouselSlideDirective, StageComponent, OwlImageComponent],
   exports: [CarouselComponent, CarouselSlideDirective, OwlImageComponent],
   providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS]
