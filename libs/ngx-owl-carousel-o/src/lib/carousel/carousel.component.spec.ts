@@ -18,6 +18,7 @@ import { DOCUMENT_PROVIDERS } from '../services/document-ref.service';
 import 'zone.js/dist/zone-patch-rxjs-fake-async';
 import { StageComponent } from './stage/stage.component';
 import { LazyLoadService } from '../services/lazyload.service';
+import { BrowserAnimationsModule } from '../../../../../node_modules/@angular/platform-browser/animations';
 // import 'zone.js/lib/rxjs/rxjs-fake-async';
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>
@@ -48,6 +49,7 @@ describe('CarouselComponent', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
+        imports: [ BrowserAnimationsModule],
         declarations: [
           CarouselComponent,
           TestComponent,
