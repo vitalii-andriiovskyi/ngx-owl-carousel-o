@@ -57,27 +57,10 @@ export class AutoHeightService implements OnDestroy{
    */
   update() {
     const start = this.carouselService.current(),
-			end = start + this.carouselService.settings.items,
-      visible: Map<string, string> = new Map(),
-      cloneIdPref = this.carouselService.clonedIdPrefix;
+			end = start + this.carouselService.settings.items;
 
     this.carouselService.slidesData.forEach((slide, i) => {
-      if (i >= start && i < end) {
-        visible.set(slide.id, slide.id);
-      }
-    });
-    this.carouselService.slidesData.forEach((slide, i) => {
       slide.heightState = (i >= start && i < end) ? 'full' : 'nulled';
-      if (this.carouselService.settings.loop && visible.size === this.carouselService.settings.items) {
-        if (slide.isActive) {
-          if (slide.id.indexOf(cloneIdPref) !== -1) {
-            const id = slide.id.slice(cloneIdPref.length);
-            if (visible.has(id)) slide.heightState = 'full';
-          } else {
-            if (visible.has(cloneIdPref+slide.id)) slide.heightState = 'full';
-          }
-        }
-      }
     });
   }
 
