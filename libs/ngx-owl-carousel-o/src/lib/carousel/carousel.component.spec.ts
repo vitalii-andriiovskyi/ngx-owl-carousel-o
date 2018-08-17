@@ -19,6 +19,7 @@ import 'zone.js/dist/zone-patch-rxjs-fake-async';
 import { StageComponent } from './stage/stage.component';
 import { LazyLoadService } from '../services/lazyload.service';
 import { BrowserAnimationsModule } from '../../../../../node_modules/@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 // import 'zone.js/lib/rxjs/rxjs-fake-async';
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>
@@ -49,7 +50,7 @@ describe('CarouselComponent', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        imports: [ BrowserAnimationsModule],
+        imports: [ NoopAnimationsModule],
         declarations: [
           CarouselComponent,
           TestComponent,
@@ -3005,6 +3006,67 @@ describe('CarouselComponent', () => {
     tick();
     fixtureHost.detectChanges();
 
+  }));
+
+
+  it('should change height of carousel [options]="{nav: true, autoHeight: true}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{nav: true, autoHeight: true}">
+          <ng-template carouselSlide id="owl-slide-1"><div style="height: 100px">Slide 1</div></ng-template>
+          <ng-template carouselSlide id="owl-slide-2"><div style="height: 40px">Slide 2</div></ng-template>
+          <ng-template carouselSlide id="owl-slide-3"><div style="height: 80px">Slide 3</div></ng-template>
+          <ng-template carouselSlide id="owl-slide-4"><div style="height: 130px">Slide 4</div></ng-template>
+          <ng-template carouselSlide id="owl-slide-5"><div style="height: 90px">Slide 5</div></ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    const deNotActiveSlide: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item:not(.active)'));
+    expect(deActiveSlides.length).toBe(3, '3 slide');
+    expect(deNotActiveSlide.length).toBe(2, '2 slide');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(getComputedStyle(deActiveSlides[0].nativeElement).height).toBe('100px', '100px');
+    expect(getComputedStyle(deActiveSlides[1].nativeElement).height).toBe('40px', '40px');
+    expect(getComputedStyle(deActiveSlides[2].nativeElement).height).toBe('80px', '80px');
+    expect(getComputedStyle(deNotActiveSlide[0].nativeElement).height).toBe('0px', '0px height');
+    expect(getComputedStyle(deNotActiveSlide[1].nativeElement).height).toBe('0px', '0px height');
+
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+
+    // Default styles aren't turned on. Thus it's needed to set some of them.
+    deStage.nativeElement.querySelectorAll('.owl-item').forEach(element => {
+      element.style.cssFloat = 'left';
+    });
+    deStage.nativeElement.style.overflow = "hidden";
+    expect(getComputedStyle(deStage.nativeElement).height).toBe('100px', '100px height');
+
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons[1].triggerEventHandler('click', null);
+
+    tick(450);
+    fixtureHost.detectChanges();
+    tick(1100);
+    fixtureHost.detectChanges();
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    tick();
+    fixtureHost.detectChanges();
+
+    expect(getComputedStyle(deSlides[0].nativeElement).height).toBe('0px', '0px');
+    expect(getComputedStyle(deSlides[1].nativeElement).height).toBe('40px', '40px');
+    expect(getComputedStyle(deSlides[2].nativeElement).height).toBe('80px', '80px');
+    expect(getComputedStyle(deSlides[3].nativeElement).height).toBe('130px', '130px height');
+    expect(getComputedStyle(deSlides[4].nativeElement).height).toBe('0px', '0px height');
+
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    expect(getComputedStyle(deStage.nativeElement).height).toBe('130px', '130px height');
   }));
 
   // the ending of tests
