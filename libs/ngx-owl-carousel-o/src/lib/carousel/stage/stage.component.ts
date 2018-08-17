@@ -5,7 +5,13 @@ import { first } from 'rxjs/operators';
 import { StageData } from '../../models/stage-data.model';
 import { SlideModel } from '../../models/slide.model';
 import { AnimateService } from '../../services/animate.service';
-
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition
+} from '@angular/animations';
 @Component({
   selector: 'owl-stage',
   template: `
@@ -22,13 +28,28 @@ import { AnimateService } from '../../services/animate.service';
                                             'margin-left': slide.marginL + 'px',
                                             'margin-right': slide.marginR + 'px',
                                             'left': slide.left}"
-                                (animationend)="clear(slide.id)">
+                                (animationend)="clear(slide.id)"
+                                [@autoHeight]="slide.heightState">
             <ng-template *ngIf="slide.load" [ngTemplateOutlet]="slide.tplRef"></ng-template>
           </div><!-- /.owl-item -->
         </ng-container>
       </div><!-- /.owl-stage -->
     </div>
-  `
+  `,
+  animations: [
+    trigger('autoHeight', [
+      state('nulled', style({height: 0})),
+      state('full', style({height: '*'})),
+      transition('full => nulled', [
+        // style({height: '*'}),
+        animate('700ms 350ms')
+      ]),
+      transition('nulled => full', [
+        // style({height: 0}),
+        animate(350)
+      ]),
+    ])
+  ]
 })
 export class StageComponent implements OnInit, OnDestroy {
   /**
