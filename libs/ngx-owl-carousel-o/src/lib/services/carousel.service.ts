@@ -217,7 +217,12 @@ export class CarouselService {
    * Current breakpoint.
    * @todo Real media queries would be nice.
    */
-  private _breakpoint: any = null;
+	private _breakpoint: any = null;
+
+	/**
+	 * Prefix for id of cloned slides
+	 */
+	clonedIdPrefix = 'cloned-';
 
 	/**
 	 * Current options set by the caller including defaults.
@@ -348,14 +353,14 @@ export class CarouselService {
 				this._clones = clones;
 
 				append = append.map(slide => {
-					slide.id = `cloned-${slide.id}`;
+					slide.id = `${this.clonedIdPrefix}${slide.id}`;
 					slide.isActive = false;
 					slide.isCloned = true;
 					return slide;
 				});
 
 				prepend = prepend.map(slide => {
-					slide.id = `cloned-${slide.id}`;
+					slide.id = `${this.clonedIdPrefix}${slide.id}`;
 					slide.isActive = false;
 					slide.isCloned = true;
 					return slide;
