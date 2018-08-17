@@ -2,6 +2,5 @@ export {
   CarouselModule,
   CarouselComponent,
   CarouselSlideDirective,
-  SlidesOutputData,
-  OwlImageComponent
+  SlidesOutputData
 } from './lib/carousel/carousel.module';

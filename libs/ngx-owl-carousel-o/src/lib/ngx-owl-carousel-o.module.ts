@@ -20,7 +20,6 @@ export {
   windowProvider,
   WINDOW_PROVIDERS
 } from './services/window-ref.service';
-export { OwlImageComponent } from './carousel/owl-image/owl-image.component';
 
 @NgModule({
   imports: [CommonModule, CarouselModule],
