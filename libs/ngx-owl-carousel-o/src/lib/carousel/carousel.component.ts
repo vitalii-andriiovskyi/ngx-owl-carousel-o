@@ -207,7 +207,8 @@ export class CarouselComponent
     private navigationService: NavigationService,
     private autoplayService: AutoplayService,
     private lazyLoadService: LazyLoadService,
-    private animateService: AnimateService
+    private animateService: AnimateService,
+    private autoHeightService: AutoHeightService
   ) {}
 
   ngOnInit() {
