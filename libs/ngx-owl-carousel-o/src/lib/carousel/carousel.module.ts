@@ -15,9 +15,13 @@ export {
   SlidesOutputData
 } from './carousel.component';
 
+import { RouterModule, Routes } from '@angular/router';
+
+const routes: Routes = [];
+
 
 @NgModule({
-  imports: [CommonModule, BrowserAnimationsModule],
+  imports: [CommonModule, BrowserAnimationsModule, RouterModule.forChild(routes)],
   declarations: [CarouselComponent, CarouselSlideDirective, StageComponent],
   exports: [CarouselComponent, CarouselSlideDirective],
   providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS]
