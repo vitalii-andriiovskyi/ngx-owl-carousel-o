@@ -63,6 +63,11 @@ export class CarouselSlideDirective {
    */
   @Input() dotContent = '';
 
+  /**
+   * Hash (fragment) of url which corresponds to certain slide
+   */
+  @Input() dataHash = '';
+
   constructor(public tplRef: TemplateRef<any>) {}
 
   /**
