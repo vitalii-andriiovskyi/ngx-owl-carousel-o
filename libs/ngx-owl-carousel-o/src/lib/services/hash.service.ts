@@ -2,6 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Subscription, Observable, merge } from 'rxjs';
 import { CarouselService } from './carousel.service';
 import { tap } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable()
 export class HashService implements OnDestroy {
@@ -10,13 +11,16 @@ export class HashService implements OnDestroy {
    */
   hashSubscription: Subscription;
 
-  constructor(private carouselService: CarouselService) {
+  constructor(private carouselService: CarouselService,
+              private route: ActivatedRoute,
+              private router: Router) {
     this.spyDataStreams();
   }
 
   ngOnDestroy() {
     this.hashSubscription.unsubscribe();
   }
+
   /**
    * Defines Observables which service must observe
    */
@@ -33,5 +37,19 @@ export class HashService implements OnDestroy {
     this.hashSubscription = hashFragment$.subscribe(
       () => {}
     );
+  }
+
+  /**
+   * rewinds carousel to slide which has the same hashFragment as fragment of current url
+   * @param fragment fragment of url
+   */
+  rewind(fragment: string) {
+    const position = this.carouselService.slidesData.findIndex(slide => slide.hashFragment === fragment);
+
+    if (position === -1 || position === this.carouselService.current()) {
+      return;
+    }
+
+		this.carouselService.to(this.carouselService.relative(position), false);
   }
 }
