@@ -16,7 +16,8 @@ import { NavigationService } from '../../services/navigation.service';
 import { AutoplayService } from '../../services/autoplay.service';
 import { DOCUMENT_PROVIDERS } from '../../services/document-ref.service';
 import 'zone.js/dist/zone-patch-rxjs-fake-async';
-import { BrowserAnimationsModule } from '../../../../../../node_modules/@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from "@angular/router/testing";
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -41,7 +42,10 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        imports: [ BrowserAnimationsModule],
+        imports: [
+          NoopAnimationsModule,
+          RouterTestingModule.withRoutes([{path: '', component: TestComponent}])
+        ],
         declarations: [
           CarouselComponent,
           TestComponent,

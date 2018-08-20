@@ -12,7 +12,8 @@ import 'zone.js/dist/zone-patch-rxjs-fake-async';
 import { By } from '@angular/platform-browser';
 import { DOCUMENT_PROVIDERS } from './document-ref.service';
 import { StageComponent } from '../carousel/stage/stage.component';
-import { BrowserAnimationsModule } from '../../../../../node_modules/@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from "@angular/router/testing";
 
 describe('CarouselService', () => {
   let carouselService: CarouselService;
@@ -74,7 +75,10 @@ describe('CarouselService in context of TestComponent', () => {
   beforeEach(
     async(() => {
       TestBed.configureTestingModule({
-        imports: [ BrowserAnimationsModule],
+        imports: [
+          NoopAnimationsModule,
+          RouterTestingModule.withRoutes([{path: '', component: TestComponent}])
+        ],
         declarations: [
           CarouselComponent,
           TestComponent,

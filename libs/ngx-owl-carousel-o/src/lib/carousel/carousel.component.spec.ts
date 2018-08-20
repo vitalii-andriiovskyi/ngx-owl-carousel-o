@@ -18,8 +18,10 @@ import { DOCUMENT_PROVIDERS } from '../services/document-ref.service';
 import 'zone.js/dist/zone-patch-rxjs-fake-async';
 import { StageComponent } from './stage/stage.component';
 import { LazyLoadService } from '../services/lazyload.service';
-import { BrowserAnimationsModule } from '../../../../../node_modules/@angular/platform-browser/animations';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRouteStub } from '../../testing/activated-route-stub';
+import {RouterTestingModule} from "@angular/router/testing";
 // import 'zone.js/lib/rxjs/rxjs-fake-async';
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>
@@ -49,8 +51,13 @@ describe('CarouselComponent', () => {
 
   beforeEach(
     async(() => {
+      const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+
       TestBed.configureTestingModule({
-        imports: [ NoopAnimationsModule],
+        imports: [
+          NoopAnimationsModule,
+          RouterTestingModule.withRoutes([{path: '', component: TestComponent}])
+        ],
         declarations: [
           CarouselComponent,
           TestComponent,
@@ -64,7 +71,9 @@ describe('CarouselComponent', () => {
           NavigationService,
           AutoplayService,
           DOCUMENT_PROVIDERS,
-          LazyLoadService
+          LazyLoadService,
+          // { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+          // { provide: Router, useValue: routerSpy }
         ]
       });
     })
