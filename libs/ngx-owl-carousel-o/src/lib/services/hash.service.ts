@@ -16,6 +16,11 @@ export class HashService implements OnDestroy {
    */
   routeSubscription: Subscription;
 
+  /**
+   * Current url fragment (hash)
+   */
+  currentHashFragment: string;
+
   constructor(private carouselService: CarouselService,
               private route: ActivatedRoute,
               private router: Router) {
@@ -64,7 +69,10 @@ export class HashService implements OnDestroy {
    */
   listenToRoute() {
     this.routeSubscription = this.route.fragment.subscribe(
-      fragment => this.rewind(fragment)
+      fragment => {
+        this.currentHashFragment = fragment;
+        this.rewind(fragment);
+      }
     )
   }
 }
