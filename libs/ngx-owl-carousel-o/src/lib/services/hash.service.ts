@@ -37,11 +37,25 @@ export class HashService implements OnDestroy {
    */
   spyDataStreams() {
     const initializedCarousel$: Observable<string> = this.carouselService.getInitializedState().pipe(
-      tap(data => {})
+      tap(data => {
+        if (this.carouselService.settings.startPosition as string === 'URLHash') {
+					this.listenToRoute();
+				}
+      })
     );
 
     const changedSettings$: Observable<any> = this.carouselService.getChangedState().pipe(
-      tap(data => {})
+      tap(data => {
+        if (data.property.name === 'position') {
+          const newCurSlide = this.carouselService.relative(this.carouselService.current());
+          const newCurFragment = this.carouselService.slidesData[newCurSlide].hashFragment;
+
+          if (!newCurFragment || newCurFragment === this.currentHashFragment) {
+						return;
+					}
+          this.router.navigate(['./'], {fragment: newCurFragment, relativeTo: this.route});
+        }
+      })
     );
 
     const hashFragment$: Observable<string | any> = merge(initializedCarousel$, changedSettings$);
