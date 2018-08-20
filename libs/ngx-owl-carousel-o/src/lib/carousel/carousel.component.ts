@@ -31,6 +31,7 @@ import { AutoplayService } from '../services/autoplay.service';
 import { LazyLoadService } from '../services/lazyload.service';
 import { AnimateService } from '../services/animate.service';
 import { AutoHeightService } from '../services/autoheight.service';
+import { HashService } from '../services/hash.service';
 
 let nextId = 0;
 
@@ -125,7 +126,8 @@ export class SlidesOutputData {
     CarouselService,
     LazyLoadService,
     AnimateService,
-    AutoHeightService
+    AutoHeightService,
+    HashService
   ]
 })
 export class CarouselComponent
