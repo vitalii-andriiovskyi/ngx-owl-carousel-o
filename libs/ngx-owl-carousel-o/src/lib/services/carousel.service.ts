@@ -744,7 +744,7 @@ export class CarouselService {
 			this._mergers.push(mergeN);
 		});
 
-		this.reset(this._isNumeric(this.settings.startPosition) ? this.settings.startPosition : 0);
+		this.reset(this._isNumeric(this.settings.startPosition) ? +this.settings.startPosition : 0);
 
 		this.invalidate('items');
 		this.refresh();
@@ -1460,7 +1460,8 @@ export class CarouselService {
 				dataMerge: slide.dataMerge,
 				width: 0,
 				isCloned: false,
-				load: loadMap ? loadMap.get(slide.id) : false
+				load: loadMap ? loadMap.get(slide.id) : false,
+				hashFragment: slide.dataHash
 			};
 		});
 	}
