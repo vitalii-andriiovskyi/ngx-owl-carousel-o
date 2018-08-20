@@ -54,6 +54,9 @@ export class OwlCarouselOConfig implements OwlOptions {
 
   // defaults to AutoHeight
   autoHeight = false;
+
+  // defaults to Hash
+  URLhashListener = false;
   constructor() { }
 }
 
@@ -114,5 +117,8 @@ export class OwlOptionsMockedTypes {
 
   // defaults to AutoHeight
   autoHeight = 'boolean';
+
+  // defaults to Hash
+  URLhashListener = "boolean";
   constructor() { }
 }

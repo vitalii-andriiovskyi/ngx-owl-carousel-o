@@ -172,5 +172,11 @@ export class OwlOptions {
    * Enables changing carousel according to the biggest height of ass active slides providing slides have different height
    */
   autoHeight?: boolean;
+
+  // HASH *****************************************
+  /**
+   * Enables listening to url hash (fragment) changes
+   */
+  URLhashListener?: boolean;
   constructor() { }
 }
