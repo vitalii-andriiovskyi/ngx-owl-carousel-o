@@ -88,4 +88,9 @@ export class SlideModel {
    * State for defining the height of slide.It's values could be 'full' and 'nulled'. 'Full' sets css-height to 'auto', 'nulled' sets height to '0'.
    */
   heightState?: string;
+
+  /**
+   * Hash (fragment) of url which corresponds to slide
+   */
+  hashFragment?: string;
 }
