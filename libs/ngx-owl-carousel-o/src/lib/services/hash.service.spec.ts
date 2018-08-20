@@ -1,11 +1,18 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { RouterTestingModule } from "@angular/router/testing";
 
 import { HashService } from './hash.service';
+import { Component } from '@angular/core';
+import { CarouselService } from './carousel.service';
 
 describe('HashService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [HashService]
+      imports: [
+        RouterTestingModule.withRoutes([{path: '', component: TestComponent}])
+      ],
+      declarations: [ TestComponent ],
+      providers: [HashService, CarouselService]
     });
   });
 
@@ -13,3 +20,12 @@ describe('HashService', () => {
     expect(service).toBeTruthy();
   }));
 });
+
+@Component({
+  selector: 'test-dom',
+  template: ''
+})
+class TestComponent {
+  options: any = {};
+  constructor() {}
+}
