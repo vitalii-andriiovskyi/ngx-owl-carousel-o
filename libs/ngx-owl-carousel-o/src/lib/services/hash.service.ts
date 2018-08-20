@@ -38,7 +38,7 @@ export class HashService implements OnDestroy {
   spyDataStreams() {
     const initializedCarousel$: Observable<string> = this.carouselService.getInitializedState().pipe(
       tap(data => {
-        if (this.carouselService.settings.startPosition as string === 'URLHash') {
+        if (this.carouselService.settings.startPosition === 'URLHash') {
 					this.listenToRoute();
 				}
       })
@@ -46,13 +46,13 @@ export class HashService implements OnDestroy {
 
     const changedSettings$: Observable<any> = this.carouselService.getChangedState().pipe(
       tap(data => {
-        if (data.property.name === 'position') {
-          const newCurSlide = this.carouselService.relative(this.carouselService.current());
+        if (this.carouselService.settings.URLhashListener && data.property.name === 'position') {
+          const newCurSlide = this.carouselService.current();
           const newCurFragment = this.carouselService.slidesData[newCurSlide].hashFragment;
 
           if (!newCurFragment || newCurFragment === this.currentHashFragment) {
 						return;
-					}
+          }
           this.router.navigate(['./'], {fragment: newCurFragment, relativeTo: this.route});
         }
       })
@@ -69,7 +69,7 @@ export class HashService implements OnDestroy {
    * @param fragment fragment of url
    */
   rewind(fragment: string) {
-    const position = this.carouselService.slidesData.findIndex(slide => slide.hashFragment === fragment);
+    const position = this.carouselService.slidesData.findIndex(slide => slide.hashFragment === fragment && slide.isCloned === false);
 
     if (position === -1 || position === this.carouselService.current()) {
       return;
