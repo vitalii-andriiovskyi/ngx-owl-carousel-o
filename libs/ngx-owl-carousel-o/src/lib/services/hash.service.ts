@@ -11,6 +11,11 @@ export class HashService implements OnDestroy {
    */
   hashSubscription: Subscription;
 
+  /**
+   * Subscription to ActivatedRoute.fragment
+   */
+  routeSubscription: Subscription;
+
   constructor(private carouselService: CarouselService,
               private route: ActivatedRoute,
               private router: Router) {
@@ -19,6 +24,7 @@ export class HashService implements OnDestroy {
 
   ngOnDestroy() {
     this.hashSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 
   /**
@@ -51,5 +57,14 @@ export class HashService implements OnDestroy {
     }
 
 		this.carouselService.to(this.carouselService.relative(position), false);
+  }
+
+  /**
+   * Initiate listening to ActivatedRoute.fragment
+   */
+  listenToRoute() {
+    this.routeSubscription = this.route.fragment.subscribe(
+      fragment => this.rewind(fragment)
+    )
   }
 }
