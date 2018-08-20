@@ -81,7 +81,7 @@ export class OwlOptionsMockedTypes {
   mergeFit = 'boolean';
   autoWidth = 'boolean';
 
-  startPosition = 'number';
+  startPosition = 'number|string';
   rtl = 'boolean';
 
   smartSpeed = 'number';

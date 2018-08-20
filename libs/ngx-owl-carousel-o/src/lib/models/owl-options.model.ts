@@ -61,7 +61,7 @@ export class OwlOptions {
   /**
    * Start position
    */
-  startPosition?: number;
+  startPosition?: number | string;
   /**
    * Change direction from Right to left
    */
