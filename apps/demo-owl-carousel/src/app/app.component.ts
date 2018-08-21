@@ -9,6 +9,7 @@ export class CarouselData {
   width?: number;
   dotContent?: string;
   src?: string;
+  dataHash?: string;
 }
 
 @Component({
@@ -18,11 +19,11 @@ export class CarouselData {
 })
 export class AppComponent implements OnInit {
   carouselData: CarouselData[] = [
-    { text: 'Slide 1', src: 'assets/images/350x450&text=1.png', dataMerge: 2, width: 300, dotContent: 'text1'},
-    { text: 'Slide 2', src: 'assets/images/350x650&text=2.png', dataMerge: 1, width: 500, dotContent: 'text2'},
-    { text: 'Slide 3', src: 'assets/images/350x250&text=3-fallback.png', dataMerge: 3, dotContent: 'text3'},
-    { text: 'Slide 4', src: 'assets/images/350x250&text=4.png', width: 450, dotContent: 'text4'},
-    { text: 'Slide 5', src: 'assets/images/350x250&text=5.png', dataMerge: 2, dotContent: 'text5'},
+    { text: 'Slide 1', src: 'assets/images/350x450&text=1.png', dataMerge: 2, width: 300, dotContent: 'text1', dataHash: 'one'},
+    { text: 'Slide 2', src: 'assets/images/350x650&text=2.png', dataMerge: 1, width: 500, dotContent: 'text2', dataHash: 'two'},
+    { text: 'Slide 3', src: 'assets/images/350x250&text=3-fallback.png', dataMerge: 3, dotContent: 'text3', dataHash: 'three'},
+    { text: 'Slide 4', src: 'assets/images/350x250&text=4.png', width: 450, dotContent: 'text4', dataHash: 'four'},
+    { text: 'Slide 5', src: 'assets/images/350x250&text=5.png', dataMerge: 2, dotContent: 'text5', dataHash: 'five'},
     // { text: 'Slide 6', dotContent: 'text5'},
     // { text: 'Slide 7', dotContent: 'text5'},
     // { text: 'Slide 8', dotContent: 'text5'},
@@ -37,16 +38,17 @@ export class AppComponent implements OnInit {
   customOptions: any = {
     // autoWidth: true,
     loop: true,
-    lazyLoad: true,
-    lazyLoadEager: 1,
+    // autoHeight: true,
+    // lazyLoad: true,
+    // lazyLoadEager: 1,
     // animateOut: 'slideOutDown',
-    animateIn: 'flipInX',
+    // animateIn: 'flipInX',
     // items: '10',
     // margin: 10,
     // slideBy: 'page',
     // merge: true,
     // autoplay: true,
-    autoplayTimeout: 5000,
+    // autoplayTimeout: 5000,
     // autoplayHoverPause: true,
 		// autoplaySpeed: 4000,
     // dotsSpeed: 500,
@@ -59,7 +61,9 @@ export class AppComponent implements OnInit {
     // fluidSpeed: 499,
     // dragEndSpeed: 350,
     // dotsEach: 4,
-    // center: true,
+    center: true,
+    URLhashListener:true,
+    startPosition: 'URLHash',
     // rewind: true,
     // rtl: true,
     // startPosition: 1,
@@ -72,7 +76,7 @@ export class AppComponent implements OnInit {
         items: 2
       },
       900: {
-        items: 1
+        items: 3
       }
     },
     // stagePadding: 40,

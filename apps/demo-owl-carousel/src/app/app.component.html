@@ -1,29 +1,23 @@
-<div style="text-align:center">
-  <h1>Owl Carousel</h1>
-</div>
-<div class="container">
-  <div class="row">
-    <div class="col-10 offset-1">
-      
-      <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)">
-        
-        <ng-container *ngFor="let item of carouselData">
-          <ng-template carouselSlide [width]="item.width">
-            <div class="slider">
-              <p>{{item.text}}</p>
-              <!-- <img class="owl-lazy" [src]="[item.src]" alt=""> -->
-                
-            </div><!-- /.carousel-item team-member -->
-          </ng-template>
-        </ng-container>
-        
-      </owl-carousel-o>
+<nav class="navbar navbar-light bg-light navbar-expand-lg justify-content-start">
+    <div class="col-lg-2">
+      <a class="navbar-brand" [routerLink]="''"><b>Owl Carousel</b></a>
+    </div>
+    <div class="col-lg-8">
+      <ul class="navbar-nav justify-content-center">
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="'/home'" >Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <!-- <a class="nav-link" [routerLink]="/present">Present</a> -->
+        </li>
+      </ul>
 
-    </div> <!-- /.col-sm-10 col-sm-offset-1 -->
-    
-  </div> <!-- row -->
-  
-</div> <!-- /.container -->
+    </div>
+</nav>
 
 <!-- <owl-carousel-libdemo-present></owl-carousel-libdemo-present> -->
 <!-- <owl-carousel-libdemo-home></owl-carousel-libdemo-home> -->
+
+<!-- <a class="btn btn-primary" type="button" [routerLink]="'/home'" fragment="some-section">Home Second</a> -->
+<router-outlet></router-outlet>
+
