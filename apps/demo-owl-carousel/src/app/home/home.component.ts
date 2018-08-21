@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CarouselData } from '../app.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { tap } from 'node_modules/rxjs/operators';
+import { SlidesOutputData } from 'ngx-owl-carousel-o';
 @Component({
   selector: 'owl-carousel-libdemo-home',
   templateUrl: './home.component.html',
@@ -64,6 +65,9 @@ export class HomeComponent implements OnInit {
 
   currentUrl: any;
   fragment: string;
+
+  activeSlides: SlidesOutputData;
+
   constructor(private route: ActivatedRoute,
               private router: Router) { }
 
@@ -89,5 +93,9 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/' + this.currentUrl], {fragment: 'second-section'});
   }
 
-
+  getPassedData(data: any) {
+    this.activeSlides = data;
+    console.log('HomeComponent');
+    console.log(this.activeSlides);
+  }
 }
