@@ -59,7 +59,7 @@ export declare class OwlOptions {
     /**
      * Start position
      */
-    startPosition?: number;
+    startPosition?: number | string;
     /**
      * Change direction from Right to left
      */
@@ -132,5 +132,29 @@ export declare class OwlOptions {
      * Autoplay speed
      */
     autoplaySpeed?: number | boolean;
+    /**
+     * Lazy loading of slides with images
+     */
+    lazyLoad?: boolean;
+    /**
+     * Indicates how many items (slides with images) to the right (and left, when loop is true) will be pre-loaded
+     */
+    lazyLoadEager?: number;
+    /**
+     * Class for CSS3 animation out.
+     */
+    animateOut?: string | boolean;
+    /**
+     * Class for CSS3 animation in.
+     */
+    animateIn?: string | boolean;
+    /**
+     * Enables changing carousel according to the biggest height of ass active slides providing slides have different height
+     */
+    autoHeight?: boolean;
+    /**
+     * Enables listening to url hash (fragment) changes
+     */
+    URLhashListener?: boolean;
     constructor();
 }

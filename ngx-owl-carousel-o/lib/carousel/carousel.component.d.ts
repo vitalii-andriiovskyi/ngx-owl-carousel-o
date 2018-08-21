@@ -4,11 +4,15 @@ import { ResizeService } from '../services/resize.service';
 import { CarouselService } from '../services/carousel.service';
 import { StageData } from "../models/stage-data.model";
 import { OwlDOMData } from "../models/owlDOM-data.model";
-import { SliderModel } from '../models/slider.model';
+import { SlideModel } from '../models/slide.model';
 import { OwlOptions } from '../models/owl-options.model';
 import { NavData, DotsData } from '../models/navigation-data.models';
 import { NavigationService } from '../services/navigation.service';
 import { AutoplayService } from '../services/autoplay.service';
+import { LazyLoadService } from '../services/lazyload.service';
+import { AnimateService } from '../services/animate.service';
+import { AutoHeightService } from '../services/autoheight.service';
+import { HashService } from '../services/hash.service';
 export declare class CarouselSlideDirective {
     tplRef: TemplateRef<any>;
     /**
@@ -30,6 +34,10 @@ export declare class CarouselSlideDirective {
      * Inner content of dot for certain slide; can be html-markup
      */
     dotContent: string;
+    /**
+     * Hash (fragment) of url which corresponds to certain slide
+     */
+    dataHash: string;
     constructor(tplRef: TemplateRef<any>);
     /**
        * Determines if the input is a Number or something that can be coerced to a Number
@@ -43,7 +51,7 @@ export declare class CarouselSlideDirective {
  */
 export declare class SlidesOutputData {
     startPosition?: number;
-    slides?: SliderModel[];
+    slides?: SlideModel[];
 }
 export declare class CarouselComponent implements OnInit, AfterContentChecked, AfterContentInit, OnDestroy {
     private el;
@@ -51,6 +59,10 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
     private carouselService;
     private navigationService;
     private autoplayService;
+    private lazyLoadService;
+    private animateService;
+    private autoHeightService;
+    private hashService;
     slides: QueryList<CarouselSlideDirective>;
     translated: EventEmitter<SlidesOutputData>;
     /**
@@ -76,7 +88,7 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
     /**
      *  Data of every slide
      */
-    slidesData: SliderModel[];
+    slidesData: SlideModel[];
     /**
        * Data of navigation block
        */
@@ -109,7 +121,7 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      * Observable for merging all Observables and creating one subscription
      */
     private _carouselMerge$;
-    constructor(el: ElementRef, resizeService: ResizeService, carouselService: CarouselService, navigationService: NavigationService, autoplayService: AutoplayService);
+    constructor(el: ElementRef, resizeService: ResizeService, carouselService: CarouselService, navigationService: NavigationService, autoplayService: AutoplayService, lazyLoadService: LazyLoadService, animateService: AnimateService, autoHeightService: AutoHeightService, hashService: HashService);
     ngOnInit(): void;
     ngAfterContentChecked(): void;
     ngAfterContentInit(): void;

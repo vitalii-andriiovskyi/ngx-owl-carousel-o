@@ -28,10 +28,16 @@ export declare class OwlCarouselOConfig implements OwlOptions {
     dotsEach: boolean;
     dotsData: boolean;
     dotsSpeed: boolean;
-    autoplay: false;
-    autoplayTimeout: 5000;
-    autoplayHoverPause: false;
-    autoplaySpeed: false;
+    autoplay: boolean;
+    autoplayTimeout: number;
+    autoplayHoverPause: boolean;
+    autoplaySpeed: boolean;
+    lazyLoad: boolean;
+    lazyLoadEager: number;
+    animateOut: boolean;
+    animateIn: boolean;
+    autoHeight: boolean;
+    URLhashListener: boolean;
     constructor();
 }
 export declare class OwlOptionsMockedTypes {
@@ -63,9 +69,15 @@ export declare class OwlOptionsMockedTypes {
     dotsEach: string;
     dotsData: string;
     dotsSpeed: string;
-    autoplay: 'boolean';
-    autoplayTimeout: 'number';
-    autoplayHoverPause: 'boolean';
-    autoplaySpeed: 'number|boolean';
+    autoplay: string;
+    autoplayTimeout: string;
+    autoplayHoverPause: string;
+    autoplaySpeed: string;
+    lazyLoad: string;
+    lazyLoadEager: string;
+    animateOut: string;
+    animateIn: string;
+    autoHeight: string;
+    URLhashListener: string;
     constructor();
 }

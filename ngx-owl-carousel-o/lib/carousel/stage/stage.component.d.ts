@@ -1,12 +1,14 @@
 import { NgZone, ElementRef, Renderer2, OnInit, OnDestroy } from '@angular/core';
 import { CarouselService } from '../../services/carousel.service';
 import { StageData } from '../../models/stage-data.model';
-import { SliderModel } from '../../models/slider.model';
+import { SlideModel } from '../../models/slide.model';
+import { AnimateService } from '../../services/animate.service';
 export declare class StageComponent implements OnInit, OnDestroy {
     private zone;
     private el;
     private renderer;
     private carouselService;
+    private animateService;
     /**
      * Object with settings which make carousel draggable by touch or mouse
      */
@@ -21,7 +23,7 @@ export declare class StageComponent implements OnInit, OnDestroy {
     /**
      *  Data of every slide
      */
-    slidesData: SliderModel[];
+    slidesData: SlideModel[];
     /**
      * Function wich will be returned after attaching listener to 'mousemove' event
      */
@@ -62,7 +64,7 @@ export declare class StageComponent implements OnInit, OnDestroy {
      * Subsctiption to _oneDragMove$ Subject
      */
     private _oneMoveSubsription;
-    constructor(zone: NgZone, el: ElementRef, renderer: Renderer2, carouselService: CarouselService);
+    constructor(zone: NgZone, el: ElementRef, renderer: Renderer2, carouselService: CarouselService, animateService: AnimateService);
     onMouseDown(event: any): void;
     onTouchStart(event: any): void;
     onTouchCancel(event: any): void;
@@ -159,4 +161,13 @@ export declare class StageComponent implements OnInit, OnDestroy {
      * Handler for transitioend event
      */
     onTransitionEnd(): void;
+    /**
+       * Enters into a 'dragging' state
+       */
+    private _enterDragging();
+    /**
+     * Handles the end of 'animationend' event
+     * @param id Id of slides
+     */
+    clear(id: any): void;
 }

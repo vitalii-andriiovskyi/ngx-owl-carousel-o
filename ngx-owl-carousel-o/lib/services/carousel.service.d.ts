@@ -1,7 +1,7 @@
 import { StageData } from '../models/stage-data.model';
 import { OwlDOMData } from '../models/owlDOM-data.model';
 import { CarouselSlideDirective } from '../carousel/carousel.module';
-import { SliderModel } from '../models/slider.model';
+import { SlideModel } from '../models/slide.model';
 import { Observable } from 'rxjs';
 import { OwlOptions } from '../models/owl-options.model';
 import { NavData, DotsData } from '../models/navigation-data.models';
@@ -44,7 +44,7 @@ export declare class Coords {
 export declare class CarouselCurrentData {
     owlDOMData: OwlDOMData;
     stageData: StageData;
-    slidesData: SliderModel[];
+    slidesData: SlideModel[];
     navData: NavData;
     dotsData: DotsData;
 }
@@ -66,6 +66,10 @@ export declare class CarouselService {
    */
     private _changedSettingsCarousel$;
     /**
+   * Subject for notification when the carousel starts translating or moving
+   */
+    private _translateCarousel$;
+    /**
    * Subject for notification when the carousel stopped translating or moving
    */
     private _translatedCarousel$;
@@ -86,6 +90,14 @@ export declare class CarouselService {
    */
     private _refreshedCarousel$;
     /**
+   * Subject for notification when the dragging of carousel starts
+   */
+    private _dragCarousel$;
+    /**
+   * Subject for notification when the dragging of carousel is ended
+   */
+    private _draggedCarousel$;
+    /**
      * Current settings for the carousel.
      */
     settings: OwlOptions;
@@ -100,7 +112,7 @@ export declare class CarouselService {
     /**
      *  Data of every slide
      */
-    slidesData: SliderModel[];
+    slidesData: SlideModel[];
     /**
      * Data of navigation block
      */
@@ -157,6 +169,10 @@ export declare class CarouselService {
    */
     private _breakpoint;
     /**
+     * Prefix for id of cloned slides
+     */
+    clonedIdPrefix: string;
+    /**
      * Current options set by the caller including defaults.
      */
     _options: OwlOptions;
@@ -196,6 +212,11 @@ export declare class CarouselService {
      */
     getChangedState(): Observable<any>;
     /**
+     * Makes _translateCarousel$ Subject become Observable
+     * @returns Observable of _translateCarousel$ Subject
+     */
+    getTranslateState(): Observable<string>;
+    /**
      * Makes _translatedCarousel$ Subject become Observable
      * @returns Observable of _translatedCarousel$ Subject
      */
@@ -220,6 +241,16 @@ export declare class CarouselService {
      * @returns Observable of _refreshedCarousel$ Subject
      */
     getRefreshedState(): Observable<string>;
+    /**
+     * Makes _dragCarousel$ Subject become Observable
+     * @returns Observable of _dragCarousel$ Subject
+     */
+    getDragState(): Observable<string>;
+    /**
+     * Makes _draggedCarousel$ Subject become Observable
+     * @returns Observable of _draggedCarousel$ Subject
+     */
+    getDraggedState(): Observable<string>;
     /**
      * Setups custom options expanding default options
      * @param options custom options
@@ -299,6 +330,10 @@ export declare class CarouselService {
        * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
        */
     prepareDragging(event: any): Coords;
+    /**
+     * Enters into a 'dragging' state
+     */
+    enterDragging(): void;
     /**
        * Defines new coords for .owl-stage while dragging it
        * @todo #261
@@ -453,6 +488,14 @@ export declare class CarouselService {
      */
     private _defineSlidesData();
     /**
+     * Sets current classes for slide
+     * @param slide Slide of carousel
+     * @returns object with names of css-classes which are keys and true/false values
+     */
+    setCurSlideClasses(slide: SlideModel): {
+        [key: string]: boolean;
+    };
+    /**
        * Operators to calculate right-to-left and left-to-right.
        * @param a - The left side operand.
        * @param o - The operator.
@@ -520,6 +563,12 @@ export declare class CarouselService {
      * @returns An indication if the input is a Number or can be coerced to a Number, or String
      */
     private _isNumberOrString(value);
+    /**
+     * Determines whether value is number or string type
+     * @param value The input to be tested
+     * @returns An indication if the input is a Number or can be coerced to a Number, or String
+     */
+    private _isStringOrBoolean(value);
     /**
        * Gets the difference of two vectors.
        * @todo #261

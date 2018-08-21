@@ -1,7 +1,8 @@
+import { OnDestroy } from '@angular/core';
 import { NavData, DotsData } from '../models/navigation-data.models';
 import { CarouselService } from './carousel.service';
 import { Subscription } from 'rxjs';
-export declare class NavigationService {
+export declare class NavigationService implements OnDestroy {
     private carouselService;
     /**
      * Subscrioption to merge Observable  from CarouselService
@@ -24,6 +25,7 @@ export declare class NavigationService {
      */
     protected _dotsData: DotsData;
     constructor(carouselService: CarouselService);
+    ngOnDestroy(): void;
     /**
      * Defines Observables which service must observe
      */

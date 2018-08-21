@@ -8,10 +8,10 @@
     "owl-carousel",
     "components"
   ],
-  "author": "someone",
+  "author": "Vitalii Andriiovskyi",
   "repository": {
     "type": "git",
-    "url": "..."
+    "url": "https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o"
   },
   "license": "MIT",
   "private": true,
