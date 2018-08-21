@@ -1,6 +1,7 @@
 import { async, ComponentFixture, discardPeriodicTasks, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import {Location} from "@angular/common";
 
 import {
   CarouselComponent,
@@ -19,9 +20,9 @@ import 'zone.js/dist/zone-patch-rxjs-fake-async';
 import { StageComponent } from './stage/stage.component';
 import { LazyLoadService } from '../services/lazyload.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ActivatedRouteStub } from '../../testing/activated-route-stub';
-import {RouterTestingModule} from "@angular/router/testing";
+import { Router } from '@angular/router';
+import { RouterTestingModule } from "@angular/router/testing";
+
 // import 'zone.js/lib/rxjs/rxjs-fake-async';
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>
@@ -49,18 +50,20 @@ describe('CarouselComponent', () => {
   let deSlides: DebugElement[];
   let deActiveSlides: DebugElement[];
 
+  let location: Location;
+  let router: Router;
+
   beforeEach(
     async(() => {
-      const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
-
       TestBed.configureTestingModule({
         imports: [
           NoopAnimationsModule,
-          RouterTestingModule.withRoutes([{path: '', component: TestComponent}])
+          RouterTestingModule.withRoutes([{path: '', component: TestComponent}, {path: 'owl-car', component: HashComponent}])
         ],
         declarations: [
           CarouselComponent,
           TestComponent,
+          HashComponent,
           CarouselSlideDirective,
           StageComponent
         ],
@@ -72,8 +75,6 @@ describe('CarouselComponent', () => {
           AutoplayService,
           DOCUMENT_PROVIDERS,
           LazyLoadService,
-          // { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-          // { provide: Router, useValue: routerSpy }
         ]
       });
     })
@@ -3078,6 +3079,140 @@ describe('CarouselComponent', () => {
     expect(getComputedStyle(deStage.nativeElement).height).toBe('130px', '130px height');
   }));
 
+  it('should set centered slide according to \'fragment\' of url after init component with carousel [options]="{center: true, URLhashListener:true, startPosition: \'URLHash\', nav: true}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <router-outlet></router-outlet>
+    `;
+    fixtureHost = createTestComponent(html);
+    router = fixtureHost.debugElement.injector.get(Router);
+    location = fixtureHost.debugElement.injector.get(Location);
+    tick();
+
+    fixtureHost.detectChanges();
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    expect(deCarouselComponent).toBeFalsy('owl-carousel doesn\'t exists');
+
+    router.navigate(['owl-car'], {fragment: 'two'});
+    tick();
+    fixtureHost.detectChanges();
+
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    let deActiveCenteredSlide: HTMLElement = deCarouselComponent.query(By.css('.owl-item.active.center')).nativeElement;
+    // Slide 1 is centered at the beginning. Then ActivatedRoute passes 'fragment' of url and carousel changes centered slide according to 'fragment'
+    expect(deActiveCenteredSlide.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(location.path()).toBe('/owl-car#two', '/owl-car#two');
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveCenteredSlide = deCarouselComponent.query(By.css('.owl-item.active.center')).nativeElement;
+    expect(deActiveCenteredSlide.innerHTML).toContain('Slide 2', 'Slide 2');
+
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deDots[2].triggerEventHandler('click', null);
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveCenteredSlide = deCarouselComponent.query(By.css('.owl-item.active.center')).nativeElement;
+    expect(deActiveCenteredSlide.innerHTML).toContain('Slide 3', 'Slide 3');
+    expect(location.path()).toBe('/owl-car#three', '/owl-car#three');
+
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deDots[0].triggerEventHandler('click', null);
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveCenteredSlide = deCarouselComponent.query(By.css('.owl-item.active.center')).nativeElement;
+    expect(deActiveCenteredSlide.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(location.path()).toBe('/owl-car#one', '/owl-car#one');
+
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons[1].triggerEventHandler('click', null);
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveCenteredSlide = deCarouselComponent.query(By.css('.owl-item.active.center')).nativeElement;
+    expect(deActiveCenteredSlide.innerHTML).toContain('Slide 2', 'Slide 2');
+    expect(location.path()).toBe('/owl-car#two', '/owl-car#two');
+
+    router.navigate(['owl-car'], {fragment: 'five'});
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveCenteredSlide = deCarouselComponent.query(By.css('.owl-item.active.center')).nativeElement;
+    expect(deActiveCenteredSlide.innerHTML).toContain('Slide 5', 'Slide 5');
+    expect(location.path()).toBe('/owl-car#five', '/owl-car#five');
+  }));
+
+
+  it('shouldn\'t set centered slide according to \'fragment\' of url after init component with carousel [options]="{center: true, URLhashListener:true, nav: true}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <router-outlet></router-outlet>
+    `;
+    const htmlHashComp = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{center: true, URLhashListener:true, nav: true}">
+          <ng-template carouselSlide id="owl-slide-1" dataHash="one"><div style="height: 100px">Slide 1</div></ng-template>
+          <ng-template carouselSlide id="owl-slide-2" dataHash="two"><div style="height: 40px">Slide 2</div></ng-template>
+          <ng-template carouselSlide id="owl-slide-3" dataHash="three"><div style="height: 80px">Slide 3</div></ng-template>
+          <ng-template carouselSlide id="owl-slide-4" dataHash="four"><div style="height: 130px">Slide 4</div></ng-template>
+          <ng-template carouselSlide id="owl-slide-5" dataHash="five"><div style="height: 90px">Slide 5</div></ng-template>
+        </owl-carousel-o>
+      </div>
+    `
+    TestBed.overrideComponent(HashComponent, {set: {template: htmlHashComp}});
+    fixtureHost = createTestComponent(html);
+
+    router = fixtureHost.debugElement.injector.get(Router);
+    location = fixtureHost.debugElement.injector.get(Location);
+    tick();
+
+    fixtureHost.detectChanges();
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    expect(deCarouselComponent).toBeFalsy('owl-carousel doesn\'t exists');
+
+    router.navigate(['owl-car'], {fragment: 'two'});
+    tick();
+    fixtureHost.detectChanges();
+
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    let deActiveCenteredSlide: HTMLElement = deCarouselComponent.query(By.css('.owl-item.active.center')).nativeElement;
+    // Slide 1 is centered at the beginning. Then ActivatedRoute passes 'fragment' of url and carousel changes centered slide according to 'fragment'
+    expect(deActiveCenteredSlide.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(location.path()).toBe('/owl-car#two', '/owl-car#two');
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveCenteredSlide = deCarouselComponent.query(By.css('.owl-item.active.center')).nativeElement;
+    expect(deActiveCenteredSlide.innerHTML).toContain('Slide 1', 'Slide 1');
+
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deDots[2].triggerEventHandler('click', null);
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveCenteredSlide = deCarouselComponent.query(By.css('.owl-item.active.center')).nativeElement;
+    expect(deActiveCenteredSlide.innerHTML).toContain('Slide 3', 'Slide 3');
+    expect(location.path()).toBe('/owl-car#three', '/owl-car#three');
+
+    router.navigate(['owl-car'], {fragment: 'five'});
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveCenteredSlide = deCarouselComponent.query(By.css('.owl-item.active.center')).nativeElement;
+    expect(deActiveCenteredSlide.innerHTML).toContain('Slide 5', 'Slide 5');
+    expect(location.path()).toBe('/owl-car#five', '/owl-car#five');
+  }));
+
   // the ending of tests
 });
 
@@ -3092,6 +3227,24 @@ class TestComponent {
   getPassedData(data: any) {
     this.translatedData = data;
   }
+}
+
+@Component({
+  selector: 'owl-hash',
+  template:  `
+    <div style="width: 920px; margin: auto">
+      <owl-carousel-o [options]="{center: true, URLhashListener:true, startPosition: 'URLHash', nav: true}">
+        <ng-template carouselSlide id="owl-slide-1" dataHash="one"><div style="height: 100px">Slide 1</div></ng-template>
+        <ng-template carouselSlide id="owl-slide-2" dataHash="two"><div style="height: 40px">Slide 2</div></ng-template>
+        <ng-template carouselSlide id="owl-slide-3" dataHash="three"><div style="height: 80px">Slide 3</div></ng-template>
+        <ng-template carouselSlide id="owl-slide-4" dataHash="four"><div style="height: 130px">Slide 4</div></ng-template>
+        <ng-template carouselSlide id="owl-slide-5" dataHash="five"><div style="height: 90px">Slide 5</div></ng-template>
+      </owl-carousel-o>
+    </div>
+  `
+})
+class HashComponent {
+  constructor() {}
 }
 
 function triggerMouseEvent(node: any, eventType: string, evtObj: any) {
