@@ -6,11 +6,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { SubHomeComponent } from './subhome/subhome.component';
 
 const appRoutes: Routes = [
-  { path: 'home',
+  {
+    path: 'home',
     component: HomeComponent,
     children: [
       { path: 'subhome', component: SubHomeComponent}
-    ] },
+    ]
+  },
+  { path: '',
+    redirectTo: '/home',
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({
