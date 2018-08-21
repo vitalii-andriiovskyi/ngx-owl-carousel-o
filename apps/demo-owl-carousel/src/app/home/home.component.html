@@ -1,7 +1,7 @@
-<hr><br>
 <div style="text-align:center">
-  <h1>Owl Carousel - HomeModule</h1>
+  <h1 class="my-5">Owl Carousel - HomeModule</h1>
 </div>
+
 <div class="container">
   <div class="row">
     <div class="col-10 offset-1">
@@ -24,3 +24,10 @@
   </div> <!-- row -->
   
 </div> <!-- /.container -->
+
+<br>
+<div class="d-flex justify-content-center mt-3 mb-5">
+  <a [routerLink]="['/home', 'subhome']" fragment="two" class="btn btn-success">Go to SubHomeComponent with carousel with url navigation</a>
+</div>
+
+<router-outlet></router-outlet>

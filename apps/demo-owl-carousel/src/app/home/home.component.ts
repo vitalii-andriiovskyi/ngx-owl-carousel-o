@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CarouselData } from '../app.component';
-
+import { Router, ActivatedRoute } from '@angular/router';
+import { tap } from 'node_modules/rxjs/operators';
 @Component({
   selector: 'owl-carousel-libdemo-home',
   templateUrl: './home.component.html',
@@ -19,10 +20,6 @@ export class HomeComponent implements OnInit {
     // { text: 'Slide 9', dotContent: 'text5'},
     // { text: 'Slide 10', dotContent: 'text5'},
   ];
-  title = 'owl-carousel-libdemo';
-  owlNext = '&rarr;';
-  owlPrev = '&larr;';
-
 
   customOptions: any = {
     autoWidth: true,
@@ -64,9 +61,33 @@ export class HomeComponent implements OnInit {
     // stagePadding: 40,
     nav: true
   }
-  constructor() { }
 
-  ngOnInit() { }
+  currentUrl: any;
+  fragment: string;
+  constructor(private route: ActivatedRoute,
+              private router: Router) { }
+
+  ngOnInit() {
+    // console.log(this.route.pathFromRoot);
+    this.route.fragment.pipe(
+      tap(fragment => this.fragment = fragment),
+      // tap(() => console.log(this.fragment))
+    ).subscribe(
+      () => {}
+    );
+
+    this.route.url.pipe(
+      tap(url => this.currentUrl = url[0].path),
+      // tap(() => console.log(this.currentUrl))
+    ).subscribe(
+      () => {}
+    )
+
+  }
+
+  moveToSS() {
+    this.router.navigate(['/' + this.currentUrl], {fragment: 'second-section'});
+  }
 
 
 }
