@@ -8,13 +8,7 @@ import { HomeModule } from './home/home.module';
 import { PresentModule } from './present/present.module';
 import { RouterModule, Routes } from '@angular/router';
 
-const appRoutes: Routes = [
-  // { path: 'home', component: CrisisListComponent },
-  // { path: '',
-  //   redirectTo: '/home',
-  //   pathMatch: 'full'
-  // }
-];
+const appRoutes: Routes = [];
 
 @NgModule({
   declarations: [AppComponent],
