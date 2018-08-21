@@ -56,8 +56,14 @@ export class AutoHeightService implements OnDestroy{
    * Updates the prop 'heightState' of slides
    */
   update() {
-    const start = this.carouselService.current(),
-			end = start + this.carouselService.settings.items;
+    const items = this.carouselService.settings.items
+    let start = this.carouselService.current(),
+        end = start + items;
+
+    if (this.carouselService.settings.center) {
+      start = items % 2 === 1 ? start - (items - 1) / 2 : start - items / 2;
+      end = items % 2 === 1 ? start + items : start + items + 1;
+    }
 
     this.carouselService.slidesData.forEach((slide, i) => {
       slide.heightState = (i >= start && i < end) ? 'full' : 'nulled';
