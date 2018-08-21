@@ -1,27 +1,28 @@
-<br><hr><br>
-<div style="text-align:center">
-  <h1>Owl Carousel - PresentModule</h1>
-</div>
-<div class="container">
-  <div class="row">
-    <div class="col-10 offset-1">
-      
-      <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)">
+<section>
+  <header class="text-center my-4">
+    <h1>Owl Carousel - PresentModule</h1>
+    <p>"autoplay=<span class="text-success">true</span>", "loop=<span class="text-success">true</span>"</p>
+  </header>
+  <div class="container">
+    <div class="row">
+      <div class="col-10 offset-1">
         
-        <ng-container *ngFor="let item of carouselData">
-          <ng-template carouselSlide [width]="item.width">
-            <div class="slider">
-              <p>{{item.text}}</p>
-                
-            </div><!-- /.carousel-item team-member -->
-          </ng-template>
-        </ng-container>
-        
-      </owl-carousel-o>
-
-    </div> <!-- /.col-sm-10 col-sm-offset-1 -->
-    
-  </div> <!-- row -->
+        <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)">
+          
+          <ng-container *ngFor="let item of carouselData">
+            <ng-template carouselSlide [width]="item.width">
+              <div class="slider">
+                <p>{{item.text}}</p>
+                  
+              </div><!-- /.carousel-item team-member -->
+            </ng-template>
+          </ng-container>
+          
+        </owl-carousel-o>
   
-</div> <!-- /.container -->
-<br>
+      </div> <!-- /.col-sm-10 col-sm-offset-1 -->
+      
+    </div> <!-- row -->
+    
+  </div> <!-- /.container -->
+</section>

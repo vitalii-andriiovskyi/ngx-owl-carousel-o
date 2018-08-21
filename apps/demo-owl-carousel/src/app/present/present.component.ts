@@ -31,7 +31,7 @@ export class PresentComponent implements OnInit {
     // margin: 10,
     // slideBy: 'page',
     // merge: true,
-    // autoplay: true,
+    autoplay: true,
     autoplayTimeout: 3000,
     // autoplayHoverPause: true,
 		autoplaySpeed: 2000,
