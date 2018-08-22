@@ -48,30 +48,15 @@
 				margin: $dot-margin;
 				background: $dot-background;
 				display: block;
-				backface-visibility: visible;
+				-webkit-backface-visibility: visible;
 				transition: opacity 200ms ease;
-				border-radius: 30px;
+				border-radius: $dot-rounded;
 			}
 
 			&.active,
 			&:hover {
 				span {
 					background: $dot-background-active;
-				}
-			}
-		}
-		.owl-dot-text {
-			span {
-				width: auto;
-				height: auto;
-				background: none;
-				border-radius: 0;
-			}
-			&.active {
-				background-color: transparent;
-				span {
-					background-color: transparent;
-					color: $dot-background;
 				}
 			}
 		}
