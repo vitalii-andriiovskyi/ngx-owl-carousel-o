@@ -10,11 +10,11 @@ import { SlidesOutputData } from 'ngx-owl-carousel-o';
 })
 export class HomeComponent implements OnInit {
   carouselData: CarouselData[] = [
-    { text: 'Slide 1 HM', dataMerge: 2, width: 300, dotContent: 'text1'},
-    { text: 'Slide 2 HM', dataMerge: 1, width: 500, dotContent: 'text2'},
-    { text: 'Slide 3 HM', dataMerge: 3, dotContent: 'text3'},
-    { text: 'Slide 4 HM', width: 450, dotContent: 'text4'},
-    { text: 'Slide 5 HM', dataMerge: 2, dotContent: 'text5'},
+    { id: 'slide-1', text: 'Slide 1 HM', dataMerge: 2, width: 300, dotContent: 'text1'},
+    { id: 'slide-2', text: 'Slide 2 HM', dataMerge: 1, width: 500, dotContent: 'text2'},
+    { id: 'slide-3', text: 'Slide 3 HM', dataMerge: 3, dotContent: 'text3'},
+    { id: 'slide-4', text: 'Slide 4 HM', width: 450, dotContent: 'text4'},
+    { id: 'slide-5', text: 'Slide 5 HM', dataMerge: 2, dotContent: 'text5'},
     // { text: 'Slide 6', dotContent: 'text5'},
     // { text: 'Slide 7', dotContent: 'text5'},
     // { text: 'Slide 8', dotContent: 'text5'},
