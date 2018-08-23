@@ -3,9 +3,10 @@
 **ngx-owl-carousel-o** is built for Angular 6. It doesn't use jQuery. 
 
 ##### Table of Contents
-- [Get started](#getting-started)
+- [Get started](#get-started)
 - [Options](#options)
 - [Events](#events)
+- [Plugins](#plugins)
 - [Tips](#tips)
 
 ## Get started
@@ -112,9 +113,10 @@
 **NOTE**: **ngx-owl-carousel-o** has different usage of some of them. Mostly this is about options which require setting `data-` attributes to DOM-elements and which set names of classes and tags in HTML-markup. Usage of such options is explained below.
 
 Options which require setting `data-` attributes are:
-- [merge](#merge)
-- [dotsData](#dotsData)
-- [URLhashListener](#URLhashListener)
+* [merge](#merge)
+* [dotsData](#dotsdata)
+* [URLhashListener](#urlhashlistener)
+* [lazyLoad](#lazyload)
 
 
 ### merge
@@ -199,6 +201,7 @@ and
 </owl-carousel-o>
 ```
 
+
 ### dotsData
 It's needed to set it to `true` and to set content in dot for every slide using `@Input` property `dotContent`:
 ```html
@@ -248,6 +251,9 @@ When option  `URLhashListener=true`, it's required to define the `@Input` prop `
 where `hashObj` is object with hashes (fragments) of url. `hashObj` could be array. Defining the kind of data store is up to developer. 
 
 **NOTE**: `HashService` uses services `ActivatedRoute` and `Router` for making it possible to navigate by hashes (fragments). The `CarouselModule` imports `RouterModule.forChild()`. And if `RouterModule.forRoot(routes)` isn't imported in main module of application, the problem will appear. `HashService` **won't work**. Thus it's needed to import `RouterModule.forRoot(routes)` in main module of application even in case of creating simple app for testing the work of library.
+
+### lazyLoad
+There's no need to set to `<img>` attributes `data-src` and  `data-src-retina` because Angular has its ows realization for `<img>`. In Angular it's better to write `<img [src]="someURL">`. `src` is data-binding, which means Angular will set the value of native attribute `src` of `<img>` after loading its core code. Original Owl Carousel reads `data-src` and set native attribute `src` at needed moment. Of course **ngx-owl-carousel-o** has additional tricks for lazy loading images (better to say content of slides) put into slides. 
 
 ## Events
 There's only one event `translated`.
@@ -334,6 +340,21 @@ import { SlidesOutputData } from 'ngx-owl-carousel-o';
 
 `activeSlides` is property of `CarouselHolderComponent`, which stores data about active slides
 
+
+## Plugins
+**ngx-owl-carousel-o** has almoast all plugins written on page [Owl Carousel Plugin API](https://owlcarousel2.github.io/OwlCarousel2/docs/dev-plugin-api.html) except **VideoPlugin**. 
+
+### VideoPlugin
+This plugin isn't realized. In order to play video use special packages (e.g. [`ngx-embed-video`](https://www.npmjs.com/package/ngx-embed-video); [`ngx-youtube-player`](https://www.npmjs.com/package/ngx-youtube-player) and so on).
+
+It's better to create special component with video and put it in `<ng-template carouselSlide>....</ng-template>`
+Example:
+```html
+<ng-template carouselSlide [dotContent]="content">
+    <custom-video [id]="videoId" [url]="someURL" (someEvent)="handlerOfSomeEvent"></custom-video>
+</ng-template>
+```
+`id` and `url` are data-binding properties, defined in component wich contains `<owl-carousel-o>`.
 
 ## Tips
 
