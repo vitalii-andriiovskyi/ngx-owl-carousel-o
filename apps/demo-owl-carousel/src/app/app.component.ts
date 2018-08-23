@@ -4,6 +4,7 @@ import { MapOperator } from 'rxjs/internal/operators/map';
 // import { ResizeService, WINDOW } from 'ngx-owl-carousel-o';
 
 export class CarouselData {
+  id?: string;
   text: string;
   dataMerge?: number;
   width?: number;
