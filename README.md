@@ -2,6 +2,10 @@
 
 **ngx-owl-carousel-o** is built for Angular 6. It doesn't use jQuery. 
 
+- [Options](#options).
+- [Events](#events).
+- [Tips](#tips).
+
 ## Getting started
 
 1. Run `yarn add ngx-owl-carousel-o` or `npm install ngx-owl-carousel-o`.
@@ -138,7 +142,7 @@ Option `fallbackEasing` doesn't work because it's being used by `$.animate()`. T
 Option `info` doesn't work.
 
 ### navElement, navContainer, navContainerClass, navClass, dotContainer, dotClass and dotsClass
-These options don't work. In order to change tags and classes of navigation follow advice from p. 2. <---????
+These options don't work.
 
 | Option                                | Explanation                                                                              |
 | -------------------------------       | -----------------------------------------------------------------------------------------|
@@ -242,3 +246,90 @@ When option  `URLhashListener=true`, it's required to define the `@Input` prop `
 where `hashObj` is object with hashes (fragments) of url. `hashObj` could be array. Defining the kind of data store is up to you. 
 
 **NOTE**: `HashService` which enables navigation by hashes (fragments) uses services `ActivatedRoute` and `Router`. The `CarouselModule` imports `RouterModule.forChild()`. And if `RouterModule.forRoot(routes)` isn't imported in main module of application, the problem will appear. `HashService` **won't work**. Thus it's needed to import `RouterModule.forRoot(routes)` in main module of application even though you wonna create simple app for testing the work of library.
+
+## Events
+There's only one event `translated`.
+
+### translated
+It fires after carousel finishes translating and expose object of type `SlidesOutputData`.
+```typecript
+class SlidesOutputData {
+  startPosition?: number;
+  slides?: SlideModel[];
+};
+```
+`startPosition` is the position of first slide with class `.active`
+`slides` is array with data of each active slide. Data of each active slide are:
+```typescript
+{
+  id: string; // id of slide
+  width: number; // width of slide
+  marginL: number; // margin-left of slide
+  marginR: number; // margin-right of slide
+  center: boolean; // whether slide is centered (has .center)
+} 
+```
+
+Code for subscribing to this event:
+`CarouselHolderComponent`
+```typescript
+import { SlidesOutputData } from 'ngx-owl-carousel-o';
+@Component({
+      selector: '....',
+      template: `
+      <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)">
+
+        <ng-container *ngFor="let slide of slidesStore">
+          <ng-template carouselSlide [id]="slide.id">
+            <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
+          </ng-template>
+        </ng-container>
+
+      </owl-carousel-o>
+    `
+    })
+    export class CarouselHolderComponent {
+      customOption: any = {
+        loop: true,
+        mouseDrag: false,
+        touchDrag: false,
+        pullDrag: false,
+        dots: false,
+        navSpeed: 700,
+        navText: ['', ''],
+        responsive: {
+          0: {
+            items: 1
+          },
+          400: {
+            items: 2
+          },
+          740: {
+            items: 3
+          },
+          940: {
+            items: 4
+          }
+        },
+        nav: true
+      }
+
+      activeSlide: SlidesOutputData;
+
+      slidesStore: any[];
+      constructor() {}
+
+      getPassedData(data: SlidesOutputData) {
+        this.activeSlides = data;
+        console.log(this.activeSlides);
+      }
+    }
+```
+`(translated)="getPassedData($event)"` is subscribing or attaching to event;
+
+`getPassedData(data: SlidesOutputData)` is method which takes data about active slides.
+
+`activeSlide` is property of `CarouselHolderComponent`, which stores data about active slides
+
+
+## Tips
