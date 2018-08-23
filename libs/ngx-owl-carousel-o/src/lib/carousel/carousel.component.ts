@@ -322,6 +322,14 @@ export class CarouselComponent
   }
 
   /**
+   * rewinds carousel to slide with needed id
+   * @param id fragment of url
+   */
+  to(id: string) {
+    this.navigationService.toSlideById(id);
+  }
+
+  /**
    * Gathers and prepares data intended for passing to the user by means of firing event translatedCarousel
    */
   gatherTranslatedData() {
