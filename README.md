@@ -1,4 +1,4 @@
-# Owl Carousel
+# ngx-owl-carousel-o
 
 **ngx-owl-carousel-o** is built for Angular 6. It doesn't use jQuery. 
 
@@ -420,3 +420,34 @@ First argument of `it()` explains how carousel should work with options written 
 Variable `html` contains html-markup of carousel for `[options]="{nav: true, autoHeight: true}"`. 
 
 However most of html-markups set to `html` are simplified. There's no property `customOptions`, directive `*ngFor` and `<ng-container>` as it is in examples above.
+
+### Managing by carousel from outside its markup
+It's possible to move carousel left/right and to needed slide from different places of html-page. Real example is provided in [home.component.html](./apps/demo-owl-carousel/src/home/home.component.html)
+
+```html
+<owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" #owlCar>
+        
+  <ng-container *ngFor="let item of carouselData">
+    <ng-template carouselSlide [id]="item.id" [width]="item.width">
+      <div class="slider">
+        <p>{{item.text}}</p>
+          
+      </div><!-- /.carousel-item team-member -->
+    </ng-template>
+  </ng-container>
+  
+</owl-carousel-o>
+
+<p>
+  <a class="btn btn-success" (click)="owlCar.prev()">prev</a> <==>
+  <a class="btn btn-success" (click)="owlCar.next()">next</a>
+</p>
+<p><a class="btn btn-success" (click)="owlCar.to('slide-3')">move to 3th slide</a></p>
+```
+
+Key points are:
+1. Defining in `<owl-carousel-o>` template reference variable `#owlCar`
+2. Using it in handlers for events. In code above we see `(click)="owlCar.prev()"`, `(click)="owlCar.next()"` and `(click)="owlCar.to('slide-3')"`. `#owlCar` could be passed as argument of hanlder: `(click)="handler(owlCar)`.
+   - `owlCar.prev()` shows previous slide.
+   - `owlCar.next()` shows next slide.
+   - `owlCar.to('slide-3')` moves carousel to slide with needed `id`. In this case `slide-3` is needed slide. **NOTE**: it's needed to supply own ids to slides. Code above has `[id]="item.id"`. This is the way of supplying `ids`.
