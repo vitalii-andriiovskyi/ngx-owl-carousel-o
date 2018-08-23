@@ -6,10 +6,10 @@
   <div class="row">
     <div class="col-10 offset-1">
       
-      <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)">
+      <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" #owlCar>
         
         <ng-container *ngFor="let item of carouselData">
-          <ng-template carouselSlide [width]="item.width">
+          <ng-template carouselSlide [id]="item.id" [width]="item.width">
             <div class="slider">
               <p>{{item.text}}</p>
                 
@@ -24,7 +24,11 @@
   </div> <!-- row -->
   
 </div> <!-- /.container -->
-
+<p>
+  <a class="btn btn-success" (click)="owlCar.prev()">prev</a> <==>
+  <a class="btn btn-success" (click)="owlCar.next()">next</a>
+</p>
+<p><a class="btn btn-success" (click)="owlCar.to('slide-3')">move to 3th slide</a></p>
 <br>
 <div class="d-flex justify-content-center mt-3 mb-5">
   <a [routerLink]="['/home', 'subhome']" fragment="two" class="btn btn-success">Go to SubHomeComponent with carousel with url navigation</a>
