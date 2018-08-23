@@ -326,10 +326,11 @@ export class CarouselComponent
    */
   gatherTranslatedData() {
     let startPosition: number;
+    const clonedIdPrefix = this.carouselService.clonedIdPrefix;
     const activeSlides: SlideModel[] = this.slidesData
       .filter(slide => slide.isActive === true)
       .map(slide => {
-        const id = slide.id.indexOf('cloned-') >= 0 ? slide.id.slice(7) : slide.id;
+        const id = slide.id.indexOf(clonedIdPrefix) >= 0 ? slide.id.slice(clonedIdPrefix.length) : slide.id;
         return {
           id: id,
           width: slide.width,
