@@ -315,4 +315,18 @@ export class NavigationService implements OnDestroy {
     this.to(index, this.carouselService.settings.dotsSpeed);
   }
 
+  /**
+   * rewinds carousel to slide with needed id
+   * @param id id of slide
+   */
+  toSlideById(id: string) {
+    const position = this.carouselService.slidesData.findIndex(slide => slide.id === id && slide.isCloned === false);
+
+    if (position === -1 || position === this.carouselService.current()) {
+      return;
+    }
+
+		this.carouselService.to(this.carouselService.relative(position), false);
+  }
+
 }
