@@ -6,7 +6,10 @@
   "keywords": [
     "angular",
     "owl-carousel",
-    "components"
+    "components",
+    "responsive",
+    "carousel",
+    "owlcarousel"
   ],
   "author": "Vitalii Andriiovskyi",
   "repository": {
