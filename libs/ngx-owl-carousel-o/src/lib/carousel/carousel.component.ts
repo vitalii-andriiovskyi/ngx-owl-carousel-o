@@ -347,7 +347,7 @@ export class CarouselComponent
           center: slide.isCentered
         }
       });
-    startPosition = this.slides.toArray().findIndex(slide => slide.id === activeSlides[0].id);
+    startPosition = this.carouselService.relative(this.carouselService.current());
     this.slidesOutputData = {
       startPosition: startPosition,
       slides: activeSlides
