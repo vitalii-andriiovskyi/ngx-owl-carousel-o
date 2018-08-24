@@ -1,5 +1,8 @@
 import { OwlOptions } from "../models/owl-options.model";
 
+/**
+ * Defaults value of options
+ */
 export class OwlCarouselOConfig implements OwlOptions {
   items = 3;
   loop = false;
@@ -60,9 +63,11 @@ export class OwlCarouselOConfig implements OwlOptions {
   constructor() { }
 }
 
-// although we can't read types from OwlOptions in javascript as props have value undefined and types are used for validating inputs
-// class below is copy of OwlOptions but its all props have string value showing certain type;
-// this is class is being used just in method _validateOptions of CarouselService;
+/**
+ * we can't read types from OwlOptions in javascript because of props have undefined value and types of those props are used for validating inputs
+ * class below is copy of OwlOptions but its all props have string value showing certain type;
+ * this is class is being used just in method _validateOptions() of CarouselService;
+ */
 export class OwlOptionsMockedTypes {
   items = 'number';
   loop = 'boolean';
