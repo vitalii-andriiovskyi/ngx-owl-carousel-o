@@ -2521,6 +2521,7 @@ describe('CarouselComponent', () => {
     fixtureHost = createTestComponent(html);
     testComponent = fixtureHost.componentInstance;
     deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    const stageComponent: DebugElement = fixtureHost.debugElement.query(By.css('owl-stage'));
     tick();
 
     fixtureHost.detectChanges();
@@ -2531,23 +2532,31 @@ describe('CarouselComponent', () => {
     deDots[1].triggerEventHandler('click', null);
     tick();
     fixtureHost.detectChanges();
+    tick();
+
+    // Code can't wait the end of transition. Thus transition is finished manually.
+    stageComponent.componentInstance.onTransitionEnd();
+
+    expect(testComponent.translatedData.startPosition).toBe(2, '2 startPosition');
+    expect(testComponent.translatedData.slides[0].id).toBe('owl-slide-3', 'owl-slide-3');
 
     deDots[0].triggerEventHandler('click', null);
     tick();
+    fixtureHost.detectChanges();
 
-    // 2 tests below should be before the 2 lines above. But in that case output data don't get updates. In real app everything works fine.
-    // This is because the long time of transition. Making one more else click finishes current transition, calls handler for ontransionend and starts new transition
-    expect(testComponent.translatedData.startPosition).toBe(2, '2 startPosition');
-    expect(testComponent.translatedData.slides[0].id).toBe('owl-slide-3', 'owl-slide-3');
+    // Code can't wait the end of transition. Thus transition is finished manually.
+    stageComponent.componentInstance.onTransitionEnd();
+
+    expect(testComponent.translatedData.startPosition).toBe(0, '0 startPosition');
+    expect(testComponent.translatedData.slides[0].id).toBe('owl-slide-1', 'owl-slide-1');
 
     deNavButtons[1].triggerEventHandler('click', null);
     tick();
     fixtureHost.detectChanges();
 
-    deNavButtons[1].triggerEventHandler('click', null);
-    tick();
-    // 2 tests below should be before the 2 lines above. But in that case output data don't get updates. In real app everything works fine.
-    // This is because the long time of transition. Making one more else click finishes current transition, calls handler for ontransionend and starts new transition
+    // Code can't wait the end of transition. Thus transition is finished manually.
+    stageComponent.componentInstance.onTransitionEnd();
+
     expect(testComponent.translatedData.startPosition).toBe(1, '1 startPosition');
     expect(testComponent.translatedData.slides[0].id).toBe('owl-slide-2', 'owl-slide-2');
   }));
@@ -2574,6 +2583,7 @@ describe('CarouselComponent', () => {
     fixtureHost = createTestComponent(html);
     testComponent = fixtureHost.componentInstance;
     deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    const stageComponent: DebugElement = fixtureHost.debugElement.query(By.css('owl-stage'));
     tick();
 
     fixtureHost.detectChanges();
@@ -2583,16 +2593,11 @@ describe('CarouselComponent', () => {
     tick();
     fixtureHost.detectChanges();
 
-    deNavButtons[1].triggerEventHandler('click', null);
-    tick();
+    // Code can't wait the end of transition. Thus transition is finished manually.
+    stageComponent.componentInstance.onTransitionEnd();
 
-    // 2 tests below should be before the 2 lines above. But in that case output data don't get updates. In real app everything works fine.
-    // This is because the long time of transition. Making one more else click finishes current transition, calls handler for ontransionend and starts new transition
     expect(testComponent.translatedData.startPosition).toBe(9, '9 startPosition');
     expect(testComponent.translatedData.slides[0].id).toBe('owl-slide-10', 'owl-slide-10');
-
-    deNavButtons[1].triggerEventHandler('click', null);
-    tick();
   }));
 
   it('should autoplay carousel [options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 1000, autoplaySpeed: 500}"', fakeAsync(() => {
