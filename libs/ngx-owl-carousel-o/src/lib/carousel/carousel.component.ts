@@ -10,7 +10,6 @@ import {
   ContentChildren,
   TemplateRef,
   ElementRef,
-  Inject,
   AfterContentInit,
   EventEmitter
 } from '@angular/core';
@@ -18,7 +17,6 @@ import {
 import { Subscription, Observable, merge } from 'rxjs';
 
 import { ResizeService } from '../services/resize.service';
-import { WINDOW } from '../services/window-ref.service';
 import { tap, delay, filter } from 'rxjs/operators';
 import { CarouselService, CarouselCurrentData } from '../services/carousel.service';
 import { StageData } from "../models/stage-data.model";
