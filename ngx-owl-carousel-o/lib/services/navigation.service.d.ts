@@ -87,4 +87,9 @@ export declare class NavigationService implements OnDestroy {
      * Moves carousel after user's clicking on any dots
      */
     moveByDot(dotId: string): void;
+    /**
+     * rewinds carousel to slide with needed id
+     * @param id id of slide
+     */
+    toSlideById(id: string): void;
 }

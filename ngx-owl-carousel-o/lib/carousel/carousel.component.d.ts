@@ -152,6 +152,11 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      */
     moveByDot(dotId: string): void;
     /**
+     * rewinds carousel to slide with needed id
+     * @param id fragment of url
+     */
+    to(id: string): void;
+    /**
      * Gathers and prepares data intended for passing to the user by means of firing event translatedCarousel
      */
     gatherTranslatedData(): void;
