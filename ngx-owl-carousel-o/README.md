@@ -358,11 +358,11 @@ Example:
 
 ## Tips
 
-### Real example to help
+### Real examples to help
 Some examples of using this lib are displayed in app **demo-owl-carousel**:
-- Carousel with `autoWidth=true`. [Typescript part](./apps/demo-owl-carousel/src/app/home/home.component.ts) and [html part](./apps/demo-owl-carousel/src/app/home/home.component.html)
-- Carousel with `autoHeight=true`, `URLhashListener=true` and `startPosition='URLHash'`. [Typescript part](./apps/demo-owl-carousel/src/app/home/subhome/subhome.component.ts) and [html part](./apps/demo-owl-carousel/src/app/home/subhome/subhome.component.html)
-- Carousel with `autoplay=true`. [Typescript part](./apps/demo-owl-carousel/src/app/present/present.component.ts) and [html part](./apps/demo-owl-carousel/src/app/present/present.component.html)
+- Carousel with `autoWidth=true`. [Typescript part](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/develop/apps/demo-owl-carousel/src/app/home/home.component.ts) and [html part](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/develop/apps/demo-owl-carousel/src/app/home/home.component.html)
+- Carousel with `autoHeight=true`, `URLhashListener=true` and `startPosition='URLHash'`. [Typescript part](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/develop/apps/demo-owl-carousel/src/app/home/subhome/subhome.component.ts) and [html part](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/develop/apps/demo-owl-carousel/src/app/home/subhome/subhome.component.html)
+- Carousel with `autoplay=true`. [Typescript part](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/develop/apps/demo-owl-carousel/src/app/present/present.component.ts) and [html part](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/develop/apps/demo-owl-carousel/src/app/present/present.component.html)
 
 **NOTE**:  **demo-owl-carousel** could be downloaded and started on own PC. Steps for achieving that are:
 - `git clone https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o.git`;
@@ -371,7 +371,7 @@ Some examples of using this lib are displayed in app **demo-owl-carousel**:
 
 
 ### Tests to help
-Also lots of variants of using carousel are in files [carousel.component.spec.ts](./libs/ngx-owl-carousel-o/src/lib/carousel/carousel.component.spec.ts) and [stage.component.spec.ts](./libs/ngx-owl-carousel-o/src/lib/carousel/stage/stage.component.spec.ts).
+Also lots of variants of using carousel are in files [carousel.component.spec.ts](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/develop/libs/ngx-owl-carousel-o/src/lib/carousel/carousel.component.spec.ts) and [stage.component.spec.ts](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/develop/libs/ngx-owl-carousel-o/src/lib/carousel/stage/stage.component.spec.ts).
 
 They contain tests of library. These tests include many functions `it()`. Example: 
 ```typescript
@@ -422,7 +422,7 @@ Variable `html` contains html-markup of carousel for `[options]="{nav: true, aut
 However most of html-markups set to `html` are simplified. There's no property `customOptions`, directive `*ngFor` and `<ng-container>` as it is in examples above.
 
 ### Managing by carousel from outside its markup
-It's possible to move carousel left/right and to needed slide from different places of html-page. Real example is provided in [home.component.html](./apps/demo-owl-carousel/src/app/home/home.component.html)
+It's possible to move carousel left/right and to needed slide from different places of html-page. Real example is provided in [home.component.html](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/develop/apps/demo-owl-carousel/src/app/home/home.component.html)
 
 ```html
 <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" #owlCar>
@@ -453,4 +453,4 @@ Key points are:
    - `owlCar.to('slide-3')` moves carousel to slide with needed `id`. In this case `slide-3` is needed slide. **NOTE**: it's needed to supply own ids to slides. Code above has `[id]="item.id"`. This is the way of supplying `ids`.
 
 ## License
-This project is licensed under the terms of the [MIT License](LICENSE).
+This project is licensed under the terms of the [MIT License](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/develop/LICENSE).
