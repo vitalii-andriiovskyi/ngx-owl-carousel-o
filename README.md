@@ -453,4 +453,4 @@ Key points are:
    - `owlCar.to('slide-3')` moves carousel to slide with needed `id`. In this case `slide-3` is needed slide. **NOTE**: it's needed to supply own ids to slides. Code above has `[id]="item.id"`. This is the way of supplying `ids`.
 
 ## License
-This project is licensed under the terms of the [MIT License](LICENSE).
+This project is licensed under the terms of the [MIT License](./LICENSE).
