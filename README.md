@@ -360,9 +360,9 @@ Example:
 
 ### Real example to help
 Some examples of using this lib are displayed in app **demo-owl-carousel**:
-- Carousel with `autoWidth=true`. [Typescript part](./apps/demo-owl-carousel/src/home/home.component.ts) and [html part](./apps/demo-owl-carousel/src/home/home.component.html)
-- Carousel with `autoHeight=true`, `URLhashListener=true` and `startPosition='URLHash'`. [Typescript part](./apps/demo-owl-carousel/src/home/subhome/subhome.component.ts) and [html part](./apps/demo-owl-carousel/src/home/subhome/subhome.component.html)
-- Carousel with `autoplay=true`. [Typescript part](./apps/demo-owl-carousel/src/present/present.component.ts) and [html part](./apps/demo-owl-carousel/src/present/present.component.html)
+- Carousel with `autoWidth=true`. [Typescript part](./apps/demo-owl-carousel/src/app/home/home.component.ts) and [html part](./apps/demo-owl-carousel/src/app/home/home.component.html)
+- Carousel with `autoHeight=true`, `URLhashListener=true` and `startPosition='URLHash'`. [Typescript part](./apps/demo-owl-carousel/src/app/home/subhome/subhome.component.ts) and [html part](./apps/demo-owl-carousel/src/app/home/subhome/subhome.component.html)
+- Carousel with `autoplay=true`. [Typescript part](./apps/demo-owl-carousel/src/app/present/present.component.ts) and [html part](./apps/demo-owl-carousel/src/app/present/present.component.html)
 
 **NOTE**:  **demo-owl-carousel** could be downloaded and started on own PC. Steps for achieving that are:
 - `git clone https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o.git`;
@@ -422,7 +422,7 @@ Variable `html` contains html-markup of carousel for `[options]="{nav: true, aut
 However most of html-markups set to `html` are simplified. There's no property `customOptions`, directive `*ngFor` and `<ng-container>` as it is in examples above.
 
 ### Managing by carousel from outside its markup
-It's possible to move carousel left/right and to needed slide from different places of html-page. Real example is provided in [home.component.html](./apps/demo-owl-carousel/src/home/home.component.html)
+It's possible to move carousel left/right and to needed slide from different places of html-page. Real example is provided in [home.component.html](./apps/demo-owl-carousel/src/app/home/home.component.html)
 
 ```html
 <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" #owlCar>
