@@ -358,7 +358,7 @@ Example:
 
 ## Tips
 
-### Real example to help
+### Real examples to help
 Some examples of using this lib are displayed in app **demo-owl-carousel**:
 - Carousel with `autoWidth=true`. [Typescript part](./apps/demo-owl-carousel/src/app/home/home.component.ts) and [html part](./apps/demo-owl-carousel/src/app/home/home.component.html)
 - Carousel with `autoHeight=true`, `URLhashListener=true` and `startPosition='URLHash'`. [Typescript part](./apps/demo-owl-carousel/src/app/home/subhome/subhome.component.ts) and [html part](./apps/demo-owl-carousel/src/app/home/subhome/subhome.component.html)
