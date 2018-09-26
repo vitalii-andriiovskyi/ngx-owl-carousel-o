@@ -710,6 +710,10 @@ export class CarouselService {
 			return;
 		}
 
+		if (!viewport) {
+			this.settings.items = 1;
+		}
+
 		for (const key in overwrites) {
 			if (overwrites.hasOwnProperty(key)) {
 				if (+key <= viewport && +key > match) {
