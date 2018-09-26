@@ -712,6 +712,7 @@ export class CarouselService {
 
 		if (!viewport) {
 			this.settings.items = 1;
+			return;
 		}
 
 		for (const key in overwrites) {
