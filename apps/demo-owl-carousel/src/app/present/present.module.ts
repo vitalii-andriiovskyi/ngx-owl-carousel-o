@@ -5,7 +5,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
 import { RouterModule, Routes } from '@angular/router';
 
 const appRoutes: Routes = [
-  { path: 'present', component: PresentComponent }
+  { path: '', component: PresentComponent }
 ];
 
 @NgModule({

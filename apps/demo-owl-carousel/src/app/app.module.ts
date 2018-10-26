@@ -5,10 +5,14 @@ import { AppComponent } from './app.component';
 import { NxModule } from '@nrwl/nx';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { HomeModule } from './home/home.module';
-import { PresentModule } from './present/present.module';
+// import { PresentModule } from './present/present.module';
 import { RouterModule, Routes } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-const appRoutes: Routes = [];
+const appRoutes: Routes = [{
+  path: 'present',
+  loadChildren: './present/present.module#PresentModule',
+}];
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,7 +20,8 @@ const appRoutes: Routes = [];
     BrowserModule,
     NxModule.forRoot(),
     HomeModule,
-    PresentModule,
+    // PresentModule,
+    BrowserAnimationsModule,
     CarouselModule,
     RouterModule.forRoot(appRoutes)
   ],
