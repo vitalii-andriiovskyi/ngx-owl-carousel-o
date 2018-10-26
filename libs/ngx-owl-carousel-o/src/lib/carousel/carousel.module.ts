@@ -21,7 +21,10 @@ const routes: Routes = [];
 
 
 @NgModule({
-  imports: [CommonModule, BrowserAnimationsModule, RouterModule.forChild(routes)],
+  imports: [
+    CommonModule,
+    // BrowserAnimationsModule, // there's an issue with this import while using lazy loading of module consuming this library. I don't remove it because it could be needed during future enhancement of this lib.
+    RouterModule.forChild(routes)],
   declarations: [CarouselComponent, CarouselSlideDirective, StageComponent],
   exports: [CarouselComponent, CarouselSlideDirective],
   providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS]
