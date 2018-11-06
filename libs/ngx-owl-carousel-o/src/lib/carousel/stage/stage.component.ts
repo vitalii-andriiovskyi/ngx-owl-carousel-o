@@ -101,6 +101,8 @@ export class StageComponent implements OnInit, OnDestroy {
    */
   listenerOneClick: () => void;
 
+  listenerATag: () => void;
+
   /**
    * Object with data needed for dragging
    */
@@ -235,6 +237,9 @@ export class StageComponent implements OnInit, OnDestroy {
   private _oneMouseTouchMove(event) {
     if (!this._drag.active) return false;
     const delta = this._difference(this._drag.pointer, this._pointer(event));
+    if (this.listenerATag) {
+      this.listenerATag();
+    }
 
     this.listenerOneMouseMove();
     this.listenerOneTouchMove();
@@ -245,6 +250,8 @@ export class StageComponent implements OnInit, OnDestroy {
     }
     this._drag.moving = true;
 
+    this.blockClickAnchorInDragging(event);
+
     this.listenerMouseMove = this.renderer.listen(document, 'mousemove', this.bindOnDragMove);
     this.listenerTouchMove = this.renderer.listen(document, 'touchmove', this.bindOnDragMove);
 
@@ -253,6 +260,20 @@ export class StageComponent implements OnInit, OnDestroy {
     this._enterDragging();
     this._oneDragMove$.next(event);
     // this._sendChanges();
+  }
+
+  /**
+   * Attaches handler to HTMLAnchorElement for preventing click while carousel is being dragged
+   * @param event event object
+   */
+  private blockClickAnchorInDragging(event: any) {
+    let target: HTMLElement | null = event.target;
+    while (target && !(target instanceof HTMLAnchorElement)) {
+      target = target.parentElement;
+    }
+    if (target instanceof HTMLAnchorElement) {
+      this.listenerATag = this.renderer.listen(target, 'click', () => false);
+    }
   }
 
   	/**
@@ -368,11 +389,11 @@ export class StageComponent implements OnInit, OnDestroy {
 
   /**
 	 * Checks whether the carousel is in a specific state or not.
-	 * @param state The state to check.
+	 * @param specificState The state to check.
 	 * @returns The flag which indicates if the carousel is busy.
 	 */
-  private _is(state: string): boolean {
-    return this.carouselService.is(state);
+  private _is(specificState: string): boolean {
+    return this.carouselService.is(specificState);
   }
 
   /**
