@@ -1059,6 +1059,55 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     discardPeriodicTasks();
   }));
 
+  it('should notify about dragging carousel by mouse [options]="{nav: true}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{nav: true}" (dragging)="isDragging = $event">
+          <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+          <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+          <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+          <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+          <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    testComponent = fixtureHost.componentInstance;
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+
+    fixtureHost.detectChanges();
+    deStageWrapper = deCarouselComponent.query(By.css('owl-stage'));
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+
+    coords = findCoordsInElem(deSlides[0].nativeElement, getCoords(deSlides[0].nativeElement));
+
+    const stageParent: HTMLElement = deStageWrapper.nativeElement.children[0]; // css rules for this element are being changed outer of angular zone. Thus there's no need to call detectChanges();
+    expect(testComponent.isDragging).toBeFalsy('isDragging property is undefined');
+
+    // drag carousel to left hand-side
+    triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x -10, clientY: coords.y});
+    tick();
+
+    expect(testComponent.isDragging).toBeTruthy('isDragging property is true');
+
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x -40, clientY: coords.y});
+    tick();
+    expect(testComponent.isDragging).toBeTruthy('isDragging property is true');
+
+    triggerMouseEvent(document, 'mouseup', {clientX: coords.x-40, clientY: coords.y});
+    tick();
+    // Code can't wait the end of transition. Thus transition is finished manually.
+    deStageWrapper.componentInstance.onTransitionEnd();
+    fixtureHost.detectChanges();
+
+    expect(testComponent.isDragging).toBeFalsy('isDragging property is false');
+    discardPeriodicTasks();
+  }));
   // the ending of tests
 });
 
@@ -1070,6 +1119,7 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 class TestComponent {
   options: any = {};
   translatedData: SlidesOutputData;
+  isDragging: boolean;
   constructor() {}
   getPassedData(data: any) {
     this.translatedData = data;
