@@ -52,6 +52,7 @@ export declare class StageComponent implements OnInit, OnDestroy {
      * Function wich will be returned after attaching listener to 'click' event
      */
     listenerOneClick: () => void;
+    listenerATag: () => void;
     /**
      * Object with data needed for dragging
      */
@@ -96,6 +97,11 @@ export declare class StageComponent implements OnInit, OnDestroy {
      * @param event event objech of mouse or touch event
      */
     private _oneMouseTouchMove(event);
+    /**
+     * Attaches handler to HTMLAnchorElement for preventing click while carousel is being dragged
+     * @param event event object
+     */
+    private blockClickAnchorInDragging(event);
     /**
      * Handles the `touchmove` and `mousemove` events.
      * @todo #261
@@ -144,10 +150,10 @@ export declare class StageComponent implements OnInit, OnDestroy {
     private _difference(firstC, second);
     /**
        * Checks whether the carousel is in a specific state or not.
-       * @param state The state to check.
+       * @param specificState The state to check.
        * @returns The flag which indicates if the carousel is busy.
        */
-    private _is(state);
+    private _is(specificState);
     /**
     * Enters a state.
     * @param name The state name.

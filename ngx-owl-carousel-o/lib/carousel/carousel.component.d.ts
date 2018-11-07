@@ -65,6 +65,7 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
     private hashService;
     slides: QueryList<CarouselSlideDirective>;
     translated: EventEmitter<SlidesOutputData>;
+    dragging: EventEmitter<boolean>;
     /**
      * Width of carousel window (tag with class .owl-carousel), in wich we can see moving sliders
      */
@@ -117,6 +118,10 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      * Observable for catching the end of transition of carousel
      */
     private _translatedCarousel$;
+    /**
+     * Observable for catching the start of dragging of the carousel
+     */
+    private _draggingCarousel$;
     /**
      * Observable for merging all Observables and creating one subscription
      */
