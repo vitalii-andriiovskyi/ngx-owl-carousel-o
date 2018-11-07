@@ -273,6 +273,7 @@ export class CarouselComponent
         this.gatherTranslatedData();
         this.translated.emit(this.slidesOutputData);
         this.slidesOutputData = {};
+        this.dragging.emit(false);
       })
     );
 
