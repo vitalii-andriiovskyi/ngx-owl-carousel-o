@@ -4,7 +4,7 @@ import {Subscription} from 'rxjs';
 
 import {NavigationEnd, RouterEvent, Router, ActivatedRoute, UrlTree} from '@angular/router';
 
-type QueryParamsHandling = 'merge' | 'preserve' | '';
+export type QueryParamsHandling = 'merge' | 'preserve' | '';
 
 @Directive({selector: ':not(a)[owlRouterLink]'})
 export class OwlRouterLinkDirective {
