@@ -8,11 +8,19 @@ import { HomeModule } from './home/home.module';
 // import { PresentModule } from './present/present.module';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LinkModule } from './link/link.module';
+import { LinkComponent } from './link/link.component';
 
-const appRoutes: Routes = [{
-  path: 'present',
-  loadChildren: './present/present.module#PresentModule',
-}];
+const appRoutes: Routes = [
+  {
+    path: 'present',
+    loadChildren: './present/present.module#PresentModule',
+  },
+  {
+    path: 'link-comp',
+    component: LinkComponent
+  }
+];
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +31,8 @@ const appRoutes: Routes = [{
     // PresentModule,
     BrowserAnimationsModule,
     CarouselModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    LinkModule
   ],
   providers: [],
   bootstrap: [AppComponent]
