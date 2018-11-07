@@ -17,7 +17,7 @@ import {
 import { Subscription, Observable, merge } from 'rxjs';
 
 import { ResizeService } from '../services/resize.service';
-import { tap, delay, filter } from 'rxjs/operators';
+import { tap, delay, filter, switchMap, first } from 'rxjs/operators';
 import { CarouselService, CarouselCurrentData } from '../services/carousel.service';
 import { StageData } from "../models/stage-data.model";
 import { OwlDOMData } from "../models/owlDOM-data.model";
@@ -273,15 +273,22 @@ export class CarouselComponent
         this.gatherTranslatedData();
         this.translated.emit(this.slidesOutputData);
         this.slidesOutputData = {};
-        this.dragging.emit(false);
       })
     );
 
     this._draggingCarousel$ = this.carouselService.getDragState().pipe(
       tap(() => {
         this.dragging.emit(true);
-      })
-    )
+      }),
+      switchMap(
+        () => this.carouselService.getTranslatedState().pipe(
+          first(),
+          tap(() => {
+            this.dragging.emit(false);
+          })
+        )
+      )
+    );
 
     this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$);
     this._allObservSubscription = this._carouselMerge$.subscribe(() => {});
