@@ -8,7 +8,7 @@ export {
   CarouselModule,
   CarouselComponent,
   CarouselSlideDirective,
-  SlidesOutputData
+  SlidesOutputData, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective
 } from './carousel/carousel.module';
 export { ResizeService } from './services/resize.service';
 export {
