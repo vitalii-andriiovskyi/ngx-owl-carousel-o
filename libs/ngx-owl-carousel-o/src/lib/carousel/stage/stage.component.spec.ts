@@ -1,6 +1,6 @@
 import { StageComponent } from './stage.component';
 import { async, ComponentFixture, discardPeriodicTasks, TestBed, fakeAsync, tick } from '@angular/core/testing';
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, OnInit } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 import {
@@ -18,6 +18,8 @@ import { DOCUMENT_PROVIDERS } from '../../services/document-ref.service';
 import 'zone.js/dist/zone-patch-rxjs-fake-async';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from "@angular/router/testing";
+import { OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective } from '../owl-router-link.directive';
+import { Location } from '@angular/common';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -44,15 +46,21 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       TestBed.configureTestingModule({
         imports: [
           NoopAnimationsModule,
-          RouterTestingModule.withRoutes([{path: '', component: TestComponent}])
+          RouterTestingModule.withRoutes([
+            {path: '', component: TestComponent},
+            {path: 'any-component', component: AnyComponent}
+          ])
         ],
         declarations: [
           CarouselComponent,
           TestComponent,
           CarouselSlideDirective,
-          StageComponent
+          StageComponent,
+          OwlRouterLinkDirective,
+          OwlRouterLinkWithHrefDirective,
+          AnyComponent
         ],
-        providers: [ResizeService, WINDOW_PROVIDERS, CarouselService, NavigationService, AutoplayService, DOCUMENT_PROVIDERS]
+        providers: [ResizeService, WINDOW_PROVIDERS, CarouselService, NavigationService, AutoplayService, DOCUMENT_PROVIDERS],
       });
     })
   );
@@ -1108,6 +1116,82 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     expect(testComponent.isDragging).toBeFalsy('isDragging property is false');
     discardPeriodicTasks();
   }));
+
+  it('should stop \'owlRouterLink\' while dragging', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{nav: true}" (dragging)="isDragging = $event">
+          <ng-template carouselSlide id="owl-slide-1">
+            <div><a [owlRouterLink]="['/any-component']" [stopLink]="isDragging">Slide 1</a></div>
+          </ng-template>
+          <ng-template carouselSlide id="owl-slide-2">
+            <div><a [owlRouterLink]="['/any-component']" [stopLink]="isDragging">Slide 2</a></div>
+          </ng-template>
+          <ng-template carouselSlide id="owl-slide-3">
+            <div><a [owlRouterLink]="['/any-component']" [stopLink]="isDragging">Slide 3</a></div>
+          </ng-template>
+          <ng-template carouselSlide id="owl-slide-4">
+            <div><a [owlRouterLink]="['/any-component']" [stopLink]="isDragging">Slide 4</a></div>
+          </ng-template>
+          <ng-template carouselSlide id="owl-slide-5">
+            <div><a [owlRouterLink]="['/any-component']" [stopLink]="isDragging">Slide 5</a></div>
+          </ng-template>
+        </owl-carousel-o>
+      </div>
+      <router-outlet></router-outlet>
+    `;
+    fixtureHost = createTestComponent(html);
+    testComponent = fixtureHost.componentInstance;
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    fixtureHost.detectChanges();
+
+    deStageWrapper = deCarouselComponent.query(By.css('owl-stage'));
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    const anchorIn1tSlide: DebugElement = deSlides[0].query(By.css('a'));
+    const locationService: Location = fixtureHost.debugElement.injector.get(Location);
+
+    anchorIn1tSlide.triggerEventHandler('click', {button: 0});
+    tick();
+    fixtureHost.detectChanges();
+    // check whether we can go to another component without dragging
+    expect(locationService.path()).toBe('/any-component');
+
+    locationService.back();
+    tick();
+    fixtureHost.detectChanges();
+    coords = findCoordsInElem(anchorIn1tSlide.nativeElement, getCoords(anchorIn1tSlide.nativeElement));
+
+    // drag carousel to left hand-side
+    triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x -10, clientY: coords.y});
+    tick();
+
+    expect(testComponent.isDragging).toBeTruthy('isDragging property is true');
+
+    anchorIn1tSlide.triggerEventHandler('click', {button: 0});
+    expect(locationService.path()).toBe('', 'owlRouterLink doesn\'t work');
+
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x -40, clientY: coords.y});
+    tick();
+
+    expect(testComponent.isDragging).toBeTruthy('isDragging property is true');
+
+    expect(locationService.path()).toBe('', 'owlRouterLink doesn\'t work');
+
+    triggerMouseEvent(document, 'mouseup', {clientX: coords.x-40, clientY: coords.y});
+    tick();
+    // Code can't wait the end of transition. Thus transition is finished manually.
+    deStageWrapper.componentInstance.onTransitionEnd();
+    fixtureHost.detectChanges();
+    expect(locationService.path()).toBe('', 'owlRouterLink doesn\'t work');
+
+
+  }));
   // the ending of tests
 });
 
@@ -1120,9 +1204,22 @@ class TestComponent {
   options: any = {};
   translatedData: SlidesOutputData;
   isDragging: boolean;
-  constructor() {}
+  constructor(private location: Location) {}
   getPassedData(data: any) {
     this.translatedData = data;
+  }
+}
+
+@Component({
+  selector: 'owl-any',
+  template: '<div>It works</div>'
+})
+class AnyComponent implements OnInit{
+  init = false;
+  constructor() {}
+
+  ngOnInit() {
+    this.init = true;
   }
 }
 
