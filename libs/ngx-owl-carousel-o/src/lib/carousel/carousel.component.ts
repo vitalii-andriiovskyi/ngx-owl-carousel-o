@@ -134,6 +134,7 @@ export class CarouselComponent
   slides: QueryList<CarouselSlideDirective>;
 
   @Output() translated = new EventEmitter<SlidesOutputData>();
+  @Output() dragging = new EventEmitter<boolean>();
 
   /**
    * Width of carousel window (tag with class .owl-carousel), in wich we can see moving sliders
@@ -199,6 +200,11 @@ export class CarouselComponent
    * Observable for catching the end of transition of carousel
    */
   private _translatedCarousel$: Observable<string>;
+
+  /**
+   * Observable for catching the start of dragging of the carousel
+   */
+  private _draggingCarousel$: Observable<string>;
 
   /**
    * Observable for merging all Observables and creating one subscription
@@ -270,7 +276,13 @@ export class CarouselComponent
       })
     );
 
-    this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$);
+    this._draggingCarousel$ = this.carouselService.getDragState().pipe(
+      tap(() => {
+        this.dragging.emit(true);
+      })
+    )
+
+    this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$);
     this._allObservSubscription = this._carouselMerge$.subscribe(() => {});
   }
 
