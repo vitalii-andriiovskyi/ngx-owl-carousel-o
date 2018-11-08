@@ -60,6 +60,6 @@ export declare class OwlRouterLinkWithHrefDirective implements OnChanges, OnDest
     ngOnChanges(changes: {}): any;
     ngOnDestroy(): any;
     onClick(button: number, ctrlKey: boolean, metaKey: boolean, shiftKey: boolean): boolean;
-    private updateTargetUrlAndHref();
+    private updateTargetUrlAndHref;
     readonly urlTree: UrlTree;
 }
