@@ -38,11 +38,13 @@ It's recommended to follow these steps for adding new features:
 
 3. Pulling requests and making changes.
 
-4. Launching existing tests and writing new tests (this step can't be avoided). To launch tests run `ng test ngx-owl-carousel-o`. There'll be an issue on this step. The way of avoiding is below.
+4. Launching existing tests and writing new tests (this step can't be avoided). To launch tests run `ng test ngx-owl-carousel-o`. There'll be an issue on this step. The way of avoiding it is below. __It's gone with Angular 7__.
 
 5. When everything is done and tests are passing, push your topic branch up to your fork and open a Pull Request.
 
 ### Issue with testing 
+This corresponds to lib of version `<1.0.0` as it relies on Angular `^6.0.1`. `ngx-owl-carousel-o >=1.0.0` relies on Angular `^7.0.0` which uses Typescript 3.1.6.
+
 I used `Touch` object for testing touch-events. `triggerTouchEvent()` function creates this object. 
 ```typescript
 function triggerTouchEvent(element: HTMLElement, eventType: string, evtObj: any) {
