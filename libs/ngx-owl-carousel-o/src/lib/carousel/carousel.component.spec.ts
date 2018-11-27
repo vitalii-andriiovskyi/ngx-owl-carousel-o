@@ -3218,6 +3218,27 @@ describe('CarouselComponent', () => {
     expect(location.path()).toBe('/owl-car#five', '/owl-car#five');
   }));
 
+  it('shouldn\'t render carousel when array with slides is empty', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{}">
+          <ng-container  *ngFor="let slide of []">
+            <ng-template carouselSlide id="owl-slide-1"><div style="height: 100px">{{slide?.text}}</div></ng-template>
+          </ng-container>
+        </owl-carousel-o>
+      </div>
+    `
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    fixtureHost.detectChanges();
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    expect(deSlides.length).toBe(0, '0');
+  }));
+
+
   // the ending of tests
 });
 
