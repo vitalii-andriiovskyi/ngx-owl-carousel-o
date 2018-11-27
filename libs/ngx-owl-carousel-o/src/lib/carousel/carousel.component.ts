@@ -106,15 +106,17 @@ export class SlidesOutputData {
                     [stageData]="stageData"
                     [slidesData]="slidesData"></owl-stage>
       </div> <!-- /.owl-stage-outer -->
-      <div class="owl-nav" [ngClass]="{'disabled': navData?.disabled}">
-        <div class="owl-prev" [ngClass]="{'disabled': navData?.prev?.disabled}" (click)="prev()" [innerHTML]="navData?.prev?.htmlText"></div>
-        <div class="owl-next" [ngClass]="{'disabled': navData?.next?.disabled}" (click)="next()" [innerHTML]="navData?.next?.htmlText"></div>
-      </div> <!-- /.owl-nav -->
-      <div class="owl-dots" [ngClass]="{'disabled': dotsData?.disabled}">
-        <div *ngFor="let dot of dotsData?.dots" class="owl-dot" [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" (click)="moveByDot(dot.id)">
-          <span [innerHTML]="dot.innerContent"></span>
-        </div>
-      </div> <!-- /.owl-dots -->
+      <ng-container *ngIf="slides.toArray().length">
+        <div class="owl-nav" [ngClass]="{'disabled': navData?.disabled}">
+          <div class="owl-prev" [ngClass]="{'disabled': navData?.prev?.disabled}" (click)="prev()" [innerHTML]="navData?.prev?.htmlText"></div>
+          <div class="owl-next" [ngClass]="{'disabled': navData?.next?.disabled}" (click)="next()" [innerHTML]="navData?.next?.htmlText"></div>
+        </div> <!-- /.owl-nav -->
+        <div class="owl-dots" [ngClass]="{'disabled': dotsData?.disabled}">
+          <div *ngFor="let dot of dotsData?.dots" class="owl-dot" [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" (click)="moveByDot(dot.id)">
+            <span [innerHTML]="dot.innerContent"></span>
+          </div>
+        </div> <!-- /.owl-dots -->
+      </ng-container>
     </div> <!-- /.owl-carousel owl-loaded -->
   `,
   styles: [`.owl-theme { display: block; }`],
@@ -236,10 +238,15 @@ export class CarouselComponent
   // ngAfterContentChecked() END
 
   ngAfterContentInit() {
-    this.carouselService.setup(this.carouselWindowWidth, this.slides.toArray(), this.options);
-    this.carouselService.initialize(this.slides.toArray());
+    if (this.slides.toArray().length) {
+      this.carouselService.setup(this.carouselWindowWidth, this.slides.toArray(), this.options);
+      this.carouselService.initialize(this.slides.toArray());
 
-    this._winResizeWatcher();
+      this._winResizeWatcher();
+    } else {
+      console.log(`There's no slides to show. So carousel didn't get rendered`);
+    }
+
   }
 
   ngOnDestroy() {
