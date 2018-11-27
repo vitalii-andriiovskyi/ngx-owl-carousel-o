@@ -1,8 +1,17 @@
 # Versions Changes
 
-* [1.0.0](#1.0.0)
+* [v1.0.1](#v1.0.1)
+* [v1.0.0](#v1.0.0)
 * [v0.1.0](#v0.1.0)
 * [v0.0.5](#v0.0.5)
+
+## v1.0.1
+
+Changes are the following: 
+1. Added checking for the number of slides. If there are no slides to show, the carousel won't get rendered. 
+2. Correction of logging in cases when the option `items` is bigger than the number of slides or is equal to it:
+    - if it's bigger, the console will show the notification  `The option 'items' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled`;
+    - if it equals the number of slides and the developer enabled navigation buttons or dots, the console will show the message: `Option 'items' in your options is equal to the number of slides. So the navigation got disabled`.
 
 ## v1.0.0
 The version `1.x.x` relies on Angular 7. 
