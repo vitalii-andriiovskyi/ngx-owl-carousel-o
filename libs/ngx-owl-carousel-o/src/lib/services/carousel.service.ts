@@ -658,10 +658,13 @@ export class CarouselService {
 	 */
 	private _validateItems(items: number): number {
 		let result: number;
-		if (items >= this._items.length) {
-			result = this._items.length ;
-			console.log('option \'items\' in your options is bigger than number of slides; This option is updated to current number of slides and navigation got disabled');
+		if (items > this._items.length) {
+			result = this._items.length;
+			console.log('The option \'items\' in your options is bigger than tthe number of slides. This option is updated to the current number of slides and the navigation got disabled');
 		} else {
+			if (items === this._items.length) {
+				console.log('Option \'items\' in your options is equal to the number of slides. So the navigation got disabled');
+			}
 			result = items;
 		}
 		return result;
