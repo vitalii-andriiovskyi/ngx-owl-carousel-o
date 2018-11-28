@@ -12,6 +12,7 @@ import { OwlCarouselOConfig, OwlOptionsMockedTypes } from '../carousel/owl-carou
 import { OwlOptions } from '../models/owl-options.model';
 
 import { NavData, DotsData } from '../models/navigation-data.models';
+import { OwlLogger } from './logger.service';
 
 /**
  * Current state information and their tags.
@@ -489,7 +490,7 @@ export class CarouselService {
     }
   ];
 
-	constructor() { }
+	constructor(private logger: OwlLogger) { }
 
 	/**
 	 * Makes _viewSettingsShipper$ Subject become Observable
@@ -610,6 +611,11 @@ export class CarouselService {
 		const checkedOptions: OwlOptions = { ...options};
 		const mockedTypes = new OwlOptionsMockedTypes();
 
+		const setRightOption = (type: string, key: any): OwlOptions => {
+			this.logger.log(`options.${key} must be type of ${type}; ${key}=${options[key]} skipped to defaults: ${key}=${configOptions[key]}`);
+			return configOptions[key];
+		};
+
 		for (const key in checkedOptions) {
 			if (checkedOptions.hasOwnProperty(key)) {
 
@@ -643,11 +649,6 @@ export class CarouselService {
 			}
 		}
 
-		function setRightOption(type: string, key: any): any {
-			console.log(`options.${key} must be type of ${type}; ${key}=${options[key]} skipped to defaults: ${key}=${configOptions[key]}`);
-			return configOptions[key];
-		}
-
 		return checkedOptions;
 	}
 
@@ -660,10 +661,10 @@ export class CarouselService {
 		let result: number;
 		if (items > this._items.length) {
 			result = this._items.length;
-			console.log('The option \'items\' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled');
+			this.logger.log('The option \'items\' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled');
 		} else {
 			if (items === this._items.length && (this.settings.dots || this.settings.nav)) {
-				console.log('Option \'items\' in your options is equal to the number of slides. So the navigation got disabled');
+				this.logger.log('Option \'items\' in your options is equal to the number of slides. So the navigation got disabled');
 			}
 			result = items;
 		}
@@ -1428,7 +1429,7 @@ export class CarouselService {
 		if (this._width) {
 			width = this._width;
 		} else {
-			console.warn('Can not detect viewport width.');
+			this.logger.log('Can not detect viewport width.');
 		}
 		return width;
 	}
