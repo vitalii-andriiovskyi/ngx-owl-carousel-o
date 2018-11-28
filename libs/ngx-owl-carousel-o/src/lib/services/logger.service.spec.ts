@@ -1,5 +1,5 @@
 import { ErrorHandler, ReflectiveInjector } from '@angular/core';
-import { Logger } from './logger.service';
+import { Logger, CURRENT_ENVIRONMENT } from './logger.service';
 
 describe('logger service', () => {
   let logSpy: jasmine.Spy;
@@ -12,7 +12,8 @@ describe('logger service', () => {
     warnSpy = spyOn(console, 'warn');
     const injector = ReflectiveInjector.resolveAndCreate([
       Logger,
-      { provide: ErrorHandler, useClass: MockErrorHandler }
+      { provide: ErrorHandler, useClass: MockErrorHandler },
+      { provide: CURRENT_ENVIRONMENT, useValue: { production: false } }
     ]);
     logger = injector.get(Logger);
     errorHandler = injector.get(ErrorHandler);
