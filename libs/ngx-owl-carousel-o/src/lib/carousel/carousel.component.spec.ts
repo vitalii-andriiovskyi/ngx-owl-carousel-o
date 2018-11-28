@@ -22,6 +22,7 @@ import { LazyLoadService } from '../services/lazyload.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from "@angular/router/testing";
+import { OwlLogger } from '../services/logger.service';
 
 // import 'zone.js/lib/rxjs/rxjs-fake-async';
 const createTestComponent = (html: string) =>
@@ -70,11 +71,12 @@ describe('CarouselComponent', () => {
         providers: [
           ResizeService,
           WINDOW_PROVIDERS,
+          OwlLogger,
           CarouselService,
           NavigationService,
           AutoplayService,
           DOCUMENT_PROVIDERS,
-          LazyLoadService,
+          LazyLoadService
         ]
       });
     })

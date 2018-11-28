@@ -20,6 +20,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from "@angular/router/testing";
 import { OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective } from '../owl-router-link.directive';
 import { Location } from '@angular/common';
+import { OwlLogger } from '../../services/logger.service';
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -60,7 +61,15 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
           OwlRouterLinkWithHrefDirective,
           AnyComponent
         ],
-        providers: [ResizeService, WINDOW_PROVIDERS, CarouselService, NavigationService, AutoplayService, DOCUMENT_PROVIDERS],
+        providers: [
+          ResizeService,
+          WINDOW_PROVIDERS,
+          CarouselService,
+          NavigationService,
+          AutoplayService,
+          DOCUMENT_PROVIDERS,
+          OwlLogger
+        ],
       });
     })
   );
