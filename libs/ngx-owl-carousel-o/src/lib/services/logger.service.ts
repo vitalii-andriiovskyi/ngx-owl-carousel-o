@@ -1,14 +1,12 @@
-import { ErrorHandler, Injectable, InjectionToken, Inject } from '@angular/core';
-
-export const CURRENT_ENVIRONMENT = new InjectionToken<any>('Current Environment');
+import { ErrorHandler, Injectable, isDevMode } from '@angular/core';
 
 @Injectable()
-export class Logger {
+export class OwlLogger {
 
-  constructor(private errorHandler: ErrorHandler, @Inject(CURRENT_ENVIRONMENT) public environment: any) {}
+  constructor(private errorHandler: ErrorHandler) {}
 
   log(value: any, ...rest: any[]) {
-    if (!this.environment.production) {
+    if (isDevMode()) {
       console.log(value, ...rest);
     }
   }
