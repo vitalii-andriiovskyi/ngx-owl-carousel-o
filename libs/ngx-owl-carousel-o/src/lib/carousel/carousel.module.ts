@@ -17,6 +17,7 @@ export {
 
 import { RouterModule, Routes } from '@angular/router';
 import { OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective } from './owl-router-link.directive';
+import { OwlLogger } from '../services/logger.service';
 export { OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective } from './owl-router-link.directive';
 
 const routes: Routes = [];
@@ -29,6 +30,6 @@ const routes: Routes = [];
     RouterModule.forChild(routes)],
   declarations: [CarouselComponent, CarouselSlideDirective, StageComponent, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
   exports: [CarouselComponent, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
-  providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS]
+  providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS, OwlLogger]
 })
 export class CarouselModule {}
