@@ -30,6 +30,7 @@ import { LazyLoadService } from '../services/lazyload.service';
 import { AnimateService } from '../services/animate.service';
 import { AutoHeightService } from '../services/autoheight.service';
 import { HashService } from '../services/hash.service';
+import { OwlLogger } from '../services/logger.service';
 
 let nextId = 0;
 
@@ -222,7 +223,8 @@ export class CarouselComponent
     private lazyLoadService: LazyLoadService,
     private animateService: AnimateService,
     private autoHeightService: AutoHeightService,
-    private hashService: HashService
+    private hashService: HashService,
+    private logger: OwlLogger
   ) {}
 
   ngOnInit() {
@@ -244,7 +246,7 @@ export class CarouselComponent
 
       this._winResizeWatcher();
     } else {
-      console.log(`There's no slides to show. So carousel didn't get rendered`);
+      this.logger.log(`There's no slides to show. So carousel didn't get rendered`);
     }
 
   }
