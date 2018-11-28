@@ -1,10 +1,14 @@
 # Versions Changes
 
+* [v1.0.2](#v1.0.2)
 * [v1.0.1](#v1.0.1)
 * [v1.0.0](#v1.0.0)
 * [v0.1.0](#v0.1.0)
 * [v0.0.5](#v0.0.5)
 
+## v1.0.2
+
+The version `v1.0.2` adds the automatic disabling of logging in production mode.
 ## v1.0.1
 
 Changes are the following: 
