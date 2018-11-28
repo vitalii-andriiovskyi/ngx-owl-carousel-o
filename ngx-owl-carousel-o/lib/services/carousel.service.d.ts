@@ -5,6 +5,7 @@ import { SlideModel } from '../models/slide.model';
 import { Observable } from 'rxjs';
 import { OwlOptions } from '../models/owl-options.model';
 import { NavData, DotsData } from '../models/navigation-data.models';
+import { OwlLogger } from './logger.service';
 /**
  * Current state information and their tags.
  */
@@ -49,6 +50,7 @@ export declare class CarouselCurrentData {
     dotsData: DotsData;
 }
 export declare class CarouselService {
+    private logger;
     /**
    * Subject for passing data needed for managing View
    */
@@ -190,7 +192,7 @@ export declare class CarouselService {
      * Ordered list of workers for the update process.
    */
     private _pipe;
-    constructor();
+    constructor(logger: OwlLogger);
     /**
      * Makes _viewSettingsShipper$ Subject become Observable
      * @returns Observable of _viewSettingsShipper$ Subject

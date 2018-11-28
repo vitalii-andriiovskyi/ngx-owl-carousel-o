@@ -13,6 +13,7 @@ import { LazyLoadService } from '../services/lazyload.service';
 import { AnimateService } from '../services/animate.service';
 import { AutoHeightService } from '../services/autoheight.service';
 import { HashService } from '../services/hash.service';
+import { OwlLogger } from '../services/logger.service';
 export declare class CarouselSlideDirective {
     tplRef: TemplateRef<any>;
     /**
@@ -63,6 +64,7 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
     private animateService;
     private autoHeightService;
     private hashService;
+    private logger;
     slides: QueryList<CarouselSlideDirective>;
     translated: EventEmitter<SlidesOutputData>;
     dragging: EventEmitter<boolean>;
@@ -126,7 +128,7 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      * Observable for merging all Observables and creating one subscription
      */
     private _carouselMerge$;
-    constructor(el: ElementRef, resizeService: ResizeService, carouselService: CarouselService, navigationService: NavigationService, autoplayService: AutoplayService, lazyLoadService: LazyLoadService, animateService: AnimateService, autoHeightService: AutoHeightService, hashService: HashService);
+    constructor(el: ElementRef, resizeService: ResizeService, carouselService: CarouselService, navigationService: NavigationService, autoplayService: AutoplayService, lazyLoadService: LazyLoadService, animateService: AnimateService, autoHeightService: AutoHeightService, hashService: HashService, logger: OwlLogger);
     ngOnInit(): void;
     ngAfterContentChecked(): void;
     ngAfterContentInit(): void;
