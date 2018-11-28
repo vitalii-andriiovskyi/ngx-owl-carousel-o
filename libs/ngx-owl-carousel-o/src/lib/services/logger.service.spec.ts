@@ -1,21 +1,20 @@
 import { ErrorHandler, ReflectiveInjector } from '@angular/core';
-import { Logger, CURRENT_ENVIRONMENT } from './logger.service';
+import { OwlLogger } from './logger.service';
 
 describe('logger service', () => {
   let logSpy: jasmine.Spy;
   let warnSpy: jasmine.Spy;
-  let logger: Logger;
+  let logger: OwlLogger;
   let errorHandler: ErrorHandler;
 
   beforeEach(() => {
     logSpy = spyOn(console, 'log');
     warnSpy = spyOn(console, 'warn');
     const injector = ReflectiveInjector.resolveAndCreate([
-      Logger,
-      { provide: ErrorHandler, useClass: MockErrorHandler },
-      { provide: CURRENT_ENVIRONMENT, useValue: { production: false } }
+      OwlLogger,
+      { provide: ErrorHandler, useClass: MockErrorHandler }
     ]);
-    logger = injector.get(Logger);
+    logger = injector.get(OwlLogger);
     errorHandler = injector.get(ErrorHandler);
   });
 
