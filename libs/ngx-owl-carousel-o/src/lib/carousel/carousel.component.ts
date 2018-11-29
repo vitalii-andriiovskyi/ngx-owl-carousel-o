@@ -353,6 +353,7 @@ export class CarouselComponent
    * Handler for click event, attached to next button
    */
   next() {
+    if (!this.carouselLoaded || (this.navData && this.navData.disabled)) return;
     this.navigationService.next(this.carouselService.settings.navSpeed);
   }
 
@@ -360,6 +361,7 @@ export class CarouselComponent
    * Handler for click event, attached to prev button
    */
   prev() {
+    if (!this.carouselLoaded || (this.navData && this.navData.disabled)) return;
     this.navigationService.prev(this.carouselService.settings.navSpeed);
   }
 
@@ -367,6 +369,7 @@ export class CarouselComponent
    * Handler for click event, attached to dots
    */
   moveByDot(dotId: string) {
+    if (!this.carouselLoaded) return;
     this.navigationService.moveByDot(dotId);
   }
 
@@ -375,6 +378,7 @@ export class CarouselComponent
    * @param id fragment of url
    */
   to(id: string) {
+    if (!this.carouselLoaded || (this.navData && this.navData.disabled) || (this.dotsData && this.dotsData.disabled)) return;
     this.navigationService.toSlideById(id);
   }
 
