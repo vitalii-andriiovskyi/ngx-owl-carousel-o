@@ -4,7 +4,7 @@
 
 The version `1.x.x` relies on Angular 7. 
 
-If it's needed to use the library for Angular 6, install the v0.1.0 by running the command `yarn add ngx-owl-carousel@0.1.1` or `npm i ngx-owl-carousel-o@0.1.1`.
+If it's needed to use the library for Angular 6, install the v0.1.0 by running the command `yarn add ngx-owl-carousel-o@0.1.1` or `npm i ngx-owl-carousel-o@0.1.1`.
 
 The version `v0.1.1` has the following changes:
 1. Added checking for the number of slides. If there are no slides to show, the carousel won't get rendered. 
