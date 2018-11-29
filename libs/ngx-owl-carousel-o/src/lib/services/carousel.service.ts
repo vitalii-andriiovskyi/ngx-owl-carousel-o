@@ -201,7 +201,7 @@ export class CarouselService {
    * Merge values of all items.
    * @todo Maybe this could be part of a plugin.
    */
-	readonly _mergers: any[] = [];
+	private _mergers: any[] = [];
 
 	/**
    * Animation speed in milliseconds.
@@ -748,10 +748,15 @@ export class CarouselService {
 
 		this.owlDOMData.rtl = this.settings.rtl;
 
+		if (this._mergers.length) {
+			this._mergers = [];
+		}
+
 		slides.forEach(item => {
 			const mergeN: number = this.settings.merge ? item.dataMerge : 1;
 			this._mergers.push(mergeN);
 		});
+		this._clones = [];
 
 		this.reset(this._isNumeric(this.settings.startPosition) ? +this.settings.startPosition : 0);
 
