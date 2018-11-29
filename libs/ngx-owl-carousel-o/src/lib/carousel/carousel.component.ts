@@ -150,9 +150,16 @@ export class CarouselComponent
   resizeSubscription: Subscription;
 
   /**
-   * Subscription merge Observable, which merges all Observables in the component except 'resize' Observable
+   * Subscription merge Observable, which merges all Observables in the component except 'resize' Observable and this.slides.changes()
    */
   private _allObservSubscription: Subscription;
+
+  /**
+   * Subscription to `this.slides.changes().
+   * It could be included in 'this._allObservSubscription', but that subcription get created during the initializing of component
+   * and 'this.slides' are undefined at that moment. So it's needed to wait for initialization of content.
+   */
+  private _slidesChangesSubscription: Subscription;
 
   /**
    * Current settings for the carousel.
@@ -246,8 +253,21 @@ export class CarouselComponent
 
       this._winResizeWatcher();
     } else {
-      this.logger.log(`There's no slides to show. So carousel didn't get rendered`);
+      this.logger.log(`There are no slides to show. So the carousel won't be rendered`);
     }
+
+    this._slidesChangesSubscription = this.slides.changes.pipe(
+      tap((slides) => {
+        if (slides.toArray().length) {
+          // this.carouselService.setItems(slides.toArray());
+          this.carouselService.setup(this.carouselWindowWidth, slides.toArray(), this.options);
+          this.carouselService.initialize(slides.toArray());
+        } else {
+          this.carouselLoaded = false;
+          this.logger.log(`There are no slides to show. So the carousel won't be re-rendered`);
+        }
+      })
+    ).subscribe(()=>{});
 
   }
 
@@ -255,6 +275,8 @@ export class CarouselComponent
     if (this.resizeSubscription) {
       this.resizeSubscription.unsubscribe();
     }
+
+    this._slidesChangesSubscription.unsubscribe();
 
     this._allObservSubscription.unsubscribe();
   }
