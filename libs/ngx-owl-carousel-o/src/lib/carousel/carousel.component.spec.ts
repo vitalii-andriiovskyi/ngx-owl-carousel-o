@@ -241,8 +241,59 @@ describe('CarouselComponent', () => {
 
       const activeSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active'));
       expect(activeSlides.length).toBe(5, '5 active slides');
+
+      deDots = deCarouselComponent.queryAll(By.css('.owl-dots'));
+      expect(deDots[0].nativeElement.classList.contains('disabled')).toBeTruthy('has .disabled class');
     });
   }));
+
+  it('shouldn\'t move the carousel when navigation is disabled', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{items: '10', loop: true}">
+          <ng-template carouselSlide [id]="slide-1">Slide 1</ng-template>
+          <ng-template carouselSlide [id]="slide-2">Slide 2</ng-template>
+          <ng-template carouselSlide [id]="slide-3">Slide 3</ng-template>
+          <ng-template carouselSlide [id]="slide-4">Slide 4</ng-template>
+          <ng-template carouselSlide [id]="slide-5">Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    carouselComponent = deCarouselComponent.componentInstance;
+    tick();
+    fixtureHost.detectChanges();
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    expect(deSlides.length).toBe(15, '15');
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+    carouselComponent.next();
+
+    tick();
+    fixtureHost.detectChanges();
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+    carouselComponent.prev();
+
+    tick();
+    fixtureHost.detectChanges();
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+    carouselComponent.to('slide-3');
+
+    tick();
+    fixtureHost.detectChanges();
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+  }));
+
 
   it(`should render carousel with 2 active slides and 6 cloned slide (total slides 11) [options]="{items: 2, loop: true}`, async(() => {
     const html = `
@@ -1105,7 +1156,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render carousel with dots with html in [options]="{dotsData: true}"`, async(() => {
+  it(`should render carousel with dots with empty string in [options]="{dotsData: true}"`, async(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{ dotsData: true}">
@@ -1880,10 +1931,10 @@ describe('CarouselComponent', () => {
     expect(deDots[1].nativeElement.classList.contains('active')).toBeTruthy('2th dot is active');
   }));
 
-  it(`should move carousel right when slides have different widths (translation is the number of pixels which equals the width of first active slide) [options]="{loop: true, autoWidth: true}`, fakeAsync(() => {
+  it(`should move carousel right when slides have different widths (translation is the number of pixels which equals the width of first active slide) [options]="{loop: true, autoWidth: true, nav: true}`, fakeAsync(() => {
     const html = `
       <div style="width: 900px; margin: auto">
-        <owl-carousel-o [options]="{loop: true, autoWidth: true}">
+        <owl-carousel-o [options]="{loop: true, autoWidth: true, nav: true}">
           <ng-template carouselSlide [width]="300">Slide 1</ng-template>
           <ng-template carouselSlide [width]="500">Slide 2</ng-template>
           <ng-template carouselSlide>Slide 3</ng-template>
