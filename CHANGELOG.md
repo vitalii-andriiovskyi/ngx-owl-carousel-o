@@ -8,7 +8,8 @@
 
 ## v1.0.2
 
-The version `v1.0.2` adds the automatic disabling of logging in production mode.
+The version `v1.0.2` adds the automatic disabling of logging in production mode and re-rendering of the carousel if the array with slides data changes.
+
 ## v1.0.1
 
 Changes are the following: 

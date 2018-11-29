@@ -4,7 +4,7 @@
 
 The version `1.x.x` relies on Angular 7. If it's needed to use the library for Angular 6, install the v0.1.0 by running the command `yarn add ngx-owl-carousel@0.1.0` or `npm i ngx-owl-carousel-o@0.1.0`.
 
-The version `v1.0.2` adds the automatic disabling of logging in production mode.
+The version `v1.0.2` adds the automatic disabling of logging in production mode and re-rendering of the carousel if the array with slides data changes.
 
 The version `v1.0.1` has the following changes:
 1. Added checking for the number of slides. If there are no slides to show, the carousel won't get rendered. 
