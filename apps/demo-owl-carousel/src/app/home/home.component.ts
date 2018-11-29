@@ -98,4 +98,8 @@ export class HomeComponent implements OnInit {
     console.log('HomeComponent');
     console.log(this.activeSlides);
   }
+
+  removeLastSlide() {
+    this.carouselData.splice(-1, 1);
+  }
 }
