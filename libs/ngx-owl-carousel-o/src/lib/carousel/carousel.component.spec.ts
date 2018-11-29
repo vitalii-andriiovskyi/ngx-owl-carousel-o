@@ -3240,6 +3240,94 @@ describe('CarouselComponent', () => {
     expect(deSlides.length).toBe(0, '0');
   }));
 
+  it('should re-render carousel when array with slides changes', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{}">
+          <ng-container  *ngFor="let slide of slidesData">
+            <ng-template carouselSlide><div>{{slide}}</div></ng-template>
+          </ng-container>
+        </owl-carousel-o>
+      </div>
+    `
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    fixtureHost.detectChanges();
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    expect(deSlides.length).toBe(0, '0');
+
+    fixtureHost.componentInstance.slidesData = ['Slide 1', 'Slide 2', 'Slide 3', 'Slide 4', 'Slide 5'];
+    fixtureHost.detectChanges();
+    tick();
+    fixtureHost.detectChanges();
+
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    expect(deSlides.length).toBe(5, '5 slides');
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+    fixtureHost.componentInstance.slidesData = ['Slide 1', 'Slide 2', 'Slide 3', 'Slide 4'];
+    fixtureHost.detectChanges();
+    tick();
+    fixtureHost.detectChanges();
+
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    expect(deSlides.length).toBe(4, '4 slides');
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+  }));
+
+  it('should re-render carousel when array with slides changes and the code defines 3rd slide as first active slide [options]="{startPosition: 2}', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{startPosition: 2}">
+          <ng-container  *ngFor="let slide of slidesData">
+            <ng-template carouselSlide><div>{{slide}}</div></ng-template>
+          </ng-container>
+        </owl-carousel-o>
+      </div>
+    `
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    fixtureHost.detectChanges();
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    expect(deSlides.length).toBe(0, '0');
+
+    fixtureHost.componentInstance.slidesData = ['Slide 1', 'Slide 2', 'Slide 3', 'Slide 4', 'Slide 5', 'Slide 6', 'Slide 7'];
+    fixtureHost.detectChanges();
+    tick();
+    fixtureHost.detectChanges();
+
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    expect(deSlides.length).toBe(7, '7 slides');
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+
+    fixtureHost.componentInstance.slidesData = ['Slide 1', 'Slide 2', 'Slide 3', 'Slide 4', 'Slide 5', 'Slide 6'];
+    fixtureHost.detectChanges();
+    tick();
+    fixtureHost.detectChanges();
+
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    expect(deSlides.length).toBe(6, '6 slides');
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+  }));
+
 
   // the ending of tests
 });
@@ -3251,6 +3339,7 @@ describe('CarouselComponent', () => {
 class TestComponent {
   options: any = {};
   translatedData: SlidesOutputData;
+  slidesData: string[] = [];
   constructor() {}
   getPassedData(data: any) {
     this.translatedData = data;
