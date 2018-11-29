@@ -2,15 +2,17 @@
 
 **ngx-owl-carousel-o** is built for Angular >=6.0.0. It doesn't use jQuery. 
 
-The version `1.x.x` relies on Angular 7. If it's needed to use the library for Angular 6, install the v0.1.0 by running the command `yarn add ngx-owl-carousel@0.1.0` or `npm i ngx-owl-carousel-o@0.1.0`.
+The version `1.x.x` relies on Angular 7. 
 
-The version `v1.0.2` adds the automatic disabling of logging in production mode and re-rendering of the carousel if the array with slides data changes.
+If it's needed to use the library for Angular 6, install the v0.1.0 by running the command `yarn add ngx-owl-carousel@0.1.1` or `npm i ngx-owl-carousel-o@0.1.1`.
 
-The version `v1.0.1` has the following changes:
+The version `v0.1.1` has the following changes:
 1. Added checking for the number of slides. If there are no slides to show, the carousel won't get rendered. 
 2. Correction of logging in cases when the option `items` is bigger than the number of slides or is equal to it:
     - if it's bigger, the console will show the notification  `The option 'items' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled`;
-    - if it equals the number of slides and the developer enabled navigation buttons or dots, the console will show the message: `Option 'items' in your options is equal to the number of slides. So the navigation got disabled`.
+    - if it equals the number of slides and the developer enabled navigation buttons or dots, the console will show the message: `Option 'items' in your options is equal to the number of slides. So the navigation got disabled`. 
+3. The automatic disabling of logging in production mode.
+4. Re-rendering of the carousel if the array with slides data changes.
 
 ##### Table of Contents
 - [Get started](#get-started)
