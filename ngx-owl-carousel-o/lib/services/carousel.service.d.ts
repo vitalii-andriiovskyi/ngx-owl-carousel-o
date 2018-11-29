@@ -155,7 +155,7 @@ export declare class CarouselService {
      * Merge values of all items.
      * @todo Maybe this could be part of a plugin.
      */
-    readonly _mergers: any[];
+    private _mergers;
     /**
    * Animation speed in milliseconds.
    */

@@ -77,9 +77,15 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      */
     resizeSubscription: Subscription;
     /**
-     * Subscription merge Observable, which merges all Observables in the component except 'resize' Observable
+     * Subscription merge Observable, which merges all Observables in the component except 'resize' Observable and this.slides.changes()
      */
     private _allObservSubscription;
+    /**
+     * Subscription to `this.slides.changes().
+     * It could be included in 'this._allObservSubscription', but that subcription get created during the initializing of component
+     * and 'this.slides' are undefined at that moment. So it's needed to wait for initialization of content.
+     */
+    private _slidesChangesSubscription;
     /**
      * Current settings for the carousel.
      */
