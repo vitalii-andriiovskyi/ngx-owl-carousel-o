@@ -2,12 +2,9 @@
 
 **ngx-owl-carousel-o** is built for Angular >=6.0.0. It doesn't use jQuery. 
 
-<<<<<<< HEAD
-The version `1.x.x` relies on Angular 7. 
-=======
 The version `1.x.x` relies on Angular 7. If it's needed to use the library for Angular 6, install the v0.1.0 by running the command `yarn add ngx-owl-carousel-o@0.1.0` or `npm i ngx-owl-carousel-o@0.1.0`.
 
-The version `v1.0.3` adds events `initialized` and `change`, modifies the payload of event `dragging`.
+The version `v0.1.2` adds events `initialized` and `change`, modifies the payload of event `dragging`.
 The previous `dragging` payload was `$event = true/false`. Now payload is: 
 ``` typescript
 {
@@ -20,7 +17,6 @@ class SlidesOutputData {
   slides?: SlideModel[];
 };
 ```
->>>>>>> update-to-v7-of-nrwl-and-angular
 
 If it's needed to use the library for Angular 6, install the v0.1.0 by running the command `yarn add ngx-owl-carousel-o@0.1.1` or `npm i ngx-owl-carousel-o@0.1.1`.
 
