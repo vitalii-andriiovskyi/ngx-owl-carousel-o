@@ -137,7 +137,8 @@ export class CarouselComponent
   slides: QueryList<CarouselSlideDirective>;
 
   @Output() translated = new EventEmitter<SlidesOutputData>();
-  @Output() dragging = new EventEmitter<boolean>();
+  @Output() dragging = new EventEmitter<{dragging: boolean, data: SlidesOutputData}>();
+  @Output() change = new EventEmitter<SlidesOutputData>();
 
   /**
    * Width of carousel window (tag with class .owl-carousel), in wich we can see moving sliders
@@ -174,7 +175,7 @@ export class CarouselComponent
 	/**
 	 *  Data of every slide
 	 */
-  slidesData: SlideModel[];
+  slidesData: SlideModel[] = [];
 
   /**
 	 * Data of navigation block
@@ -215,6 +216,11 @@ export class CarouselComponent
    * Observable for catching the start of dragging of the carousel
    */
   private _draggingCarousel$: Observable<string>;
+
+  /**
+   * Observable for catching the start of changing of the carousel
+   */
+  private _changeCarousel$: Observable<string>;
 
   /**
    * Observable for merging all Observables and creating one subscription
@@ -307,21 +313,30 @@ export class CarouselComponent
       })
     );
 
+    this._changeCarousel$ = this.carouselService.getChangeState().pipe(
+      tap(() => {
+        this.gatherTranslatedData();
+        this.change.emit(this.slidesOutputData);
+        // this.slidesOutputData = {};
+      })
+    );
+
     this._draggingCarousel$ = this.carouselService.getDragState().pipe(
       tap(() => {
-        this.dragging.emit(true);
+        this.gatherTranslatedData();
+        this.dragging.emit({dragging: true, data: this.slidesOutputData});
       }),
       switchMap(
         () => this.carouselService.getTranslatedState().pipe(
           first(),
           tap(() => {
-            this.dragging.emit(false);
+            this.dragging.emit({dragging: false, data: this.slidesOutputData});
           })
         )
       )
     );
 
-    this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$);
+    this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$);
     this._allObservSubscription = this._carouselMerge$.subscribe(() => {});
   }
 
