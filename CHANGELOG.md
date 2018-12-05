@@ -1,11 +1,28 @@
 # Versions Changes
 
+* [v1.0.3](#v1.0.3)
 * [v1.0.2](#v1.0.2)
 * [v1.0.1](#v1.0.1)
 * [v1.0.0](#v1.0.0)
+* [v0.1.2](#v0.1.2)
 * [v0.1.1](#v0.1.1)
 * [v0.1.0](#v0.1.0)
 * [v0.0.5](#v0.0.5)
+
+## v1.0.3
+The version `v1.0.3` adds events `initialized` and `change`, modifies the payload of event `dragging`.
+The previous `dragging` payload was `$event = true/false`. Now payload is: 
+``` typescript
+{
+  dragging: boolean,
+  data: SlidesOutputData
+}
+
+class SlidesOutputData {
+  startPosition?: number;
+  slides?: SlideModel[];
+};
+```
 
 ## v1.0.2
 
@@ -21,6 +38,21 @@ Changes are the following:
 
 ## v1.0.0
 The version `1.x.x` relies on Angular 7. 
+
+## v0.1.2
+The version `v1.0.3` adds events `initialized` and `change`, modifies the payload of event `dragging`.
+The previous `dragging` payload was `$event = true/false`. Now payload is: 
+``` typescript
+{
+  dragging: boolean,
+  data: SlidesOutputData
+}
+
+class SlidesOutputData {
+  startPosition?: number;
+  slides?: SlideModel[];
+};
+```
 
 ## v0.1.1
 The version `v0.1.1` has the following changes:
