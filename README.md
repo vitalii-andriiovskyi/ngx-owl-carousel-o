@@ -581,7 +581,7 @@ import { SlidesOutputData } from 'ngx-owl-carousel-o';
 
 ### change
 
-It fires after each change in the carousel (click on dots, nav buttons). However, while user drags the carousel this event fires after dropping the carousel or after stopping dragging. 
+It fires after each change in the carousel (click on dots, nav buttons). However, while the user drags the carousel this event fires after dropping the carousel or after stopping dragging. 
 This event exposes the object of the type `SlidesOutputData`. It's populated by data defined before firing the event. This event just notifies about changes. New data (active slides, startPosition) gets available after the end of moving the carousel (event `translated`).
 ```typecript
 class SlidesOutputData {
