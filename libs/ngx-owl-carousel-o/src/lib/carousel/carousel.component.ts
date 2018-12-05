@@ -139,6 +139,7 @@ export class CarouselComponent
   @Output() translated = new EventEmitter<SlidesOutputData>();
   @Output() dragging = new EventEmitter<{dragging: boolean, data: SlidesOutputData}>();
   @Output() change = new EventEmitter<SlidesOutputData>();
+  @Output() initialized = new EventEmitter<SlidesOutputData>();
 
   /**
    * Width of carousel window (tag with class .owl-carousel), in wich we can see moving sliders
@@ -223,6 +224,11 @@ export class CarouselComponent
   private _changeCarousel$: Observable<string>;
 
   /**
+   * Observable for catching the initialization of changing the carousel
+   */
+  private _initializedCarousel$: Observable<string>;
+
+  /**
    * Observable for merging all Observables and creating one subscription
    */
   private _carouselMerge$: Observable<CarouselCurrentData | string>;
@@ -305,11 +311,19 @@ export class CarouselComponent
       })
     );
 
+    this._initializedCarousel$ = this.carouselService.getInitializedState().pipe(
+      tap(() => {
+        this.gatherTranslatedData();
+        this.initialized.emit(this.slidesOutputData);
+        // this.slidesOutputData = {};
+      })
+    )
+
     this._translatedCarousel$ = this.carouselService.getTranslatedState().pipe(
       tap(() => {
         this.gatherTranslatedData();
         this.translated.emit(this.slidesOutputData);
-        this.slidesOutputData = {};
+        // this.slidesOutputData = {};
       })
     );
 
@@ -336,7 +350,7 @@ export class CarouselComponent
       )
     );
 
-    this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$);
+    this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$, this._initializedCarousel$);
     this._allObservSubscription = this._carouselMerge$.subscribe(() => {});
   }
 
