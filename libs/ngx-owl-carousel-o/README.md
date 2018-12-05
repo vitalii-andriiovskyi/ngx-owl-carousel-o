@@ -2,7 +2,25 @@
 
 **ngx-owl-carousel-o** is built for Angular >=6.0.0. It doesn't use jQuery. 
 
+<<<<<<< HEAD
 The version `1.x.x` relies on Angular 7. 
+=======
+The version `1.x.x` relies on Angular 7. If it's needed to use the library for Angular 6, install the v0.1.0 by running the command `yarn add ngx-owl-carousel-o@0.1.0` or `npm i ngx-owl-carousel-o@0.1.0`.
+
+The version `v1.0.3` adds events `initialized` and `change`, modifies the payload of event `dragging`.
+The previous `dragging` payload was `$event = true/false`. Now payload is: 
+``` typescript
+{
+  dragging: boolean,
+  data: SlidesOutputData
+}
+
+class SlidesOutputData {
+  startPosition?: number;
+  slides?: SlideModel[];
+};
+```
+>>>>>>> update-to-v7-of-nrwl-and-angular
 
 If it's needed to use the library for Angular 6, install the v0.1.0 by running the command `yarn add ngx-owl-carousel-o@0.1.1` or `npm i ngx-owl-carousel-o@0.1.1`.
 
@@ -279,7 +297,7 @@ This directive is included into `CarouselModule`, which must be imported into a 
 
 Example of usage this directive:
 ```html
-  <owl-carousel-o [options]="customOptions" (dragging)="isDragging = $event">
+  <owl-carousel-o [options]="customOptions" (dragging)="isDragging = $event.dragging">
         
     <ng-container *ngFor="let item of carouselData">
       <ng-template carouselSlide>
@@ -301,9 +319,23 @@ Example of usage this directive:
 `<a owlRouterLink="'/present'" [stopLink]="isDragging">{{item.text}}</a>` is also possible way of using this directive. 
 
 In the example above, we see the usage of `dragging` event, `owlRouterLink`, and `stopLink`.
-When the dragging of the carousel starts, the  `dragging` event notifies about it by passing value `true` which is assigned to the `isDraggable` property. Then this property is passed into  `owlRouterLink` through `stopLink`. Directive gets aware of dragging the carousel and prevents any navigations. 
+When the dragging of the carousel starts, the  `dragging` event notifies about it by passing object
+``` typescript
+{
+  dragging: true,
+  data: {}
+}
+```
+The value of the prop `dragging` is assigned to the `isDraggable` property. Then this property is passed into  `owlRouterLink` through `stopLink`. Directive gets aware of dragging the carousel and prevents any navigations. 
 
-When the dragging of the carousel is finished, `dragging` passes `false`. `isDraggable` gets updated, which causes the change of `stopLink`. Now its value is `false`. This enables navigating during the next simple click on `<a>` locating in the slide unless new dragging starts. 
+When the dragging of the carousel is finished, `dragging` passes object 
+``` typescript
+{
+  dragging: false,
+  data: {}
+}
+```
+ `isDraggable` gets updated, which causes the change of `stopLink`. Now its value is `false`. This enables navigating during the next simple click on `<a>` locating in the slide unless new dragging starts. 
 
 So, to use `<a>` in any slide, it's recommended to:
 - use `dragging` event and property `isDragging` (or named differently);
@@ -316,7 +348,11 @@ The `<a href="someUrl">` has the automatic preventing navigation during dragging
 
 
 ## Events
-There are two events `translated` and `dragging`.
+
+* [translated](#translated).
+* [dragging](#dragging).
+* [change](#change).
+* [initialized](#initialized).
 
 ### translated
 It fires after the carousel finishes translating and exposes the object of the type `SlidesOutputData`.
@@ -403,11 +439,47 @@ import { SlidesOutputData } from 'ngx-owl-carousel-o';
 
 ### dragging
 
-The event `dragging` fires after that the user starts dragging the carousel. The value exposed by this event is `true`. When the dragging of the carousel is finished and the event `translated` is fired `dragging` fires again but its payload has value `false`. This event is needed for the cases when slide should contain the tag `<a>` with the `routerLink` directive.
+The event `dragging` fires after that the user starts dragging the carousel. It exposes the object
+``` typescript
+{
+  dragging: boolean,
+  data: SlidesOutputData
+}
+
+class SlidesOutputData {
+  startPosition?: number;
+  slides?: SlideModel[];
+};
+```
+When the dragging of the carousel is started its paylod is: 
+``` typescript
+{
+  dragging: true,
+  data: {
+    startPosition: 0,
+    slides: [ slide, slide, slide ];
+  }
+}
+```
+The prop `data` shows the situation which was at the moment of starting dragging. In other words, if before dragging the carousel the prop `startPosition` was `0`, the event `dragging` will emit this prop with the same value. 
+
+When the dragging of the carousel is finished and the event `translated` is fired `dragging` fires again but its payload has value 
+``` typescript
+{
+  dragging: false,
+  data: {
+    startPosition: 1,
+    slides: [ slide, slide, slide ];
+  }
+}
+```
+This time, the prop `data` shows current `startPosition` and current active  `slides`.
+
+This event is needed for the cases when slide should contain the tag `<a>` with the `routerLink` directive.
 
 Example of using this event:
 ```html
-  <owl-carousel-o [options]="customOptions" (dragging)="isDragging = $event">
+  <owl-carousel-o [options]="customOptions" (dragging)="isDragging = $event.dragging">
         
     <ng-container *ngFor="let item of carouselData">
       <ng-template carouselSlide>
@@ -424,11 +496,178 @@ Example of using this event:
     
   </owl-carousel-o>
 ```
-`(dragging)="isDragging = $event"` This expression is using the `dragging` event and has the property `isDragging` which should be created in the component hosting the `<ngx-owl-carousel-o>`.
+`(dragging)="isDragging = $event.dragging"` This expression uses the `dragging` event and has the property `isDragging` which should be created in the component hosting the `<ngx-owl-carousel-o>`.
 
-`$event` is the payload of the event. It can be `true` or `false`.
+`$event` is the payload of the event. Its prop `dragging` can be `true` or `false`.
 The real example is [here](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/develop/apps/demo-owl-carousel/src/app/link/link.component.html).
 
+### initialized
+It fires after the carousel gets initialized and exposes the object of the type `SlidesOutputData`.
+```typecript
+class SlidesOutputData {
+  startPosition?: number;
+  slides?: SlideModel[];
+};
+```
+`startPosition` is the position of the first slide with the class `.active`
+
+`slides` is the array with data of each active slide. Data of each active slide are:
+```typescript
+{
+  id: string; // id of slide
+  width: number; // width of slide
+  marginL: number; // margin-left of slide
+  marginR: number; // margin-right of slide
+  center: boolean; // whether slide is centered (has .center)
+} 
+```
+
+The code for subscribing to this event is the following:
+
+`CarouselHolderComponent`
+```typescript
+import { SlidesOutputData } from 'ngx-owl-carousel-o';
+@Component({
+      selector: '....',
+      template: `
+      <owl-carousel-o [options]="customOptions" (initialized)="getData($event)">
+
+        <ng-container *ngFor="let slide of slidesStore">
+          <ng-template carouselSlide [id]="slide.id">
+            <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
+          </ng-template>
+        </ng-container>
+
+      </owl-carousel-o>
+    `
+    })
+    export class CarouselHolderComponent {
+      customOptions: any = {
+        loop: true,
+        mouseDrag: false,
+        touchDrag: false,
+        pullDrag: false,
+        dots: false,
+        navSpeed: 700,
+        navText: ['', ''],
+        responsive: {
+          0: {
+            items: 1
+          },
+          400: {
+            items: 2
+          },
+          740: {
+            items: 3
+          },
+          940: {
+            items: 4
+          }
+        },
+        nav: true
+      }
+
+      activeSlides: SlidesOutputData;
+
+      slidesStore: any[];
+      constructor() {}
+
+      getData(data: SlidesOutputData) {
+        this.activeSlides = data;
+        console.log(this.activeSlides);
+      }
+    }
+```
+`(initialized)="getData($event)"` is the subscription or attaching to the event;
+
+`getData(data: SlidesOutputData)` is the method which takes data about active slides.
+
+`activeSlides` is the property of `CarouselHolderComponent`, which stores data about active slides
+
+### change
+
+It fires after each change in the carousel (click on dots, nav buttons). However, while the user drags the carousel this event fires after dropping the carousel or after stopping dragging. 
+This event exposes the object of the type `SlidesOutputData`. It's populated by data defined before firing the event. This event just notifies about changes. New data (active slides, startPosition) gets available after the end of moving the carousel (event `translated`).
+```typecript
+class SlidesOutputData {
+  startPosition?: number;
+  slides?: SlideModel[];
+};
+```
+`startPosition` is the position of the first slide with the class `.active`
+
+`slides` is the array with data of each active slide. Data of each active slide are:
+```typescript
+{
+  id: string; // id of slide
+  width: number; // width of slide
+  marginL: number; // margin-left of slide
+  marginR: number; // margin-right of slide
+  center: boolean; // whether slide is centered (has .center)
+} 
+```
+
+The code for subscribing to this event is the following:
+
+`CarouselHolderComponent`
+```typescript
+import { SlidesOutputData } from 'ngx-owl-carousel-o';
+@Component({
+      selector: '....',
+      template: `
+      <owl-carousel-o [options]="customOptions" (change)="getData($event)">
+
+        <ng-container *ngFor="let slide of slidesStore">
+          <ng-template carouselSlide [id]="slide.id">
+            <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
+          </ng-template>
+        </ng-container>
+
+      </owl-carousel-o>
+    `
+    })
+    export class CarouselHolderComponent {
+      customOptions: any = {
+        loop: true,
+        mouseDrag: false,
+        touchDrag: false,
+        pullDrag: false,
+        dots: false,
+        navSpeed: 700,
+        navText: ['', ''],
+        responsive: {
+          0: {
+            items: 1
+          },
+          400: {
+            items: 2
+          },
+          740: {
+            items: 3
+          },
+          940: {
+            items: 4
+          }
+        },
+        nav: true
+      }
+
+      activeSlides: SlidesOutputData;
+
+      slidesStore: any[];
+      constructor() {}
+
+      getData(data: SlidesOutputData) {
+        this.activeSlides = data;
+        console.log(this.activeSlides);
+      }
+    }
+```
+`(change)="getData($event)"` is the subscription or attaching to the event;
+
+`getData(data: SlidesOutputData)` is the method which takes data about active slides.
+
+`activeSlides` is the property of `CarouselHolderComponent`, which stores data about active slides
 ## Plugins
 **ngx-owl-carousel-o** has almost all plugins written on the page [Owl Carousel Plugin API](https://owlcarousel2.github.io/OwlCarousel2/docs/dev-plugin-api.html) except the **VideoPlugin**. 
 

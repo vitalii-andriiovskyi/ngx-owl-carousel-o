@@ -1080,7 +1080,7 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     discardPeriodicTasks();
     const html = `
       <div style="width: 920px; margin: auto">
-        <owl-carousel-o [options]="{nav: true}" (dragging)="isDragging = $event">
+        <owl-carousel-o [options]="{nav: true}" (dragging)="isDragging = $event.dragging">
           <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
           <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
           <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>

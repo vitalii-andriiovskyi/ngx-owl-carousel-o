@@ -161,6 +161,12 @@ var CarouselComponent = /** @class */ (function () {
         this.logger = logger;
         this.translated = new EventEmitter();
         this.dragging = new EventEmitter();
+        this.change = new EventEmitter();
+        this.initialized = new EventEmitter();
+        /**
+         *  Data of every slide
+         */
+        this.slidesData = [];
         /**
          * Shows whether carousel is loaded of not.
          */
@@ -253,17 +259,28 @@ var CarouselComponent = /** @class */ (function () {
             _this.navData = data.navData;
             _this.dotsData = data.dotsData;
         }));
+        this._initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(function () {
+            _this.gatherTranslatedData();
+            _this.initialized.emit(_this.slidesOutputData);
+            // this.slidesOutputData = {};
+        }));
         this._translatedCarousel$ = this.carouselService.getTranslatedState().pipe(tap(function () {
             _this.gatherTranslatedData();
             _this.translated.emit(_this.slidesOutputData);
-            _this.slidesOutputData = {};
+            // this.slidesOutputData = {};
+        }));
+        this._changeCarousel$ = this.carouselService.getChangeState().pipe(tap(function () {
+            _this.gatherTranslatedData();
+            _this.change.emit(_this.slidesOutputData);
+            // this.slidesOutputData = {};
         }));
         this._draggingCarousel$ = this.carouselService.getDragState().pipe(tap(function () {
-            _this.dragging.emit(true);
+            _this.gatherTranslatedData();
+            _this.dragging.emit({ dragging: true, data: _this.slidesOutputData });
         }), switchMap(function () { return _this.carouselService.getTranslatedState().pipe(first(), tap(function () {
-            _this.dragging.emit(false);
+            _this.dragging.emit({ dragging: false, data: _this.slidesOutputData });
         })); }));
-        this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$);
+        this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$, this._initializedCarousel$);
         this._allObservSubscription = this._carouselMerge$.subscribe(function () { });
     };
     /**
@@ -479,6 +496,8 @@ var CarouselComponent = /** @class */ (function () {
         slides: [{ type: ContentChildren, args: [CarouselSlideDirective,] }],
         translated: [{ type: Output }],
         dragging: [{ type: Output }],
+        change: [{ type: Output }],
+        initialized: [{ type: Output }],
         options: [{ type: Input }]
     };
     return CarouselComponent;
@@ -491,6 +510,10 @@ if (false) {
     CarouselComponent.prototype.translated;
     /** @type {?} */
     CarouselComponent.prototype.dragging;
+    /** @type {?} */
+    CarouselComponent.prototype.change;
+    /** @type {?} */
+    CarouselComponent.prototype.initialized;
     /**
      * Width of carousel window (tag with class .owl-carousel), in wich we can see moving sliders
      * @type {?}
@@ -568,6 +591,16 @@ if (false) {
      * @type {?}
      */
     CarouselComponent.prototype._draggingCarousel$;
+    /**
+     * Observable for catching the start of changing of the carousel
+     * @type {?}
+     */
+    CarouselComponent.prototype._changeCarousel$;
+    /**
+     * Observable for catching the initialization of changing the carousel
+     * @type {?}
+     */
+    CarouselComponent.prototype._initializedCarousel$;
     /**
      * Observable for merging all Observables and creating one subscription
      * @type {?}

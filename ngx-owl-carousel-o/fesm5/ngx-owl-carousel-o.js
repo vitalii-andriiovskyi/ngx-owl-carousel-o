@@ -1,11 +1,11 @@
 import { EventManager } from '@angular/platform-browser';
-import { Subject, merge } from 'rxjs';
-import { Injectable, ErrorHandler, isDevMode, InjectionToken, PLATFORM_ID, Inject, Component, Input, Output, Directive, ContentChildren, TemplateRef, ElementRef, EventEmitter, NgZone, HostListener, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
 import { __extends, __spread, __assign } from 'tslib';
+import { Subject, merge } from 'rxjs';
 import { tap, filter, skip, delay, switchMap, first } from 'rxjs/operators';
-import { isPlatformBrowser, LocationStrategy, CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, NavigationEnd, RouterModule } from '@angular/router';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { isPlatformBrowser, LocationStrategy, CommonModule } from '@angular/common';
+import { Injectable, ErrorHandler, isDevMode, InjectionToken, PLATFORM_ID, Inject, Component, Input, Output, Directive, ContentChildren, TemplateRef, ElementRef, EventEmitter, NgZone, HostListener, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
+import { ActivatedRoute, Router, NavigationEnd, RouterModule } from '@angular/router';
 
 /**
  * @fileoverview added by tsickle
@@ -3912,6 +3912,12 @@ var CarouselComponent = /** @class */ (function () {
         this.logger = logger;
         this.translated = new EventEmitter();
         this.dragging = new EventEmitter();
+        this.change = new EventEmitter();
+        this.initialized = new EventEmitter();
+        /**
+         *  Data of every slide
+         */
+        this.slidesData = [];
         /**
          * Shows whether carousel is loaded of not.
          */
@@ -4004,17 +4010,28 @@ var CarouselComponent = /** @class */ (function () {
             _this.navData = data.navData;
             _this.dotsData = data.dotsData;
         }));
+        this._initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(function () {
+            _this.gatherTranslatedData();
+            _this.initialized.emit(_this.slidesOutputData);
+            // this.slidesOutputData = {};
+        }));
         this._translatedCarousel$ = this.carouselService.getTranslatedState().pipe(tap(function () {
             _this.gatherTranslatedData();
             _this.translated.emit(_this.slidesOutputData);
-            _this.slidesOutputData = {};
+            // this.slidesOutputData = {};
+        }));
+        this._changeCarousel$ = this.carouselService.getChangeState().pipe(tap(function () {
+            _this.gatherTranslatedData();
+            _this.change.emit(_this.slidesOutputData);
+            // this.slidesOutputData = {};
         }));
         this._draggingCarousel$ = this.carouselService.getDragState().pipe(tap(function () {
-            _this.dragging.emit(true);
+            _this.gatherTranslatedData();
+            _this.dragging.emit({ dragging: true, data: _this.slidesOutputData });
         }), switchMap(function () { return _this.carouselService.getTranslatedState().pipe(first(), tap(function () {
-            _this.dragging.emit(false);
+            _this.dragging.emit({ dragging: false, data: _this.slidesOutputData });
         })); }));
-        this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$);
+        this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$, this._initializedCarousel$);
         this._allObservSubscription = this._carouselMerge$.subscribe(function () { });
     };
     /**
@@ -4230,6 +4247,8 @@ var CarouselComponent = /** @class */ (function () {
         slides: [{ type: ContentChildren, args: [CarouselSlideDirective,] }],
         translated: [{ type: Output }],
         dragging: [{ type: Output }],
+        change: [{ type: Output }],
+        initialized: [{ type: Output }],
         options: [{ type: Input }]
     };
     return CarouselComponent;

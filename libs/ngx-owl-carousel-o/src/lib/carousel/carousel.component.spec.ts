@@ -2614,6 +2614,99 @@ describe('CarouselComponent', () => {
     expect(testComponent.translatedData.slides[0].id).toBe('owl-slide-2', 'owl-slide-2');
   }));
 
+  it('should pass data after event \'change\' fires [options]="{nav: true}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{nav: true}" (change)="getCurrentlyPassedData($event)" (translated)="getPassedData($event)">
+          <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+          <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+          <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+          <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+          <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    testComponent = fixtureHost.componentInstance;
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    const stageComponent: DebugElement = fixtureHost.debugElement.query(By.css('owl-stage'));
+    tick();
+
+    fixtureHost.detectChanges();
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    expect(deDots.length).toBe(2, '2 dots');
+
+    expect(testComponent.currentSlidesData.startPosition).toBe(0, '0 startPosition');
+    expect(testComponent.currentSlidesData.slides.length).toBe(0, '0 slides');
+
+    deDots[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+    tick();
+
+    expect(testComponent.currentSlidesData.startPosition).toBe(0, '0 startPosition');
+    expect(testComponent.currentSlidesData.slides.length).toBe(3, '3 slides');
+    // Code can't wait the end of transition. Thus transition is finished manually.
+    stageComponent.componentInstance.onTransitionEnd();
+
+    expect(testComponent.translatedData.startPosition).toBe(2, '2 startPosition');
+    expect(testComponent.translatedData.slides[0].id).toBe('owl-slide-3', 'owl-slide-3');
+
+    deDots[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    expect(testComponent.currentSlidesData.startPosition).toBe(2, '2 startPosition');
+    expect(testComponent.currentSlidesData.slides[0].id).toBe('owl-slide-3', 'owl-slide-3');
+
+    // Code can't wait the end of transition. Thus transition is finished manually.
+    stageComponent.componentInstance.onTransitionEnd();
+
+    expect(testComponent.translatedData.startPosition).toBe(0, '0 startPosition');
+    expect(testComponent.translatedData.slides[0].id).toBe('owl-slide-1', 'owl-slide-1');
+
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    expect(testComponent.currentSlidesData.startPosition).toBe(0, '0 startPosition');
+    expect(testComponent.currentSlidesData.slides[0].id).toBe('owl-slide-1', 'owl-slide-1');
+
+    // Code can't wait the end of transition. Thus transition is finished manually.
+    stageComponent.componentInstance.onTransitionEnd();
+
+    expect(testComponent.translatedData.startPosition).toBe(1, '1 startPosition');
+    expect(testComponent.translatedData.slides[0].id).toBe('owl-slide-2', 'owl-slide-2');
+  }));
+
+  it('should pass data after event \'initialized\' fires [options]="{nav: true}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{nav: true}" (initialized)="getCurrentlyPassedData($event)" (translated)="getPassedData($event)">
+          <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+          <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+          <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+          <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+          <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    testComponent = fixtureHost.componentInstance;
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    const stageComponent: DebugElement = fixtureHost.debugElement.query(By.css('owl-stage'));
+    tick();
+
+    fixtureHost.detectChanges();
+
+    expect(testComponent.currentSlidesData.startPosition).toBe(0, '0 startPosition');
+    expect(testComponent.currentSlidesData.slides.length).toBe(3, '3 slides');
+    expect(testComponent.currentSlidesData.slides[0].id).toBe('owl-slide-1', 'owl-slide-1');
+  }));
+
 
   it('should pass data after moving carousel [options]="{nav: true, loop: true}"', fakeAsync(() => {
     discardPeriodicTasks();
@@ -3390,10 +3483,14 @@ describe('CarouselComponent', () => {
 class TestComponent {
   options: any = {};
   translatedData: SlidesOutputData;
+  currentSlidesData: SlidesOutputData;
   slidesData: string[] = [];
   constructor() {}
   getPassedData(data: any) {
     this.translatedData = data;
+  }
+  getCurrentlyPassedData(data: any) {
+    this.currentSlidesData = data;
   }
 }
 

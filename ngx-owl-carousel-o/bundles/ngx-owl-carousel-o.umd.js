@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/platform-browser'), require('rxjs'), require('@angular/core'), require('rxjs/operators'), require('@angular/common'), require('@angular/router'), require('@angular/animations')) :
-    typeof define === 'function' && define.amd ? define('ngx-owl-carousel-o', ['exports', '@angular/platform-browser', 'rxjs', '@angular/core', 'rxjs/operators', '@angular/common', '@angular/router', '@angular/animations'], factory) :
-    (factory((global['ngx-owl-carousel-o'] = {}),global.ng.platformBrowser,global.rxjs,global.ng.core,global.rxjs.operators,global.ng.common,global.ng.router,global.ng.animations));
-}(this, (function (exports,platformBrowser,rxjs,core,operators,common,router,animations) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/platform-browser'), require('rxjs'), require('rxjs/operators'), require('@angular/animations'), require('@angular/common'), require('@angular/core'), require('@angular/router')) :
+    typeof define === 'function' && define.amd ? define('ngx-owl-carousel-o', ['exports', '@angular/platform-browser', 'rxjs', 'rxjs/operators', '@angular/animations', '@angular/common', '@angular/core', '@angular/router'], factory) :
+    (factory((global['ngx-owl-carousel-o'] = {}),global.ng.platformBrowser,global.rxjs,global.rxjs.operators,global.ng.animations,global.ng.common,global.ng.core,global.ng.router));
+}(this, (function (exports,platformBrowser,rxjs,operators,animations,common,core,router) { 'use strict';
 
     /**
      * @fileoverview added by tsickle
@@ -3982,6 +3982,12 @@
             this.logger = logger;
             this.translated = new core.EventEmitter();
             this.dragging = new core.EventEmitter();
+            this.change = new core.EventEmitter();
+            this.initialized = new core.EventEmitter();
+            /**
+             *  Data of every slide
+             */
+            this.slidesData = [];
             /**
              * Shows whether carousel is loaded of not.
              */
@@ -4074,19 +4080,30 @@
                     _this.navData = data.navData;
                     _this.dotsData = data.dotsData;
                 }));
+                this._initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap(function () {
+                    _this.gatherTranslatedData();
+                    _this.initialized.emit(_this.slidesOutputData);
+                    // this.slidesOutputData = {};
+                }));
                 this._translatedCarousel$ = this.carouselService.getTranslatedState().pipe(operators.tap(function () {
                     _this.gatherTranslatedData();
                     _this.translated.emit(_this.slidesOutputData);
-                    _this.slidesOutputData = {};
+                    // this.slidesOutputData = {};
+                }));
+                this._changeCarousel$ = this.carouselService.getChangeState().pipe(operators.tap(function () {
+                    _this.gatherTranslatedData();
+                    _this.change.emit(_this.slidesOutputData);
+                    // this.slidesOutputData = {};
                 }));
                 this._draggingCarousel$ = this.carouselService.getDragState().pipe(operators.tap(function () {
-                    _this.dragging.emit(true);
+                    _this.gatherTranslatedData();
+                    _this.dragging.emit({ dragging: true, data: _this.slidesOutputData });
                 }), operators.switchMap(function () {
                     return _this.carouselService.getTranslatedState().pipe(operators.first(), operators.tap(function () {
-                        _this.dragging.emit(false);
+                        _this.dragging.emit({ dragging: false, data: _this.slidesOutputData });
                     }));
                 }));
-                this._carouselMerge$ = rxjs.merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$);
+                this._carouselMerge$ = rxjs.merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$, this._initializedCarousel$);
                 this._allObservSubscription = this._carouselMerge$.subscribe(function () { });
             };
         /**
@@ -4304,6 +4321,8 @@
             slides: [{ type: core.ContentChildren, args: [CarouselSlideDirective,] }],
             translated: [{ type: core.Output }],
             dragging: [{ type: core.Output }],
+            change: [{ type: core.Output }],
+            initialized: [{ type: core.Output }],
             options: [{ type: core.Input }]
         };
         return CarouselComponent;
