@@ -407,7 +407,8 @@ export class CarouselComponent
    * @param id fragment of url
    */
   to(id: string) {
-    if (!this.carouselLoaded || (this.navData && this.navData.disabled) || (this.dotsData && this.dotsData.disabled)) return;
+    // if (!this.carouselLoaded || ((this.navData && this.navData.disabled) && (this.dotsData && this.dotsData.disabled))) return;
+    if (!this.carouselLoaded) return;
     this.navigationService.toSlideById(id);
   }
 
