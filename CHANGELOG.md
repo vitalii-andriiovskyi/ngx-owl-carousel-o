@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v1.0.4](#v1.0.4)
 * [v1.0.3](#v1.0.3)
 * [v1.0.2](#v1.0.2)
 * [v1.0.1](#v1.0.1)
@@ -8,6 +9,10 @@
 * [v0.1.1](#v0.1.1)
 * [v0.1.0](#v0.1.0)
 * [v0.0.5](#v0.0.5)
+
+## v1.0.4
+
+The version `v1.0.4` refactors the method `to(id)` of `CarouselComponent` removing the forbiddance to scroll the carousel when `nav` or `dots` gets disabled.
 
 ## v1.0.3
 The version `v1.0.3` adds events `initialized` and `change`, modifies the payload of event `dragging`.
