@@ -4277,7 +4277,8 @@ var CarouselComponent = /** @class */ (function () {
      * @return {?}
      */
     function (id) {
-        if (!this.carouselLoaded || (this.navData && this.navData.disabled) || (this.dotsData && this.dotsData.disabled))
+        // if (!this.carouselLoaded || ((this.navData && this.navData.disabled) && (this.dotsData && this.dotsData.disabled))) return;
+        if (!this.carouselLoaded)
             return;
         this.navigationService.toSlideById(id);
     };
