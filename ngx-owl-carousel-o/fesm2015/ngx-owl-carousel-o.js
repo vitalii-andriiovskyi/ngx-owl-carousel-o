@@ -2223,7 +2223,12 @@ function windowFactory(browserWindowRef, platformId) {
     if (isPlatformBrowser(platformId)) {
         return browserWindowRef.nativeWindow;
     }
-    return new Object();
+    /** @type {?} */
+    const obj = {
+        setTimeout: (func, time) => { },
+        clearTimeout: (a) => { }
+    };
+    return obj;
 }
 /**
  * Create a injectable provider for the WindowRef token that uses the BrowserWindowRef class.
@@ -2293,7 +2298,11 @@ function documentFactory(browserDocumentRef, platformId) {
     if (isPlatformBrowser(platformId)) {
         return browserDocumentRef.nativeDocument;
     }
-    return new Object();
+    /** @type {?} */
+    const doc = {
+        hidden: false
+    };
+    return doc;
 }
 /**
  * Create a injectable provider for the DocumentRef token that uses the BrowserDocumentRef class.

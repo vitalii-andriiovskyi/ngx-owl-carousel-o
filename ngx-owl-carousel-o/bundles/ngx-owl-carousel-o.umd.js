@@ -3163,7 +3163,12 @@
         if (common.isPlatformBrowser(platformId)) {
             return browserWindowRef.nativeWindow;
         }
-        return new Object();
+        /** @type {?} */
+        var obj = {
+            setTimeout: function (func, time) { },
+            clearTimeout: function (a) { }
+        };
+        return obj;
     }
     /**
      * Create a injectable provider for the WindowRef token that uses the BrowserWindowRef class.
@@ -3252,7 +3257,11 @@
         if (common.isPlatformBrowser(platformId)) {
             return browserDocumentRef.nativeDocument;
         }
-        return new Object();
+        /** @type {?} */
+        var doc = {
+            hidden: false
+        };
+        return doc;
     }
     /**
      * Create a injectable provider for the DocumentRef token that uses the BrowserDocumentRef class.
