@@ -48,7 +48,10 @@ export function documentFactory(
   if (isPlatformBrowser(platformId)) {
     return browserDocumentRef.nativeDocument;
   }
-  return new Object();
+  const doc = {
+    hidden: false
+  }
+  return doc;
 }
 
 /**
