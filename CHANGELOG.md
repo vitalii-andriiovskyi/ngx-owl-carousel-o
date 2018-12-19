@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v1.0.5](#v1.0.5)
 * [v1.0.4](#v1.0.4)
 * [v1.0.3](#v1.0.3)
 * [v1.0.2](#v1.0.2)
@@ -9,6 +10,9 @@
 * [v0.1.1](#v0.1.1)
 * [v0.1.0](#v0.1.0)
 * [v0.0.5](#v0.0.5)
+
+## v1.0.5
+The version `v1.0.5` refactors the object return by `windowFactory()` and the object return by `documentFactory()`. These two object are for non-browser platform.
 
 ## v1.0.4
 
