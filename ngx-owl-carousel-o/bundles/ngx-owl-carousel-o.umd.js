@@ -3363,7 +3363,7 @@
             function (timeout, speed) {
                 if (this._paused) {
                     this._paused = false;
-                    this._setAutoPlayInterval();
+                    this._setAutoPlayInterval(1);
                 }
                 if (this.carouselService.is('rotating')) {
                     return;
@@ -3406,14 +3406,16 @@
            */
         /**
          * Sets autoplay in motion.
+         * @param {?=} timeout
          * @return {?}
          */
         AutoplayService.prototype._setAutoPlayInterval = /**
          * Sets autoplay in motion.
+         * @param {?=} timeout
          * @return {?}
          */
-            function () {
-                this._timeout = this._getNextTimeout();
+            function (timeout) {
+                this._timeout = this._getNextTimeout(timeout);
             };
         /**
          * Stops the autoplay.
@@ -3509,7 +3511,7 @@
          */
             function () {
                 if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
-                    this.pause();
+                    this.play();
                 }
             };
         /**
@@ -3525,7 +3527,7 @@
          */
             function () {
                 if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
-                    this.pause();
+                    this.play();
                 }
             };
         AutoplayService.decorators = [
