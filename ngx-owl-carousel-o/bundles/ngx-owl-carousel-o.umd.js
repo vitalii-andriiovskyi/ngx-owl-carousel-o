@@ -3394,6 +3394,7 @@
                 if (this._timeout) {
                     this.winRef.clearTimeout(this._timeout);
                 }
+                this._isArtificialAutoplayTimeout = timeout ? true : false;
                 return this.winRef.setTimeout(function () {
                     if (_this._paused || _this.carouselService.is('busy') || _this.carouselService.is('interacting') || _this.docRef.hidden) {
                         return;
@@ -3483,6 +3484,21 @@
                 }
             };
         /**
+         * Starts autoplaying of the carousel in the case when user leaves the carousel before it starts translateing (moving)
+         */
+        /**
+         * Starts autoplaying of the carousel in the case when user leaves the carousel before it starts translateing (moving)
+         * @return {?}
+         */
+        AutoplayService.prototype._playAfterTranslated = /**
+         * Starts autoplaying of the carousel in the case when user leaves the carousel before it starts translateing (moving)
+         * @return {?}
+         */
+            function () {
+                var _this = this;
+                rxjs.of('translated').pipe(operators.switchMap(function (data) { return _this.carouselService.getTranslatedState(); }), operators.first(), operators.filter(function () { return _this._isArtificialAutoplayTimeout; }), operators.tap(function () { return _this._setAutoPlayInterval(); })).subscribe(function () { });
+            };
+        /**
          * Starts pausing
          */
         /**
@@ -3512,6 +3528,7 @@
             function () {
                 if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
                     this.play();
+                    this._playAfterTranslated();
                 }
             };
         /**
@@ -3528,6 +3545,7 @@
             function () {
                 if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
                     this.play();
+                    this._playAfterTranslated();
                 }
             };
         AutoplayService.decorators = [

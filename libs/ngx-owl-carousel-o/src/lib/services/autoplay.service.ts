@@ -1,7 +1,8 @@
 import { Injectable, Inject, OnDestroy } from '@angular/core';
-import { Subscription, Observable, merge } from 'rxjs';
+import { Subscription, Observable, merge, of } from 'rxjs';
+import { tap, switchMap, first, filter } from 'rxjs/operators';
+
 import { CarouselService } from './carousel.service';
-import { tap } from 'rxjs/operators';
 import { WINDOW } from './window-ref.service';
 import { DOCUMENT } from './document-ref.service';
 
@@ -21,6 +22,11 @@ export class AutoplayService implements OnDestroy{
    * Indicates whenever the autoplay is paused.
    */
   private _paused = false;
+
+  /**
+   * Shows whether the code (the plugin) changed the option 'AutoplayTimeout' for own needs
+   */
+  private _isArtificialAutoplayTimeout: boolean;
 
   private winRef: Window;
   private docRef: Document;
@@ -94,7 +100,10 @@ export class AutoplayService implements OnDestroy{
 	private _getNextTimeout(timeout?: number, speed?: number): number {
 		if ( this._timeout ) {
 			this.winRef.clearTimeout(this._timeout);
-		}
+    }
+
+    this._isArtificialAutoplayTimeout = timeout ? true : false;
+
 		return this.winRef.setTimeout(() =>{
       if (this._paused || this.carouselService.is('busy') || this.carouselService.is('interacting') || this.docRef.hidden) {
 				return;
@@ -137,7 +146,7 @@ export class AutoplayService implements OnDestroy{
    * Manages by autoplaying according to data passed by _changedSettingsCarousel$ Obsarvable
    * @param data object with current position of carousel and type of change
    */
-  private _handleChangeObservable(data) {
+  private _handleChangeObservable(data: any) {
     if (data.property.name === 'settings') {
       if (this.carouselService.settings.autoplay) {
         this.play();
@@ -150,6 +159,18 @@ export class AutoplayService implements OnDestroy{
         this._setAutoPlayInterval();
       }
     }
+  }
+
+  /**
+   * Starts autoplaying of the carousel in the case when user leaves the carousel before it starts translateing (moving)
+   */
+  private _playAfterTranslated() {
+    of('translated').pipe(
+      switchMap(data => this.carouselService.getTranslatedState()),
+      first(),
+      filter(() => this._isArtificialAutoplayTimeout),
+      tap(() => this._setAutoPlayInterval())
+    ).subscribe(() => { });
   }
 
   /**
@@ -167,6 +188,7 @@ export class AutoplayService implements OnDestroy{
   startPlayingMouseLeave() {
     if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
       this.play();
+      this._playAfterTranslated();
     }
   }
 
@@ -176,6 +198,7 @@ export class AutoplayService implements OnDestroy{
   startPlayingTouchEnd() {
     if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
       this.play();
+      this._playAfterTranslated();
     }
   }
 }

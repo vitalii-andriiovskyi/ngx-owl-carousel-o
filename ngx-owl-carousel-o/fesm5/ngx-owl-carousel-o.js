@@ -1,7 +1,7 @@
 import { EventManager } from '@angular/platform-browser';
 import { __extends, __spread, __assign } from 'tslib';
-import { Subject, merge } from 'rxjs';
-import { tap, filter, skip, delay, switchMap, first } from 'rxjs/operators';
+import { Subject, merge, of } from 'rxjs';
+import { tap, filter, switchMap, first, skip, delay } from 'rxjs/operators';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { isPlatformBrowser, LocationStrategy, CommonModule } from '@angular/common';
 import { Injectable, ErrorHandler, isDevMode, InjectionToken, PLATFORM_ID, Inject, Component, Input, Output, Directive, ContentChildren, TemplateRef, ElementRef, EventEmitter, NgZone, HostListener, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
@@ -3331,6 +3331,7 @@ var AutoplayService = /** @class */ (function () {
         if (this._timeout) {
             this.winRef.clearTimeout(this._timeout);
         }
+        this._isArtificialAutoplayTimeout = timeout ? true : false;
         return this.winRef.setTimeout(function () {
             if (_this._paused || _this.carouselService.is('busy') || _this.carouselService.is('interacting') || _this.docRef.hidden) {
                 return;
@@ -3420,6 +3421,21 @@ var AutoplayService = /** @class */ (function () {
         }
     };
     /**
+     * Starts autoplaying of the carousel in the case when user leaves the carousel before it starts translateing (moving)
+     */
+    /**
+     * Starts autoplaying of the carousel in the case when user leaves the carousel before it starts translateing (moving)
+     * @return {?}
+     */
+    AutoplayService.prototype._playAfterTranslated = /**
+     * Starts autoplaying of the carousel in the case when user leaves the carousel before it starts translateing (moving)
+     * @return {?}
+     */
+    function () {
+        var _this = this;
+        of('translated').pipe(switchMap(function (data) { return _this.carouselService.getTranslatedState(); }), first(), filter(function () { return _this._isArtificialAutoplayTimeout; }), tap(function () { return _this._setAutoPlayInterval(); })).subscribe(function () { });
+    };
+    /**
      * Starts pausing
      */
     /**
@@ -3449,6 +3465,7 @@ var AutoplayService = /** @class */ (function () {
     function () {
         if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
             this.play();
+            this._playAfterTranslated();
         }
     };
     /**
@@ -3465,6 +3482,7 @@ var AutoplayService = /** @class */ (function () {
     function () {
         if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
             this.play();
+            this._playAfterTranslated();
         }
     };
     AutoplayService.decorators = [
