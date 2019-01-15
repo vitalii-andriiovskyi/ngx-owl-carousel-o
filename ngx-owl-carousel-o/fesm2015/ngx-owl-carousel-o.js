@@ -1,6 +1,6 @@
 import { EventManager } from '@angular/platform-browser';
-import { Subject, merge } from 'rxjs';
-import { tap, filter, skip, delay, switchMap, first } from 'rxjs/operators';
+import { Subject, merge, of } from 'rxjs';
+import { tap, filter, switchMap, first, skip, delay } from 'rxjs/operators';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { isPlatformBrowser, LocationStrategy, CommonModule } from '@angular/common';
 import { Injectable, ErrorHandler, isDevMode, InjectionToken, PLATFORM_ID, Inject, Component, Input, Output, Directive, ContentChildren, TemplateRef, ElementRef, EventEmitter, NgZone, HostListener, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
@@ -2406,6 +2406,7 @@ class AutoplayService {
         if (this._timeout) {
             this.winRef.clearTimeout(this._timeout);
         }
+        this._isArtificialAutoplayTimeout = timeout ? true : false;
         return this.winRef.setTimeout(() => {
             if (this._paused || this.carouselService.is('busy') || this.carouselService.is('interacting') || this.docRef.hidden) {
                 return;
@@ -2468,6 +2469,13 @@ class AutoplayService {
         }
     }
     /**
+     * Starts autoplaying of the carousel in the case when user leaves the carousel before it starts translateing (moving)
+     * @return {?}
+     */
+    _playAfterTranslated() {
+        of('translated').pipe(switchMap(data => this.carouselService.getTranslatedState()), first(), filter(() => this._isArtificialAutoplayTimeout), tap(() => this._setAutoPlayInterval())).subscribe(() => { });
+    }
+    /**
      * Starts pausing
      * @return {?}
      */
@@ -2483,6 +2491,7 @@ class AutoplayService {
     startPlayingMouseLeave() {
         if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
             this.play();
+            this._playAfterTranslated();
         }
     }
     /**
@@ -2492,6 +2501,7 @@ class AutoplayService {
     startPlayingTouchEnd() {
         if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
             this.play();
+            this._playAfterTranslated();
         }
     }
 }
