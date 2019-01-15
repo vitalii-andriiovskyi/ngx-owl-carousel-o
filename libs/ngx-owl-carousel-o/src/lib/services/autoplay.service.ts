@@ -166,7 +166,7 @@ export class AutoplayService implements OnDestroy{
    */
   startPlayingMouseLeave() {
     if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
-      this.pause();
+      this.play();
     }
   }
 
@@ -175,7 +175,7 @@ export class AutoplayService implements OnDestroy{
    */
   startPlayingTouchEnd() {
     if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
-      this.pause();
+      this.play();
     }
   }
 }
