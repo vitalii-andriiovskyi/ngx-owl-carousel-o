@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v1.0.7](#v1.0.7)
 * [v1.0.6](#v1.0.6)
 * [v1.0.5](#v1.0.5)
 * [v1.0.4](#v1.0.4)
@@ -12,8 +13,11 @@
 * [v0.1.0](#v0.1.0)
 * [v0.0.5](#v0.0.5)
 
+## v1.0.7
+The version `v1.0.7` fixes the additional problem to the issue [`#15`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/15). This problem is that when the user leaves the carousel before it gets translated (scrolled), the autoplay doesn't renew. 
+
 ## v1.0.6
-The version `v1.0.6` fixes the issue [`#15`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/15);
+The version `v1.0.6` fixes the issue [`#15`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/15).
 
 ## v1.0.5
 The version `v1.0.5` refactors the object return by `windowFactory()` and the object return by `documentFactory()`. These two object are for non-browser platform.
