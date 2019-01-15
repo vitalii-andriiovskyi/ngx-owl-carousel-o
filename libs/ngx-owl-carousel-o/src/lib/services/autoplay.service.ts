@@ -146,7 +146,7 @@ export class AutoplayService implements OnDestroy{
    * Manages by autoplaying according to data passed by _changedSettingsCarousel$ Obsarvable
    * @param data object with current position of carousel and type of change
    */
-  private _handleChangeObservable(data) {
+  private _handleChangeObservable(data: any) {
     if (data.property.name === 'settings') {
       if (this.carouselService.settings.autoplay) {
         this.play();
@@ -188,6 +188,7 @@ export class AutoplayService implements OnDestroy{
   startPlayingMouseLeave() {
     if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
       this.play();
+      this._playAfterTranslated();
     }
   }
 
@@ -197,6 +198,7 @@ export class AutoplayService implements OnDestroy{
   startPlayingTouchEnd() {
     if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
       this.play();
+      this._playAfterTranslated();
     }
   }
 }
