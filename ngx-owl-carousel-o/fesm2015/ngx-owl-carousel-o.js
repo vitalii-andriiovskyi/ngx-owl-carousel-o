@@ -2387,7 +2387,7 @@ class AutoplayService {
     play(timeout, speed) {
         if (this._paused) {
             this._paused = false;
-            this._setAutoPlayInterval();
+            this._setAutoPlayInterval(1);
         }
         if (this.carouselService.is('rotating')) {
             return;
@@ -2416,10 +2416,11 @@ class AutoplayService {
     ;
     /**
      * Sets autoplay in motion.
+     * @param {?=} timeout
      * @return {?}
      */
-    _setAutoPlayInterval() {
-        this._timeout = this._getNextTimeout();
+    _setAutoPlayInterval(timeout) {
+        this._timeout = this._getNextTimeout(timeout);
     }
     ;
     /**
@@ -2481,7 +2482,7 @@ class AutoplayService {
      */
     startPlayingMouseLeave() {
         if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
-            this.pause();
+            this.play();
         }
     }
     /**
@@ -2490,7 +2491,7 @@ class AutoplayService {
      */
     startPlayingTouchEnd() {
         if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
-            this.pause();
+            this.play();
         }
     }
 }

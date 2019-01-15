@@ -2,30 +2,12 @@
 
 **ngx-owl-carousel-o** is built for Angular >=6.0.0. It doesn't use jQuery. 
 
-The version `1.x.x` relies on Angular 7. If it's needed to use the library for Angular 6, install the v0.1.2 by running the command `yarn add ngx-owl-carousel-o@0.1.2` or `npm i ngx-owl-carousel-o@0.1.2`.
+The version `1.x.x` relies on Angular 7.
 
-The version `v1.0.3` adds events `initialized` and `change`, modifies the payload of event `dragging`.
-The previous `dragging` payload was `$event = true/false`. Now payload is: 
-``` typescript
-{
-  dragging: boolean,
-  data: SlidesOutputData
-}
-
-class SlidesOutputData {
-  startPosition?: number;
-  slides?: SlideModel[];
-};
-```
-
-The version `v1.0.2` adds the automatic disabling of logging in production mode and re-rendering of the carousel if the array with slides data changes.
-
-The version `v1.0.1` has the following changes:
-1. Added checking for the number of slides. If there are no slides to show, the carousel won't get rendered. 
-2. Correction of logging in cases when the option `items` is bigger than the number of slides or is equal to it:
-    - if it's bigger, the console will show the notification  `The option 'items' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled`;
-    - if it equals the number of slides and the developer enabled navigation buttons or dots, the console will show the message: `Option 'items' in your options is equal to the number of slides. So the navigation got disabled`. 
+If it's needed to use the library for Angular 6, install the v0.1.2 by running the command `yarn add ngx-owl-carousel-o@0.1.2` or `npm i ngx-owl-carousel-o@0.1.2`.
  
+[CHANGELOG](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/update-to-v7-of-nrwl-and-angular/CHANGELOG.md)
+
 ##### Table of Contents
 - [Get started](#get-started)
 - [Options](#options)
