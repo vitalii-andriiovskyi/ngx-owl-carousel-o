@@ -106,8 +106,8 @@ export class AutoplayService implements OnDestroy{
   /**
 	 * Sets autoplay in motion.
 	 */
-	private _setAutoPlayInterval() {
-		this._timeout = this._getNextTimeout();
+  private _setAutoPlayInterval(timeout?: number) {
+		this._timeout = this._getNextTimeout(timeout);
 	};
 
 	/**
