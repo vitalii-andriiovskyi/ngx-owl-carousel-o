@@ -22,6 +22,11 @@ export class AutoplayService implements OnDestroy{
    */
   private _paused = false;
 
+  /**
+   * Shows whether the code (the plugin) changed the option 'AutoplayTimeout' for own needs
+   */
+  private _isArtificialAutoplayTimeout: boolean;
+
   private winRef: Window;
   private docRef: Document;
 
@@ -94,7 +99,10 @@ export class AutoplayService implements OnDestroy{
 	private _getNextTimeout(timeout?: number, speed?: number): number {
 		if ( this._timeout ) {
 			this.winRef.clearTimeout(this._timeout);
-		}
+    }
+
+    this._isArtificialAutoplayTimeout = timeout ? true : false;
+
 		return this.winRef.setTimeout(() =>{
       if (this._paused || this.carouselService.is('busy') || this.carouselService.is('interacting') || this.docRef.hidden) {
 				return;
