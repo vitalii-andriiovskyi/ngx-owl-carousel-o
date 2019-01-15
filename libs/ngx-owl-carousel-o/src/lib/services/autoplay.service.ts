@@ -73,7 +73,7 @@ export class AutoplayService implements OnDestroy{
 	play(timeout?: number, speed?: number) {
     if (this._paused) {
 			this._paused = false;
-			this._setAutoPlayInterval();
+			this._setAutoPlayInterval(1);
     }
 
 		if (this.carouselService.is('rotating')) {
