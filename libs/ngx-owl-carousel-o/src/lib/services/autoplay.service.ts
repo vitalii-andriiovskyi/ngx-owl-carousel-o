@@ -1,7 +1,8 @@
 import { Injectable, Inject, OnDestroy } from '@angular/core';
-import { Subscription, Observable, merge } from 'rxjs';
+import { Subscription, Observable, merge, of } from 'rxjs';
+import { tap, switchMap, first, filter } from 'rxjs/operators';
+
 import { CarouselService } from './carousel.service';
-import { tap } from 'rxjs/operators';
 import { WINDOW } from './window-ref.service';
 import { DOCUMENT } from './document-ref.service';
 
@@ -158,6 +159,18 @@ export class AutoplayService implements OnDestroy{
         this._setAutoPlayInterval();
       }
     }
+  }
+
+  /**
+   * Starts autoplaying of the carousel in the case when user leaves the carousel before it starts translateing (moving)
+   */
+  private _playAfterTranslated() {
+    of('translated').pipe(
+      switchMap(data => this.carouselService.getTranslatedState()),
+      first(),
+      filter(() => this._isArtificialAutoplayTimeout),
+      tap(() => this._setAutoPlayInterval())
+    ).subscribe(() => { });
   }
 
   /**
