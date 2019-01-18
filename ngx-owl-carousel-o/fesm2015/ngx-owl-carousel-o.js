@@ -3,7 +3,7 @@ import { Subject, merge, of } from 'rxjs';
 import { tap, filter, switchMap, first, skip, delay } from 'rxjs/operators';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { isPlatformBrowser, LocationStrategy, CommonModule } from '@angular/common';
-import { Injectable, ErrorHandler, isDevMode, InjectionToken, PLATFORM_ID, Inject, Component, Input, Output, Directive, ContentChildren, TemplateRef, ElementRef, EventEmitter, NgZone, HostListener, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
+import { Injectable, ErrorHandler, isDevMode, InjectionToken, PLATFORM_ID, Inject, Component, Input, Output, Directive, ContentChildren, TemplateRef, ElementRef, EventEmitter, HostListener, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
 import { ActivatedRoute, Router, NavigationEnd, RouterModule } from '@angular/router';
 
 /**
@@ -2300,7 +2300,8 @@ function documentFactory(browserDocumentRef, platformId) {
     }
     /** @type {?} */
     const doc = {
-        hidden: false
+        hidden: false,
+        visibilityState: 'visible'
     };
     return doc;
 }
@@ -2432,6 +2433,7 @@ class AutoplayService {
         if (!this.carouselService.is('rotating')) {
             return;
         }
+        this._paused = true;
         this.winRef.clearTimeout(this._timeout);
         this.carouselService.leave('rotating');
     }
@@ -2992,8 +2994,9 @@ class CarouselComponent {
      * @param {?} autoHeightService
      * @param {?} hashService
      * @param {?} logger
+     * @param {?} docRef
      */
-    constructor(el, resizeService, carouselService, navigationService, autoplayService, lazyLoadService, animateService, autoHeightService, hashService, logger) {
+    constructor(el, resizeService, carouselService, navigationService, autoplayService, lazyLoadService, animateService, autoHeightService, hashService, logger, docRef) {
         this.el = el;
         this.resizeService = resizeService;
         this.carouselService = carouselService;
@@ -3016,7 +3019,25 @@ class CarouselComponent {
          * Shows whether carousel is loaded of not.
          */
         this.carouselLoaded = false;
+        this.docRef = (/** @type {?} */ (docRef));
     }
+    /**
+     * @param {?} ev
+     * @return {?}
+     */
+    onVisibilityChange(ev) {
+        switch (this.docRef.visibilityState) {
+            case 'visible':
+                this.startPlayML();
+                break;
+            case 'hidden':
+                this.startPausing();
+                break;
+            default:
+                break;
+        }
+    }
+    ;
     /**
      * @return {?}
      */
@@ -3130,7 +3151,7 @@ class CarouselComponent {
      * @return {?}
      */
     next() {
-        if (!this.carouselLoaded || (this.navData && this.navData.disabled))
+        if (!this.carouselLoaded)
             return;
         this.navigationService.next(this.carouselService.settings.navSpeed);
     }
@@ -3139,7 +3160,7 @@ class CarouselComponent {
      * @return {?}
      */
     prev() {
-        if (!this.carouselLoaded || (this.navData && this.navData.disabled))
+        if (!this.carouselLoaded)
             return;
         this.navigationService.prev(this.carouselService.settings.navSpeed);
     }
@@ -3242,7 +3263,10 @@ CarouselComponent.decorators = [
         </div> <!-- /.owl-nav -->
         <div class="owl-dots" [ngClass]="{'disabled': dotsData?.disabled}">
           <div *ngFor="let dot of dotsData?.dots" class="owl-dot" [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" (click)="moveByDot(dot.id)">
-            <span [innerHTML]="dot.innerContent"></span>
+            <span [innerHTML]="dot.innerContent"
+              [ngStyle]="{
+                'overflow': dot.innerContent ? '' : 'hidden',
+                'color': dot.innerContent ? '' : 'transparent'}"></span>
           </div>
         </div> <!-- /.owl-dots -->
       </ng-container>
@@ -3271,7 +3295,8 @@ CarouselComponent.ctorParameters = () => [
     { type: AnimateService },
     { type: AutoHeightService },
     { type: HashService },
-    { type: OwlLogger }
+    { type: OwlLogger },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
 ];
 CarouselComponent.propDecorators = {
     slides: [{ type: ContentChildren, args: [CarouselSlideDirective,] }],
@@ -3279,7 +3304,8 @@ CarouselComponent.propDecorators = {
     dragging: [{ type: Output }],
     change: [{ type: Output }],
     initialized: [{ type: Output }],
-    options: [{ type: Input }]
+    options: [{ type: Input }],
+    onVisibilityChange: [{ type: HostListener, args: ['document:visibilitychange', ['$event'],] }]
 };
 
 /**

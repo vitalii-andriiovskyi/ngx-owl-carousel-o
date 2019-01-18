@@ -11,7 +11,9 @@ import {
   TemplateRef,
   ElementRef,
   AfterContentInit,
-  EventEmitter
+  EventEmitter,
+  HostListener,
+  Inject
 } from '@angular/core';
 
 import { Subscription, Observable, merge } from 'rxjs';
@@ -31,6 +33,7 @@ import { AnimateService } from '../services/animate.service';
 import { AutoHeightService } from '../services/autoheight.service';
 import { HashService } from '../services/hash.service';
 import { OwlLogger } from '../services/logger.service';
+import { DOCUMENT } from '../services/document-ref.service';
 
 let nextId = 0;
 
@@ -114,7 +117,10 @@ export class SlidesOutputData {
         </div> <!-- /.owl-nav -->
         <div class="owl-dots" [ngClass]="{'disabled': dotsData?.disabled}">
           <div *ngFor="let dot of dotsData?.dots" class="owl-dot" [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" (click)="moveByDot(dot.id)">
-            <span [innerHTML]="dot.innerContent"></span>
+            <span [innerHTML]="dot.innerContent"
+              [ngStyle]="{
+                'overflow': dot.innerContent ? '' : 'hidden',
+                'color': dot.innerContent ? '' : 'transparent'}"></span>
           </div>
         </div> <!-- /.owl-dots -->
       </ng-container>
@@ -232,6 +238,7 @@ export class CarouselComponent
    * Observable for merging all Observables and creating one subscription
    */
   private _carouselMerge$: Observable<CarouselCurrentData | string>;
+  private docRef: Document;
 
   constructor(
     private el: ElementRef,
@@ -243,8 +250,29 @@ export class CarouselComponent
     private animateService: AnimateService,
     private autoHeightService: AutoHeightService,
     private hashService: HashService,
-    private logger: OwlLogger
-  ) {}
+    private logger: OwlLogger,
+    @Inject(DOCUMENT) docRef: any
+  ) {
+    this.docRef = docRef as Document;
+
+  }
+
+  @HostListener('document:visibilitychange', ['$event'])
+  onVisibilityChange(ev: Event) {
+    switch (this.docRef.visibilityState) {
+      case 'visible':
+        this.startPlayML();
+        break;
+
+      case 'hidden':
+        this.startPausing();
+        break;
+
+      default:
+        break;
+    }
+  };
+
 
   ngOnInit() {
     this.spyDataStreams();
@@ -382,7 +410,7 @@ export class CarouselComponent
    * Handler for click event, attached to next button
    */
   next() {
-    if (!this.carouselLoaded || (this.navData && this.navData.disabled)) return;
+    if (!this.carouselLoaded) return;
     this.navigationService.next(this.carouselService.settings.navSpeed);
   }
 
@@ -390,7 +418,7 @@ export class CarouselComponent
    * Handler for click event, attached to prev button
    */
   prev() {
-    if (!this.carouselLoaded || (this.navData && this.navData.disabled)) return;
+    if (!this.carouselLoaded) return;
     this.navigationService.prev(this.carouselService.settings.navSpeed);
   }
 

@@ -247,16 +247,16 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it('shouldn\'t move the carousel when navigation is disabled', fakeAsync(() => {
+  it(`should move the carousel by means of 'next()' and 'prev()', when the option 'nav' is disabled`, fakeAsync(() => {
     discardPeriodicTasks();
     const html = `
       <div style="width: 920px; margin: auto">
         <owl-carousel-o [options]="{items: '10', loop: true}">
-          <ng-template carouselSlide [id]="slide-1">Slide 1</ng-template>
-          <ng-template carouselSlide [id]="slide-2">Slide 2</ng-template>
-          <ng-template carouselSlide [id]="slide-3">Slide 3</ng-template>
-          <ng-template carouselSlide [id]="slide-4">Slide 4</ng-template>
-          <ng-template carouselSlide [id]="slide-5">Slide 5</ng-template>
+          <ng-template carouselSlide id="slide-1">Slide 1</ng-template>
+          <ng-template carouselSlide id="slide-2">Slide 2</ng-template>
+          <ng-template carouselSlide id="slide-3">Slide 3</ng-template>
+          <ng-template carouselSlide id="slide-4">Slide 4</ng-template>
+          <ng-template carouselSlide id="slide-5">Slide 5</ng-template>
         </owl-carousel-o>
       </div>
     `
@@ -276,7 +276,7 @@ describe('CarouselComponent', () => {
     tick();
     fixtureHost.detectChanges();
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
 
     carouselComponent.prev();
 
@@ -290,7 +290,7 @@ describe('CarouselComponent', () => {
     tick();
     fixtureHost.detectChanges();
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
 
   }));
 
@@ -2841,6 +2841,95 @@ describe('CarouselComponent', () => {
     triggerTouchEvent(carouselHTML, 'touchend', {});
     expect(autoplayService.startPlayingTouchEnd).toHaveBeenCalled();
     autoplayService.stop();
+  }));
+
+  it('should stop autoplaying of the carousel when switching to new tab in the browser \'visibilitychange\' [options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 100, autoplayHoverPause: true}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 100, autoplayHoverPause: true}" (translated)="getPassedData($event)">
+          <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+          <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+          <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+          <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+          <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    autoplayService = deCarouselComponent.injector.get(AutoplayService);
+    spyOn(autoplayService, 'startPausing');
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+    tick(1500);
+    fixtureHost.detectChanges();
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+
+    Object.defineProperty(document, 'visibilityState', {value: 'hidden', writable: true});
+    Object.defineProperty(document, 'hidden', {value: true, writable: true});
+    document.dispatchEvent(new Event('visibilitychange'));
+
+    expect(autoplayService.startPausing).toHaveBeenCalled();
+
+    // restore document.visibilityState to 'visible' and document.hidden to 'false'
+    tick();
+    fixtureHost.detectChanges();
+    Object.defineProperty(document, 'visibilityState', {value: 'visible', writable: true});
+    Object.defineProperty(document, 'hidden', {value: false, writable: true});
+
+  }));
+
+  it('should renew autoplaying of the carousel when switching to new tab and come back to old one \'visibilitychange\' [options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 100, autoplayHoverPause: true}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 100, autoplayHoverPause: true}" (translated)="getPassedData($event)">
+          <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+          <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+          <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+          <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+          <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    autoplayService = deCarouselComponent.injector.get(AutoplayService);
+    spyOn(autoplayService, 'startPausing');
+    spyOn(autoplayService, 'play');
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+    tick(1500);
+    fixtureHost.detectChanges();
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+
+    Object.defineProperty(document, 'visibilityState', {value: 'hidden', writable: true});
+    Object.defineProperty(document, 'hidden', {value: true, writable: true});
+    document.dispatchEvent(new Event('visibilitychange'));
+
+    expect(autoplayService.startPausing).toHaveBeenCalled();
+
+    tick();
+    fixtureHost.detectChanges();
+
+    Object.defineProperty(document, 'visibilityState', {value: 'visible', writable: true});
+    Object.defineProperty(document, 'hidden', {value: false, writable: true});
+    document.dispatchEvent(new Event('visibilitychange'));
+
+    expect(autoplayService.play).toHaveBeenCalled();
   }));
 
   it('should load content for 3 slides [options]="{nav: true, lazyLoad: true}"', fakeAsync(() => {

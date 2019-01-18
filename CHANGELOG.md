@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v1.0.8](#v1.0.8)
 * [v1.0.7](#v1.0.7)
 * [v1.0.6](#v1.0.6)
 * [v1.0.5](#v1.0.5)
@@ -12,6 +13,13 @@
 * [v0.1.1](#v0.1.1)
 * [v0.1.0](#v0.1.0)
 * [v0.0.5](#v0.0.5)
+
+## v1.0.8
+The version `v1.0.8` fixes the problem with renewing the autoplay of the carousel while switching to a new browser tab and coming back. 
+
+>There's one snag. The browser __Edge__ can't renew the autoplay in the case when the user sets the cursor of the mouse over the carousel, switches to another browser tab using a keyboard, and comes back to the tab holding a carousel. 
+
+Also, this version unblocks the methods `prev()` and `next()` in the case of disabling the option `nav=false`.
 
 ## v1.0.7
 The version `v1.0.7` fixes the additional problem to the issue [`#15`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/15). This problem is that when the user leaves the carousel before it gets translated (scrolled), the autoplay doesn't renew. 
