@@ -126,6 +126,7 @@ export class AutoplayService implements OnDestroy{
 		if (!this.carouselService.is('rotating')) {
 			return;
 		}
+    this._paused = true;
 
 		this.winRef.clearTimeout(this._timeout);
 		this.carouselService.leave('rotating');
