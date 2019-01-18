@@ -247,16 +247,16 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it('shouldn\'t move the carousel when navigation is disabled', fakeAsync(() => {
+  it(`should move the carousel by means of 'next()' and 'prev()', when the option 'nav' is disabled`, fakeAsync(() => {
     discardPeriodicTasks();
     const html = `
       <div style="width: 920px; margin: auto">
         <owl-carousel-o [options]="{items: '10', loop: true}">
-          <ng-template carouselSlide [id]="slide-1">Slide 1</ng-template>
-          <ng-template carouselSlide [id]="slide-2">Slide 2</ng-template>
-          <ng-template carouselSlide [id]="slide-3">Slide 3</ng-template>
-          <ng-template carouselSlide [id]="slide-4">Slide 4</ng-template>
-          <ng-template carouselSlide [id]="slide-5">Slide 5</ng-template>
+          <ng-template carouselSlide id="slide-1">Slide 1</ng-template>
+          <ng-template carouselSlide id="slide-2">Slide 2</ng-template>
+          <ng-template carouselSlide id="slide-3">Slide 3</ng-template>
+          <ng-template carouselSlide id="slide-4">Slide 4</ng-template>
+          <ng-template carouselSlide id="slide-5">Slide 5</ng-template>
         </owl-carousel-o>
       </div>
     `
@@ -276,7 +276,7 @@ describe('CarouselComponent', () => {
     tick();
     fixtureHost.detectChanges();
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
 
     carouselComponent.prev();
 
@@ -290,7 +290,7 @@ describe('CarouselComponent', () => {
     tick();
     fixtureHost.detectChanges();
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
 
   }));
 
