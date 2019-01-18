@@ -3259,7 +3259,8 @@
         }
         /** @type {?} */
         var doc = {
-            hidden: false
+            hidden: false,
+            visibilityState: 'visible'
         };
         return doc;
     }
@@ -3433,6 +3434,7 @@
                 if (!this.carouselService.is('rotating')) {
                     return;
                 }
+                this._paused = true;
                 this.winRef.clearTimeout(this._timeout);
                 this.carouselService.leave('rotating');
             };
@@ -4140,7 +4142,7 @@
         return SlidesOutputData;
     }());
     var CarouselComponent = /** @class */ (function () {
-        function CarouselComponent(el, resizeService, carouselService, navigationService, autoplayService, lazyLoadService, animateService, autoHeightService, hashService, logger) {
+        function CarouselComponent(el, resizeService, carouselService, navigationService, autoplayService, lazyLoadService, animateService, autoHeightService, hashService, logger, docRef) {
             this.el = el;
             this.resizeService = resizeService;
             this.carouselService = carouselService;
@@ -4163,7 +4165,28 @@
              * Shows whether carousel is loaded of not.
              */
             this.carouselLoaded = false;
+            this.docRef = ( /** @type {?} */(docRef));
         }
+        /**
+         * @param {?} ev
+         * @return {?}
+         */
+        CarouselComponent.prototype.onVisibilityChange = /**
+         * @param {?} ev
+         * @return {?}
+         */
+            function (ev) {
+                switch (this.docRef.visibilityState) {
+                    case 'visible':
+                        this.startPlayML();
+                        break;
+                    case 'hidden':
+                        this.startPausing();
+                        break;
+                    default:
+                        break;
+                }
+            };
         /**
          * @return {?}
          */
@@ -4327,7 +4350,7 @@
          * @return {?}
          */
             function () {
-                if (!this.carouselLoaded || (this.navData && this.navData.disabled))
+                if (!this.carouselLoaded)
                     return;
                 this.navigationService.next(this.carouselService.settings.navSpeed);
             };
@@ -4343,7 +4366,7 @@
          * @return {?}
          */
             function () {
-                if (!this.carouselLoaded || (this.navData && this.navData.disabled))
+                if (!this.carouselLoaded)
                     return;
                 this.navigationService.prev(this.carouselService.settings.navSpeed);
             };
@@ -4466,7 +4489,7 @@
         CarouselComponent.decorators = [
             { type: core.Component, args: [{
                         selector: 'owl-carousel-o',
-                        template: "\n    <div class=\"owl-carousel owl-theme\" #owlCarousel\n      [ngClass]=\"{'owl-rtl': owlDOMData?.rtl,\n                  'owl-loaded': owlDOMData?.isLoaded,\n                  'owl-responsive': owlDOMData?.isResponsive,\n                  'owl-drag': owlDOMData?.isMouseDragable,\n                  'owl-grab': owlDOMData?.isGrab}\"\n      (mouseover)=\"startPausing()\"\n      (mouseleave)=\"startPlayML()\"\n      (touchstart)=\"startPausing()\"\n      (touchend)=\"startPlayTE()\">\n\n      <div *ngIf=\"carouselLoaded\" class=\"owl-stage-outer\">\n        <owl-stage [owlDraggable]=\"{'isMouseDragable': owlDOMData?.isMouseDragable, 'isTouchDragable': owlDOMData?.isTouchDragable}\"\n                    [stageData]=\"stageData\"\n                    [slidesData]=\"slidesData\"></owl-stage>\n      </div> <!-- /.owl-stage-outer -->\n      <ng-container *ngIf=\"slides.toArray().length\">\n        <div class=\"owl-nav\" [ngClass]=\"{'disabled': navData?.disabled}\">\n          <div class=\"owl-prev\" [ngClass]=\"{'disabled': navData?.prev?.disabled}\" (click)=\"prev()\" [innerHTML]=\"navData?.prev?.htmlText\"></div>\n          <div class=\"owl-next\" [ngClass]=\"{'disabled': navData?.next?.disabled}\" (click)=\"next()\" [innerHTML]=\"navData?.next?.htmlText\"></div>\n        </div> <!-- /.owl-nav -->\n        <div class=\"owl-dots\" [ngClass]=\"{'disabled': dotsData?.disabled}\">\n          <div *ngFor=\"let dot of dotsData?.dots\" class=\"owl-dot\" [ngClass]=\"{'active': dot.active, 'owl-dot-text': dot.showInnerContent}\" (click)=\"moveByDot(dot.id)\">\n            <span [innerHTML]=\"dot.innerContent\"></span>\n          </div>\n        </div> <!-- /.owl-dots -->\n      </ng-container>\n    </div> <!-- /.owl-carousel owl-loaded -->\n  ",
+                        template: "\n    <div class=\"owl-carousel owl-theme\" #owlCarousel\n      [ngClass]=\"{'owl-rtl': owlDOMData?.rtl,\n                  'owl-loaded': owlDOMData?.isLoaded,\n                  'owl-responsive': owlDOMData?.isResponsive,\n                  'owl-drag': owlDOMData?.isMouseDragable,\n                  'owl-grab': owlDOMData?.isGrab}\"\n      (mouseover)=\"startPausing()\"\n      (mouseleave)=\"startPlayML()\"\n      (touchstart)=\"startPausing()\"\n      (touchend)=\"startPlayTE()\">\n\n      <div *ngIf=\"carouselLoaded\" class=\"owl-stage-outer\">\n        <owl-stage [owlDraggable]=\"{'isMouseDragable': owlDOMData?.isMouseDragable, 'isTouchDragable': owlDOMData?.isTouchDragable}\"\n                    [stageData]=\"stageData\"\n                    [slidesData]=\"slidesData\"></owl-stage>\n      </div> <!-- /.owl-stage-outer -->\n      <ng-container *ngIf=\"slides.toArray().length\">\n        <div class=\"owl-nav\" [ngClass]=\"{'disabled': navData?.disabled}\">\n          <div class=\"owl-prev\" [ngClass]=\"{'disabled': navData?.prev?.disabled}\" (click)=\"prev()\" [innerHTML]=\"navData?.prev?.htmlText\"></div>\n          <div class=\"owl-next\" [ngClass]=\"{'disabled': navData?.next?.disabled}\" (click)=\"next()\" [innerHTML]=\"navData?.next?.htmlText\"></div>\n        </div> <!-- /.owl-nav -->\n        <div class=\"owl-dots\" [ngClass]=\"{'disabled': dotsData?.disabled}\">\n          <div *ngFor=\"let dot of dotsData?.dots\" class=\"owl-dot\" [ngClass]=\"{'active': dot.active, 'owl-dot-text': dot.showInnerContent}\" (click)=\"moveByDot(dot.id)\">\n            <span [innerHTML]=\"dot.innerContent\"\n              [ngStyle]=\"{\n                'overflow': dot.innerContent ? '' : 'hidden',\n                'color': dot.innerContent ? '' : 'transparent'}\"></span>\n          </div>\n        </div> <!-- /.owl-dots -->\n      </ng-container>\n    </div> <!-- /.owl-carousel owl-loaded -->\n  ",
                         providers: [
                             NavigationService,
                             AutoplayService,
@@ -4491,7 +4514,8 @@
                 { type: AnimateService },
                 { type: AutoHeightService },
                 { type: HashService },
-                { type: OwlLogger }
+                { type: OwlLogger },
+                { type: undefined, decorators: [{ type: core.Inject, args: [DOCUMENT,] }] }
             ];
         };
         CarouselComponent.propDecorators = {
@@ -4500,7 +4524,8 @@
             dragging: [{ type: core.Output }],
             change: [{ type: core.Output }],
             initialized: [{ type: core.Output }],
-            options: [{ type: core.Input }]
+            options: [{ type: core.Input }],
+            onVisibilityChange: [{ type: core.HostListener, args: ['document:visibilitychange', ['$event'],] }]
         };
         return CarouselComponent;
     }());
