@@ -49,7 +49,8 @@ export function documentFactory(
     return browserDocumentRef.nativeDocument;
   }
   const doc = {
-    hidden: false
+    hidden: false,
+    visibilityState: 'visible'
   }
   return doc;
 }
