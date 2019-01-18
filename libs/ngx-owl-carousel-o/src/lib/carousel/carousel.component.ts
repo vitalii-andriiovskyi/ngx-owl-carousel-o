@@ -410,7 +410,7 @@ export class CarouselComponent
    * Handler for click event, attached to next button
    */
   next() {
-    if (!this.carouselLoaded || (this.navData && this.navData.disabled)) return;
+    if (!this.carouselLoaded) return;
     this.navigationService.next(this.carouselService.settings.navSpeed);
   }
 
@@ -418,7 +418,7 @@ export class CarouselComponent
    * Handler for click event, attached to prev button
    */
   prev() {
-    if (!this.carouselLoaded || (this.navData && this.navData.disabled)) return;
+    if (!this.carouselLoaded) return;
     this.navigationService.prev(this.carouselService.settings.navSpeed);
   }
 
