@@ -11,7 +11,9 @@ import {
   TemplateRef,
   ElementRef,
   AfterContentInit,
-  EventEmitter
+  EventEmitter,
+  HostListener,
+  Inject
 } from '@angular/core';
 
 import { Subscription, Observable, merge } from 'rxjs';
@@ -31,6 +33,7 @@ import { AnimateService } from '../services/animate.service';
 import { AutoHeightService } from '../services/autoheight.service';
 import { HashService } from '../services/hash.service';
 import { OwlLogger } from '../services/logger.service';
+import { DOCUMENT } from '../services/document-ref.service';
 
 let nextId = 0;
 
@@ -232,6 +235,7 @@ export class CarouselComponent
    * Observable for merging all Observables and creating one subscription
    */
   private _carouselMerge$: Observable<CarouselCurrentData | string>;
+  private docRef: Document;
 
   constructor(
     private el: ElementRef,
@@ -243,8 +247,29 @@ export class CarouselComponent
     private animateService: AnimateService,
     private autoHeightService: AutoHeightService,
     private hashService: HashService,
-    private logger: OwlLogger
-  ) {}
+    private logger: OwlLogger,
+    @Inject(DOCUMENT) docRef: any
+  ) {
+    this.docRef = docRef as Document;
+
+  }
+
+  @HostListener('document:visibilitychange', ['$event'])
+  onVisibilityChange(ev: Event) {
+    switch (this.docRef.visibilityState) {
+      case 'visible':
+        this.startPlayML();
+        break;
+
+      case 'hidden':
+        this.startPausing();
+        break;
+
+      default:
+        break;
+    }
+  };
+
 
   ngOnInit() {
     this.spyDataStreams();
