@@ -2811,6 +2811,99 @@ describe('CarouselComponent', () => {
     expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('2s', '2s transition');
   }));
 
+  it('should change dotsSpeed and navSpeed for certain viewport: responsive case"', fakeAsync(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+       <div class="owl-wrapper">
+          <owl-carousel-o [options]="{
+            dotsSpeed: 500,
+            navSpeed: 400,
+            nav: true,
+            responsive: {
+              '600': {
+                dotsSpeed: 200,
+                navSpeed: 300
+              },
+              '900': {
+                dotsSpeed: 500,
+                navSpeed: 400
+              }
+            }
+          }">
+            <ng-template carouselSlide>Slide 1</ng-template>
+            <ng-template carouselSlide>Slide 2</ng-template>
+            <ng-template carouselSlide>Slide 3</ng-template>
+            <ng-template carouselSlide>Slide 4</ng-template>
+            <ng-template carouselSlide>Slide 5</ng-template>
+            <ng-template carouselSlide>Slide 6</ng-template>
+            <ng-template carouselSlide>Slide 7</ng-template>
+            <ng-template carouselSlide>Slide 8</ng-template>
+            <ng-template carouselSlide>Slide 9</ng-template>
+            <ng-template carouselSlide>Slide 10</ng-template>
+          </owl-carousel-o>
+        </div>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+
+    expect(deDots.length).toBe(4, '4 dots');
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0s', '0s transition');
+
+    deDots[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    // transtionDuration is defined using number of slides which must be scrolled after clicking dot. If number of slides is 3 transtionDuration will be 1.5s (3*500ms);
+    // If number of slides is 1 transtionDuration will be 1.5s (1*500ms);
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('1.5s', '1.5s transition');
+
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.4s', '0.4s transition');
+
+    // ------- set width of carousel to 800px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 800px; margin: auto');
+    fixtureHost.detectChanges();
+
+    expect(carouselHTML.clientWidth).toBe(800);
+
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
+
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deDots[3].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    // 4 slides should be scrolled; 4*200ms = 800ms = 0.8s
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.8s', '0.8s transition');
+
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.3s', '0.3s transition');
+  }));
+
   it('should pass data after moving carousel [options]="{nav: true}"', fakeAsync(() => {
     discardPeriodicTasks();
     const html = `
