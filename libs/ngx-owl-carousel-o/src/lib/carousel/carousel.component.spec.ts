@@ -497,6 +497,78 @@ describe('CarouselComponent', () => {
     });
   }));
 
+  it('should stop centering the slides when the width of the carousel is between 600 and 900', fakeAsync(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <div class="owl-wrapper">
+          <owl-carousel-o [options]="{
+                                        nav: true,
+                                        loop: true,
+                                        center: true,
+                                        responsive: {
+                                          '600': { loop: false, center: false },
+                                          '900': { loop: true }
+                                        }
+                                      }">
+
+            <ng-template carouselSlide>Slide 1</ng-template>
+            <ng-template carouselSlide>Slide 2</ng-template>
+            <ng-template carouselSlide>Slide 3</ng-template>
+            <ng-template carouselSlide>Slide 4</ng-template>
+            <ng-template carouselSlide>Slide 5</ng-template>
+          </owl-carousel-o>
+        </div>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(3, '3 active slides');
+    expect(deActiveSlides[0].nativeElement.classList.contains('cloned')).toBeTruthy('1th active slide is cloned');
+    expect(deActiveSlides[1].nativeElement.classList.contains('center')).toBeTruthy('2th slide has css-class \'.center\'');
+
+    // ------- set width of carousel to 800px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 800px; margin: auto');
+    fixtureHost.detectChanges();
+
+    expect(carouselHTML.clientWidth).toBe(800);
+
+    carouselService = fixtureHost.debugElement.injector.get(CarouselService);
+
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(3, '3 active slides');
+    expect(deActiveSlides[0].nativeElement.classList.contains('cloned')).toBeFalsy('1th active slide isn\'t cloned');
+    const centeredSlide: DebugElement = deCarouselComponent.query(By.css('.owl-item.center'));
+    expect(centeredSlide).toBeFalsy('there\'s no centered active slide');
+
+
+    // ------- set width of carousel to 400px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 400px; margin: auto');
+    fixtureHost.detectChanges();
+
+    expect(carouselHTML.clientWidth).toBe(400);
+
+    carouselService = fixtureHost.debugElement.injector.get(CarouselService);
+
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(3, '3 active slides');
+    expect(deActiveSlides[0].nativeElement.classList.contains('cloned')).toBeTruthy('1th active slide is cloned');
+    expect(deActiveSlides[1].nativeElement.classList.contains('center')).toBeTruthy('2th slide has css-class \'.center\'');
+  }));
+
   it(`should render carousel which doesn\'t have class .owl-drag [options]="{items: 1, mouseDrag: false}`, async(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
