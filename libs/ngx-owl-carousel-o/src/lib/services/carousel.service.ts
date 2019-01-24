@@ -735,6 +735,14 @@ export class CarouselService {
 		this.owlDOMData.isResponsive = true;
 		this.owlDOMData.isMouseDragable = this.settings.mouseDrag;
 		this.owlDOMData.isTouchDragable = this.settings.touchDrag;
+
+		const mergers = [];
+		this._items.forEach(item => {
+			const mergeN: number = this.settings.merge ? item.dataMerge : 1;
+			mergers.push(mergeN);
+		});
+		this._mergers = mergers;
+
 		this._breakpoint = match;
 
 		this.invalidate('settings');
