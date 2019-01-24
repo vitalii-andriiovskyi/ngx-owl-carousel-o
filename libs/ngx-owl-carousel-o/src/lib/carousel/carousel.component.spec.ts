@@ -3506,7 +3506,7 @@ describe('CarouselComponent', () => {
     fixtureHost = createTestComponent(html);
     deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
     autoplayService = deCarouselComponent.injector.get(AutoplayService);
-    spyOn(autoplayService, 'startPausing');
+    spyOn(autoplayService, 'stop');
 
     tick();
     fixtureHost.detectChanges();
@@ -3523,7 +3523,7 @@ describe('CarouselComponent', () => {
     Object.defineProperty(document, 'hidden', {value: true, writable: true});
     document.dispatchEvent(new Event('visibilitychange'));
 
-    expect(autoplayService.startPausing).toHaveBeenCalled();
+    expect(autoplayService.stop).toHaveBeenCalled();
 
     // restore document.visibilityState to 'visible' and document.hidden to 'false'
     tick();
@@ -3549,7 +3549,7 @@ describe('CarouselComponent', () => {
     fixtureHost = createTestComponent(html);
     deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
     autoplayService = deCarouselComponent.injector.get(AutoplayService);
-    spyOn(autoplayService, 'startPausing');
+    spyOn(autoplayService, 'stop');
     spyOn(autoplayService, 'play');
 
     tick();
@@ -3567,7 +3567,7 @@ describe('CarouselComponent', () => {
     Object.defineProperty(document, 'hidden', {value: true, writable: true});
     document.dispatchEvent(new Event('visibilitychange'));
 
-    expect(autoplayService.startPausing).toHaveBeenCalled();
+    expect(autoplayService.stop).toHaveBeenCalled();
 
     tick();
     fixtureHost.detectChanges();
