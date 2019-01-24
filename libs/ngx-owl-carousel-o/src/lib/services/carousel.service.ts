@@ -727,7 +727,7 @@ export class CarouselService {
 			}
 		}
 
-		this.settings = { ...this.settings, items: this._validateItems(overwrites[match].items)};
+		this.settings = { ...this._options, ...overwrites[match], items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items) : this._options.items};
 		// if (typeof this.settings.stagePadding === 'function') {
 		// 	this.settings.stagePadding = this.settings.stagePadding();
 		// }
