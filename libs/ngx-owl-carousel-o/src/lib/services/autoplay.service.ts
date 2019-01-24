@@ -45,7 +45,7 @@ export class AutoplayService implements OnDestroy{
     const initializedCarousel$: Observable<string> = this.carouselService.getInitializedState().pipe(
       tap(() => {
         if (this.carouselService.settings.autoplay) {
-					this.play();
+          this.play();
 				}
       })
     );
@@ -56,10 +56,20 @@ export class AutoplayService implements OnDestroy{
       })
     );
 
+    const resized$: Observable<any> = this.carouselService.getResizedState().pipe(
+      tap(() => {
+        if (this.carouselService.settings.autoplay) {
+          this.play();
+				} else {
+          this.stop();
+        }
+      })
+    )
+
     // original Autoplay Plugin has listeners on play.owl.core and stop.owl.core events.
     // They are triggered by Video Plugin
 
-    const autoplayMerge$: Observable<string> = merge(initializedCarousel$, changedSettings$);
+    const autoplayMerge$: Observable<string> = merge(initializedCarousel$, changedSettings$, resized$);
     this.autoplaySubscription = autoplayMerge$.subscribe(
       () => {}
     );
@@ -117,6 +127,7 @@ export class AutoplayService implements OnDestroy{
 		if (!this.carouselService.is('rotating')) {
 			return;
 		}
+		this._paused = true;
 
 		this.winRef.clearTimeout(this._timeout);
 		this.carouselService.leave('rotating');
