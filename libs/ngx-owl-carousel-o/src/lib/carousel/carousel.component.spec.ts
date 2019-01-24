@@ -3515,6 +3515,170 @@ describe('CarouselComponent', () => {
 
   }));
 
+  it(`should change the animation of slides when the width of the carousel is between 600 and 900; options 'animateIn' and 'animateOut'`, fakeAsync(() => {
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <div class="owl-wrapper">
+          <owl-carousel-o [options]="{
+                                        nav: true,
+                                        items: 1,
+                                        smartSpeed: 1,
+                                        animateOut: 'slideOutDown',
+                                        animateIn: 'flipInX',
+                                        responsive: {
+                                          '0': { animateOut: false, animateIn: false },
+                                          '600': { animateOut: 'fadeOutDown', animateIn: 'fadeInDown' },
+                                          '900': { }
+                                        }
+                                      }">
+
+            <ng-template carouselSlide>Slide 1</ng-template>
+            <ng-template carouselSlide>Slide 2</ng-template>
+            <ng-template carouselSlide>Slide 3</ng-template>
+            <ng-template carouselSlide>Slide 4</ng-template>
+            <ng-template carouselSlide>Slide 5</ng-template>
+          </owl-carousel-o>
+        </div>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    tick();
+    fixtureHost.detectChanges();
+
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(1, '1 slide');
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons[1].triggerEventHandler('click', null);
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    let oldActiveSlide = deSlides[0].nativeElement;
+    expect(oldActiveSlide.classList.contains('animated')).toBeTruthy('1th slide has .animated class');
+    expect(oldActiveSlide.classList.contains('owl-animated-out')).toBeTruthy('1th slide has .owl-animated-out class');
+    expect(oldActiveSlide.classList.contains('slideOutDown')).toBeTruthy('1th slide has .slideOutDown class');
+    expect(getComputedStyle(oldActiveSlide).left).toBe('920px', '920px');
+
+    let newActiveSlide: HTMLElement = deSlides[1].nativeElement;
+    expect(newActiveSlide.classList.contains('animated')).toBeTruthy('2th slide has .animated class');
+    expect(newActiveSlide.classList.contains('owl-animated-in')).toBeTruthy('2th slide has .owl-animated-in class');
+    expect(newActiveSlide.classList.contains('flipInX')).toBeTruthy('2th slide has .flipInX class');
+    expect(newActiveSlide.classList.contains('active')).toBeTruthy('2th slide has .active class');
+
+    tick();
+    fixtureHost.detectChanges();
+
+    // Event 'animationend' should fire by itself after some period of time. But tests ends before firing event. Calling tick(2000) doesn't help.
+    deSlides[0].nativeElement.dispatchEvent(new Event('animationend'));
+    deSlides[1].nativeElement.dispatchEvent(new Event('animationend'));
+
+    tick();
+    fixtureHost.detectChanges();
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    oldActiveSlide = deSlides[0].nativeElement;
+    expect(deSlides[0].nativeElement.classList.contains('animated')).toBeFalsy('1th slide hasn\'t .animated class');
+    expect(oldActiveSlide.classList.contains('owl-animated-out')).toBeFalsy('1th slide hasn\'t .owl-animated-out class');
+    expect(oldActiveSlide.classList.contains('slideOutDown')).toBeFalsy('1th slide hasn\'t .slideOutDown class');
+    expect(getComputedStyle(oldActiveSlide).left).toBe('auto', 'auto');
+
+    newActiveSlide = deSlides[1].nativeElement;
+    expect(newActiveSlide.classList.contains('animated')).toBeFalsy('2th slide hasn\'t .animated class');
+    expect(newActiveSlide.classList.contains('owl-animated-in')).toBeFalsy('2th slide hasn\'t .owl-animated-in class');
+    expect(newActiveSlide.classList.contains('flipInX')).toBeFalsy('2th slide hasn\'t .flipInX class');
+
+    // ------- set width of carousel to 800px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 800px; margin: auto');
+    fixtureHost.detectChanges();
+
+    expect(carouselHTML.clientWidth).toBe(800);
+
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+
+    // ----------------------------------------
+
+    deNavButtons[1].triggerEventHandler('click', null);
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    oldActiveSlide = deSlides[1].nativeElement;
+    expect(oldActiveSlide.classList.contains('animated')).toBeTruthy('2th slide has .animated class');
+    expect(oldActiveSlide.classList.contains('owl-animated-out')).toBeTruthy('2th slide has .owl-animated-out class');
+    expect(oldActiveSlide.classList.contains('fadeOutDown')).toBeTruthy('2th slide has .fadeOutDown class');
+
+    newActiveSlide = deSlides[2].nativeElement;
+    expect(newActiveSlide.classList.contains('animated')).toBeTruthy('3th slide has .animated class');
+    expect(newActiveSlide.classList.contains('owl-animated-in')).toBeTruthy('3th slide has .owl-animated-in class');
+    expect(newActiveSlide.classList.contains('fadeInDown')).toBeTruthy('3th slide has .fadeInDown class');
+    expect(newActiveSlide.classList.contains('active')).toBeTruthy('3th slide has .active class');
+
+    tick();
+    fixtureHost.detectChanges();
+
+    // Event 'animationend' should fire by itself after some period of time. But tests ends before firing event. Calling tick(2000) doesn't help.
+    deSlides[1].nativeElement.dispatchEvent(new Event('animationend'));
+    deSlides[2].nativeElement.dispatchEvent(new Event('animationend'));
+
+    tick();
+    fixtureHost.detectChanges();
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    oldActiveSlide = deSlides[0].nativeElement;
+    expect(deSlides[0].nativeElement.classList.contains('animated')).toBeFalsy('2th slide hasn\'t .animated class');
+    expect(oldActiveSlide.classList.contains('owl-animated-out')).toBeFalsy('2th slide hasn\'t .owl-animated-out class');
+    expect(oldActiveSlide.classList.contains('fadeOutDown')).toBeFalsy('2th slide hasn\'t .fadeOutDown class');
+    expect(getComputedStyle(oldActiveSlide).left).toBe('auto', 'auto');
+
+    newActiveSlide = deSlides[1].nativeElement;
+    expect(newActiveSlide.classList.contains('animated')).toBeFalsy('3th slide hasn\'t .animated class');
+    expect(newActiveSlide.classList.contains('owl-animated-in')).toBeFalsy('3th slide hasn\'t .owl-animated-in class');
+    expect(newActiveSlide.classList.contains('fadeInDown')).toBeFalsy('3th slide hasn\'t .fadeInDown class');
+
+    // ------- set width of carousel to 400px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 400px; margin: auto');
+    fixtureHost.detectChanges();
+
+    expect(carouselHTML.clientWidth).toBe(400);
+
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+
+    // ----------------------------------------
+
+    deNavButtons[1].triggerEventHandler('click', null);
+
+    tick();
+    fixtureHost.detectChanges();
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    oldActiveSlide = deSlides[2].nativeElement;
+    expect(oldActiveSlide.classList.contains('animated')).toBeFalsy('3th slide hasn\'t .animated class');
+    expect(oldActiveSlide.classList.contains('owl-animated-out')).toBeFalsy('3th slide hasn\'t .owl-animated-out class');
+    expect(oldActiveSlide.classList.contains('slideOutDown')).toBeFalsy('3th slide hasn\'t .slideOutDown class');
+    expect(oldActiveSlide.classList.contains('fadeOutDown')).toBeFalsy('3th slide hasn\'t .slideOutDown class');
+    expect(getComputedStyle(oldActiveSlide).left).toBe('auto', 'auto');
+
+    newActiveSlide = deSlides[3].nativeElement;
+    expect(newActiveSlide.classList.contains('animated')).toBeFalsy('4th slide hasn\'t .animated class');
+    expect(newActiveSlide.classList.contains('owl-animated-in')).toBeFalsy('4th slide hasn\'t .owl-animated-in class');
+    expect(newActiveSlide.classList.contains('flipInX')).toBeFalsy('4th slide hasn\'t .flipInX class');
+    expect(newActiveSlide.classList.contains('fadeInDown')).toBeFalsy('4th slide hasn\'t .flipInX class');
+    expect(newActiveSlide.classList.contains('active')).toBeTruthy('4th slide has .active class');
+  }));
 
   it('should change height of carousel [options]="{nav: true, autoHeight: true}"', fakeAsync(() => {
     discardPeriodicTasks();
