@@ -3282,102 +3282,213 @@ describe('CarouselComponent', () => {
     expect(testComponent.translatedData.slides[0].id).toBe('owl-slide-10', 'owl-slide-10');
   }));
 
-  it('should autoplay carousel [options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 1000, autoplaySpeed: 500}"', fakeAsync(() => {
-    discardPeriodicTasks();
-    const html = `
-      <div style="width: 1200px; margin: auto">
-        <owl-carousel-o [options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 1000, autoplaySpeed: 500}" (translated)="getPassedData($event)">
-          <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
-          <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
-          <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
-          <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
-          <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
-        </owl-carousel-o>
-      </div>
-    `;
-    fixtureHost = createTestComponent(html);
-    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
-    autoplayService = deCarouselComponent.injector.get(AutoplayService);
-    deStage = deCarouselComponent.query(By.css('.owl-stage'));
-    tick();
-    fixtureHost.detectChanges();
+  describe(`THE OPTION 'AUTOPLAY`, () => {
 
-    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    it('should autoplay carousel [options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 1000, autoplaySpeed: 500}"', fakeAsync(() => {
+      discardPeriodicTasks();
+      const html = `
+        <div style="width: 1200px; margin: auto">
+          <owl-carousel-o [options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 1000, autoplaySpeed: 500}" (translated)="getPassedData($event)">
+            <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+            <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+            <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+            <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+            <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+          </owl-carousel-o>
+        </div>
+      `;
+      fixtureHost = createTestComponent(html);
+      deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+      autoplayService = deCarouselComponent.injector.get(AutoplayService);
+      deStage = deCarouselComponent.query(By.css('.owl-stage'));
+      tick();
+      fixtureHost.detectChanges();
 
-    tick(1500);
-    fixtureHost.detectChanges();
-    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
-    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.5s', '0.5s');
-    tick(2000);
-    fixtureHost.detectChanges();
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
 
-    // can't imitate passage of time (tick(2000) doesn't wait). Thus next checking won't work
-    // deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    // expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 4', 'Slide 4');
-    // autoplayService.stop();
-  }));
+      tick(1500);
+      fixtureHost.detectChanges();
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+      expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.5s', '0.5s');
+      tick(2000);
+      fixtureHost.detectChanges();
 
-  it('should stop autoplaying carousel by \'mouseover\' and \'touchstart\'[options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 100, autoplayHoverPause: true}"', fakeAsync(() => {
-    discardPeriodicTasks();
-    const html = `
-      <div style="width: 1200px; margin: auto">
-        <owl-carousel-o [options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 100, autoplayHoverPause: true}" (translated)="getPassedData($event)">
-          <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
-          <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
-          <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
-          <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
-          <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
-        </owl-carousel-o>
-      </div>
-    `;
-    fixtureHost = createTestComponent(html);
-    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
-    carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
-    autoplayService = deCarouselComponent.injector.get(AutoplayService);
-    spyOn(autoplayService, 'startPausing');
-    spyOn(autoplayService, 'startPlayingMouseLeave');
-    spyOn(autoplayService, 'startPlayingTouchEnd');
+      // can't imitate passage of time (tick(2000) doesn't wait). Thus next checking won't work
+      // deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      // expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 4', 'Slide 4');
+      // autoplayService.stop();
+    }));
 
-    tick();
-    fixtureHost.detectChanges();
+    it('should stop autoplaying carousel by \'mouseover\' and \'touchstart\'[options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 100, autoplayHoverPause: true}"', fakeAsync(() => {
+      discardPeriodicTasks();
+      const html = `
+        <div style="width: 1200px; margin: auto">
+          <owl-carousel-o [options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 100, autoplayHoverPause: true}" (translated)="getPassedData($event)">
+            <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+            <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+            <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+            <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+            <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+          </owl-carousel-o>
+        </div>
+      `;
+      fixtureHost = createTestComponent(html);
+      deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+      carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+      autoplayService = deCarouselComponent.injector.get(AutoplayService);
+      spyOn(autoplayService, 'startPausing');
+      spyOn(autoplayService, 'startPlayingMouseLeave');
+      spyOn(autoplayService, 'startPlayingTouchEnd');
 
-    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+      tick();
+      fixtureHost.detectChanges();
 
-    tick(1500);
-    fixtureHost.detectChanges();
-    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
 
-    triggerMouseEvent(carouselHTML, 'mouseover', {});
-    expect(autoplayService.startPausing).toHaveBeenCalled();
+      tick(1500);
+      fixtureHost.detectChanges();
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
 
-    tick();
-    fixtureHost.detectChanges();
+      triggerMouseEvent(carouselHTML, 'mouseover', {});
+      expect(autoplayService.startPausing).toHaveBeenCalled();
 
-    triggerMouseEvent(carouselHTML, 'mouseleave', {});
-    expect(autoplayService.startPlayingMouseLeave).toHaveBeenCalled();
+      tick();
+      fixtureHost.detectChanges();
 
-    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+      triggerMouseEvent(carouselHTML, 'mouseleave', {});
+      expect(autoplayService.startPlayingMouseLeave).toHaveBeenCalled();
 
-    tick();
-    fixtureHost.detectChanges();
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
 
-    triggerTouchEvent(carouselHTML, 'touchstart', {});
-    expect(autoplayService.startPausing).toHaveBeenCalled();
+      tick();
+      fixtureHost.detectChanges();
 
-    tick(1500);
-    fixtureHost.detectChanges();
+      triggerTouchEvent(carouselHTML, 'touchstart', {});
+      expect(autoplayService.startPausing).toHaveBeenCalled();
 
-    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
-    triggerTouchEvent(carouselHTML, 'touchend', {});
-    expect(autoplayService.startPlayingTouchEnd).toHaveBeenCalled();
-    autoplayService.stop();
-  }));
+      tick(1500);
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+      triggerTouchEvent(carouselHTML, 'touchend', {});
+      expect(autoplayService.startPlayingTouchEnd).toHaveBeenCalled();
+      autoplayService.stop();
+    }));
+
+
+    it('should stop autoplay carousel when the width of the carousel is between 600 and 900px', fakeAsync(() => {
+      discardPeriodicTasks();
+      const html = `
+        <div style="width: 1200px; margin: auto">
+          <div class="owl-wrapper">
+            <owl-carousel-o [options]="{
+                                          nav: true,
+                                          loop: true,
+                                          autoplay: true,
+                                          autoplayTimeout: 200,
+                                          autoplaySpeed: 100,
+                                          responsive: {
+                                            '0': {
+                                              autoplayTimeout: 400,
+                                              autoplaySpeed: 200
+                                            },
+                                            '600': { autoplay: false },
+                                            '900': { }
+                                          }
+                                        }" (translated)="getPassedData($event)">
+              <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+              <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+              <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+              <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+              <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+            </owl-carousel-o>
+          </div>
+        </div>
+      `;
+
+
+      fixtureHost = createTestComponent(html);
+      deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+      carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+      autoplayService = deCarouselComponent.injector.get(AutoplayService);
+      deStage = deCarouselComponent.query(By.css('.owl-stage'));
+      tick();
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+      tick(200);
+      fixtureHost.detectChanges();
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+      expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.1s', '0.1s');
+
+      tick(200);
+      fixtureHost.detectChanges();
+
+      // ------- set width of carousel to 800px
+      carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 800px; margin: auto');
+      fixtureHost.detectChanges();
+
+      expect(carouselHTML.clientWidth).toBe(800);
+
+      window.dispatchEvent(new Event('resize'));
+      tick(200);
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+      expect(deActiveSlides.length).toBe(3, '3 active slide');
+      // -------------------------------------------------------
+
+      tick(200);
+      fixtureHost.detectChanges();
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+      expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0s', '0s');
+
+      carouselService = deCarouselComponent.injector.get(CarouselService);
+      expect(carouselService.settings.autoplay).toBeFalsy('autoplay is false');
+
+      // ------- set width of carousel to 400px
+      carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 400px; margin: auto');
+      fixtureHost.detectChanges();
+
+      expect(carouselHTML.clientWidth).toBe(400);
+
+      window.dispatchEvent(new Event('resize'));
+      tick(200);
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+      expect(deActiveSlides.length).toBe(3, '3 active slide');
+      // -------------------------------------------------------
+
+      tick(400);
+      fixtureHost.detectChanges();
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+      expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.2s', '0.2s');
+
+      expect(carouselService.settings.autoplay).toBeTruthy('autoplay is true');
+
+      tick(400);
+
+      // can't imitate passage of time (tick(200) doesn't wait). Thus next checking won't work
+      // deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      // expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+      // autoplayService.stop();
+    }));
+  });
+
 
   it('should load content for 3 slides [options]="{nav: true, lazyLoad: true}"', fakeAsync(() => {
     discardPeriodicTasks();
