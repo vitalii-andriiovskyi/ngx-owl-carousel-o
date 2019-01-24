@@ -15,6 +15,10 @@ export declare class AutoplayService implements OnDestroy {
      * Indicates whenever the autoplay is paused.
      */
     private _paused;
+    /**
+     * Shows whether the code (the plugin) changed the option 'AutoplayTimeout' for own needs
+     */
+    private _isArtificialAutoplayTimeout;
     private winRef;
     private docRef;
     constructor(carouselService: CarouselService, winRef: any, docRef: any);
@@ -53,6 +57,10 @@ export declare class AutoplayService implements OnDestroy {
      * @param data object with current position of carousel and type of change
      */
     private _handleChangeObservable(data);
+    /**
+     * Starts autoplaying of the carousel in the case when user leaves the carousel before it starts translateing (moving)
+     */
+    private _playAfterTranslated;
     /**
      * Starts pausing
      */

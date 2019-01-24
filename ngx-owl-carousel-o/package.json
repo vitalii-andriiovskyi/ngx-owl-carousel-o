@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/ng-packagr/package.schema.json",
   "name": "ngx-owl-carousel-o",
-  "version": "0.1.2",
+  "version": "1.0.8",
   "description": "Angular powered owl-carousel",
   "keywords": [
     "angular",

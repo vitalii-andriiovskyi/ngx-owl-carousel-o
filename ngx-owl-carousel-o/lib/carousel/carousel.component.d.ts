@@ -147,7 +147,9 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      * Observable for merging all Observables and creating one subscription
      */
     private _carouselMerge$;
-    constructor(el: ElementRef, resizeService: ResizeService, carouselService: CarouselService, navigationService: NavigationService, autoplayService: AutoplayService, lazyLoadService: LazyLoadService, animateService: AnimateService, autoHeightService: AutoHeightService, hashService: HashService, logger: OwlLogger);
+    private docRef;
+    constructor(el: ElementRef, resizeService: ResizeService, carouselService: CarouselService, navigationService: NavigationService, autoplayService: AutoplayService, lazyLoadService: LazyLoadService, animateService: AnimateService, autoHeightService: AutoHeightService, hashService: HashService, logger: OwlLogger, docRef: any);
+    onVisibilityChange(ev: Event): void;
     ngOnInit(): void;
     ngAfterContentChecked(): void;
     ngAfterContentInit(): void;
