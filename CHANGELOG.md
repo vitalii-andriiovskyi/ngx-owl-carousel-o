@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v1.0.10](#v1.0.10)
 * [v1.0.9](#v1.0.9)
 * [v1.0.8](#v1.0.8)
 * [v1.0.7](#v1.0.7)
@@ -14,6 +15,9 @@
 * [v0.1.1](#v0.1.1)
 * [v0.1.0](#v0.1.0)
 * [v0.0.5](#v0.0.5)
+
+## v1.0.10
+The version `v1.0.10` fixes the wrong dependencies in `package.json` of `v1.0.9`. The version `v1.0.9` accidentally got  `"@angular/common": "^6.0.0-rc.0 || ^6.0.0",`, not the `"@angular/common": "^7.0.0-rc.0 || ^7.0.0"` and so on.
 
 ## v1.0.9
 The version `v1.0.9` extends the list of options, which can be configured in the option `responsive` for needed viewports. Earlier, it was possible to configure just the option `items`. This list of options consists of:
