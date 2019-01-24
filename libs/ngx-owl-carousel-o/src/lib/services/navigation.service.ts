@@ -221,6 +221,10 @@ export class NavigationService implements OnDestroy {
    */
   private _updateDots() {
     let curActiveDotI: number;
+
+    if(!this.carouselService.settings.dots) {
+      return;
+    }
     this._dotsData.dots.forEach(item => {
       if (item.active === true) {
         item.active = false;
