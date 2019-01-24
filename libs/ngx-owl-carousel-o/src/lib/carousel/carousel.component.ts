@@ -261,11 +261,11 @@ export class CarouselComponent
   onVisibilityChange(ev: Event) {
     switch (this.docRef.visibilityState) {
       case 'visible':
-        this.startPlayML();
+        this.autoplayService.play();
         break;
 
       case 'hidden':
-        this.startPausing();
+        this.autoplayService.stop();
         break;
 
       default:
