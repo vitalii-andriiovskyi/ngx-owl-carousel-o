@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v1.0.9](#v1.0.9)
 * [v1.0.8](#v1.0.8)
 * [v1.0.7](#v1.0.7)
 * [v1.0.6](#v1.0.6)
@@ -13,6 +14,38 @@
 * [v0.1.1](#v0.1.1)
 * [v0.1.0](#v0.1.0)
 * [v0.0.5](#v0.0.5)
+
+## v1.0.9
+The version `v1.0.9` extends the list of options, which can be configured in the option `responsive` for needed viewports. Earlier, it was possible to configure just the option `items`. This list of options consists of:
+* `loop`
+* `center`
+* `pullDrag`
+* `margin`
+* `stagePadding`
+* `autoHeight`
+* `nav`
+* `navRewind`
+* `slideBy`
+* `dots`
+* `dotsEach`
+* `autoplay`
+* `autoplayTimeout`
+* `smartSpeed`
+* `fluidSpeed`
+* `autoplaySpeed`
+* `navSpeed`
+* `dotsSpeed`
+* `dragEndSpeed`
+* `responsiveRefreshRate`
+* `animateOut`
+* `animateIn`
+* `mouseDrag`
+* `touchDrag`
+* `mergeFit`
+
+The option `autoWidth` requires using data-binding property `width`, which is more important to this scenario. It's impossible to manipulate by predefined widths of slides using the option `responsive`. If it's needed to, it must be done by watching the media query object or width of the carousel wrapper and changing the value set in the `width`. The option `responsive` is just helpful for turning off the `autoWidth` for certain viewports.
+The same refers to the option `merge`.
+
 
 ## v1.0.8
 The version `v1.0.8` fixes the problem with renewing the autoplay of the carousel while switching to a new browser tab and coming back. 
