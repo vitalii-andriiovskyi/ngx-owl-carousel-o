@@ -39,11 +39,11 @@ export declare class AutoplayService implements OnDestroy {
        * @param speed - The animation speed for the animations.
        * @return
        */
-    private _getNextTimeout(timeout?, speed?);
+    private _getNextTimeout;
     /**
        * Sets autoplay in motion.
        */
-    private _setAutoPlayInterval();
+    private _setAutoPlayInterval;
     /**
      * Stops the autoplay.
      */
@@ -56,7 +56,7 @@ export declare class AutoplayService implements OnDestroy {
      * Manages by autoplaying according to data passed by _changedSettingsCarousel$ Obsarvable
      * @param data object with current position of carousel and type of change
      */
-    private _handleChangeObservable(data);
+    private _handleChangeObservable;
     /**
      * Starts autoplaying of the carousel in the case when user leaves the carousel before it starts translateing (moving)
      */

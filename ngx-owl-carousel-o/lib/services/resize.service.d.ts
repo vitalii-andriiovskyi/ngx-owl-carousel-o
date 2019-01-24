@@ -20,10 +20,10 @@ export declare class ResizeService {
      * Handler of 'resize' event. Passes data throw resizeSubject
      * @param event Event Object of 'resize' event
      */
-    private onResize(event);
+    private onResize;
     /**
      * Handler of 'onload' event. Defines the width of window
      * @param event Event Object of 'onload' event
      */
-    private onLoaded(event);
+    private onLoaded;
 }
