@@ -1,6 +1,6 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 import { Injectable, Inject } from '@angular/core';
 import { merge, of } from 'rxjs';
@@ -75,6 +75,7 @@ export class AutoplayService {
     ;
     /**
      * Gets a new timeout
+     * @private
      * @param {?=} timeout - The interval before the next animation starts.
      * @param {?=} speed - The animation speed for the animations.
      * @return {?}
@@ -127,6 +128,7 @@ export class AutoplayService {
     ;
     /**
      * Manages by autoplaying according to data passed by _changedSettingsCarousel$ Obsarvable
+     * @private
      * @param {?} data object with current position of carousel and type of change
      * @return {?}
      */
@@ -186,7 +188,6 @@ export class AutoplayService {
 AutoplayService.decorators = [
     { type: Injectable }
 ];
-/** @nocollapse */
 AutoplayService.ctorParameters = () => [
     { type: CarouselService },
     { type: undefined, decorators: [{ type: Inject, args: [WINDOW,] }] },
@@ -201,11 +202,13 @@ if (false) {
     /**
      * The autoplay timeout.
      * @type {?}
+     * @private
      */
     AutoplayService.prototype._timeout;
     /**
      * Indicates whenever the autoplay is paused.
      * @type {?}
+     * @private
      */
     AutoplayService.prototype._paused;
     /**
@@ -215,9 +218,15 @@ if (false) {
     AutoplayService.prototype._isArtificialAutoplayTimeout;
     /** @type {?} */
     AutoplayService.prototype.winRef;
-    /** @type {?} */
+    /**
+     * @type {?}
+     * @private
+     */
     AutoplayService.prototype.docRef;
-    /** @type {?} */
+    /**
+     * @type {?}
+     * @private
+     */
     AutoplayService.prototype.carouselService;
     /* Skipping unhandled member: ;*/
     /* Skipping unhandled member: ;*/

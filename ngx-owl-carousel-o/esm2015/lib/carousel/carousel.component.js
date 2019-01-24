@@ -1,6 +1,6 @@
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 import { Component, Input, Output, Directive, QueryList, ContentChildren, TemplateRef, ElementRef, EventEmitter, HostListener, Inject } from '@angular/core';
 import { merge } from 'rxjs';
@@ -71,7 +71,6 @@ export class CarouselSlideDirective {
 CarouselSlideDirective.decorators = [
     { type: Directive, args: [{ selector: 'ng-template[carouselSlide]' },] }
 ];
-/** @nocollapse */
 CarouselSlideDirective.ctorParameters = () => [
     { type: TemplateRef }
 ];
@@ -93,6 +92,7 @@ if (false) {
      * Defines how much widths of common slide will current slide have
      * e.g. if _mergeData=2, the slide will twice wider then slides with _mergeData=1
      * @type {?}
+     * @private
      */
     CarouselSlideDirective.prototype._dataMerge;
     /**
@@ -271,6 +271,7 @@ export class CarouselComponent {
     }
     /**
      * Init subscription to resize event and attaches handler for this event
+     * @private
      * @return {?}
      */
     _winResizeWatcher() {
@@ -428,7 +429,6 @@ CarouselComponent.decorators = [
                 styles: [`.owl-theme { display: block; }`]
             }] }
 ];
-/** @nocollapse */
 CarouselComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: ResizeService },
@@ -475,6 +475,7 @@ if (false) {
     /**
      * Subscription merge Observable, which merges all Observables in the component except 'resize' Observable and this.slides.changes()
      * @type {?}
+     * @private
      */
     CarouselComponent.prototype._allObservSubscription;
     /**
@@ -482,6 +483,7 @@ if (false) {
      * It could be included in 'this._allObservSubscription', but that subcription get created during the initializing of component
      * and 'this.slides' are undefined at that moment. So it's needed to wait for initialization of content.
      * @type {?}
+     * @private
      */
     CarouselComponent.prototype._slidesChangesSubscription;
     /**
@@ -527,54 +529,87 @@ if (false) {
     /**
      * Observable for getting current View Settings
      * @type {?}
+     * @private
      */
     CarouselComponent.prototype._viewCurSettings$;
     /**
      * Observable for catching the end of transition of carousel
      * @type {?}
+     * @private
      */
     CarouselComponent.prototype._translatedCarousel$;
     /**
      * Observable for catching the start of dragging of the carousel
      * @type {?}
+     * @private
      */
     CarouselComponent.prototype._draggingCarousel$;
     /**
      * Observable for catching the start of changing of the carousel
      * @type {?}
+     * @private
      */
     CarouselComponent.prototype._changeCarousel$;
     /**
      * Observable for catching the initialization of changing the carousel
      * @type {?}
+     * @private
      */
     CarouselComponent.prototype._initializedCarousel$;
     /**
      * Observable for merging all Observables and creating one subscription
      * @type {?}
+     * @private
      */
     CarouselComponent.prototype._carouselMerge$;
     /** @type {?} */
     CarouselComponent.prototype.docRef;
     /** @type {?} */
     CarouselComponent.prototype.el;
-    /** @type {?} */
+    /**
+     * @type {?}
+     * @private
+     */
     CarouselComponent.prototype.resizeService;
-    /** @type {?} */
+    /**
+     * @type {?}
+     * @private
+     */
     CarouselComponent.prototype.carouselService;
-    /** @type {?} */
+    /**
+     * @type {?}
+     * @private
+     */
     CarouselComponent.prototype.navigationService;
-    /** @type {?} */
+    /**
+     * @type {?}
+     * @private
+     */
     CarouselComponent.prototype.autoplayService;
-    /** @type {?} */
+    /**
+     * @type {?}
+     * @private
+     */
     CarouselComponent.prototype.lazyLoadService;
-    /** @type {?} */
+    /**
+     * @type {?}
+     * @private
+     */
     CarouselComponent.prototype.animateService;
-    /** @type {?} */
+    /**
+     * @type {?}
+     * @private
+     */
     CarouselComponent.prototype.autoHeightService;
-    /** @type {?} */
+    /**
+     * @type {?}
+     * @private
+     */
     CarouselComponent.prototype.hashService;
-    /** @type {?} */
+    /**
+     * @type {?}
+     * @private
+     */
     CarouselComponent.prototype.logger;
     /* Skipping unhandled member: ;*/
 }

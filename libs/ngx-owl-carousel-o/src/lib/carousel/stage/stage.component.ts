@@ -19,14 +19,14 @@ import {
       <div class="owl-stage" [ngStyle]="{'width': stageData.width + 'px',
                                         'transform': stageData.transform,
                                         'transition': stageData.transition,
-                                        'padding-left': stageData.paddingL + 'px',
-                                        'padding-right': stageData.paddingR + 'px' }"
+                                        'padding-left': stageData.paddingL ? stageData.paddingL + 'px' : '',
+                                        'padding-right': stageData.paddingR ? stageData.paddingR + 'px' : '' }"
           (transitionend)="onTransitionEnd()">
         <ng-container *ngFor="let slide of slidesData; let i = index">
           <div class="owl-item" [ngClass]="slide.classes"
                                 [ngStyle]="{'width': slide.width + 'px',
-                                            'margin-left': slide.marginL + 'px',
-                                            'margin-right': slide.marginR + 'px',
+                                            'margin-left': slide.marginL ? slide.marginL + 'px' : '',
+                                            'margin-right': slide.marginR ? slide.marginR + 'px' : '',
                                             'left': slide.left}"
                                 (animationend)="clear(slide.id)"
                                 [@autoHeight]="slide.heightState">
