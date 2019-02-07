@@ -260,7 +260,7 @@ When the option  `URLhashListener=true`, it's required to define the `@Input` pr
 ```
 where `hashObj` is the object with hashes (fragments) of url. `hashObj` could be an array. Defining the kind of data store is up to the developer. 
 
-**NOTE**: `HashService` uses services `ActivatedRoute` and `Router` for making it possible to navigate by hashes (fragments). The `CarouselModule` imports `RouterModule.forChild()`. And if `RouterModule.forRoot(routes)` isn't imported in the main module of an application, the problem will appear. `HashService` **won't work**. Thus it's needed to import `RouterModule.forRoot(routes)` in the main module of an application even in case the of creating the simple app for testing the work of the library.
+**NOTE**: `HashService` uses services `ActivatedRoute` and `Router` for making it possible to navigate by hashes (fragments). And if `RouterModule.forRoot(routes)` isn't imported in the main module of an application, the problem will appear. `HashService` **won't work**. Therefore it's needed to import `RouterModule.forRoot(routes)` in the main module of an application even in case the of creating the simple app for testing the work of the library.
 
 ### lazyLoad
 There's no need to set to `<img>` attributes `data-src` and  `data-src-retina` because Angular has its own realization for `<img>`. In Angular it's better to write `<img [src]="someURL">`. `src` is the data-binding, which means Angular will set the value to the native attribute `src` of `<img>` after loading its core code. Original Owl Carousel reads `data-src` and sets the native attribute `src` at needed moment. Of course, **ngx-owl-carousel-o** has additional tricks for lazy loading images (better to say the content of slides) put into slides.

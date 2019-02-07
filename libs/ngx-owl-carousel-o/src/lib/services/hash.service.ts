@@ -1,8 +1,10 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { Subscription, Observable, merge } from 'rxjs';
-import { CarouselService } from './carousel.service';
-import { tap, skip } from 'rxjs/operators';
+import { Injectable, OnDestroy, Optional } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { Subscription, Observable, merge, of } from 'rxjs';
+import { tap, skip, take } from 'rxjs/operators';
+
+import { CarouselService } from './carousel.service';
 
 @Injectable()
 export class HashService implements OnDestroy {
@@ -16,10 +18,23 @@ export class HashService implements OnDestroy {
    */
   currentHashFragment: string;
 
-  constructor(private carouselService: CarouselService,
-              private route: ActivatedRoute,
-              private router: Router) {
+  constructor(
+    private carouselService: CarouselService,
+    @Optional() private route: ActivatedRoute,
+    @Optional() private router: Router
+  ) {
     this.spyDataStreams();
+    if (!this.route) {
+      this.route = {
+        fragment: of('no route').pipe(take(1))
+      } as any;
+    };
+
+    if (!this.router) {
+      this.router = {
+        navigate: (commands: any[], extras?: any) => { return }
+      } as any;
+    }
   }
 
   ngOnDestroy() {
