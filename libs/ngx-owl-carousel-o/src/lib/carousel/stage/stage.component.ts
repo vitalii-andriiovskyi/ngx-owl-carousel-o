@@ -238,8 +238,11 @@ export class StageComponent implements OnInit, OnDestroy {
     if (this.listenerATag) {
       this.listenerATag();
     }
+    if ( Math.abs(delta.x) < 3 && Math.abs(delta.y) < 3 && this._is('valid')) {
+      return;
+    }
 
-    if (Math.abs(delta.x) < Math.abs(delta.y) && this._is('valid')) {
+    if ((Math.abs(delta.x) < 3 && Math.abs(delta.x) < Math.abs(delta.y)) && this._is('valid')) {
       return;
     }
     this.listenerOneMouseMove();
