@@ -16,10 +16,10 @@ import {
   Inject
 } from '@angular/core';
 
-import { Subscription, Observable, merge } from 'rxjs';
+import { Subscription, Observable, merge, of } from 'rxjs';
 
 import { ResizeService } from '../services/resize.service';
-import { tap, delay, filter, switchMap, first } from 'rxjs/operators';
+import { tap, delay, filter, switchMap, first, map } from 'rxjs/operators';
 import { CarouselService, CarouselCurrentData } from '../services/carousel.service';
 import { StageData } from "../models/stage-data.model";
 import { OwlDOMData } from "../models/owlDOM-data.model";
@@ -369,13 +369,24 @@ export class CarouselComponent
         this.dragging.emit({dragging: true, data: this.slidesOutputData});
       }),
       switchMap(
-        () => this.carouselService.getTranslatedState().pipe(
-          first(),
-          tap(() => {
-            this.dragging.emit({dragging: false, data: this.slidesOutputData});
-          })
+        () => this.carouselService.getDraggedState().pipe(
+          map(() => !!this.carouselService.is('animating'))
         )
-      )
+      ),
+      switchMap(
+        anim => {
+          if (anim) {
+            return this.carouselService.getTranslatedState().pipe(
+              first(),
+            );
+          } else {
+            return of('not animating');
+          }
+        }
+      ),
+      tap(() => {
+        this.dragging.emit({dragging: false, data: this.slidesOutputData});
+      })
     );
 
     this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$, this._initializedCarousel$);
