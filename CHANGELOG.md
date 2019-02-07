@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v1.0.11](#v1.0.11)
 * [v1.0.10](#v1.0.10)
 * [v1.0.9](#v1.0.9)
 * [v1.0.8](#v1.0.8)
@@ -15,6 +16,31 @@
 * [v0.1.1](#v0.1.1)
 * [v0.1.0](#v0.1.0)
 * [v0.0.5](#v0.0.5)
+
+## v1.0.11
+The version `v1.0.11` solves issues [`#19`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/19) and [`#20`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/20).
+
+### Changes implemented to solve issue `#19`
+Dragging starts when the user moves the cursor on more than 3px. Then the event `dragging` fires. The payload is 
+```typescript
+{ 
+  dragging: true,
+  data: SlidesOutputData 
+}
+```
+
+Dragging of the carousel can finish by changing active slides (the carousel scrolls in this case) or by remaining the carousel in the state which was before dragging. The second variant is possible when the user drags the carousel to the left-hand side on less than 30px. 
+In any case, the event `dragging` fires passing the payload:
+```typescript
+{ 
+  dragging: false,
+  data: SlidesOutputData 
+}
+```
+
+### Issue `#20`
+`Router` and `ActivatedRoute` are injected using the decorator `@Optional`. Also, it's added the additional checking for the case of setting `null` to `this.router` and `this.route`.
+The `RouterModule` is removed from imports of `CarouselModule`.
 
 ## v1.0.10
 The version `v1.0.10` fixes the wrong dependencies in `package.json` of `v1.0.9`. The version `v1.0.9` accidentally got  `"@angular/common": "^6.0.0-rc.0 || ^6.0.0",`, not the `"@angular/common": "^7.0.0-rc.0 || ^7.0.0"` and so on.
