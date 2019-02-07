@@ -1,7 +1,7 @@
 import { OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CarouselService } from './carousel.service';
-import { ActivatedRoute, Router } from '@angular/router';
 export declare class HashService implements OnDestroy {
     private carouselService;
     private route;

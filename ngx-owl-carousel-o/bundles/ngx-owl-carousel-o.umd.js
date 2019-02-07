@@ -3974,6 +3974,16 @@
             this.route = route;
             this.router = router$$1;
             this.spyDataStreams();
+            if (!this.route) {
+                this.route = ( /** @type {?} */({
+                    fragment: rxjs.of('no route').pipe(operators.take(1))
+                }));
+            }
+            if (!this.router) {
+                this.router = ( /** @type {?} */({
+                    navigate: function (commands, extras) { return; }
+                }));
+            }
         }
         /**
          * @return {?}
@@ -4066,8 +4076,8 @@
         HashService.ctorParameters = function () {
             return [
                 { type: CarouselService },
-                { type: router.ActivatedRoute },
-                { type: router.Router }
+                { type: router.ActivatedRoute, decorators: [{ type: core.Optional }] },
+                { type: router.Router, decorators: [{ type: core.Optional }] }
             ];
         };
         return HashService;
@@ -4317,10 +4327,15 @@
                 this._draggingCarousel$ = this.carouselService.getDragState().pipe(operators.tap(function () {
                     _this.gatherTranslatedData();
                     _this.dragging.emit({ dragging: true, data: _this.slidesOutputData });
-                }), operators.switchMap(function () {
-                    return _this.carouselService.getTranslatedState().pipe(operators.first(), operators.tap(function () {
-                        _this.dragging.emit({ dragging: false, data: _this.slidesOutputData });
-                    }));
+                }), operators.switchMap(function () { return _this.carouselService.getDraggedState().pipe(operators.map(function () { return !!_this.carouselService.is('animating'); })); }), operators.switchMap(function (anim) {
+                    if (anim) {
+                        return _this.carouselService.getTranslatedState().pipe(operators.first());
+                    }
+                    else {
+                        return rxjs.of('not animating');
+                    }
+                }), operators.tap(function () {
+                    _this.dragging.emit({ dragging: false, data: _this.slidesOutputData });
                 }));
                 this._carouselMerge$ = rxjs.merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$, this._initializedCarousel$);
                 this._allObservSubscription = this._carouselMerge$.subscribe(function () { });
@@ -4725,7 +4740,6 @@
                 this._drag.stage.start = stage;
                 this._drag.stage.current = stage;
                 this._drag.pointer = this._pointer(event);
-                this._drag.active = true;
                 this.listenerMouseUp = this.renderer.listen(document, 'mouseup', this.bindOnDragEnd);
                 this.listenerTouchEnd = this.renderer.listen(document, 'touchend', this.bindOnDragEnd);
                 this.zone.runOutsideAngular(function () {
@@ -4748,19 +4762,19 @@
          * @return {?}
          */
             function (event) {
-                if (!this._drag.active)
-                    return false;
                 /** @type {?} */
                 var delta = this._difference(this._drag.pointer, this._pointer(event));
                 if (this.listenerATag) {
                     this.listenerATag();
                 }
-                this.listenerOneMouseMove();
-                this.listenerOneTouchMove();
-                if (Math.abs(delta.x) < Math.abs(delta.y) && this._is('valid')) {
-                    this._drag.active = false;
+                if (Math.abs(delta.x) < 3 && Math.abs(delta.y) < 3 && this._is('valid')) {
                     return;
                 }
+                if ((Math.abs(delta.x) < 3 && Math.abs(delta.x) < Math.abs(delta.y)) && this._is('valid')) {
+                    return;
+                }
+                this.listenerOneMouseMove();
+                this.listenerOneTouchMove();
                 this._drag.moving = true;
                 this.blockClickAnchorInDragging(event);
                 this.listenerMouseMove = this.renderer.listen(document, 'mousemove', this.bindOnDragMove);
@@ -4812,8 +4826,6 @@
          * @return {?}
          */
             function (event) {
-                if (!this._drag.active)
-                    return false;
                 /** @type {?} */
                 var stage;
                 /** @type {?} */
@@ -4864,6 +4876,8 @@
          */
             function (event) {
                 this.carouselService.owlDOMData.isGrab = false;
+                this.listenerOneMouseMove();
+                this.listenerOneTouchMove();
                 if (this._drag.moving) {
                     this.renderer.setStyle(this.el.nativeElement.children[0], 'transform', "");
                     this.renderer.setStyle(this.el.nativeElement.children[0], 'transition', this.carouselService.speed(+this.carouselService.settings.dragEndSpeed || this.carouselService.settings.smartSpeed) / 1000 + 's');
@@ -5370,8 +5384,6 @@
      * @fileoverview added by tsickle
      * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
      */
-    /** @type {?} */
-    var routes = [];
     var CarouselModule = /** @class */ (function () {
         function CarouselModule() {
         }
@@ -5379,8 +5391,6 @@
             { type: core.NgModule, args: [{
                         imports: [
                             common.CommonModule,
-                            // BrowserAnimationsModule, // there's an issue with this import while using lazy loading of module consuming this library. I don't remove it because it could be needed during future enhancement of this lib.
-                            router.RouterModule.forChild(routes)
                         ],
                         declarations: [CarouselComponent, CarouselSlideDirective, StageComponent, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
                         exports: [CarouselComponent, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],

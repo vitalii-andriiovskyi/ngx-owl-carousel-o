@@ -1,11 +1,11 @@
 import { EventManager } from '@angular/platform-browser';
 import { __extends, __spread, __assign } from 'tslib';
 import { Subject, merge, of } from 'rxjs';
-import { tap, filter, switchMap, first, skip, delay } from 'rxjs/operators';
+import { tap, filter, switchMap, first, skip, take, delay, map } from 'rxjs/operators';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { isPlatformBrowser, LocationStrategy, CommonModule } from '@angular/common';
-import { Injectable, ErrorHandler, isDevMode, InjectionToken, PLATFORM_ID, Inject, Component, Input, Output, Directive, ContentChildren, TemplateRef, ElementRef, EventEmitter, HostListener, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
-import { ActivatedRoute, Router, NavigationEnd, RouterModule } from '@angular/router';
+import { Injectable, ErrorHandler, isDevMode, InjectionToken, PLATFORM_ID, Inject, Optional, Component, Input, Output, Directive, ContentChildren, TemplateRef, ElementRef, EventEmitter, HostListener, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 /**
  * @fileoverview added by tsickle
@@ -1876,11 +1876,11 @@ var CarouselService = /** @class */ (function () {
         /** @type {?} */
         var even = odd + this._items.length;
         /** @type {?} */
-        var map = function (index) { return index % 2 === 0 ? even + index / 2 : odd - (index + 1) / 2; };
+        var map$$1 = function (index) { return index % 2 === 0 ? even + index / 2 : odd - (index + 1) / 2; };
         if (position === undefined) {
-            return this._clones.map(function (v, i) { return map(i); });
+            return this._clones.map(function (v, i) { return map$$1(i); });
         }
-        return this._clones.map(function (v, i) { return v === position ? map(i) : null; }).filter(function (item) { return item; });
+        return this._clones.map(function (v, i) { return v === position ? map$$1(i) : null; }).filter(function (item) { return item; });
     };
     /**
        * Sets the current animation speed.
@@ -3906,6 +3906,16 @@ var HashService = /** @class */ (function () {
         this.route = route;
         this.router = router;
         this.spyDataStreams();
+        if (!this.route) {
+            this.route = (/** @type {?} */ ({
+                fragment: of('no route').pipe(take(1))
+            }));
+        }
+        if (!this.router) {
+            this.router = (/** @type {?} */ ({
+                navigate: function (commands, extras) { return; }
+            }));
+        }
     }
     /**
      * @return {?}
@@ -3997,8 +4007,8 @@ var HashService = /** @class */ (function () {
     /** @nocollapse */
     HashService.ctorParameters = function () { return [
         { type: CarouselService },
-        { type: ActivatedRoute },
-        { type: Router }
+        { type: ActivatedRoute, decorators: [{ type: Optional }] },
+        { type: Router, decorators: [{ type: Optional }] }
     ]; };
     return HashService;
 }());
@@ -4248,9 +4258,16 @@ var CarouselComponent = /** @class */ (function () {
         this._draggingCarousel$ = this.carouselService.getDragState().pipe(tap(function () {
             _this.gatherTranslatedData();
             _this.dragging.emit({ dragging: true, data: _this.slidesOutputData });
-        }), switchMap(function () { return _this.carouselService.getTranslatedState().pipe(first(), tap(function () {
+        }), switchMap(function () { return _this.carouselService.getDraggedState().pipe(map(function () { return !!_this.carouselService.is('animating'); })); }), switchMap(function (anim) {
+            if (anim) {
+                return _this.carouselService.getTranslatedState().pipe(first());
+            }
+            else {
+                return of('not animating');
+            }
+        }), tap(function () {
             _this.dragging.emit({ dragging: false, data: _this.slidesOutputData });
-        })); }));
+        }));
         this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$, this._initializedCarousel$);
         this._allObservSubscription = this._carouselMerge$.subscribe(function () { });
     };
@@ -4657,7 +4674,6 @@ var StageComponent = /** @class */ (function () {
         this._drag.stage.start = stage;
         this._drag.stage.current = stage;
         this._drag.pointer = this._pointer(event);
-        this._drag.active = true;
         this.listenerMouseUp = this.renderer.listen(document, 'mouseup', this.bindOnDragEnd);
         this.listenerTouchEnd = this.renderer.listen(document, 'touchend', this.bindOnDragEnd);
         this.zone.runOutsideAngular(function () {
@@ -4680,19 +4696,19 @@ var StageComponent = /** @class */ (function () {
      * @return {?}
      */
     function (event) {
-        if (!this._drag.active)
-            return false;
         /** @type {?} */
         var delta = this._difference(this._drag.pointer, this._pointer(event));
         if (this.listenerATag) {
             this.listenerATag();
         }
-        this.listenerOneMouseMove();
-        this.listenerOneTouchMove();
-        if (Math.abs(delta.x) < Math.abs(delta.y) && this._is('valid')) {
-            this._drag.active = false;
+        if (Math.abs(delta.x) < 3 && Math.abs(delta.y) < 3 && this._is('valid')) {
             return;
         }
+        if ((Math.abs(delta.x) < 3 && Math.abs(delta.x) < Math.abs(delta.y)) && this._is('valid')) {
+            return;
+        }
+        this.listenerOneMouseMove();
+        this.listenerOneTouchMove();
         this._drag.moving = true;
         this.blockClickAnchorInDragging(event);
         this.listenerMouseMove = this.renderer.listen(document, 'mousemove', this.bindOnDragMove);
@@ -4744,8 +4760,6 @@ var StageComponent = /** @class */ (function () {
      * @return {?}
      */
     function (event) {
-        if (!this._drag.active)
-            return false;
         /** @type {?} */
         var stage;
         /** @type {?} */
@@ -4796,6 +4810,8 @@ var StageComponent = /** @class */ (function () {
      */
     function (event) {
         this.carouselService.owlDOMData.isGrab = false;
+        this.listenerOneMouseMove();
+        this.listenerOneTouchMove();
         if (this._drag.moving) {
             this.renderer.setStyle(this.el.nativeElement.children[0], 'transform', "");
             this.renderer.setStyle(this.el.nativeElement.children[0], 'transition', this.carouselService.speed(+this.carouselService.settings.dragEndSpeed || this.carouselService.settings.smartSpeed) / 1000 + 's');
@@ -5302,8 +5318,6 @@ function attrBoolValue(s) {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
  */
-/** @type {?} */
-var routes = [];
 var CarouselModule = /** @class */ (function () {
     function CarouselModule() {
     }
@@ -5311,8 +5325,6 @@ var CarouselModule = /** @class */ (function () {
         { type: NgModule, args: [{
                     imports: [
                         CommonModule,
-                        // BrowserAnimationsModule, // there's an issue with this import while using lazy loading of module consuming this library. I don't remove it because it could be needed during future enhancement of this lib.
-                        RouterModule.forChild(routes)
                     ],
                     declarations: [CarouselComponent, CarouselSlideDirective, StageComponent, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
                     exports: [CarouselComponent, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
