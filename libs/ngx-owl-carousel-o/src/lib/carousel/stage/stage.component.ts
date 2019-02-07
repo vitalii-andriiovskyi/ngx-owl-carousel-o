@@ -312,6 +312,8 @@ export class StageComponent implements OnInit, OnDestroy {
 	 */
 	private _onDragEnd(event) {
     this.carouselService.owlDOMData.isGrab = false;
+    this.listenerOneMouseMove();
+    this.listenerOneTouchMove();
 
     if (this._drag.moving) {
       this.renderer.setStyle(this.el.nativeElement.children[0], 'transform', ``);
