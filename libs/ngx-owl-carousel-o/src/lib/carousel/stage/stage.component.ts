@@ -218,7 +218,6 @@ export class StageComponent implements OnInit, OnDestroy {
 		this._drag.stage.start = stage;
 		this._drag.stage.current = stage;
     this._drag.pointer = this._pointer(event);
-    this._drag.active = true;
 
     this.listenerMouseUp = this.renderer.listen(document, 'mouseup', this.bindOnDragEnd);
     this.listenerTouchEnd = this.renderer.listen(document, 'touchend', this.bindOnDragEnd);
@@ -235,19 +234,16 @@ export class StageComponent implements OnInit, OnDestroy {
    * @param event event objech of mouse or touch event
    */
   private _oneMouseTouchMove(event) {
-    if (!this._drag.active) return false;
     const delta = this._difference(this._drag.pointer, this._pointer(event));
     if (this.listenerATag) {
       this.listenerATag();
     }
 
-    this.listenerOneMouseMove();
-    this.listenerOneTouchMove();
-
     if (Math.abs(delta.x) < Math.abs(delta.y) && this._is('valid')) {
-      this._drag.active = false;
       return;
     }
+    this.listenerOneMouseMove();
+    this.listenerOneTouchMove();
     this._drag.moving = true;
 
     this.blockClickAnchorInDragging(event);
@@ -282,8 +278,6 @@ export class StageComponent implements OnInit, OnDestroy {
 	 * @param event - The event arguments.
 	 */
 	private _onDragMove(event) {
-    if (!this._drag.active) return false;
-
     let stage: Coords;
     const stageOrExit: boolean | Coords = this.carouselService.defineNewCoordsDrag(event, this._drag);
 
