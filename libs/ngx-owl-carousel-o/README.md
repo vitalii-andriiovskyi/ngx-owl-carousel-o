@@ -328,6 +328,7 @@ The `<a href="someUrl">` has the automatic preventing navigation during dragging
 * [translated](#translated).
 * [dragging](#dragging).
 * [change](#change).
+* [changed](#changed).
 * [initialized](#initialized).
 
 ### translated
@@ -640,6 +641,91 @@ import { SlidesOutputData } from 'ngx-owl-carousel-o';
     }
 ```
 `(change)="getData($event)"` is the subscription or attaching to the event;
+
+`getData(data: SlidesOutputData)` is the method which takes data about active slides.
+
+`activeSlides` is the property of `CarouselHolderComponent`, which stores data about active slides
+
+### changed
+
+It fires when user clicks dots or nav buttons and new data about active slides becomes known. This event fires before the event `translated` gets fired. However, while the user drags the carousel this event fires after dropping the carousel or after stopping dragging. 
+This event exposes the object of the type `SlidesOutputData`:
+```typecript
+class SlidesOutputData {
+  startPosition?: number;
+  slides?: SlideModel[];
+};
+```
+`startPosition` is the position of the first slide with the class `.active`
+
+`slides` is the array with data of each active slide. Data of each active slide are:
+```typescript
+{
+  id: string; // id of slide
+  width: number; // width of slide
+  marginL: number; // margin-left of slide
+  marginR: number; // margin-right of slide
+  center: boolean; // whether slide is centered (has .center)
+} 
+```
+
+The code for subscribing to this event is the following:
+
+`CarouselHolderComponent`
+```typescript
+import { SlidesOutputData } from 'ngx-owl-carousel-o';
+@Component({
+      selector: '....',
+      template: `
+      <owl-carousel-o [options]="customOptions" (changed)="getData($event)">
+
+        <ng-container *ngFor="let slide of slidesStore">
+          <ng-template carouselSlide [id]="slide.id">
+            <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
+          </ng-template>
+        </ng-container>
+
+      </owl-carousel-o>
+    `
+    })
+    export class CarouselHolderComponent {
+      customOptions: any = {
+        loop: true,
+        mouseDrag: false,
+        touchDrag: false,
+        pullDrag: false,
+        dots: false,
+        navSpeed: 700,
+        navText: ['', ''],
+        responsive: {
+          0: {
+            items: 1
+          },
+          400: {
+            items: 2
+          },
+          740: {
+            items: 3
+          },
+          940: {
+            items: 4
+          }
+        },
+        nav: true
+      }
+
+      activeSlides: SlidesOutputData;
+
+      slidesStore: any[];
+      constructor() {}
+
+      getData(data: SlidesOutputData) {
+        this.activeSlides = data;
+        console.log(this.activeSlides);
+      }
+    }
+```
+`(changed)="getData($event)"` is the subscription or attaching to the event;
 
 `getData(data: SlidesOutputData)` is the method which takes data about active slides.
 
