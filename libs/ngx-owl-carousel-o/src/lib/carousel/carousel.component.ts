@@ -16,10 +16,10 @@ import {
   Inject
 } from '@angular/core';
 
-import { Subscription, Observable, merge, of } from 'rxjs';
+import { Subscription, Observable, merge, of, from } from 'rxjs';
 
 import { ResizeService } from '../services/resize.service';
-import { tap, delay, filter, switchMap, first, map } from 'rxjs/operators';
+import { tap, delay, filter, switchMap, first, map, skip, take, toArray } from 'rxjs/operators';
 import { CarouselService, CarouselCurrentData } from '../services/carousel.service';
 import { StageData } from "../models/stage-data.model";
 import { OwlDOMData } from "../models/owlDOM-data.model";
@@ -145,6 +145,7 @@ export class CarouselComponent
   @Output() translated = new EventEmitter<SlidesOutputData>();
   @Output() dragging = new EventEmitter<{dragging: boolean, data: SlidesOutputData}>();
   @Output() change = new EventEmitter<SlidesOutputData>();
+  @Output() changed = new EventEmitter<SlidesOutputData>();
   @Output() initialized = new EventEmitter<SlidesOutputData>();
 
   /**
@@ -228,6 +229,11 @@ export class CarouselComponent
    * Observable for catching the start of changing of the carousel
    */
   private _changeCarousel$: Observable<string>;
+
+  /**
+   * Observable for catching the moment when the data about slides changed, more exactly when the position changed.
+   */
+  private _changedCarousel$: Observable<any>;
 
   /**
    * Observable for catching the initialization of changing the carousel
@@ -363,6 +369,46 @@ export class CarouselComponent
       })
     );
 
+    this._changedCarousel$ = this.carouselService.getChangeState().pipe(
+      switchMap(value => {
+        const changedPosition: Observable<SlidesOutputData> = of(value).pipe(
+          filter(() => value.property.name === 'position'),
+          switchMap(() => from(this.slidesData)),
+          skip(value.property.value),
+          take(this.carouselService.settings.items),
+          map(slide => {
+            const clonedIdPrefix = this.carouselService.clonedIdPrefix;
+            const id = slide.id.indexOf(clonedIdPrefix) >= 0 ? slide.id.slice(clonedIdPrefix.length) : slide.id;
+            return { ...slide, id: id, isActive: true };
+          }),
+          toArray(),
+          map(slides => {
+            return {
+              slides: slides,
+              startPosition: this.carouselService.relative(value.property.value)
+            }
+          })
+        );
+
+        // const changedSetting: Observable<SlidesOutputData> = of(value).pipe(
+        //   filter(() => value.property.name === 'settings'),
+        //   map(() => {
+        //     return {
+        //       slides: [],
+        //       startPosition: this.carouselService.relative(value.property.value)
+        //     }
+        //   })
+        // )
+        return merge(changedPosition);
+      }),
+      tap(slidesData => {
+        this.gatherTranslatedData();
+        this.changed.emit(slidesData.slides.length ? slidesData : this.slidesOutputData);
+        // console.log(this.slidesOutputData);
+        // this.slidesOutputData = {};
+      })
+    );
+
     this._draggingCarousel$ = this.carouselService.getDragState().pipe(
       tap(() => {
         this.gatherTranslatedData();
@@ -389,7 +435,14 @@ export class CarouselComponent
       })
     );
 
-    this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$, this._initializedCarousel$);
+    this._carouselMerge$ = merge(
+      this._viewCurSettings$,
+      this._translatedCarousel$,
+      this._draggingCarousel$,
+      this._changeCarousel$,
+      this._changedCarousel$,
+      this._initializedCarousel$
+    );
     this._allObservSubscription = this._carouselMerge$.subscribe(() => {});
   }
 
