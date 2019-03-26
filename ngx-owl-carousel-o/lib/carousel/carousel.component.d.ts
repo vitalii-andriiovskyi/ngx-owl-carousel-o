@@ -72,6 +72,7 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
         data: SlidesOutputData;
     }>;
     change: EventEmitter<SlidesOutputData>;
+    changed: EventEmitter<SlidesOutputData>;
     initialized: EventEmitter<SlidesOutputData>;
     /**
      * Width of carousel window (tag with class .owl-carousel), in wich we can see moving sliders
@@ -139,6 +140,10 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      * Observable for catching the start of changing of the carousel
      */
     private _changeCarousel$;
+    /**
+     * Observable for catching the moment when the data about slides changed, more exactly when the position changed.
+     */
+    private _changedCarousel$;
     /**
      * Observable for catching the initialization of changing the carousel
      */

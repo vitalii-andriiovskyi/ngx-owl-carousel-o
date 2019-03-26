@@ -1,7 +1,7 @@
 import { EventManager } from '@angular/platform-browser';
 import { __extends, __spread, __assign } from 'tslib';
-import { Subject, merge, of } from 'rxjs';
-import { tap, filter, switchMap, first, skip, take, delay, map } from 'rxjs/operators';
+import { Subject, merge, of, from } from 'rxjs';
+import { tap, filter, switchMap, first, skip, take, delay, map, toArray } from 'rxjs/operators';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { isPlatformBrowser, LocationStrategy, CommonModule } from '@angular/common';
 import { Injectable, ErrorHandler, isDevMode, InjectionToken, PLATFORM_ID, Inject, Optional, Component, Input, Output, Directive, ContentChildren, TemplateRef, ElementRef, EventEmitter, HostListener, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
@@ -1972,11 +1972,11 @@ var CarouselService = /** @class */ (function () {
      * @param {?=} factor [factor=undefined] - The time factor in milliseconds.
      * @return {?} The time in milliseconds for the translation.
      */
-    function (from, to, factor) {
+    function (from$$1, to, factor) {
         if (factor === 0) {
             return 0;
         }
-        return Math.min(Math.max(Math.abs(to - from), 1), 6) * Math.abs((+factor || this.settings.smartSpeed));
+        return Math.min(Math.max(Math.abs(to - from$$1), 1), 6) * Math.abs((+factor || this.settings.smartSpeed));
     };
     /**
        * Slides to the specified item.
@@ -4120,6 +4120,7 @@ var CarouselComponent = /** @class */ (function () {
         this.translated = new EventEmitter();
         this.dragging = new EventEmitter();
         this.change = new EventEmitter();
+        this.changed = new EventEmitter();
         this.initialized = new EventEmitter();
         /**
          *  Data of every slide
@@ -4255,6 +4256,36 @@ var CarouselComponent = /** @class */ (function () {
             _this.change.emit(_this.slidesOutputData);
             // this.slidesOutputData = {};
         }));
+        this._changedCarousel$ = this.carouselService.getChangeState().pipe(switchMap(function (value) {
+            /** @type {?} */
+            var changedPosition = of(value).pipe(filter(function () { return value.property.name === 'position'; }), switchMap(function () { return from(_this.slidesData); }), skip(value.property.value), take(_this.carouselService.settings.items), map(function (slide) {
+                /** @type {?} */
+                var clonedIdPrefix = _this.carouselService.clonedIdPrefix;
+                /** @type {?} */
+                var id = slide.id.indexOf(clonedIdPrefix) >= 0 ? slide.id.slice(clonedIdPrefix.length) : slide.id;
+                return __assign({}, slide, { id: id, isActive: true });
+            }), toArray(), map(function (slides) {
+                return {
+                    slides: slides,
+                    startPosition: _this.carouselService.relative(value.property.value)
+                };
+            }));
+            // const changedSetting: Observable<SlidesOutputData> = of(value).pipe(
+            //   filter(() => value.property.name === 'settings'),
+            //   map(() => {
+            //     return {
+            //       slides: [],
+            //       startPosition: this.carouselService.relative(value.property.value)
+            //     }
+            //   })
+            // )
+            return merge(changedPosition);
+        }), tap(function (slidesData) {
+            _this.gatherTranslatedData();
+            _this.changed.emit(slidesData.slides.length ? slidesData : _this.slidesOutputData);
+            // console.log(this.slidesOutputData);
+            // this.slidesOutputData = {};
+        }));
         this._draggingCarousel$ = this.carouselService.getDragState().pipe(tap(function () {
             _this.gatherTranslatedData();
             _this.dragging.emit({ dragging: true, data: _this.slidesOutputData });
@@ -4268,7 +4299,7 @@ var CarouselComponent = /** @class */ (function () {
         }), tap(function () {
             _this.dragging.emit({ dragging: false, data: _this.slidesOutputData });
         }));
-        this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$, this._initializedCarousel$);
+        this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$, this._changedCarousel$, this._initializedCarousel$);
         this._allObservSubscription = this._carouselMerge$.subscribe(function () { });
     };
     /**
@@ -4490,6 +4521,7 @@ var CarouselComponent = /** @class */ (function () {
         translated: [{ type: Output }],
         dragging: [{ type: Output }],
         change: [{ type: Output }],
+        changed: [{ type: Output }],
         initialized: [{ type: Output }],
         options: [{ type: Input }],
         onVisibilityChange: [{ type: HostListener, args: ['document:visibilitychange', ['$event'],] }]

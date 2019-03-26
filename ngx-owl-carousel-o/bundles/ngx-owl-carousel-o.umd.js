@@ -4,6 +4,76 @@
     (factory((global['ngx-owl-carousel-o'] = {}),global.ng.platformBrowser,global.rxjs,global.rxjs.operators,global.ng.animations,global.ng.common,global.ng.core,global.ng.router));
 }(this, (function (exports,platformBrowser,rxjs,operators,animations,common,core,router) { 'use strict';
 
+    /*! *****************************************************************************
+    Copyright (c) Microsoft Corporation. All rights reserved.
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+    this file except in compliance with the License. You may obtain a copy of the
+    License at http://www.apache.org/licenses/LICENSE-2.0
+
+    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+    MERCHANTABLITY OR NON-INFRINGEMENT.
+
+    See the Apache Version 2.0 License for specific language governing permissions
+    and limitations under the License.
+    ***************************************************************************** */
+    /* global Reflect, Promise */
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b)
+                if (b.hasOwnProperty(p))
+                    d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    function __extends(d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    }
+    var __assign = function () {
+        __assign = Object.assign || function __assign(t) {
+            for (var s, i = 1, n = arguments.length; i < n; i++) {
+                s = arguments[i];
+                for (var p in s)
+                    if (Object.prototype.hasOwnProperty.call(s, p))
+                        t[p] = s[p];
+            }
+            return t;
+        };
+        return __assign.apply(this, arguments);
+    };
+    function __read(o, n) {
+        var m = typeof Symbol === "function" && o[Symbol.iterator];
+        if (!m)
+            return o;
+        var i = m.call(o), r, ar = [], e;
+        try {
+            while ((n === void 0 || n-- > 0) && !(r = i.next()).done)
+                ar.push(r.value);
+        }
+        catch (error) {
+            e = { error: error };
+        }
+        finally {
+            try {
+                if (r && !r.done && (m = i["return"]))
+                    m.call(i);
+            }
+            finally {
+                if (e)
+                    throw e.error;
+            }
+        }
+        return ar;
+    }
+    function __spread() {
+        for (var ar = [], i = 0; i < arguments.length; i++)
+            ar = ar.concat(__read(arguments[i]));
+        return ar;
+    }
+
     /**
      * @fileoverview added by tsickle
      * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
@@ -74,76 +144,6 @@
         };
         return ResizeService;
     }());
-
-    /*! *****************************************************************************
-    Copyright (c) Microsoft Corporation. All rights reserved.
-    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-    this file except in compliance with the License. You may obtain a copy of the
-    License at http://www.apache.org/licenses/LICENSE-2.0
-
-    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-    MERCHANTABLITY OR NON-INFRINGEMENT.
-
-    See the Apache Version 2.0 License for specific language governing permissions
-    and limitations under the License.
-    ***************************************************************************** */
-    /* global Reflect, Promise */
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b)
-                if (b.hasOwnProperty(p))
-                    d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    function __extends(d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    }
-    var __assign = function () {
-        __assign = Object.assign || function __assign(t) {
-            for (var s, i = 1, n = arguments.length; i < n; i++) {
-                s = arguments[i];
-                for (var p in s)
-                    if (Object.prototype.hasOwnProperty.call(s, p))
-                        t[p] = s[p];
-            }
-            return t;
-        };
-        return __assign.apply(this, arguments);
-    };
-    function __read(o, n) {
-        var m = typeof Symbol === "function" && o[Symbol.iterator];
-        if (!m)
-            return o;
-        var i = m.call(o), r, ar = [], e;
-        try {
-            while ((n === void 0 || n-- > 0) && !(r = i.next()).done)
-                ar.push(r.value);
-        }
-        catch (error) {
-            e = { error: error };
-        }
-        finally {
-            try {
-                if (r && !r.done && (m = i["return"]))
-                    m.call(i);
-            }
-            finally {
-                if (e)
-                    throw e.error;
-            }
-        }
-        return ar;
-    }
-    function __spread() {
-        for (var ar = [], i = 0; i < arguments.length; i++)
-            ar = ar.concat(__read(arguments[i]));
-        return ar;
-    }
 
     /**
      * @fileoverview added by tsickle
@@ -4189,6 +4189,7 @@
             this.translated = new core.EventEmitter();
             this.dragging = new core.EventEmitter();
             this.change = new core.EventEmitter();
+            this.changed = new core.EventEmitter();
             this.initialized = new core.EventEmitter();
             /**
              *  Data of every slide
@@ -4324,6 +4325,36 @@
                     _this.change.emit(_this.slidesOutputData);
                     // this.slidesOutputData = {};
                 }));
+                this._changedCarousel$ = this.carouselService.getChangeState().pipe(operators.switchMap(function (value) {
+                    /** @type {?} */
+                    var changedPosition = rxjs.of(value).pipe(operators.filter(function () { return value.property.name === 'position'; }), operators.switchMap(function () { return rxjs.from(_this.slidesData); }), operators.skip(value.property.value), operators.take(_this.carouselService.settings.items), operators.map(function (slide) {
+                        /** @type {?} */
+                        var clonedIdPrefix = _this.carouselService.clonedIdPrefix;
+                        /** @type {?} */
+                        var id = slide.id.indexOf(clonedIdPrefix) >= 0 ? slide.id.slice(clonedIdPrefix.length) : slide.id;
+                        return __assign({}, slide, { id: id, isActive: true });
+                    }), operators.toArray(), operators.map(function (slides) {
+                        return {
+                            slides: slides,
+                            startPosition: _this.carouselService.relative(value.property.value)
+                        };
+                    }));
+                    // const changedSetting: Observable<SlidesOutputData> = of(value).pipe(
+                    //   filter(() => value.property.name === 'settings'),
+                    //   map(() => {
+                    //     return {
+                    //       slides: [],
+                    //       startPosition: this.carouselService.relative(value.property.value)
+                    //     }
+                    //   })
+                    // )
+                    return rxjs.merge(changedPosition);
+                }), operators.tap(function (slidesData) {
+                    _this.gatherTranslatedData();
+                    _this.changed.emit(slidesData.slides.length ? slidesData : _this.slidesOutputData);
+                    // console.log(this.slidesOutputData);
+                    // this.slidesOutputData = {};
+                }));
                 this._draggingCarousel$ = this.carouselService.getDragState().pipe(operators.tap(function () {
                     _this.gatherTranslatedData();
                     _this.dragging.emit({ dragging: true, data: _this.slidesOutputData });
@@ -4337,7 +4368,7 @@
                 }), operators.tap(function () {
                     _this.dragging.emit({ dragging: false, data: _this.slidesOutputData });
                 }));
-                this._carouselMerge$ = rxjs.merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$, this._initializedCarousel$);
+                this._carouselMerge$ = rxjs.merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$, this._changedCarousel$, this._initializedCarousel$);
                 this._allObservSubscription = this._carouselMerge$.subscribe(function () { });
             };
         /**
@@ -4561,6 +4592,7 @@
             translated: [{ type: core.Output }],
             dragging: [{ type: core.Output }],
             change: [{ type: core.Output }],
+            changed: [{ type: core.Output }],
             initialized: [{ type: core.Output }],
             options: [{ type: core.Input }],
             onVisibilityChange: [{ type: core.HostListener, args: ['document:visibilitychange', ['$event'],] }]
