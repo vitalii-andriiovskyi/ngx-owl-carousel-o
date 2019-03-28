@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v1.1.0](#v1.1.0)
 * [v1.0.11](#v1.0.11)
 * [v1.0.10](#v1.0.10)
 * [v1.0.9](#v1.0.9)
@@ -16,6 +17,9 @@
 * [v0.1.1](#v0.1.1)
 * [v0.1.0](#v0.1.0)
 * [v0.0.5](#v0.0.5)
+
+## v1.1.0
+The version `v1.1.0` adds new event `changed`. This event is the same as `change` except that the payload has data about new `startPosition` and new active slides.
 
 ## v1.0.11
 The version `v1.0.11` solves issues [`#19`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/19) and [`#20`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/20).
