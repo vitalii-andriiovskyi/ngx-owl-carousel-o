@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v1.1.1](#v1.1.1)
 * [v1.1.0](#v1.1.0)
 * [v1.0.11](#v1.0.11)
 * [v1.0.10](#v1.0.10)
@@ -17,6 +18,9 @@
 * [v0.1.1](#v0.1.1)
 * [v0.1.0](#v0.1.0)
 * [v0.0.5](#v0.0.5)
+
+## v1.1.1
+The version `v1.1.1` fixes the additional problem to issue [`#23`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/23). This is the problem connected with starting the autoplay the carousel after the user switched back to the page with the carousel from another browser tab and the option `autoplay=true`.
 
 ## v1.1.0
 The version `v1.1.0` adds new event `changed`. This event is the same as `change` except that the payload has data about new `startPosition` and new active slides.
