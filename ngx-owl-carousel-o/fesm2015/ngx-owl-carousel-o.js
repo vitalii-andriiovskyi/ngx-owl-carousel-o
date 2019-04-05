@@ -3062,6 +3062,8 @@ class CarouselComponent {
      * @return {?}
      */
     onVisibilityChange(ev) {
+        if (!this.carouselService.settings.autoplay)
+            return;
         switch (this.docRef.visibilityState) {
             case 'visible':
                 this.autoplayService.play();
