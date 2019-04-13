@@ -12,6 +12,7 @@ import { OwlCarouselOConfig, OwlOptionsMockedTypes } from '../carousel/owl-carou
 import { OwlOptions } from '../models/owl-options.model';
 
 import { NavData, DotsData } from '../models/navigation-data.models';
+import { OwlLogger } from './logger.service';
 
 /**
  * Current state information and their tags.
@@ -200,7 +201,7 @@ export class CarouselService {
    * Merge values of all items.
    * @todo Maybe this could be part of a plugin.
    */
-	readonly _mergers: any[] = [];
+	private _mergers: any[] = [];
 
 	/**
    * Animation speed in milliseconds.
@@ -489,7 +490,7 @@ export class CarouselService {
     }
   ];
 
-	constructor() { }
+	constructor(private logger: OwlLogger) { }
 
 	/**
 	 * Makes _viewSettingsShipper$ Subject become Observable
@@ -610,6 +611,11 @@ export class CarouselService {
 		const checkedOptions: OwlOptions = { ...options};
 		const mockedTypes = new OwlOptionsMockedTypes();
 
+		const setRightOption = (type: string, key: any): OwlOptions => {
+			this.logger.log(`options.${key} must be type of ${type}; ${key}=${options[key]} skipped to defaults: ${key}=${configOptions[key]}`);
+			return configOptions[key];
+		};
+
 		for (const key in checkedOptions) {
 			if (checkedOptions.hasOwnProperty(key)) {
 
@@ -643,11 +649,6 @@ export class CarouselService {
 			}
 		}
 
-		function setRightOption(type: string, key: any): any {
-			console.log(`options.${key} must be type of ${type}; ${key}=${options[key]} skipped to defaults: ${key}=${configOptions[key]}`);
-			return configOptions[key];
-		}
-
 		return checkedOptions;
 	}
 
@@ -658,10 +659,13 @@ export class CarouselService {
 	 */
 	private _validateItems(items: number): number {
 		let result: number;
-		if (items >= this._items.length) {
-			result = this._items.length ;
-			console.log('option \'items\' in your options is bigger than number of slides; This option is updated to current number of slides and navigation got disabled');
+		if (items > this._items.length) {
+			result = this._items.length;
+			this.logger.log('The option \'items\' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled');
 		} else {
+			if (items === this._items.length && (this.settings.dots || this.settings.nav)) {
+				this.logger.log('Option \'items\' in your options is equal to the number of slides. So the navigation got disabled');
+			}
 			result = items;
 		}
 		return result;
@@ -691,7 +695,7 @@ export class CarouselService {
 
 		this.settings = { ...this._options};
 
-		this.setViewportItemsN();
+		this.setOptionsForViewport();
 
 		this._trigger('change', { property: { name: 'settings', value: this.settings } });
 		this.invalidate('settings'); // must be call of this function;
@@ -699,9 +703,9 @@ export class CarouselService {
 	}
 
 	/**
-	 * Set number of items for current viewport
+	 * Set options for current viewport
 	 */
-	setViewportItemsN() {
+	setOptionsForViewport() {
 		const viewport = this._width,
 			overwrites = this._options.responsive;
 		let	match = -1;
@@ -723,12 +727,22 @@ export class CarouselService {
 			}
 		}
 
-		this.settings = { ...this.settings, items: this._validateItems(overwrites[match].items)};
+		this.settings = { ...this._options, ...overwrites[match], items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items) : this._options.items};
 		// if (typeof this.settings.stagePadding === 'function') {
 		// 	this.settings.stagePadding = this.settings.stagePadding();
 		// }
 		delete this.settings.responsive;
 		this.owlDOMData.isResponsive = true;
+		this.owlDOMData.isMouseDragable = this.settings.mouseDrag;
+		this.owlDOMData.isTouchDragable = this.settings.touchDrag;
+
+		const mergers = [];
+		this._items.forEach(item => {
+			const mergeN: number = this.settings.merge ? item.dataMerge : 1;
+			mergers.push(mergeN);
+		});
+		this._mergers = mergers;
+
 		this._breakpoint = match;
 
 		this.invalidate('settings');
@@ -744,10 +758,15 @@ export class CarouselService {
 
 		this.owlDOMData.rtl = this.settings.rtl;
 
+		if (this._mergers.length) {
+			this._mergers = [];
+		}
+
 		slides.forEach(item => {
 			const mergeN: number = this.settings.merge ? item.dataMerge : 1;
 			this._mergers.push(mergeN);
 		});
+		this._clones = [];
 
 		this.reset(this._isNumeric(this.settings.startPosition) ? +this.settings.startPosition : 0);
 
@@ -837,7 +856,7 @@ export class CarouselService {
 		this.enter('refreshing');
 		this._trigger('refresh');
 		this._defineSlidesData();
-		this.setViewportItemsN();
+		this.setOptionsForViewport();
 
 		this._optionsLogic();
 
@@ -1425,7 +1444,7 @@ export class CarouselService {
 		if (this._width) {
 			width = this._width;
 		} else {
-			console.warn('Can not detect viewport width.');
+			this.logger.log('Can not detect viewport width.');
 		}
 		return width;
 	}

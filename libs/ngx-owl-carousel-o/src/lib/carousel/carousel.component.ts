@@ -11,13 +11,15 @@ import {
   TemplateRef,
   ElementRef,
   AfterContentInit,
-  EventEmitter
+  EventEmitter,
+  HostListener,
+  Inject
 } from '@angular/core';
 
-import { Subscription, Observable, merge } from 'rxjs';
+import { Subscription, Observable, merge, of, from } from 'rxjs';
 
 import { ResizeService } from '../services/resize.service';
-import { tap, delay, filter } from 'rxjs/operators';
+import { tap, delay, filter, switchMap, first, map, skip, take, toArray } from 'rxjs/operators';
 import { CarouselService, CarouselCurrentData } from '../services/carousel.service';
 import { StageData } from "../models/stage-data.model";
 import { OwlDOMData } from "../models/owlDOM-data.model";
@@ -30,6 +32,8 @@ import { LazyLoadService } from '../services/lazyload.service';
 import { AnimateService } from '../services/animate.service';
 import { AutoHeightService } from '../services/autoheight.service';
 import { HashService } from '../services/hash.service';
+import { OwlLogger } from '../services/logger.service';
+import { DOCUMENT } from '../services/document-ref.service';
 
 let nextId = 0;
 
@@ -106,15 +110,17 @@ export class SlidesOutputData {
                     [stageData]="stageData"
                     [slidesData]="slidesData"></owl-stage>
       </div> <!-- /.owl-stage-outer -->
-      <div class="owl-nav" [ngClass]="{'disabled': navData?.disabled}">
-        <div class="owl-prev" [ngClass]="{'disabled': navData?.prev?.disabled}" (click)="prev()" [innerHTML]="navData?.prev?.htmlText"></div>
-        <div class="owl-next" [ngClass]="{'disabled': navData?.next?.disabled}" (click)="next()" [innerHTML]="navData?.next?.htmlText"></div>
-      </div> <!-- /.owl-nav -->
-      <div class="owl-dots" [ngClass]="{'disabled': dotsData?.disabled}">
-        <div *ngFor="let dot of dotsData?.dots" class="owl-dot" [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" (click)="moveByDot(dot.id)">
-          <span [innerHTML]="dot.innerContent"></span>
-        </div>
-      </div> <!-- /.owl-dots -->
+      <ng-container *ngIf="slides.toArray().length">
+        <div class="owl-nav" [ngClass]="{'disabled': navData?.disabled}">
+          <div class="owl-prev" [ngClass]="{'disabled': navData?.prev?.disabled}" (click)="prev()" [innerHTML]="navData?.prev?.htmlText"></div>
+          <div class="owl-next" [ngClass]="{'disabled': navData?.next?.disabled}" (click)="next()" [innerHTML]="navData?.next?.htmlText"></div>
+        </div> <!-- /.owl-nav -->
+        <div class="owl-dots" [ngClass]="{'disabled': dotsData?.disabled}">
+          <div *ngFor="let dot of dotsData?.dots" class="owl-dot" [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" (click)="moveByDot(dot.id)">
+            <span [innerHTML]="dot.innerContent"></span>
+          </div>
+        </div> <!-- /.owl-dots -->
+      </ng-container>
     </div> <!-- /.owl-carousel owl-loaded -->
   `,
   styles: [`.owl-theme { display: block; }`],
@@ -134,6 +140,10 @@ export class CarouselComponent
   slides: QueryList<CarouselSlideDirective>;
 
   @Output() translated = new EventEmitter<SlidesOutputData>();
+  @Output() dragging = new EventEmitter<{dragging: boolean, data: SlidesOutputData}>();
+  @Output() change = new EventEmitter<SlidesOutputData>();
+  @Output() changed = new EventEmitter<SlidesOutputData>();
+  @Output() initialized = new EventEmitter<SlidesOutputData>();
 
   /**
    * Width of carousel window (tag with class .owl-carousel), in wich we can see moving sliders
@@ -146,9 +156,16 @@ export class CarouselComponent
   resizeSubscription: Subscription;
 
   /**
-   * Subscription merge Observable, which merges all Observables in the component except 'resize' Observable
+   * Subscription merge Observable, which merges all Observables in the component except 'resize' Observable and this.slides.changes()
    */
   private _allObservSubscription: Subscription;
+
+  /**
+   * Subscription to `this.slides.changes().
+   * It could be included in 'this._allObservSubscription', but that subcription get created during the initializing of component
+   * and 'this.slides' are undefined at that moment. So it's needed to wait for initialization of content.
+   */
+  private _slidesChangesSubscription: Subscription;
 
   /**
    * Current settings for the carousel.
@@ -163,7 +180,7 @@ export class CarouselComponent
 	/**
 	 *  Data of every slide
 	 */
-  slidesData: SlideModel[];
+  slidesData: SlideModel[] = [];
 
   /**
 	 * Data of navigation block
@@ -201,9 +218,30 @@ export class CarouselComponent
   private _translatedCarousel$: Observable<string>;
 
   /**
+   * Observable for catching the start of dragging of the carousel
+   */
+  private _draggingCarousel$: Observable<string>;
+
+  /**
+   * Observable for catching the start of changing of the carousel
+   */
+  private _changeCarousel$: Observable<string>;
+
+  /**
+   * Observable for catching the moment when the data about slides changed, more exactly when the position changed.
+   */
+  private _changedCarousel$: Observable<any>;
+
+  /**
+   * Observable for catching the initialization of changing the carousel
+   */
+  private _initializedCarousel$: Observable<string>;
+
+  /**
    * Observable for merging all Observables and creating one subscription
    */
   private _carouselMerge$: Observable<CarouselCurrentData | string>;
+  private docRef: Document;
 
   constructor(
     private el: ElementRef,
@@ -214,8 +252,31 @@ export class CarouselComponent
     private lazyLoadService: LazyLoadService,
     private animateService: AnimateService,
     private autoHeightService: AutoHeightService,
-    private hashService: HashService
-  ) {}
+    private hashService: HashService,
+    private logger: OwlLogger,
+    @Inject(DOCUMENT) docRef: any
+  ) {
+    this.docRef = docRef as Document;
+
+  }
+
+  @HostListener('document:visibilitychange', ['$event'])
+  onVisibilityChange(ev: Event) {
+    if (!this.carouselService.settings.autoplay) return;
+    switch (this.docRef.visibilityState) {
+      case 'visible':
+        this.autoplayService.play();
+        break;
+
+      case 'hidden':
+        this.autoplayService.stop();
+        break;
+
+      default:
+        break;
+    }
+  };
+
 
   ngOnInit() {
     this.spyDataStreams();
@@ -230,16 +291,36 @@ export class CarouselComponent
   // ngAfterContentChecked() END
 
   ngAfterContentInit() {
-    this.carouselService.setup(this.carouselWindowWidth, this.slides.toArray(), this.options);
-    this.carouselService.initialize(this.slides.toArray());
+    if (this.slides.toArray().length) {
+      this.carouselService.setup(this.carouselWindowWidth, this.slides.toArray(), this.options);
+      this.carouselService.initialize(this.slides.toArray());
 
-    this._winResizeWatcher();
+      this._winResizeWatcher();
+    } else {
+      this.logger.log(`There are no slides to show. So the carousel won't be rendered`);
+    }
+
+    this._slidesChangesSubscription = this.slides.changes.pipe(
+      tap((slides) => {
+        if (slides.toArray().length) {
+          // this.carouselService.setItems(slides.toArray());
+          this.carouselService.setup(this.carouselWindowWidth, slides.toArray(), this.options);
+          this.carouselService.initialize(slides.toArray());
+        } else {
+          this.carouselLoaded = false;
+          this.logger.log(`There are no slides to show. So the carousel won't be re-rendered`);
+        }
+      })
+    ).subscribe(()=>{});
+
   }
 
   ngOnDestroy() {
     if (this.resizeSubscription) {
       this.resizeSubscription.unsubscribe();
     }
+
+    this._slidesChangesSubscription.unsubscribe();
 
     this._allObservSubscription.unsubscribe();
   }
@@ -262,15 +343,104 @@ export class CarouselComponent
       })
     );
 
+    this._initializedCarousel$ = this.carouselService.getInitializedState().pipe(
+      tap(() => {
+        this.gatherTranslatedData();
+        this.initialized.emit(this.slidesOutputData);
+        // this.slidesOutputData = {};
+      })
+    )
+
     this._translatedCarousel$ = this.carouselService.getTranslatedState().pipe(
       tap(() => {
         this.gatherTranslatedData();
         this.translated.emit(this.slidesOutputData);
-        this.slidesOutputData = {};
+        // this.slidesOutputData = {};
       })
     );
 
-    this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$);
+    this._changeCarousel$ = this.carouselService.getChangeState().pipe(
+      tap(() => {
+        this.gatherTranslatedData();
+        this.change.emit(this.slidesOutputData);
+        // this.slidesOutputData = {};
+      })
+    );
+
+    this._changedCarousel$ = this.carouselService.getChangeState().pipe(
+      switchMap(value => {
+        const changedPosition: Observable<SlidesOutputData> = of(value).pipe(
+          filter(() => value.property.name === 'position'),
+          switchMap(() => from(this.slidesData)),
+          skip(value.property.value),
+          take(this.carouselService.settings.items),
+          map(slide => {
+            const clonedIdPrefix = this.carouselService.clonedIdPrefix;
+            const id = slide.id.indexOf(clonedIdPrefix) >= 0 ? slide.id.slice(clonedIdPrefix.length) : slide.id;
+            return { ...slide, id: id, isActive: true };
+          }),
+          toArray(),
+          map(slides => {
+            return {
+              slides: slides,
+              startPosition: this.carouselService.relative(value.property.value)
+            }
+          })
+        );
+
+        // const changedSetting: Observable<SlidesOutputData> = of(value).pipe(
+        //   filter(() => value.property.name === 'settings'),
+        //   map(() => {
+        //     return {
+        //       slides: [],
+        //       startPosition: this.carouselService.relative(value.property.value)
+        //     }
+        //   })
+        // )
+        return merge(changedPosition);
+      }),
+      tap(slidesData => {
+        this.gatherTranslatedData();
+        this.changed.emit(slidesData.slides.length ? slidesData : this.slidesOutputData);
+        // console.log(this.slidesOutputData);
+        // this.slidesOutputData = {};
+      })
+    );
+
+    this._draggingCarousel$ = this.carouselService.getDragState().pipe(
+      tap(() => {
+        this.gatherTranslatedData();
+        this.dragging.emit({dragging: true, data: this.slidesOutputData});
+      }),
+      switchMap(
+        () => this.carouselService.getDraggedState().pipe(
+          map(() => !!this.carouselService.is('animating'))
+        )
+      ),
+      switchMap(
+        anim => {
+          if (anim) {
+            return this.carouselService.getTranslatedState().pipe(
+              first(),
+            );
+          } else {
+            return of('not animating');
+          }
+        }
+      ),
+      tap(() => {
+        this.dragging.emit({dragging: false, data: this.slidesOutputData});
+      })
+    );
+
+    this._carouselMerge$ = merge(
+      this._viewCurSettings$,
+      this._translatedCarousel$,
+      this._draggingCarousel$,
+      this._changeCarousel$,
+      this._changedCarousel$,
+      this._initializedCarousel$
+    );
     this._allObservSubscription = this._carouselMerge$.subscribe(() => {});
   }
 
@@ -302,6 +472,7 @@ export class CarouselComponent
    * Handler for click event, attached to next button
    */
   next() {
+    if (!this.carouselLoaded) return;
     this.navigationService.next(this.carouselService.settings.navSpeed);
   }
 
@@ -309,6 +480,7 @@ export class CarouselComponent
    * Handler for click event, attached to prev button
    */
   prev() {
+    if (!this.carouselLoaded) return;
     this.navigationService.prev(this.carouselService.settings.navSpeed);
   }
 
@@ -316,6 +488,7 @@ export class CarouselComponent
    * Handler for click event, attached to dots
    */
   moveByDot(dotId: string) {
+    if (!this.carouselLoaded) return;
     this.navigationService.moveByDot(dotId);
   }
 
@@ -324,6 +497,8 @@ export class CarouselComponent
    * @param id fragment of url
    */
   to(id: string) {
+    // if (!this.carouselLoaded || ((this.navData && this.navData.disabled) && (this.dotsData && this.dotsData.disabled))) return;
+    if (!this.carouselLoaded) return;
     this.navigationService.toSlideById(id);
   }
 

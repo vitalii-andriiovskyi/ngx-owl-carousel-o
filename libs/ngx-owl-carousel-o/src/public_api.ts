@@ -2,5 +2,7 @@ export {
   CarouselModule,
   CarouselComponent,
   CarouselSlideDirective,
-  SlidesOutputData
+  SlidesOutputData,
+  OwlRouterLinkDirective,
+  OwlRouterLinkWithHrefDirective
 } from './lib/carousel/carousel.module';

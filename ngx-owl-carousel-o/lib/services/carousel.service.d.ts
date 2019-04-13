@@ -5,6 +5,7 @@ import { SlideModel } from '../models/slide.model';
 import { Observable } from 'rxjs';
 import { OwlOptions } from '../models/owl-options.model';
 import { NavData, DotsData } from '../models/navigation-data.models';
+import { OwlLogger } from './logger.service';
 /**
  * Current state information and their tags.
  */
@@ -20,7 +21,7 @@ export declare class States {
  */
 export declare enum Type {
     Event = "event",
-    State = "state",
+    State = "state"
 }
 /**
  * Enumeration for width.
@@ -29,7 +30,7 @@ export declare enum Type {
 export declare enum Width {
     Default = "default",
     Inner = "inner",
-    Outer = "outer",
+    Outer = "outer"
 }
 /**
  * Model for coords of .owl-stage
@@ -49,6 +50,7 @@ export declare class CarouselCurrentData {
     dotsData: DotsData;
 }
 export declare class CarouselService {
+    private logger;
     /**
    * Subject for passing data needed for managing View
    */
@@ -153,7 +155,7 @@ export declare class CarouselService {
      * Merge values of all items.
      * @todo Maybe this could be part of a plugin.
      */
-    readonly _mergers: any[];
+    private _mergers;
     /**
    * Animation speed in milliseconds.
    */
@@ -190,7 +192,7 @@ export declare class CarouselService {
      * Ordered list of workers for the update process.
    */
     private _pipe;
-    constructor();
+    constructor(logger: OwlLogger);
     /**
      * Makes _viewSettingsShipper$ Subject become Observable
      * @returns Observable of _viewSettingsShipper$ Subject
@@ -265,13 +267,13 @@ export declare class CarouselService {
      * Notes:
      * 	- if user set option with wrong type, it'll be written in console
      */
-    private _validateOptions(options, configOptions);
+    private _validateOptions;
     /**
      * Checks option items set by user and if it bigger than number of slides then returns number of slides
      * @param items option items set by user
      * @returns right number of items
      */
-    private _validateItems(items);
+    private _validateItems;
     /**
      * Set current width of carousel
      * @param width width of carousel Window
@@ -287,9 +289,9 @@ export declare class CarouselService {
        */
     setup(carouselWidth: number, slides: CarouselSlideDirective[], options: OwlOptions): void;
     /**
-     * Set number of items for current viewport
+     * Set options for current viewport
      */
-    setViewportItemsN(): void;
+    setOptionsForViewport(): void;
     /**
      * Initializes the carousel.
      * @param slides array of CarouselSlideDirective
@@ -302,7 +304,7 @@ export declare class CarouselService {
     /**
        * Updates option logic if necessery
        */
-    private _optionsLogic();
+    private _optionsLogic;
     /**
      * Updates the view
      */
@@ -451,7 +453,7 @@ export declare class CarouselService {
        * @param factor [factor=undefined] - The time factor in milliseconds.
        * @returns The time in milliseconds for the translation.
        */
-    private _duration(from, to, factor?);
+    private _duration;
     /**
        * Slides to the specified item.
        * @param position The position of the item.
@@ -477,7 +479,7 @@ export declare class CarouselService {
        * Gets viewport width.
        * @returns - The width in pixel.
        */
-    private _viewport();
+    private _viewport;
     /**
        * Sets _items
        * @param content The list of slides put into CarouselSlideDirectives.
@@ -486,7 +488,7 @@ export declare class CarouselService {
     /**
      * Sets slidesData using this._items
      */
-    private _defineSlidesData();
+    private _defineSlidesData;
     /**
      * Sets current classes for slide
      * @param slide Slide of carousel
@@ -502,7 +504,7 @@ export declare class CarouselService {
        * @param b - The right side operand.
        * @returns true/false meaning right-to-left or left-to-right
        */
-    private _op(a, o, b);
+    private _op;
     /**
        * Triggers a public event.
        * @todo Remove `status`, `relatedTarget` should be used instead.
@@ -512,7 +514,7 @@ export declare class CarouselService {
        * @param state The state which is associated with the event.
        * @param enter Indicates if the call enters the specified state or not.
        */
-    private _trigger(name, data?, namespace?, state?, enter?);
+    private _trigger;
     /**
      * Enters a state.
      * @param name - The state name.
@@ -532,12 +534,12 @@ export declare class CarouselService {
        * Suppresses events.
        * @param events The events to suppress.
        */
-    private _suppress(events);
+    private _suppress;
     /**
        * Releases suppressed events.
        * @param events The events to release.
        */
-    private _release(events);
+    private _release;
     /**
        * Gets unified pointer coordinates from event.
        * @todo #261
@@ -550,25 +552,25 @@ export declare class CarouselService {
        * @param number The input to be tested
        * @returns An indication if the input is a Number or can be coerced to a Number
        */
-    private _isNumeric(number);
+    private _isNumeric;
     /**
      * Determines whether value is number or boolean type
      * @param value The input to be tested
      * @returns An indication if the input is a Number or can be coerced to a Number, or Boolean
      */
-    private _isNumberOrBoolean(value);
+    private _isNumberOrBoolean;
     /**
      * Determines whether value is number or string type
      * @param value The input to be tested
      * @returns An indication if the input is a Number or can be coerced to a Number, or String
      */
-    private _isNumberOrString(value);
+    private _isNumberOrString;
     /**
      * Determines whether value is number or string type
      * @param value The input to be tested
      * @returns An indication if the input is a Number or can be coerced to a Number, or String
      */
-    private _isStringOrBoolean(value);
+    private _isStringOrBoolean;
     /**
        * Gets the difference of two vectors.
        * @todo #261

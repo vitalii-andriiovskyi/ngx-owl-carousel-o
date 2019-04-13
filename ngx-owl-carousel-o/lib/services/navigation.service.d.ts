@@ -37,7 +37,7 @@ export declare class NavigationService implements OnDestroy {
     /**
      * Calculates internal states and updates prop _pages
      */
-    private _updateNavPages();
+    private _updateNavPages;
     /**
        * Draws the user interface.
        * @todo The option `dotsData` wont work.
@@ -50,22 +50,22 @@ export declare class NavigationService implements OnDestroy {
     /**
      * Changes state of nav buttons (disabled, enabled)
      */
-    private _updateNavButtons();
+    private _updateNavButtons;
     /**
      * Changes active dot if page becomes changed
      */
-    private _updateDots();
+    private _updateDots;
     /**
        * Gets the current page position of the carousel.
        * @returns the current page position of the carousel
        */
-    private _current();
+    private _current;
     /**
        * Gets the current succesor/predecessor position.
      * @param sussessor position of slide
        * @returns the current succesor/predecessor position
        */
-    private _getPosition(successor);
+    private _getPosition;
     /**
        * Slides to the next item or page.
        * @param speed The time in milliseconds for the transition.

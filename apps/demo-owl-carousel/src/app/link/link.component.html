@@ -1,0 +1,31 @@
+<section>
+  <header class="text-center">
+    <h2 class="mt-4">Link Component</h2>
+    <p class="mb-2">owlRouterLink</p>
+  </header>
+  <div class="container">
+    <div class="row">
+      <div class="col-10 offset-1">
+        
+        <owl-carousel-o [options]="customOptions" (dragging)="isDragging = $event.dragging">
+          
+          <ng-container *ngFor="let item of carouselData; let i=index">
+            <ng-template carouselSlide>
+              <div class="slider">
+                <a [owlRouterLink]="['/present']" [stopLink]="isDragging">{{item.text}}</a>
+                <a class="outer-link" href="https://www.google.com">
+                  <span>{{item.text}}</span>
+                </a>
+                  
+              </div><!-- /.carousel-item team-member -->
+            </ng-template>
+          </ng-container>
+          
+        </owl-carousel-o>
+  
+      </div> <!-- /.col-sm-10 col-sm-offset-1 -->
+      
+    </div> <!-- row -->
+    
+  </div> <!-- /.container -->
+</section>

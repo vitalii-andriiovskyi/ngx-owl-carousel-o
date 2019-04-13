@@ -4,11 +4,12 @@ import { AutoplayService } from './autoplay.service';
 import { DOCUMENT_PROVIDERS } from './document-ref.service';
 import { WINDOW_PROVIDERS } from './window-ref.service';
 import { CarouselService } from './carousel.service';
+import { OwlLogger } from './logger.service';
 
 describe('AutoplayService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AutoplayService, DOCUMENT_PROVIDERS, WINDOW_PROVIDERS, CarouselService]
+      providers: [AutoplayService, DOCUMENT_PROVIDERS, WINDOW_PROVIDERS, CarouselService, OwlLogger]
     });
   });
 

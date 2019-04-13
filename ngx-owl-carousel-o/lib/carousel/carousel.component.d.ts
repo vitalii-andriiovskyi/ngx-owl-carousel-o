@@ -13,6 +13,7 @@ import { LazyLoadService } from '../services/lazyload.service';
 import { AnimateService } from '../services/animate.service';
 import { AutoHeightService } from '../services/autoheight.service';
 import { HashService } from '../services/hash.service';
+import { OwlLogger } from '../services/logger.service';
 export declare class CarouselSlideDirective {
     tplRef: TemplateRef<any>;
     /**
@@ -63,8 +64,16 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
     private animateService;
     private autoHeightService;
     private hashService;
+    private logger;
     slides: QueryList<CarouselSlideDirective>;
     translated: EventEmitter<SlidesOutputData>;
+    dragging: EventEmitter<{
+        dragging: boolean;
+        data: SlidesOutputData;
+    }>;
+    change: EventEmitter<SlidesOutputData>;
+    changed: EventEmitter<SlidesOutputData>;
+    initialized: EventEmitter<SlidesOutputData>;
     /**
      * Width of carousel window (tag with class .owl-carousel), in wich we can see moving sliders
      */
@@ -74,9 +83,15 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      */
     resizeSubscription: Subscription;
     /**
-     * Subscription merge Observable, which merges all Observables in the component except 'resize' Observable
+     * Subscription merge Observable, which merges all Observables in the component except 'resize' Observable and this.slides.changes()
      */
     private _allObservSubscription;
+    /**
+     * Subscription to `this.slides.changes().
+     * It could be included in 'this._allObservSubscription', but that subcription get created during the initializing of component
+     * and 'this.slides' are undefined at that moment. So it's needed to wait for initialization of content.
+     */
+    private _slidesChangesSubscription;
     /**
      * Current settings for the carousel.
      */
@@ -118,10 +133,28 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      */
     private _translatedCarousel$;
     /**
+     * Observable for catching the start of dragging of the carousel
+     */
+    private _draggingCarousel$;
+    /**
+     * Observable for catching the start of changing of the carousel
+     */
+    private _changeCarousel$;
+    /**
+     * Observable for catching the moment when the data about slides changed, more exactly when the position changed.
+     */
+    private _changedCarousel$;
+    /**
+     * Observable for catching the initialization of changing the carousel
+     */
+    private _initializedCarousel$;
+    /**
      * Observable for merging all Observables and creating one subscription
      */
     private _carouselMerge$;
-    constructor(el: ElementRef, resizeService: ResizeService, carouselService: CarouselService, navigationService: NavigationService, autoplayService: AutoplayService, lazyLoadService: LazyLoadService, animateService: AnimateService, autoHeightService: AutoHeightService, hashService: HashService);
+    private docRef;
+    constructor(el: ElementRef, resizeService: ResizeService, carouselService: CarouselService, navigationService: NavigationService, autoplayService: AutoplayService, lazyLoadService: LazyLoadService, animateService: AnimateService, autoHeightService: AutoHeightService, hashService: HashService, logger: OwlLogger, docRef: any);
+    onVisibilityChange(ev: Event): void;
     ngOnInit(): void;
     ngAfterContentChecked(): void;
     ngAfterContentInit(): void;
@@ -134,7 +167,7 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
     /**
      * Init subscription to resize event and attaches handler for this event
      */
-    private _winResizeWatcher();
+    private _winResizeWatcher;
     /**
      * Handler for transitioend event
      */

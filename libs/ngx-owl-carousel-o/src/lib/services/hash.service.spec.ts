@@ -4,6 +4,7 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { HashService } from './hash.service';
 import { Component } from '@angular/core';
 import { CarouselService } from './carousel.service';
+import { OwlLogger } from './logger.service';
 
 describe('HashService', () => {
   beforeEach(() => {
@@ -12,7 +13,7 @@ describe('HashService', () => {
         RouterTestingModule.withRoutes([{path: '', component: TestComponent}])
       ],
       declarations: [ TestComponent ],
-      providers: [HashService, CarouselService]
+      providers: [HashService, CarouselService, OwlLogger]
     });
   });
 

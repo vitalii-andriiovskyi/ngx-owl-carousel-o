@@ -29,7 +29,7 @@ export declare class AnimateService implements OnDestroy {
        * Toggles the animation classes whenever an translations starts.
        * @returns
        */
-    private _swap();
+    private _swap;
     /**
      * Handles the end of 'animationend' event
      * @param id Id of slides

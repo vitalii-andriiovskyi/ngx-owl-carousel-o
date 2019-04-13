@@ -14,13 +14,14 @@ import { DOCUMENT_PROVIDERS } from './document-ref.service';
 import { StageComponent } from '../carousel/stage/stage.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from "@angular/router/testing";
+import { OwlLogger } from './logger.service';
 
 describe('CarouselService', () => {
   let carouselService: CarouselService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CarouselService]
+      providers: [CarouselService, OwlLogger]
     });
     carouselService = TestBed.get(CarouselService);
   });
@@ -85,7 +86,14 @@ describe('CarouselService in context of TestComponent', () => {
           CarouselSlideDirective,
           StageComponent
         ],
-        providers: [ResizeService, WINDOW_PROVIDERS, CarouselService, NavigationService, DOCUMENT_PROVIDERS]
+        providers: [
+          ResizeService,
+          WINDOW_PROVIDERS,
+          CarouselService,
+          NavigationService,
+          DOCUMENT_PROVIDERS,
+          OwlLogger
+        ]
       });
     })
   );
