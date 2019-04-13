@@ -6,7 +6,7 @@
   <div class="row">
     <div class="col-10 offset-1">
       
-      <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" #owlCar>
+      <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" (change)="getChangeData($event)" (changed)="getChangedData($event)" #owlCar>
         
         <ng-container *ngFor="let item of carouselData">
           <ng-template carouselSlide [id]="item.id" [width]="item.width">
