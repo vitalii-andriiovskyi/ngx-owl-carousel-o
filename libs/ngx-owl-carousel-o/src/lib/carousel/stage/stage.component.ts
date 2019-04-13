@@ -19,14 +19,14 @@ import {
       <div class="owl-stage" [ngStyle]="{'width': stageData.width + 'px',
                                         'transform': stageData.transform,
                                         'transition': stageData.transition,
-                                        'padding-left': stageData.paddingL + 'px',
-                                        'padding-right': stageData.paddingR + 'px' }"
+                                        'padding-left': stageData.paddingL ? stageData.paddingL + 'px' : '',
+                                        'padding-right': stageData.paddingR ? stageData.paddingR + 'px' : '' }"
           (transitionend)="onTransitionEnd()">
         <ng-container *ngFor="let slide of slidesData; let i = index">
           <div class="owl-item" [ngClass]="slide.classes"
                                 [ngStyle]="{'width': slide.width + 'px',
-                                            'margin-left': slide.marginL + 'px',
-                                            'margin-right': slide.marginR + 'px',
+                                            'margin-left': slide.marginL ? slide.marginL + 'px' : '',
+                                            'margin-right': slide.marginR ? slide.marginR + 'px' : '',
                                             'left': slide.left}"
                                 (animationend)="clear(slide.id)"
                                 [@autoHeight]="slide.heightState">
@@ -218,7 +218,6 @@ export class StageComponent implements OnInit, OnDestroy {
 		this._drag.stage.start = stage;
 		this._drag.stage.current = stage;
     this._drag.pointer = this._pointer(event);
-    this._drag.active = true;
 
     this.listenerMouseUp = this.renderer.listen(document, 'mouseup', this.bindOnDragEnd);
     this.listenerTouchEnd = this.renderer.listen(document, 'touchend', this.bindOnDragEnd);
@@ -235,19 +234,19 @@ export class StageComponent implements OnInit, OnDestroy {
    * @param event event objech of mouse or touch event
    */
   private _oneMouseTouchMove(event) {
-    if (!this._drag.active) return false;
     const delta = this._difference(this._drag.pointer, this._pointer(event));
     if (this.listenerATag) {
       this.listenerATag();
     }
-
-    this.listenerOneMouseMove();
-    this.listenerOneTouchMove();
-
-    if (Math.abs(delta.x) < Math.abs(delta.y) && this._is('valid')) {
-      this._drag.active = false;
+    if ( Math.abs(delta.x) < 3 && Math.abs(delta.y) < 3 && this._is('valid')) {
       return;
     }
+
+    if ((Math.abs(delta.x) < 3 && Math.abs(delta.x) < Math.abs(delta.y)) && this._is('valid')) {
+      return;
+    }
+    this.listenerOneMouseMove();
+    this.listenerOneTouchMove();
     this._drag.moving = true;
 
     this.blockClickAnchorInDragging(event);
@@ -282,8 +281,6 @@ export class StageComponent implements OnInit, OnDestroy {
 	 * @param event - The event arguments.
 	 */
 	private _onDragMove(event) {
-    if (!this._drag.active) return false;
-
     let stage: Coords;
     const stageOrExit: boolean | Coords = this.carouselService.defineNewCoordsDrag(event, this._drag);
 
@@ -315,6 +312,8 @@ export class StageComponent implements OnInit, OnDestroy {
 	 */
 	private _onDragEnd(event) {
     this.carouselService.owlDOMData.isGrab = false;
+    this.listenerOneMouseMove();
+    this.listenerOneTouchMove();
 
     if (this._drag.moving) {
       this.renderer.setStyle(this.el.nativeElement.children[0], 'transform', ``);

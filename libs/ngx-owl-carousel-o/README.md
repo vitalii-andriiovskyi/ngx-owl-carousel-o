@@ -2,34 +2,15 @@
 
 **ngx-owl-carousel-o** is built for Angular >=6.0.0. It doesn't use jQuery. 
 
-The version `1.x.x` relies on Angular 7. If it's needed to use the library for Angular 6, install the v0.1.2 by running the command `yarn add ngx-owl-carousel-o@0.1.2` or `npm i ngx-owl-carousel-o@0.1.2`.
+The version `1.x.x` relies on Angular 7.
 
-The version `v0.1.2` adds events `initialized` and `change`, modifies the payload of event `dragging`.
-The previous `dragging` payload was `$event = true/false`. Now payload is: 
-``` typescript
-{
-  dragging: boolean,
-  data: SlidesOutputData
-}
-
-class SlidesOutputData {
-  startPosition?: number;
-  slides?: SlideModel[];
-};
-```
-
-If it's needed to use the library for Angular 6, install the v0.1.0 by running the command `yarn add ngx-owl-carousel-o@0.1.1` or `npm i ngx-owl-carousel-o@0.1.1`.
-
-The version `v0.1.1` has the following changes:
-1. Added checking for the number of slides. If there are no slides to show, the carousel won't get rendered. 
-2. Correction of logging in cases when the option `items` is bigger than the number of slides or is equal to it:
-    - if it's bigger, the console will show the notification  `The option 'items' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled`;
-    - if it equals the number of slides and the developer enabled navigation buttons or dots, the console will show the message: `Option 'items' in your options is equal to the number of slides. So the navigation got disabled`. 
-3. The automatic disabling of logging in production mode.
-4. Re-rendering of the carousel if the array with slides data changes.
+If it's needed to use the library for Angular 6, install the v0.1.2 by running the command `yarn add ngx-owl-carousel-o@0.1.2` or `npm i ngx-owl-carousel-o@0.1.2`.
  
+[CHANGELOG](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/update-to-v7-of-nrwl-and-angular/CHANGELOG.md)
+
 ##### Table of Contents
 - [Get started](#get-started)
+- [Setting custom slides ids](#setting-custom-slides-ids)
 - [Options](#options)
 - [Tag `<a>` in the slide. Directive `owlRouterLink`](#owlRouterLink)
 - [Events](#events)
@@ -123,7 +104,9 @@ The version `v0.1.1` has the following changes:
       <div>Some tags after</div>
     ```      
 
-**NOTE**: Each slide has an `id`. If it isn't supplied like in the example, the code generates it automatically and expose one when the event `translated` fires. Info about this event is below. Follow the link [event `translated`](#translated)
+**NOTE**: Each slide has an `id`. If it isn't supplied like in the first example given to p. 7, the code generates it automatically and expose one when the event `translated` fires. Info about this event is below. Follow the link [event `translated`](#translated). 
+
+**NOTE**: Custom `id` must have the type `string`.
 
 **NOTE**: Using **ngx-owl-carousel-o** with options `animateOut` and `animateIn` requires adding `animate.css`. Steps are the following:
 1. `yarn add animate.css` or `npm install animate.css`.
@@ -133,6 +116,28 @@ The version `v0.1.1` has the following changes:
         "node_modules/animate.css/animate.min.css"
       ],
     ```
+
+## Setting custom slides ids
+It's possible to set own id to every slide. 
+
+> Every `id` must have the type `string`. Otherwise, slides won't get ids what will cause one problem, which appears when the developer uses the option `responsive`.  Slides won't be shown when the width of the screen changes and the carousel has to apply new settings according to the defined breakpoint. This is because the code uses ids of slides in order to assign new data to slides. So if you change the width of the screen and slides disappear, there could be the problem with setting `id`. 
+
+> If `id`s aren't set explicitly, they will be created automatically.
+
+The example of setting `id`s: 
+```html
+  <div>Some tags before</div>
+  <owl-carousel-o [options]="customOptions">
+
+    <ng-container *ngFor="let slide of slidesStore">
+      <ng-template carouselSlide [id]="slide.id">
+        <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
+      </ng-template>
+    </ng-container>
+
+  </owl-carousel-o>
+  <div>Some tags after</div>
+```
 
 ## Options
 
@@ -278,7 +283,7 @@ When the option `URLhashListener=true`, it's required to define the `@Input` pro
 ```
 where `hashObj` is the object with hashes (fragments) of url. `hashObj` could be an array. Defining the kind of data store is up to the developer. 
 
-**NOTE**: `HashService` uses services `ActivatedRoute` and `Router` for making it possible to navigate by hashes (fragments). The `CarouselModule` imports `RouterModule.forChild()`. And if `RouterModule.forRoot(routes)` isn't imported in the main module of an application, the problem will appear. `HashService` **won't work**. Thus it's needed to import `RouterModule.forRoot(routes)` in the main module of an application even in the case of creating the simple app for testing the work of the library.
+**NOTE**: `HashService` uses services `ActivatedRoute` and `Router` for making it possible to navigate by hashes (fragments). And if `RouterModule.forRoot(routes)` isn't imported in the main module of an application, the problem will appear. `HashService` **won't work**. Therefore it's needed to import `RouterModule.forRoot(routes)` in the main module of an application even in the case of creating the simple app for testing the work of the library.
 
 ### lazyLoad
 There's no need to set to `<img>` attributes `data-src` and  `data-src-retina` because Angular has its own realization for `<img>`. In Angular it's better to write `<img [src]="someURL">`. `src` is the data-binding, which means Angular will set the value to the native attribute `src` of `<img>` after loading its core code. Original Owl Carousel reads `data-src` and sets the native attribute `src` at needed moment. Of course, **ngx-owl-carousel-o** has additional tricks for lazy loading images (better to say the content of slides) put into slides. 
@@ -348,6 +353,7 @@ The `<a href="someUrl">` has the automatic preventing navigation during dragging
 * [translated](#translated).
 * [dragging](#dragging).
 * [change](#change).
+* [changed](#changed).
 * [initialized](#initialized).
 
 ### translated
@@ -660,6 +666,91 @@ import { SlidesOutputData } from 'ngx-owl-carousel-o';
     }
 ```
 `(change)="getData($event)"` is the subscription or attaching to the event;
+
+`getData(data: SlidesOutputData)` is the method which takes data about active slides.
+
+`activeSlides` is the property of `CarouselHolderComponent`, which stores data about active slides
+
+### changed
+
+It fires when user clicks dots or nav buttons and new data about active slides becomes known. This event fires before the event `translated` gets fired. However, while the user drags the carousel this event fires after dropping the carousel or after stopping dragging. 
+This event exposes the object of the type `SlidesOutputData`:
+```typecript
+class SlidesOutputData {
+  startPosition?: number;
+  slides?: SlideModel[];
+};
+```
+`startPosition` is the position of the first slide with the class `.active`
+
+`slides` is the array with data of each active slide. Data of each active slide are:
+```typescript
+{
+  id: string; // id of slide
+  width: number; // width of slide
+  marginL: number; // margin-left of slide
+  marginR: number; // margin-right of slide
+  center: boolean; // whether slide is centered (has .center)
+} 
+```
+
+The code for subscribing to this event is the following:
+
+`CarouselHolderComponent`
+```typescript
+import { SlidesOutputData } from 'ngx-owl-carousel-o';
+@Component({
+      selector: '....',
+      template: `
+      <owl-carousel-o [options]="customOptions" (changed)="getData($event)">
+
+        <ng-container *ngFor="let slide of slidesStore">
+          <ng-template carouselSlide [id]="slide.id">
+            <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
+          </ng-template>
+        </ng-container>
+
+      </owl-carousel-o>
+    `
+    })
+    export class CarouselHolderComponent {
+      customOptions: any = {
+        loop: true,
+        mouseDrag: false,
+        touchDrag: false,
+        pullDrag: false,
+        dots: false,
+        navSpeed: 700,
+        navText: ['', ''],
+        responsive: {
+          0: {
+            items: 1
+          },
+          400: {
+            items: 2
+          },
+          740: {
+            items: 3
+          },
+          940: {
+            items: 4
+          }
+        },
+        nav: true
+      }
+
+      activeSlides: SlidesOutputData;
+
+      slidesStore: any[];
+      constructor() {}
+
+      getData(data: SlidesOutputData) {
+        this.activeSlides = data;
+        console.log(this.activeSlides);
+      }
+    }
+```
+`(changed)="getData($event)"` is the subscription or attaching to the event;
 
 `getData(data: SlidesOutputData)` is the method which takes data about active slides.
 

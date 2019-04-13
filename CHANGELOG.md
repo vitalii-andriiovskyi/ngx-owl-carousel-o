@@ -1,5 +1,16 @@
 # Versions Changes
 
+* [v1.1.2](#v1.1.2)
+* [v1.1.1](#v1.1.1)
+* [v1.1.0](#v1.1.0)
+* [v1.0.11](#v1.0.11)
+* [v1.0.10](#v1.0.10)
+* [v1.0.9](#v1.0.9)
+* [v1.0.8](#v1.0.8)
+* [v1.0.7](#v1.0.7)
+* [v1.0.6](#v1.0.6)
+* [v1.0.5](#v1.0.5)
+* [v1.0.4](#v1.0.4)
 * [v1.0.3](#v1.0.3)
 * [v1.0.2](#v1.0.2)
 * [v1.0.1](#v1.0.1)
@@ -8,6 +19,95 @@
 * [v0.1.1](#v0.1.1)
 * [v0.1.0](#v0.1.0)
 * [v0.0.5](#v0.0.5)
+
+## v1.1.2
+The version `v1.1.2` fixes the issue [`#28`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/28)
+
+## v1.1.1
+The version `v1.1.1` fixes the additional problem to issue [`#23`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/23). This is the problem connected with starting the autoplay the carousel after the user switched back to the page with the carousel from another browser tab and the option `autoplay=true`.
+
+## v1.1.0
+The version `v1.1.0` adds new event `changed`. This event is the same as `change` except that the payload has data about new `startPosition` and new active slides.
+
+## v1.0.11
+The version `v1.0.11` solves issues [`#19`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/19) and [`#20`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/20).
+
+### Changes implemented to solve issue `#19`
+Dragging starts when the user moves the cursor on more than 3px. Then the event `dragging` fires. The payload is 
+```typescript
+{ 
+  dragging: true,
+  data: SlidesOutputData 
+}
+```
+
+Dragging of the carousel can finish by changing active slides (the carousel scrolls in this case) or by remaining the carousel in the state which was before dragging. The second variant is possible when the user drags the carousel to the left-hand side on less than 30px. 
+In any case, the event `dragging` fires passing the payload:
+```typescript
+{ 
+  dragging: false,
+  data: SlidesOutputData 
+}
+```
+
+### Issue `#20`
+`Router` and `ActivatedRoute` are injected using the decorator `@Optional`. Also, it's added the additional checking for the case of setting `null` to `this.router` and `this.route`.
+The `RouterModule` is removed from imports of `CarouselModule`.
+
+## v1.0.10
+The version `v1.0.10` fixes the wrong dependencies in `package.json` of `v1.0.9`. The version `v1.0.9` accidentally got  `"@angular/common": "^6.0.0-rc.0 || ^6.0.0",`, not the `"@angular/common": "^7.0.0-rc.0 || ^7.0.0"` and so on.
+
+## v1.0.9
+The version `v1.0.9` extends the list of options, which can be configured in the option `responsive` for needed viewports. Earlier, it was possible to configure just the option `items`. This list of options consists of:
+* `loop`
+* `center`
+* `pullDrag`
+* `margin`
+* `stagePadding`
+* `autoHeight`
+* `nav`
+* `navRewind`
+* `slideBy`
+* `dots`
+* `dotsEach`
+* `autoplay`
+* `autoplayTimeout`
+* `smartSpeed`
+* `fluidSpeed`
+* `autoplaySpeed`
+* `navSpeed`
+* `dotsSpeed`
+* `dragEndSpeed`
+* `responsiveRefreshRate`
+* `animateOut`
+* `animateIn`
+* `mouseDrag`
+* `touchDrag`
+* `mergeFit`
+
+The option `autoWidth` requires using data-binding property `width`, which is more important to this scenario. It's impossible to manipulate by predefined widths of slides using the option `responsive`. If it's needed to, it must be done by watching the media query object or width of the carousel wrapper and changing the value set in the `width`. The option `responsive` is just helpful for turning off the `autoWidth` for certain viewports.
+The same refers to the option `merge`.
+
+
+## v1.0.8
+The version `v1.0.8` fixes the problem with renewing the autoplay of the carousel while switching to a new browser tab and coming back. 
+
+>There's one snag. The browser __Edge__ can't renew the autoplay in the case when the user sets the cursor of the mouse over the carousel, switches to another browser tab using a keyboard, and comes back to the tab holding a carousel. 
+
+Also, this version unblocks the methods `prev()` and `next()` in the case of disabling the option `nav=false`.
+
+## v1.0.7
+The version `v1.0.7` fixes the additional problem to the issue [`#15`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/15). This problem is that when the user leaves the carousel before it gets translated (scrolled), the autoplay doesn't renew. 
+
+## v1.0.6
+The version `v1.0.6` fixes the issue [`#15`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/15).
+
+## v1.0.5
+The version `v1.0.5` refactors the object return by `windowFactory()` and the object return by `documentFactory()`. These two object are for non-browser platform.
+
+## v1.0.4
+
+The version `v1.0.4` refactors the method `to(id)` of `CarouselComponent` removing the forbiddance to scroll the carousel when `nav` or `dots` gets disabled.
 
 ## v1.0.3
 The version `v1.0.3` adds events `initialized` and `change`, modifies the payload of event `dragging`.

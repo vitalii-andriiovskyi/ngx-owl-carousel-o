@@ -39,6 +39,7 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 
   let deSlides: DebugElement[];
   let deActiveSlides: DebugElement[];
+  let carouselHTML: HTMLElement;
 
   let coords: { x: number, y: number};
 
@@ -108,6 +109,10 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     // drag carousel to left hand-side
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
     triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    // In tests the listener of 'mousemove' event which can drag the carousel gets attached little bit later than in practice
+    // Therefore it's needed to try dragging for > 3px firstly, then drag on needed value and check it. 
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x -9, clientY: coords.y});
     tick();
     triggerMouseEvent(document, 'mousemove', {clientX: coords.x -10, clientY: coords.y});
     tick();
@@ -254,16 +259,18 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
     triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
     tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x -6, clientY: coords.y});
+    tick();
     triggerMouseEvent(document, 'mousemove', {clientX: coords.x -10, clientY: coords.y});
     tick();
 
     expect(stageParent.style.transform).toBe('translate3d(-10px, 0px, 0px)', 'translate3d(-10px, 0px, 0px)');
 
-    triggerMouseEvent(document, 'mousemove', {clientX: coords.x -300, clientY: coords.y});
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x - 300, clientY: coords.y});
     tick();
     expect(stageParent.style.transform).toBe('translate3d(-300px, 0px, 0px)', 'translate3d(-300px, 0px, 0px)');
 
-    triggerMouseEvent(document, 'mouseup', {clientX: coords.x -300, clientY: coords.y});
+    triggerMouseEvent(document, 'mouseup', {clientX: coords.x - 300, clientY: coords.y});
     tick();
     expect(stageParent.style.transform).toBe('', '');
     fixtureHost.detectChanges();
@@ -328,6 +335,49 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     expect(deNavButtons[0].nativeElement.classList.contains('disabled')).toBeFalsy('prev button doesn\'t have .disabled');
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
+  }));
+
+  it('shouldn\'t drag the carousel by the mouse [options]="{nav: true, loop: true}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{nav: true, loop: true}">
+          <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+          <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+          <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+          <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+          <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    testComponent = fixtureHost.componentInstance;
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+
+    fixtureHost.detectChanges();
+    deStageWrapper = deCarouselComponent.query(By.css('owl-stage'));
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+
+    coords = findCoordsInElem(deSlides[3].nativeElement, getCoords(deSlides[3].nativeElement));
+
+    const stageParent: HTMLElement = deStageWrapper.nativeElement.children[0]; // css rules for this element are being changed outer of angular zone. Thus there's no need to call detectChanges();
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
+
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled')).toBeFalsy('prev button hasn\'t .disabled');
+    expect(deDots.length).toBe(2, '2 dots');
+
+    // drag carousel to left hand-side
+    triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x -1, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x -2, clientY: coords.y});
+    tick();
+
+    expect(stageParent.style.transform).toBe('', '');
   }));
 
   it('should drag carousel by mouse [options]="{nav: true, center: true}"', fakeAsync(() => {
@@ -746,82 +796,307 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     discardPeriodicTasks();
   }));
 
-  it(`shouldn\'t make smooth drag of carousel by mouse right when Slide 1 is active and left when Slide 5 is active[options]="{pullDrag: false}`, fakeAsync(() => {
+  it('shouldn\'t smooth drag the carousel by mouse when the width of the carousel is between 600 and 900', fakeAsync(() => {
     const html = `
       <div style="width: 920px; margin: auto">
-        <owl-carousel-o [options]="{pullDrag: false}">
-          <ng-template carouselSlide>Slide 1</ng-template>
-          <ng-template carouselSlide>Slide 2</ng-template>
-          <ng-template carouselSlide>Slide 3</ng-template>
-          <ng-template carouselSlide>Slide 4</ng-template>
-          <ng-template carouselSlide>Slide 5</ng-template>
-        </owl-carousel-o>
+        <div class="owl-wrapper">
+          <owl-carousel-o [options]="{ responsive: {
+                                          '600': { mouseDrag: false },
+                                          '900': { }
+                                        }
+                                      }">
+
+            <ng-template carouselSlide>Slide 1</ng-template>
+            <ng-template carouselSlide>Slide 2</ng-template>
+            <ng-template carouselSlide>Slide 3</ng-template>
+            <ng-template carouselSlide>Slide 4</ng-template>
+            <ng-template carouselSlide>Slide 5</ng-template>
+          </owl-carousel-o>
+        </div>
       </div>
     `;
     fixtureHost = createTestComponent(html);
-    testComponent = fixtureHost.componentInstance;
+    tick();
+    fixtureHost.detectChanges();
+
     deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
-
-    tick();
-    fixtureHost.detectChanges();
-
-    deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    deStageWrapper = deCarouselComponent.query(By.css('owl-stage'));
+    carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
     deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
-    coords = findCoordsInElem(deSlides[1].nativeElement, getCoords(deSlides[1].nativeElement));
+    deStageWrapper = deCarouselComponent.query(By.css('owl-stage'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
 
-    const stageParent: HTMLElement = deStageWrapper.nativeElement.children[0]; // css rules for this element are being changed outer of angular zone. Thus there's no need to call detectChanges();
+    coords = findCoordsInElem(deSlides[3].nativeElement, getCoords(deSlides[3].nativeElement));
+    expect(deActiveSlides.length).toBe(3, '3 active slides');
 
-    expect(deDots.length).toBe(2, '2 dots');
-
-    // drag carousel to right hand-side; current first active slide is Slide 1;
-    triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
-    triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
-    tick();
-    triggerMouseEvent(document, 'mousemove', {clientX: coords.x +10, clientY: coords.y});
-    tick();
-    expect(stageParent.style.transform).toBe('translate3d(0px, 0px, 0px)', 'translate3d(0px, 0px, 0px)');
-
-    triggerMouseEvent(document, 'mousemove', {clientX: coords.x + 300, clientY: coords.y});
-    tick();
-    expect(stageParent.style.transform).toBe('translate3d(0px, 0px, 0px)', 'translate3d(0px, 0px, 0px)');
-
-    triggerMouseEvent(document, 'mouseup', {clientX: coords.x + 300, clientY: coords.y});
-    tick();
-    fixtureHost.detectChanges();
-
-    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
-    deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
-
-    deDots[1].triggerEventHandler('click', null);
-    tick();
-    fixtureHost.detectChanges();
-
-    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[2].nativeElement.innerHTML).toContain('Slide 5', 'Slide 5');
-
-    // drag carousel to right hand-side; current first active slide is Slide 1;
+    // drag carousel to left hand-side; current first active slide is Slide 1;
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
     triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
     tick();
     triggerMouseEvent(document, 'mousemove', {clientX: coords.x -10, clientY: coords.y});
     tick();
-    expect(stageParent.style.transform).toBe('translate3d(0px, 0px, 0px)', 'translate3d(0px, 0px, 0px)');
-
     triggerMouseEvent(document, 'mousemove', {clientX: coords.x - 300, clientY: coords.y});
     tick();
-    expect(stageParent.style.transform).toBe('translate3d(0px, 0px, 0px)', 'translate3d(0px, 0px, 0px)');
-
     triggerMouseEvent(document, 'mouseup', {clientX: coords.x - 300, clientY: coords.y});
     tick();
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[2].nativeElement.innerHTML).toContain('Slide 5', 'Slide 5');
-    discardPeriodicTasks();
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+    expect(deActiveSlides.length).toBe(3, '3 active slide');
+
+    // ------- set width of carousel to 800px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 800px; margin: auto');
+    fixtureHost.detectChanges();
+
+    expect(carouselHTML.clientWidth).toBe(800);
+
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+    // --------------------------------
+
+    // drag carousel to left hand-side; current first active slide is Slide 1;
+    triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x -10, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x - 300, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mouseup', {clientX: coords.x - 300, clientY: coords.y});
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+    expect(deActiveSlides.length).toBe(3, '3 active slide');
+
+    deNavButtons[1].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+
+    // ------- set width of carousel to 400px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 400px; margin: auto');
+    fixtureHost.detectChanges();
+
+    expect(carouselHTML.clientWidth).toBe(400);
+
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+    // --------------------------------
+
+    deNavButtons[0].triggerEventHandler('click', null);
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+
+    // drag carousel to left hand-side; current first active slide is Slide 1;
+    triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x -10, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x - 300, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mouseup', {clientX: coords.x - 300, clientY: coords.y});
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
   }));
+
+  describe(`THE OPTION 'PULLDRAG'`, () => {
+
+    it('shouldn\'t make smooth drag of carousel by mouse right when Slide 1 is active and when the width of the carousel is between 600 and 900', fakeAsync(() => {
+      const html = `
+        <div style="width: 920px; margin: auto">
+          <div class="owl-wrapper">
+            <owl-carousel-o [options]="{ responsive: {
+                                            '600': { pullDrag: false },
+                                            '900': { pullDrag: true }
+                                          }
+                                        }">
+
+              <ng-template carouselSlide>Slide 1</ng-template>
+              <ng-template carouselSlide>Slide 2</ng-template>
+              <ng-template carouselSlide>Slide 3</ng-template>
+              <ng-template carouselSlide>Slide 4</ng-template>
+              <ng-template carouselSlide>Slide 5</ng-template>
+            </owl-carousel-o>
+          </div>
+        </div>
+      `;
+      fixtureHost = createTestComponent(html);
+      tick();
+      fixtureHost.detectChanges();
+
+      deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+      carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+      deStageWrapper = deCarouselComponent.query(By.css('owl-stage'));
+
+      coords = findCoordsInElem(deSlides[3].nativeElement, getCoords(deSlides[3].nativeElement));
+      expect(deActiveSlides.length).toBe(3, '3 active slides');
+      const stageParent: HTMLElement = deStageWrapper.nativeElement.children[0]; // css rules for this element are being changed outer of angular zone. Thus there's no need to call detectChanges();
+
+
+      tick();
+      fixtureHost.detectChanges();
+
+      // drag carousel to right hand-side; current first active slide is Slide 1;
+      triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+      triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+      tick();
+      triggerMouseEvent(document, 'mousemove', {clientX: coords.x +6, clientY: coords.y});
+      tick();
+      triggerMouseEvent(document, 'mousemove', {clientX: coords.x +10, clientY: coords.y});
+      tick();
+      expect(stageParent.style.transform).toBe('translate3d(2px, 0px, 0px)', 'translate3d(2px, 0px, 0px)');
+
+      triggerMouseEvent(document, 'mousemove', {clientX: coords.x + 300, clientY: coords.y});
+      tick();
+      expect(stageParent.style.transform).toBe('translate3d(60px, 0px, 0px)', 'translate3d(60px, 0px, 0px)');
+
+      triggerMouseEvent(document, 'mouseup', {clientX: coords.x + 300, clientY: coords.y});
+      tick();
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+
+      // ------- set width of carousel to 800px
+      carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 800px; margin: auto');
+      fixtureHost.detectChanges();
+
+      expect(carouselHTML.clientWidth).toBe(800);
+
+      window.dispatchEvent(new Event('resize'));
+      tick(200);
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+      expect(deActiveSlides.length).toBe(3, '3 active slide');
+
+      // drag carousel to right hand-side; current first active slide is Slide 1;
+      triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+      triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+      tick();
+      triggerMouseEvent(document, 'mousemove', {clientX: coords.x + 5, clientY: coords.y});
+      tick();
+      triggerMouseEvent(document, 'mousemove', {clientX: coords.x +10, clientY: coords.y});
+      tick();
+      expect(stageParent.style.transform).toBe('translate3d(0px, 0px, 0px)', 'translate3d(0px, 0px, 0px)');
+
+      triggerMouseEvent(document, 'mousemove', {clientX: coords.x + 300, clientY: coords.y});
+      tick();
+      expect(stageParent.style.transform).toBe('translate3d(0px, 0px, 0px)', 'translate3d(0px, 0px, 0px)');
+
+      triggerMouseEvent(document, 'mouseup', {clientX: coords.x + 300, clientY: coords.y});
+      tick();
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    }));
+
+    it(`shouldn\'t make smooth drag of carousel by mouse to right-hand side when Slide 1 is active and left when Slide 5 is active[options]="{pullDrag: false}`, fakeAsync(() => {
+      const html = `
+        <div style="width: 920px; margin: auto">
+          <owl-carousel-o [options]="{pullDrag: false}">
+            <ng-template carouselSlide>Slide 1</ng-template>
+            <ng-template carouselSlide>Slide 2</ng-template>
+            <ng-template carouselSlide>Slide 3</ng-template>
+            <ng-template carouselSlide>Slide 4</ng-template>
+            <ng-template carouselSlide>Slide 5</ng-template>
+          </owl-carousel-o>
+        </div>
+      `;
+      fixtureHost = createTestComponent(html);
+      testComponent = fixtureHost.componentInstance;
+      deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+
+      tick();
+      fixtureHost.detectChanges();
+
+      deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
+      deStageWrapper = deCarouselComponent.query(By.css('owl-stage'));
+      deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+      coords = findCoordsInElem(deSlides[1].nativeElement, getCoords(deSlides[1].nativeElement));
+
+      const stageParent: HTMLElement = deStageWrapper.nativeElement.children[0]; // css rules for this element are being changed outer of angular zone. Thus there's no need to call detectChanges();
+
+      expect(deDots.length).toBe(2, '2 dots');
+
+      // drag carousel to right hand-side; current first active slide is Slide 1;
+      triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+      triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+      tick();
+      triggerMouseEvent(document, 'mousemove', {clientX: coords.x + 6, clientY: coords.y});
+      tick();
+      triggerMouseEvent(document, 'mousemove', {clientX: coords.x +10, clientY: coords.y});
+      tick();
+      expect(stageParent.style.transform).toBe('translate3d(0px, 0px, 0px)', 'translate3d(0px, 0px, 0px)');
+
+      triggerMouseEvent(document, 'mousemove', {clientX: coords.x + 300, clientY: coords.y});
+      tick();
+      expect(stageParent.style.transform).toBe('translate3d(0px, 0px, 0px)', 'translate3d(0px, 0px, 0px)');
+
+      triggerMouseEvent(document, 'mouseup', {clientX: coords.x + 300, clientY: coords.y});
+      tick();
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+      deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
+      expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
+
+      deDots[1].triggerEventHandler('click', null);
+      tick();
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[2].nativeElement.innerHTML).toContain('Slide 5', 'Slide 5');
+
+      // drag carousel to right hand-side; current first active slide is Slide 1;
+      triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+      triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+      tick();
+      triggerMouseEvent(document, 'mousemove', {clientX: coords.x -10, clientY: coords.y});
+      tick();
+      expect(stageParent.style.transform).toBe('translate3d(0px, 0px, 0px)', 'translate3d(0px, 0px, 0px)');
+
+      triggerMouseEvent(document, 'mousemove', {clientX: coords.x - 300, clientY: coords.y});
+      tick();
+      expect(stageParent.style.transform).toBe('translate3d(0px, 0px, 0px)', 'translate3d(0px, 0px, 0px)');
+
+      triggerMouseEvent(document, 'mouseup', {clientX: coords.x - 300, clientY: coords.y});
+      tick();
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[2].nativeElement.innerHTML).toContain('Slide 5', 'Slide 5');
+      discardPeriodicTasks();
+    }));
+  });
+
+
 
   it(`should drag carousel with transition-duration=400ms [options]="{smartSpeed: 400}`, fakeAsync(() => {
     const html = `
@@ -863,6 +1138,123 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
     expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.4s', 'transition-duration: 0.4s');
+  }));
+
+  it('should drag carousel with transition-duration=600ms when the width of the carousel is between 600 and 900; the option smartSpeed', fakeAsync(() => {
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <div class="owl-wrapper">
+          <owl-carousel-o [options]="{ smartSpeed: 400,
+                                        responsive: {
+                                          '600': { smartSpeed: 600 },
+                                          '900': { smartSpeed: 400 }
+                                        }
+                                      }">
+
+            <ng-template carouselSlide>Slide 1</ng-template>
+            <ng-template carouselSlide>Slide 2</ng-template>
+            <ng-template carouselSlide>Slide 3</ng-template>
+            <ng-template carouselSlide>Slide 4</ng-template>
+            <ng-template carouselSlide>Slide 5</ng-template>
+          </owl-carousel-o>
+        </div>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    tick();
+    fixtureHost.detectChanges();
+
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    deStageWrapper = deCarouselComponent.query(By.css('owl-stage'));
+    coords = findCoordsInElem(deSlides[3].nativeElement, getCoords(deSlides[3].nativeElement));
+
+    expect(deActiveSlides.length).toBe(3, '3 active slides');
+
+    tick();
+    fixtureHost.detectChanges();
+
+    // drag carousel to left hand-side; current first active slide is Slide 1;
+    triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x - 10, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x - 300, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mouseup', {clientX: coords.x - 300, clientY: coords.y});
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.4s', 'transition-duration: 0.4s');
+
+
+    // ------- set width of carousel to 800px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 800px; margin: auto');
+    fixtureHost.detectChanges();
+
+    expect(carouselHTML.clientWidth).toBe(800);
+
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+    expect(deActiveSlides.length).toBe(3, '3 active slide');
+
+    // drag carousel to left hand-side; current first active slide is Slide 1;
+    triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x - 10, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x - 300, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mouseup', {clientX: coords.x - 300, clientY: coords.y});
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.6s', 'transition-duration: 0.6s');
+
+    // ------- set width of carousel to 400px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 400px; margin: auto');
+    fixtureHost.detectChanges();
+
+    expect(carouselHTML.clientWidth).toBe(400);
+
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 33');
+    expect(deActiveSlides.length).toBe(3, '3 active slide');
+
+    // drag carousel to left hand-side; current first active slide is Slide 1;
+    triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x + 10, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x + 300, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mouseup', {clientX: coords.x + 300, clientY: coords.y});
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
     deStage = deCarouselComponent.query(By.css('.owl-stage'));
     expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.4s', 'transition-duration: 0.4s');
   }));
@@ -911,6 +1303,123 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.35s', 'transition-duration: 0.35s');
 
     discardPeriodicTasks();
+  }));
+
+  it('should drag carousel with transition-duration=600ms when the width of the carousel is between 600 and 900; the option dragEndSpeed', fakeAsync(() => {
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <div class="owl-wrapper">
+          <owl-carousel-o [options]="{ dragEndSpeed: 400,
+                                        responsive: {
+                                          '600': { dragEndSpeed: 600 },
+                                          '900': { dragEndSpeed: 400 }
+                                        }
+                                      }">
+
+            <ng-template carouselSlide>Slide 1</ng-template>
+            <ng-template carouselSlide>Slide 2</ng-template>
+            <ng-template carouselSlide>Slide 3</ng-template>
+            <ng-template carouselSlide>Slide 4</ng-template>
+            <ng-template carouselSlide>Slide 5</ng-template>
+          </owl-carousel-o>
+        </div>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    tick();
+    fixtureHost.detectChanges();
+
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+    deStageWrapper = deCarouselComponent.query(By.css('owl-stage'));
+    coords = findCoordsInElem(deSlides[3].nativeElement, getCoords(deSlides[3].nativeElement));
+
+    expect(deActiveSlides.length).toBe(3, '3 active slides');
+
+    tick();
+    fixtureHost.detectChanges();
+
+    // drag carousel to left hand-side; current first active slide is Slide 1;
+    triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x - 10, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x - 300, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mouseup', {clientX: coords.x - 300, clientY: coords.y});
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.4s', 'transition-duration: 0.4s');
+
+
+    // ------- set width of carousel to 800px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 800px; margin: auto');
+    fixtureHost.detectChanges();
+
+    expect(carouselHTML.clientWidth).toBe(800);
+
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+    expect(deActiveSlides.length).toBe(3, '3 active slide');
+
+    // drag carousel to left hand-side; current first active slide is Slide 1;
+    triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x - 10, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x - 300, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mouseup', {clientX: coords.x - 300, clientY: coords.y});
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.6s', 'transition-duration: 0.6s');
+
+    // ------- set width of carousel to 400px
+    carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 400px; margin: auto');
+    fixtureHost.detectChanges();
+
+    expect(carouselHTML.clientWidth).toBe(400);
+
+    window.dispatchEvent(new Event('resize'));
+    tick(200);
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 33');
+    expect(deActiveSlides.length).toBe(3, '3 active slide');
+
+    // drag carousel to left hand-side; current first active slide is Slide 1;
+    triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x + 10, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x + 300, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mouseup', {clientX: coords.x + 300, clientY: coords.y});
+    tick();
+    fixtureHost.detectChanges();
+
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.4s', 'transition-duration: 0.4s');
   }));
 
   it(`should drag carousel with transition-duration=350ms and change pages with transition-duration=500ms [options]="{dragEndSpeed: 350, dotsSpeed: 500,}`, fakeAsync(() => {
@@ -985,96 +1494,234 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
   }));
 
 
-  it(`should drag carousel with transition-duration=350ms by touch (finger) [options]="{dragEndSpeed: 350}`, fakeAsync(() => {
-    const html = `
-      <div style="width: 920px; margin: auto">
-        <owl-carousel-o [options]="{dragEndSpeed: 350}">
-          <ng-template carouselSlide>Slide 1</ng-template>
-          <ng-template carouselSlide>Slide 2</ng-template>
-          <ng-template carouselSlide>Slide 3</ng-template>
-          <ng-template carouselSlide>Slide 4</ng-template>
-          <ng-template carouselSlide>Slide 5</ng-template>
-        </owl-carousel-o>
-      </div>
-    `;
-    fixtureHost = createTestComponent(html);
-    testComponent = fixtureHost.componentInstance;
-    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+  describe(`THE OPTION 'TOUCHDRAG'`, () => {
 
-    tick();
-    fixtureHost.detectChanges();
+    it(`should drag carousel with transition-duration=350ms by touch (finger) [options]="{dragEndSpeed: 350}`, fakeAsync(() => {
+      const html = `
+        <div style="width: 920px; margin: auto">
+          <owl-carousel-o [options]="{dragEndSpeed: 350}">
+            <ng-template carouselSlide>Slide 1</ng-template>
+            <ng-template carouselSlide>Slide 2</ng-template>
+            <ng-template carouselSlide>Slide 3</ng-template>
+            <ng-template carouselSlide>Slide 4</ng-template>
+            <ng-template carouselSlide>Slide 5</ng-template>
+          </owl-carousel-o>
+        </div>
+      `;
+      fixtureHost = createTestComponent(html);
+      testComponent = fixtureHost.componentInstance;
+      deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
 
-    deStageWrapper = deCarouselComponent.query(By.css('owl-stage'));
-    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
-    coords = findCoordsInElem(deSlides[1].nativeElement, getCoords(deSlides[1].nativeElement));
+      tick();
+      fixtureHost.detectChanges();
 
-    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+      deStageWrapper = deCarouselComponent.query(By.css('owl-stage'));
+      deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+      coords = findCoordsInElem(deSlides[1].nativeElement, getCoords(deSlides[1].nativeElement));
 
-    // drag carousel to left hand-side; current first active slide is Slide 1;
-    let evtObj = {clientX: coords.x, clientY: coords.y, pageX: coords.x, pageY: coords.y}
-    triggerTouchEvent(deStageWrapper.nativeElement, 'touchstart', evtObj);
-    triggerMouseEvent(document, 'touchmove', {clientX: coords.x, clientY: coords.y});
-    tick();
-    evtObj = {clientX: coords.x - 10, clientY: coords.y, pageX: coords.x - 10, pageY: coords.y}
-    triggerMouseEvent(document, 'touchmove', evtObj);
-    tick();
-    evtObj = {clientX: coords.x - 300, clientY: coords.y, pageX: coords.x - 300, pageY: coords.y}
-    triggerMouseEvent(document, 'touchmove', evtObj);
-    tick();
-    triggerMouseEvent(document, 'touchend', evtObj);
-    tick();
-    fixtureHost.detectChanges();
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
 
-    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+      // drag carousel to left hand-side; current first active slide is Slide 1;
+      let evtObj = {clientX: coords.x, clientY: coords.y, pageX: coords.x, pageY: coords.y}
+      triggerTouchEvent(deStageWrapper.nativeElement, 'touchstart', evtObj);
+      triggerMouseEvent(document, 'touchmove', {clientX: coords.x, clientY: coords.y});
+      tick();
+      evtObj = {clientX: coords.x - 10, clientY: coords.y, pageX: coords.x - 10, pageY: coords.y}
+      triggerMouseEvent(document, 'touchmove', evtObj);
+      tick();
+      evtObj = {clientX: coords.x - 300, clientY: coords.y, pageX: coords.x - 300, pageY: coords.y}
+      triggerMouseEvent(document, 'touchmove', evtObj);
+      tick();
+      triggerMouseEvent(document, 'touchend', evtObj);
+      tick();
+      fixtureHost.detectChanges();
 
-    deStage = deCarouselComponent.query(By.css('.owl-stage'));
-    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.35s', 'transition-duration: 0.35s');
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
 
-    // drag carousel to left hand-side; current first active slide is Slide 2;
-    evtObj = {clientX: coords.x, clientY: coords.y, pageX: coords.x, pageY: coords.y}
-    triggerTouchEvent(deStageWrapper.nativeElement, 'touchstart', evtObj);
-    triggerMouseEvent(document, 'touchmove', {clientX: coords.x, clientY: coords.y});
-    tick();
-    evtObj = {clientX: coords.x - 10, clientY: coords.y, pageX: coords.x - 10, pageY: coords.y}
-    triggerMouseEvent(document, 'touchmove', evtObj);
-    tick();
-    evtObj = {clientX: coords.x - 300, clientY: coords.y, pageX: coords.x - 300, pageY: coords.y}
-    triggerMouseEvent(document, 'touchmove', evtObj);
-    tick();
-    triggerMouseEvent(document, 'touchend', evtObj);
-    tick();
-    fixtureHost.detectChanges();
+      deStage = deCarouselComponent.query(By.css('.owl-stage'));
+      expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.35s', 'transition-duration: 0.35s');
 
-    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+      // drag carousel to left hand-side; current first active slide is Slide 2;
+      evtObj = {clientX: coords.x, clientY: coords.y, pageX: coords.x, pageY: coords.y}
+      triggerTouchEvent(deStageWrapper.nativeElement, 'touchstart', evtObj);
+      triggerMouseEvent(document, 'touchmove', {clientX: coords.x, clientY: coords.y});
+      tick();
+      evtObj = {clientX: coords.x - 10, clientY: coords.y, pageX: coords.x - 10, pageY: coords.y}
+      triggerMouseEvent(document, 'touchmove', evtObj);
+      tick();
+      evtObj = {clientX: coords.x - 300, clientY: coords.y, pageX: coords.x - 300, pageY: coords.y}
+      triggerMouseEvent(document, 'touchmove', evtObj);
+      tick();
+      triggerMouseEvent(document, 'touchend', evtObj);
+      tick();
+      fixtureHost.detectChanges();
 
-    deStage = deCarouselComponent.query(By.css('.owl-stage'));
-    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.35s', 'transition-duration: 0.35s');
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
 
-    // drag carousel to right hand-side; current first active slide is Slide 3;
-    evtObj = {clientX: coords.x, clientY: coords.y, pageX: coords.x, pageY: coords.y}
-    triggerTouchEvent(deStageWrapper.nativeElement, 'touchstart', evtObj);
-    triggerMouseEvent(document, 'touchmove', {clientX: coords.x, clientY: coords.y});
-    tick();
-    evtObj = {clientX: coords.x + 10, clientY: coords.y, pageX: coords.x + 10, pageY: coords.y}
-    triggerMouseEvent(document, 'touchmove', evtObj);
-    tick();
-    evtObj = {clientX: coords.x + 650, clientY: coords.y, pageX: coords.x + 650, pageY: coords.y}
-    triggerMouseEvent(document, 'touchmove', evtObj);
-    tick();
-    triggerMouseEvent(document, 'touchend', evtObj);
-    tick();
-    fixtureHost.detectChanges();
+      deStage = deCarouselComponent.query(By.css('.owl-stage'));
+      expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.35s', 'transition-duration: 0.35s');
 
-    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+      // drag carousel to right hand-side; current first active slide is Slide 3;
+      evtObj = {clientX: coords.x, clientY: coords.y, pageX: coords.x, pageY: coords.y}
+      triggerTouchEvent(deStageWrapper.nativeElement, 'touchstart', evtObj);
+      triggerMouseEvent(document, 'touchmove', {clientX: coords.x, clientY: coords.y});
+      tick();
+      evtObj = {clientX: coords.x + 10, clientY: coords.y, pageX: coords.x + 10, pageY: coords.y}
+      triggerMouseEvent(document, 'touchmove', evtObj);
+      tick();
+      evtObj = {clientX: coords.x + 650, clientY: coords.y, pageX: coords.x + 650, pageY: coords.y}
+      triggerMouseEvent(document, 'touchmove', evtObj);
+      tick();
+      triggerMouseEvent(document, 'touchend', evtObj);
+      tick();
+      fixtureHost.detectChanges();
 
-    deStage = deCarouselComponent.query(By.css('.owl-stage'));
-    expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.35s', 'transition-duration: 0.35s');
-    discardPeriodicTasks();
-  }));
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+      deStage = deCarouselComponent.query(By.css('.owl-stage'));
+      expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe('0.35s', 'transition-duration: 0.35s');
+      discardPeriodicTasks();
+    }));
+
+    it('shouldn\'t smooth drag the carousel by touch when the width of the carousel is between 600 and 900', fakeAsync(() => {
+      const html = `
+        <div style="width: 920px; margin: auto">
+          <div class="owl-wrapper">
+            <owl-carousel-o [options]="{ responsive: {
+                                            '600': { touchDrag: false },
+                                            '900': { }
+                                          }
+                                        }">
+
+              <ng-template carouselSlide>Slide 1</ng-template>
+              <ng-template carouselSlide>Slide 2</ng-template>
+              <ng-template carouselSlide>Slide 3</ng-template>
+              <ng-template carouselSlide>Slide 4</ng-template>
+              <ng-template carouselSlide>Slide 5</ng-template>
+            </owl-carousel-o>
+          </div>
+        </div>
+      `;
+      fixtureHost = createTestComponent(html);
+      tick();
+      fixtureHost.detectChanges();
+
+      deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+      carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+      deStageWrapper = deCarouselComponent.query(By.css('owl-stage'));
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+
+      coords = findCoordsInElem(deSlides[3].nativeElement, getCoords(deSlides[3].nativeElement));
+      coords = findCoordsInElem(deSlides[1].nativeElement, getCoords(deSlides[1].nativeElement));
+
+      expect(deActiveSlides.length).toBe(3, '3 active slides');
+
+      // drag carousel to left hand-side; current first active slide is Slide 1;
+      let evtObj = {clientX: coords.x, clientY: coords.y, pageX: coords.x, pageY: coords.y}
+      triggerTouchEvent(deStageWrapper.nativeElement, 'touchstart', evtObj);
+      triggerMouseEvent(document, 'touchmove', {clientX: coords.x, clientY: coords.y});
+      tick();
+      evtObj = {clientX: coords.x - 10, clientY: coords.y, pageX: coords.x - 10, pageY: coords.y}
+      triggerMouseEvent(document, 'touchmove', evtObj);
+      tick();
+      evtObj = {clientX: coords.x - 300, clientY: coords.y, pageX: coords.x - 300, pageY: coords.y}
+      triggerMouseEvent(document, 'touchmove', evtObj);
+      tick();
+      triggerMouseEvent(document, 'touchend', evtObj);
+      tick();
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+      expect(deActiveSlides.length).toBe(3, '3 active slide');
+
+      // ------- set width of carousel to 800px
+      carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 800px; margin: auto');
+      fixtureHost.detectChanges();
+
+      expect(carouselHTML.clientWidth).toBe(800);
+
+      window.dispatchEvent(new Event('resize'));
+      tick(200);
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+      // --------------------------------
+
+      // try drag carousel to left hand-side; current first active slide is Slide 2;
+      // should'n drag the carousel
+      evtObj = {clientX: coords.x, clientY: coords.y, pageX: coords.x, pageY: coords.y}
+      triggerTouchEvent(deStageWrapper.nativeElement, 'touchstart', evtObj);
+      triggerMouseEvent(document, 'touchmove', {clientX: coords.x, clientY: coords.y});
+      tick();
+      evtObj = {clientX: coords.x - 10, clientY: coords.y, pageX: coords.x - 10, pageY: coords.y}
+      triggerMouseEvent(document, 'touchmove', evtObj);
+      tick();
+      evtObj = {clientX: coords.x - 300, clientY: coords.y, pageX: coords.x - 300, pageY: coords.y}
+      triggerMouseEvent(document, 'touchmove', evtObj);
+      tick();
+      triggerMouseEvent(document, 'touchend', evtObj);
+      tick();
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+      expect(deActiveSlides.length).toBe(3, '3 active slide');
+
+      deNavButtons[1].triggerEventHandler('click', null);
+      tick();
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+
+      // ------- set width of carousel to 400px
+      carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 400px; margin: auto');
+      fixtureHost.detectChanges();
+
+      expect(carouselHTML.clientWidth).toBe(400);
+
+      window.dispatchEvent(new Event('resize'));
+      tick(200);
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+      // --------------------------------
+
+      deNavButtons[0].triggerEventHandler('click', null);
+      tick();
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+
+      // drag carousel to left hand-side; current first active slide is Slide 2;
+      evtObj = {clientX: coords.x, clientY: coords.y, pageX: coords.x, pageY: coords.y}
+      triggerTouchEvent(deStageWrapper.nativeElement, 'touchstart', evtObj);
+      triggerMouseEvent(document, 'touchmove', {clientX: coords.x, clientY: coords.y});
+      tick();
+      evtObj = {clientX: coords.x - 10, clientY: coords.y, pageX: coords.x - 10, pageY: coords.y}
+      triggerMouseEvent(document, 'touchmove', evtObj);
+      tick();
+      evtObj = {clientX: coords.x - 300, clientY: coords.y, pageX: coords.x - 300, pageY: coords.y}
+      triggerMouseEvent(document, 'touchmove', evtObj);
+      tick();
+      triggerMouseEvent(document, 'touchend', evtObj);
+      tick();
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+    }));
+  });
 
   it('should notify about dragging carousel by mouse [options]="{nav: true}"', fakeAsync(() => {
     discardPeriodicTasks();
@@ -1124,6 +1771,51 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 
     expect(testComponent.isDragging).toBeFalsy('isDragging property is false');
     discardPeriodicTasks();
+  }));
+
+  it('should fire the event \'dragging\' in the case of simple click and moving cursor less than 3 px [options]="{nav: true}"', fakeAsync(() => {
+    discardPeriodicTasks();
+    const html = `
+      <div style="width: 920px; margin: auto">
+        <owl-carousel-o [options]="{nav: true}" (dragging)="isDragging = $event.dragging">
+          <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+          <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+          <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+          <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+          <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    testComponent = fixtureHost.componentInstance;
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+
+    fixtureHost.detectChanges();
+    deStageWrapper = deCarouselComponent.query(By.css('owl-stage'));
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
+
+    coords = findCoordsInElem(deSlides[0].nativeElement, getCoords(deSlides[0].nativeElement));
+
+    const stageParent: HTMLElement = deStageWrapper.nativeElement.children[0]; // css rules for this element are being changed outer of angular zone. Thus there's no need to call detectChanges();
+    expect(testComponent.isDragging).toBeFalsy('isDragging property is undefined');
+
+    // drag carousel to left hand-side
+    triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+    triggerMouseEvent(document, 'mouseup', {clientX: coords.x, clientY: coords.y});
+    tick();
+
+    expect(testComponent.isDragging).toBeFalsy('isDragging property is undefined');
+
+    triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {clientX: coords.x, clientY: coords.y});
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mousemove', {clientX: coords.x - 2, clientY: coords.y});
+    tick();
+    triggerMouseEvent(document, 'mouseup', {clientX: coords.x -2, clientY: coords.y});
+    tick();
+
+    expect(testComponent.isDragging).toBeFalsy('isDragging property is undefined');
   }));
 
   it('should stop \'owlRouterLink\' while dragging', fakeAsync(() => {

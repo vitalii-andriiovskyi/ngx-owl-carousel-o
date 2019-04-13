@@ -1,0 +1,4 @@
+[0817/221551.002:ERROR:file_io_win.cc(170)] CreateFile C:\Users\Vitalik\AppData\Local\Temp\karma-95081118\Crashpad\reports\9dc1ce0a-ac65-4c61-a50c-ec7e454b9017.dmp: The system cannot find the path specified. (0x3)
+[0817/221551.003:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed
+[0820/224634.525:ERROR:file_io_win.cc(170)] CreateFile C:\Users\Vitalik\AppData\Local\Temp\karma-12239052\Crashpad\reports\2f9c28c0-aad4-4a88-94db-193db00a2aaf.dmp: The system cannot find the path specified. (0x3)
+[0820/224634.526:ERROR:crash_report_exception_handler.cc(97)] PrepareNewCrashReport failed

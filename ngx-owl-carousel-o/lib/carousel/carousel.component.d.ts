@@ -72,6 +72,7 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
         data: SlidesOutputData;
     }>;
     change: EventEmitter<SlidesOutputData>;
+    changed: EventEmitter<SlidesOutputData>;
     initialized: EventEmitter<SlidesOutputData>;
     /**
      * Width of carousel window (tag with class .owl-carousel), in wich we can see moving sliders
@@ -140,6 +141,10 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      */
     private _changeCarousel$;
     /**
+     * Observable for catching the moment when the data about slides changed, more exactly when the position changed.
+     */
+    private _changedCarousel$;
+    /**
      * Observable for catching the initialization of changing the carousel
      */
     private _initializedCarousel$;
@@ -147,7 +152,9 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      * Observable for merging all Observables and creating one subscription
      */
     private _carouselMerge$;
-    constructor(el: ElementRef, resizeService: ResizeService, carouselService: CarouselService, navigationService: NavigationService, autoplayService: AutoplayService, lazyLoadService: LazyLoadService, animateService: AnimateService, autoHeightService: AutoHeightService, hashService: HashService, logger: OwlLogger);
+    private docRef;
+    constructor(el: ElementRef, resizeService: ResizeService, carouselService: CarouselService, navigationService: NavigationService, autoplayService: AutoplayService, lazyLoadService: LazyLoadService, animateService: AnimateService, autoHeightService: AutoHeightService, hashService: HashService, logger: OwlLogger, docRef: any);
+    onVisibilityChange(ev: Event): void;
     ngOnInit(): void;
     ngAfterContentChecked(): void;
     ngAfterContentInit(): void;
@@ -160,7 +167,7 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
     /**
      * Init subscription to resize event and attaches handler for this event
      */
-    private _winResizeWatcher();
+    private _winResizeWatcher;
     /**
      * Handler for transitioend event
      */

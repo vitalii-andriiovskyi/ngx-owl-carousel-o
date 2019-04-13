@@ -61,7 +61,11 @@ export function windowFactory(
   if (isPlatformBrowser(platformId)) {
     return browserWindowRef.nativeWindow;
   }
-  return new Object();
+  const obj = {
+    setTimeout: (func: any, time: any) => {},
+    clearTimeout: (a: any) => {}
+  }
+  return obj;
 }
 
 /**

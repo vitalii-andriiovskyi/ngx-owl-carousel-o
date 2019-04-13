@@ -180,6 +180,7 @@ export class NavigationService implements OnDestroy {
           this._dotsData.dots.push({
             active: false,
             id: `dot-${i + startI}`,
+            innerContent: '',
             showInnerContent: false
           });
         }
@@ -221,6 +222,10 @@ export class NavigationService implements OnDestroy {
    */
   private _updateDots() {
     let curActiveDotI: number;
+
+    if(!this.carouselService.settings.dots) {
+      return;
+    }
     this._dotsData.dots.forEach(item => {
       if (item.active === true) {
         item.active = false;

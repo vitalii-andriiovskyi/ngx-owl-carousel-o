@@ -695,7 +695,7 @@ export class CarouselService {
 
 		this.settings = { ...this._options};
 
-		this.setViewportItemsN();
+		this.setOptionsForViewport();
 
 		this._trigger('change', { property: { name: 'settings', value: this.settings } });
 		this.invalidate('settings'); // must be call of this function;
@@ -703,9 +703,9 @@ export class CarouselService {
 	}
 
 	/**
-	 * Set number of items for current viewport
+	 * Set options for current viewport
 	 */
-	setViewportItemsN() {
+	setOptionsForViewport() {
 		const viewport = this._width,
 			overwrites = this._options.responsive;
 		let	match = -1;
@@ -727,12 +727,22 @@ export class CarouselService {
 			}
 		}
 
-		this.settings = { ...this.settings, items: this._validateItems(overwrites[match].items)};
+		this.settings = { ...this._options, ...overwrites[match], items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items) : this._options.items};
 		// if (typeof this.settings.stagePadding === 'function') {
 		// 	this.settings.stagePadding = this.settings.stagePadding();
 		// }
 		delete this.settings.responsive;
 		this.owlDOMData.isResponsive = true;
+		this.owlDOMData.isMouseDragable = this.settings.mouseDrag;
+		this.owlDOMData.isTouchDragable = this.settings.touchDrag;
+
+		const mergers = [];
+		this._items.forEach(item => {
+			const mergeN: number = this.settings.merge ? item.dataMerge : 1;
+			mergers.push(mergeN);
+		});
+		this._mergers = mergers;
+
 		this._breakpoint = match;
 
 		this.invalidate('settings');
@@ -846,7 +856,7 @@ export class CarouselService {
 		this.enter('refreshing');
 		this._trigger('refresh');
 		this._defineSlidesData();
-		this.setViewportItemsN();
+		this.setOptionsForViewport();
 
 		this._optionsLogic();
 
