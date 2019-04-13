@@ -10,6 +10,7 @@ If it's needed to use the library for Angular 6, install the v0.1.2 by running t
 
 ##### Table of Contents
 - [Get started](#get-started)
+- [Setting custom slides ids](#setting-custom-slides-ids)
 - [Options](#options)
 - [Tag `<a>` in the slide. Directive `owlRouterLink`](#owlRouterLink)
 - [Events](#events)
@@ -103,7 +104,9 @@ If it's needed to use the library for Angular 6, install the v0.1.2 by running t
       <div>Some tags after</div>
     ```      
 
-**NOTE**: Each slide has an `id`. If it isn't supplied like in the example, the code generates it automatically and expose one when the event `translated` fires. Info about this event is below. Follow the link [event `translated`](#translated)
+**NOTE**: Each slide has an `id`. If it isn't supplied like in the first example given to p. 7, the code generates it automatically and expose one when the event `translated` fires. Info about this event is below. Follow the link [event `translated`](#translated). 
+
+**NOTE**: Custom `id` must have the type `string`.
 
 **NOTE**: Using **ngx-owl-carousel-o** with options `animateOut` and `animateIn` requires adding `animate.css`. Steps are the following:
 1. `yarn add animate.css` or `npm install animate.css`.
@@ -113,6 +116,29 @@ If it's needed to use the library for Angular 6, install the v0.1.2 by running t
         "node_modules/animate.css/animate.min.css"
       ],
     ```
+
+## Setting custom slides ids
+It's possible to set own id to every slide. 
+
+> Every `id` must have the type `string`. Otherwise, slides won't get ids what will cause one problem, which appears when the developer uses the option `responsive`.  Slides won't be shown when the width of the screen changes and the carousel has to apply new settings according to the defined breakpoint. This is because the code uses ids of slides in order to assign new data to slides. So if you change the width of the screen and slides disappear, there could be the problem with setting `id`. 
+
+> If `id`s aren't set explicitly, they will be created automatically.
+
+The example of setting ids: 
+```html
+  <div>Some tags before</div>
+  <owl-carousel-o [options]="customOptions">
+
+    <ng-container *ngFor="let slide of slidesStore">
+      <ng-template carouselSlide [id]="slide.id">
+        <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
+      </ng-template>
+    </ng-container>
+
+  </owl-carousel-o>
+  <div>Some tags after</div>
+```
+
 
 ## Options
 
