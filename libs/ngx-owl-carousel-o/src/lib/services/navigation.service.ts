@@ -180,6 +180,7 @@ export class NavigationService implements OnDestroy {
           this._dotsData.dots.push({
             active: false,
             id: `dot-${i + startI}`,
+            innerContent: '',
             showInnerContent: false
           });
         }

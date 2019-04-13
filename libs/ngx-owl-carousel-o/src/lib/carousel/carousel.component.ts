@@ -117,10 +117,7 @@ export class SlidesOutputData {
         </div> <!-- /.owl-nav -->
         <div class="owl-dots" [ngClass]="{'disabled': dotsData?.disabled}">
           <div *ngFor="let dot of dotsData?.dots" class="owl-dot" [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" (click)="moveByDot(dot.id)">
-            <span [innerHTML]="dot.innerContent"
-              [ngStyle]="{
-                'overflow': dot.innerContent ? '' : 'hidden',
-                'color': dot.innerContent ? '' : 'transparent'}"></span>
+            <span [innerHTML]="dot.innerContent"></span>
           </div>
         </div> <!-- /.owl-dots -->
       </ng-container>
