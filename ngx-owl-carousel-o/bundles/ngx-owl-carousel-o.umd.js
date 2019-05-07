@@ -2078,6 +2078,8 @@
                 /** @type {?} */
                 var maximum = this.maximum();
                 /** @type {?} */
+                var delayForLoop = 0;
+                /** @type {?} */
                 var direction = +(distance > 0) - +(distance < 0);
                 /** @type {?} */
                 var items = this._items.length;
@@ -2092,6 +2094,7 @@
                     if (revert !== position && revert - distance <= maximum && revert - distance > 0) {
                         current = revert - distance;
                         position = revert;
+                        delayForLoop = 30;
                         this.reset(current);
                         this.sendChanges();
                     }
@@ -2107,7 +2110,7 @@
                     _this.speed(_this._duration(current, position, speed));
                     _this.current(position);
                     _this.update();
-                }, 0);
+                }, delayForLoop);
             };
         /**
            * Slides to the next item.
