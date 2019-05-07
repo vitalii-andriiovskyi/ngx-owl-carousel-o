@@ -1363,7 +1363,8 @@ export class CarouselService {
 		let current = this.current(),
 			revert = null,
 			distance = position - this.relative(current),
-			maximum = this.maximum();
+			maximum = this.maximum(),
+			delayForLoop = 0;
 		const	direction = +(distance > 0) - +(distance < 0),
 			items = this._items.length,
 			minimum = this.minimum();
@@ -1379,6 +1380,7 @@ export class CarouselService {
 			if (revert !== position && revert - distance <= maximum && revert - distance > 0) {
 				current = revert - distance;
 				position = revert;
+				delayForLoop = 30;
 				this.reset(current);
 				this.sendChanges();
 			}
@@ -1394,7 +1396,7 @@ export class CarouselService {
 			this.current(position);
 
 			this.update();
-		}, 0);
+		}, delayForLoop);
 
 	}
 
