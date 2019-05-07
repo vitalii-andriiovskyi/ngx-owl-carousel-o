@@ -17,6 +17,10 @@ const appRoutes: Routes = [
     loadChildren: './present/present.module#PresentModule',
   },
   {
+    path: 'doubled-carousel',
+    loadChildren: './doubled-carousel/doubled-carousel.module#DoubledCarouselModule',
+  },
+  {
     path: 'link-comp',
     component: LinkComponent
   }

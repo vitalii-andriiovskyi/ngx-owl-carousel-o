@@ -124,7 +124,7 @@ It's possible to set own id to every slide.
 
 > If `id`s aren't set explicitly, they will be created automatically.
 
-The example of setting ids: 
+The example of setting `id`s: 
 ```html
   <div>Some tags before</div>
   <owl-carousel-o [options]="customOptions">
@@ -138,7 +138,6 @@ The example of setting ids:
   </owl-carousel-o>
   <div>Some tags after</div>
 ```
-
 
 ## Options
 

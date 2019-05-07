@@ -1478,6 +1478,8 @@ class CarouselService {
         /** @type {?} */
         let maximum = this.maximum();
         /** @type {?} */
+        let delayForLoop = 0;
+        /** @type {?} */
         const direction = +(distance > 0) - +(distance < 0);
         /** @type {?} */
         const items = this._items.length;
@@ -1492,6 +1494,7 @@ class CarouselService {
             if (revert !== position && revert - distance <= maximum && revert - distance > 0) {
                 current = revert - distance;
                 position = revert;
+                delayForLoop = 30;
                 this.reset(current);
                 this.sendChanges();
             }
@@ -1507,7 +1510,7 @@ class CarouselService {
             this.speed(this._duration(current, position, speed));
             this.current(position);
             this.update();
-        }, 0);
+        }, delayForLoop);
     }
     /**
      * Slides to the next item.
