@@ -2582,11 +2582,6 @@ var CarouselService = /** @class */ (function () {
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
  */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
 var NavigationService = /** @class */ (function () {
     function NavigationService(carouselService) {
         this.carouselService = carouselService;

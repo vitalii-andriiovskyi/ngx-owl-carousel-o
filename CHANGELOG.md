@@ -1,5 +1,7 @@
 # Versions Changes
 
+* [v1.1.5](#v1.1.5)
+* [v1.1.4](#v1.1.4)
 * [v1.1.3](#v1.1.3)
 * [v1.1.2](#v1.1.2)
 * [v1.1.1](#v1.1.1)
@@ -20,6 +22,13 @@
 * [v0.1.1](#v0.1.1)
 * [v0.1.0](#v0.1.0)
 * [v0.0.5](#v0.0.5)
+
+
+## v1.1.5
+The version `v1.1.5` adds the export of `ResponsiveSettings` and `BreakpointOptions` from `public_api.ts`.
+
+## v1.1.4
+The version `v1.1.4` adds the export of `OwlOptions` from `public_api.ts`.
 
 ## v1.1.3
 The version `v1.1.3` fixes the problem with the incorrect job of the option `loop`. Sometimes this option doesn't work and the carousel rewinds itself to the first or the last slide completely without loop effect. The fix is adding delay to the method `to()` of the `CarouselService`. This delay equals 30ms. Details are in the [commit 21f1da8](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/commit/21f1da8f1f7a456f48efadc52d8c14ec7413525b)

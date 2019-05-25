@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CarouselData } from '../app.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { tap } from 'node_modules/rxjs/operators';
-import { SlidesOutputData } from 'ngx-owl-carousel-o';
+import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
 @Component({
   selector: 'owl-carousel-libdemo-home',
   templateUrl: './home.component.html',
@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
     // { text: 'Slide 10', dotContent: 'text5'},
   ];
 
-  customOptions: any = {
+  customOptions: OwlOptions = {
     autoWidth: true,
     loop: true,
     // items: '10',
