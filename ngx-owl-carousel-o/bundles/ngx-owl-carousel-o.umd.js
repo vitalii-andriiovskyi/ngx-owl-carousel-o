@@ -5442,16 +5442,6 @@
      * @fileoverview added by tsickle
      * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
      */
-    var OwlOptions = /** @class */ (function () {
-        function OwlOptions() {
-        }
-        return OwlOptions;
-    }());
-
-    /**
-     * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
-     */
 
     /**
      * @fileoverview added by tsickle
@@ -5469,7 +5459,6 @@
     exports.SlidesOutputData = SlidesOutputData;
     exports.OwlRouterLinkDirective = OwlRouterLinkDirective;
     exports.OwlRouterLinkWithHrefDirective = OwlRouterLinkWithHrefDirective;
-    exports.OwlOptions = OwlOptions;
     exports.ɵx = StageComponent;
     exports.ɵt = AnimateService;
     exports.ɵu = AutoHeightService;
