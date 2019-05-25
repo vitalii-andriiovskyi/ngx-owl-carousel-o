@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { CarouselData } from '../app.component';
+import { OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
   selector: 'owl-carousel-libdemo-present',
@@ -24,7 +25,7 @@ export class PresentComponent implements OnInit {
   owlPrev = '&larr;';
 
 
-  customOptions: any = {
+  customOptions: OwlOptions = {
     // autoWidth: true,
     loop: true,
     // items: '10',

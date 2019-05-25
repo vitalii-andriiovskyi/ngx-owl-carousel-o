@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CarouselComponent } from 'ngx-owl-carousel-o';
+import { CarouselComponent, OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
   selector: 'owl-carousel-libdemo-doubled-carousel',
@@ -38,7 +38,7 @@ export class DoubledCarouselComponent implements OnInit {
     }
   };
 
-  carouselOptions: any = {
+  carouselOptions: OwlOptions = {
     loop: true,
     mouseDrag: true,
     touchDrag: true,
@@ -65,7 +65,7 @@ export class DoubledCarouselComponent implements OnInit {
     // }
   };
 
-  categories: any = {
+  categories: OwlOptions = {
     items: [
       {
         id: 'slide-1',
