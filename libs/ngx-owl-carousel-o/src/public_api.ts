@@ -8,5 +8,5 @@ export {
 } from './lib/carousel/carousel.module';
 
 export {
-  OwlOptions
+  OwlOptions, ResponsiveSettings, BreakpointOptions
 } from './lib/models/owl-options.model';
