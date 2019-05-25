@@ -47,12 +47,13 @@ If it's needed to use the library for Angular 6, install the v0.1.2 by running t
     ```
 6. Add to needed component `customOptions` or named in different way object with options for the carousel:
     ```typescript
+    import { OwlOptions } from 'ngx-owl-carousel-o';
     @Component({
       selector: '....',
       templateUrl: 'carousel-holder.component.html'
     })
     export class CarouselHolderComponent {
-      customOptions: any = {
+      customOptions: OwlOptions = {
         loop: true,
         mouseDrag: false,
         touchDrag: false,
@@ -226,7 +227,7 @@ These options don't work.
 will cause the template parse error because of the double quote put around classes's names _fa-chevron-left_ and _fa-chevron-right_. The creation of the property e.g. `customOptions` in `component.ts` and writing `[options]="customOptions"` will eliminate this problem. 
 
 ```typescript
-customOptions: any = {
+customOptions: OwlOptions = {
  navText: [ '<i class="fa-chevron-left"></i>', '<i class="fa-chevron-right></i>"' ]
 }
 ```
@@ -382,7 +383,7 @@ The code for subscribing to this event is the following:
 
 `CarouselHolderComponent`
 ```typescript
-import { SlidesOutputData } from 'ngx-owl-carousel-o';
+import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
 @Component({
       selector: '....',
       template: `
@@ -398,7 +399,7 @@ import { SlidesOutputData } from 'ngx-owl-carousel-o';
     `
     })
     export class CarouselHolderComponent {
-      customOptions: any = {
+      customOptions: OwlOptions = {
         loop: true,
         mouseDrag: false,
         touchDrag: false,
@@ -528,7 +529,7 @@ The code for subscribing to this event is the following:
 
 `CarouselHolderComponent`
 ```typescript
-import { SlidesOutputData } from 'ngx-owl-carousel-o';
+import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
 @Component({
       selector: '....',
       template: `
@@ -544,7 +545,7 @@ import { SlidesOutputData } from 'ngx-owl-carousel-o';
     `
     })
     export class CarouselHolderComponent {
-      customOptions: any = {
+      customOptions: OwlOptions = {
         loop: true,
         mouseDrag: false,
         touchDrag: false,
@@ -613,7 +614,7 @@ The code for subscribing to this event is the following:
 
 `CarouselHolderComponent`
 ```typescript
-import { SlidesOutputData } from 'ngx-owl-carousel-o';
+import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
 @Component({
       selector: '....',
       template: `
@@ -629,7 +630,7 @@ import { SlidesOutputData } from 'ngx-owl-carousel-o';
     `
     })
     export class CarouselHolderComponent {
-      customOptions: any = {
+      customOptions: OwlOptions = {
         loop: true,
         mouseDrag: false,
         touchDrag: false,
@@ -697,7 +698,7 @@ The code for subscribing to this event is the following:
 
 `CarouselHolderComponent`
 ```typescript
-import { SlidesOutputData } from 'ngx-owl-carousel-o';
+import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
 @Component({
       selector: '....',
       template: `
@@ -713,7 +714,7 @@ import { SlidesOutputData } from 'ngx-owl-carousel-o';
     `
     })
     export class CarouselHolderComponent {
-      customOptions: any = {
+      customOptions: OwlOptions = {
         loop: true,
         mouseDrag: false,
         touchDrag: false,
