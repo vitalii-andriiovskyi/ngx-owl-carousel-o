@@ -981,12 +981,13 @@ export class CarouselService {
 	 * @param clickAttacher function which attaches click handler to slide or its children elements in order to prevent event bubling
 	 */
   finishDragging(event: any, dragObj: any, clickAttacher: () => void) {
-		const delta = this.difference(dragObj.pointer, this.pointer(event)),
+		const directions = ['right', 'left'],
+				delta = this.difference(dragObj.pointer, this.pointer(event)),
         stage = dragObj.stage.current,
-				direction = delta.x > +this.settings.rtl ? 'left' : 'right';
+				direction = directions[+(this.settings.rtl ? delta.x < +this.settings.rtl : delta.x > +this.settings.rtl)];
 		let currentSlideI: number, current: number, newCurrent: number;
 
-      if (delta.x !== 0 && this.is('dragging') || !this.is('valid')) {
+		if (delta.x !== 0 && this.is('dragging') || !this.is('valid')) {
         this.speed(+this.settings.dragEndSpeed || this.settings.smartSpeed);
 				currentSlideI = this.closest(stage.x, delta.x !== 0 ? direction : dragObj.direction);
 				current = this.current();
