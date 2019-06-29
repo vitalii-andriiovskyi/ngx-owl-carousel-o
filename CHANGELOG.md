@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v1.1.6](#v1.1.6)
 * [v1.1.5](#v1.1.5)
 * [v1.1.4](#v1.1.4)
 * [v1.1.3](#v1.1.3)
@@ -24,6 +25,8 @@
 * [v0.0.5](#v0.0.5)
 
 
+## v1.1.6
+The version `v1.1.6` solves the issue [`#35`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/35).
 ## v1.1.5
 The version `v1.1.5` adds the export of `ResponsiveSettings` and `BreakpointOptions` from `public_api.ts`.
 
