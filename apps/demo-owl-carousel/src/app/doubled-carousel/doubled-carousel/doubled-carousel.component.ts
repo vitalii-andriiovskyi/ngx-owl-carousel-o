@@ -65,7 +65,7 @@ export class DoubledCarouselComponent implements OnInit {
     // }
   };
 
-  categories: OwlOptions = {
+  categories: any = {
     items: [
       {
         id: 'slide-1',
