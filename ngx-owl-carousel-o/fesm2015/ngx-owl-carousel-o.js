@@ -1105,11 +1105,13 @@ class CarouselService {
      */
     finishDragging(event, dragObj, clickAttacher) {
         /** @type {?} */
+        const directions = ['right', 'left'];
+        /** @type {?} */
         const delta = this.difference(dragObj.pointer, this.pointer(event));
         /** @type {?} */
         const stage = dragObj.stage.current;
         /** @type {?} */
-        const direction = delta.x > +this.settings.rtl ? 'left' : 'right';
+        const direction = directions[+(this.settings.rtl ? delta.x < +this.settings.rtl : delta.x > +this.settings.rtl)];
         /** @type {?} */
         let currentSlideI;
         /** @type {?} */

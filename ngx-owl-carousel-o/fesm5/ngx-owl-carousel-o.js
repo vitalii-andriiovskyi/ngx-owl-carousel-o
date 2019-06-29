@@ -1448,11 +1448,13 @@ var CarouselService = /** @class */ (function () {
      */
     function (event, dragObj, clickAttacher) {
         /** @type {?} */
+        var directions = ['right', 'left'];
+        /** @type {?} */
         var delta = this.difference(dragObj.pointer, this.pointer(event));
         /** @type {?} */
         var stage = dragObj.stage.current;
         /** @type {?} */
-        var direction = delta.x > +this.settings.rtl ? 'left' : 'right';
+        var direction = directions[+(this.settings.rtl ? delta.x < +this.settings.rtl : delta.x > +this.settings.rtl)];
         /** @type {?} */
         var currentSlideI;
         /** @type {?} */
