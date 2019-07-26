@@ -74,9 +74,7 @@
             "polyfills": "apps/demo-owl-carousel/src/polyfills.ts",
             "tsConfig": "apps/demo-owl-carousel/tsconfig.spec.json",
             "karmaConfig": "apps/demo-owl-carousel/karma.conf.js",
-            "styles": [
-              "apps/demo-owl-carousel/src/styles.css"
-            ],
+            "styles": ["apps/demo-owl-carousel/src/styles.css"],
             "scripts": [],
             "assets": [
               "apps/demo-owl-carousel/src/favicon.ico",
@@ -91,9 +89,7 @@
               "apps/demo-owl-carousel/tsconfig.app.json",
               "apps/demo-owl-carousel/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -113,9 +109,7 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "apps/demo-owl-carousel-e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -153,9 +147,7 @@
               "libs/ngx-owl-carousel-o/tsconfig.lib.json",
               "libs/ngx-owl-carousel-o/tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -166,7 +158,20 @@
       "typescriptMismatch": false,
       "versionMismatch": false
     },
-    "defaultCollection": "@nrwl/schematics"
+    "defaultCollection": "@nrwl/angular"
   },
-  "defaultProject": "demo-owl-carousel"
+  "defaultProject": "demo-owl-carousel",
+  "schematics": {
+    "@nrwl/schematics:library": {
+      "unitTestRunner": "karma",
+      "framework": "angular"
+    },
+    "@nrwl/schematics:application": {
+      "unitTestRunner": "karma",
+      "e2eTestRunner": "protractor"
+    },
+    "@nrwl/schematics:node-application": {
+      "framework": "express"
+    }
+  }
 }

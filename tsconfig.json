@@ -7,22 +7,14 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017", "dom"],
     "baseUrl": ".",
     "paths": {
-      "ngx-owl-carousel-o": [
-        "libs/ngx-owl-carousel-o/src/index.ts"
-      ]
-    }
+      "ngx-owl-carousel-o": ["libs/ngx-owl-carousel-o/src/index.ts"]
+    },
+    "module": "es2015",
+    "rootDir": "."
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }
