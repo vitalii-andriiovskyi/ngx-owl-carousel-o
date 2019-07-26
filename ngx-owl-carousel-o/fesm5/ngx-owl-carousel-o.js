@@ -1,16 +1,12 @@
-import { EventManager } from '@angular/platform-browser';
-import { __extends, __spread, __assign } from 'tslib';
-import { Subject, merge, of, from } from 'rxjs';
-import { tap, filter, switchMap, first, skip, take, delay, map, toArray } from 'rxjs/operators';
-import { trigger, state, style, animate, transition } from '@angular/animations';
+import { __decorate, __metadata, __spread, __assign, __extends, __param } from 'tslib';
+import { Injectable, isDevMode, ErrorHandler, InjectionToken, PLATFORM_ID, Inject, Optional, Input, Directive, TemplateRef, ContentChildren, QueryList, Output, HostListener, Component, ElementRef, EventEmitter, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
 import { isPlatformBrowser, LocationStrategy, CommonModule } from '@angular/common';
-import { Injectable, ErrorHandler, isDevMode, InjectionToken, PLATFORM_ID, Inject, Optional, Component, Input, Output, Directive, ContentChildren, TemplateRef, ElementRef, EventEmitter, HostListener, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
+import { Subject, merge, of, from } from 'rxjs';
+import { EventManager } from '@angular/platform-browser';
+import { tap, filter, switchMap, first, skip, take, map, toArray, delay } from 'rxjs/operators';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
 var ResizeService = /** @class */ (function () {
     function ResizeService(eventManager) {
         this.eventManager = eventManager;
@@ -23,11 +19,7 @@ var ResizeService = /** @class */ (function () {
          * Makes resizeSubject become Observable
          * @returns Observable of resizeSubject
          */
-        get: /**
-         * Makes resizeSubject become Observable
-         * @return {?} Observable of resizeSubject
-         */
-        function () {
+        get: function () {
             return this.resizeSubject.asObservable();
         },
         enumerable: true,
@@ -37,57 +29,27 @@ var ResizeService = /** @class */ (function () {
      * Handler of 'resize' event. Passes data throw resizeSubject
      * @param event Event Object of 'resize' event
      */
-    /**
-     * Handler of 'resize' event. Passes data throw resizeSubject
-     * @param {?} event Event Object of 'resize' event
-     * @return {?}
-     */
-    ResizeService.prototype.onResize = /**
-     * Handler of 'resize' event. Passes data throw resizeSubject
-     * @param {?} event Event Object of 'resize' event
-     * @return {?}
-     */
-    function (event) {
-        this.resizeSubject.next((/** @type {?} */ (event.target)));
+    ResizeService.prototype.onResize = function (event) {
+        this.resizeSubject.next(event.target);
     };
     /**
      * Handler of 'onload' event. Defines the width of window
      * @param event Event Object of 'onload' event
      */
-    /**
-     * Handler of 'onload' event. Defines the width of window
-     * @param {?} event Event Object of 'onload' event
-     * @return {?}
-     */
-    ResizeService.prototype.onLoaded = /**
-     * Handler of 'onload' event. Defines the width of window
-     * @param {?} event Event Object of 'onload' event
-     * @return {?}
-     */
-    function (event) {
-        this.windowWidth = (/** @type {?} */ (event.target));
+    ResizeService.prototype.onLoaded = function (event) {
+        this.windowWidth = event.target;
     };
-    ResizeService.decorators = [
-        { type: Injectable }
-    ];
-    /** @nocollapse */
-    ResizeService.ctorParameters = function () { return [
-        { type: EventManager }
-    ]; };
+    ResizeService = __decorate([
+        Injectable(),
+        __metadata("design:paramtypes", [EventManager])
+    ], ResizeService);
     return ResizeService;
 }());
 
 /**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
-/**
  * Defaults value of options
  */
-var /**
- * Defaults value of options
- */
-OwlCarouselOConfig = /** @class */ (function () {
+var OwlCarouselOConfig = /** @class */ (function () {
     function OwlCarouselOConfig() {
         this.items = 3;
         this.loop = false;
@@ -114,7 +76,6 @@ OwlCarouselOConfig = /** @class */ (function () {
         this.navText = ['prev', 'next'];
         this.navSpeed = false;
         this.slideBy = 1; // stage moves on 1 width of slide; if slideBy = 2, stage moves on 2 widths of slide
-        // stage moves on 1 width of slide; if slideBy = 2, stage moves on 2 widths of slide
         this.dots = true;
         this.dotsEach = false;
         this.dotsData = false;
@@ -142,12 +103,7 @@ OwlCarouselOConfig = /** @class */ (function () {
  * class below is copy of OwlOptions but its all props have string value showing certain type;
  * this is class is being used just in method _validateOptions() of CarouselService;
  */
-var /**
- * we can't read types from OwlOptions in javascript because of props have undefined value and types of those props are used for validating inputs
- * class below is copy of OwlOptions but its all props have string value showing certain type;
- * this is class is being used just in method _validateOptions() of CarouselService;
- */
-OwlOptionsMockedTypes = /** @class */ (function () {
+var OwlOptionsMockedTypes = /** @class */ (function () {
     function OwlOptionsMockedTypes() {
         this.items = 'number';
         this.loop = 'boolean';
@@ -174,7 +130,6 @@ OwlOptionsMockedTypes = /** @class */ (function () {
         this.navText = 'string[]';
         this.navSpeed = 'number|boolean';
         this.slideBy = 'number|string'; // stage moves on 1 width of slide; if slideBy = 2, stage moves on 2 widths of slide
-        // stage moves on 1 width of slide; if slideBy = 2, stage moves on 2 widths of slide
         this.dots = 'boolean';
         this.dotsEach = 'number|boolean';
         this.dotsData = 'boolean';
@@ -198,25 +153,11 @@ OwlOptionsMockedTypes = /** @class */ (function () {
     return OwlOptionsMockedTypes;
 }());
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
 var OwlLogger = /** @class */ (function () {
     function OwlLogger(errorHandler) {
         this.errorHandler = errorHandler;
     }
-    /**
-     * @param {?} value
-     * @param {...?} rest
-     * @return {?}
-     */
-    OwlLogger.prototype.log = /**
-     * @param {?} value
-     * @param {...?} rest
-     * @return {?}
-     */
-    function (value) {
+    OwlLogger.prototype.log = function (value) {
         var rest = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             rest[_i - 1] = arguments[_i];
@@ -225,110 +166,93 @@ var OwlLogger = /** @class */ (function () {
             console.log.apply(console, __spread([value], rest));
         }
     };
-    /**
-     * @param {?} error
-     * @return {?}
-     */
-    OwlLogger.prototype.error = /**
-     * @param {?} error
-     * @return {?}
-     */
-    function (error) {
+    OwlLogger.prototype.error = function (error) {
         this.errorHandler.handleError(error);
     };
-    /**
-     * @param {?} value
-     * @param {...?} rest
-     * @return {?}
-     */
-    OwlLogger.prototype.warn = /**
-     * @param {?} value
-     * @param {...?} rest
-     * @return {?}
-     */
-    function (value) {
+    OwlLogger.prototype.warn = function (value) {
         var rest = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             rest[_i - 1] = arguments[_i];
         }
         console.warn.apply(console, __spread([value], rest));
     };
-    OwlLogger.decorators = [
-        { type: Injectable }
-    ];
-    /** @nocollapse */
-    OwlLogger.ctorParameters = function () { return [
-        { type: ErrorHandler }
-    ]; };
+    OwlLogger = __decorate([
+        Injectable(),
+        __metadata("design:paramtypes", [ErrorHandler])
+    ], OwlLogger);
     return OwlLogger;
 }());
 
 /**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * Enumeration for types.
+ * @enum {String}
  */
-/** @enum {string} */
-var Type = {
-    Event: 'event',
-    State: 'state',
-};
-/** @enum {string} */
-var Width = {
-    Default: 'default',
-    Inner: 'inner',
-    Outer: 'outer',
-};
+var Type;
+(function (Type) {
+    Type["Event"] = "event";
+    Type["State"] = "state";
+})(Type || (Type = {}));
+/**
+ * Enumeration for width.
+ * @enum {String}
+ */
+var Width;
+(function (Width) {
+    Width["Default"] = "default";
+    Width["Inner"] = "inner";
+    Width["Outer"] = "outer";
+})(Width || (Width = {}));
 var CarouselService = /** @class */ (function () {
     function CarouselService(logger) {
         var _this = this;
         this.logger = logger;
         /**
-         * Subject for passing data needed for managing View
-         */
+       * Subject for passing data needed for managing View
+       */
         this._viewSettingsShipper$ = new Subject();
         /**
-         * Subject for notification when the carousel got initializes
-         */
+       * Subject for notification when the carousel got initializes
+       */
         this._initializedCarousel$ = new Subject();
         /**
-         * Subject for notification when the carousel's settings start changinf
-         */
+       * Subject for notification when the carousel's settings start changinf
+       */
         this._changeSettingsCarousel$ = new Subject();
         /**
-         * Subject for notification when the carousel's settings have changed
-         */
+       * Subject for notification when the carousel's settings have changed
+       */
         this._changedSettingsCarousel$ = new Subject();
         /**
-         * Subject for notification when the carousel starts translating or moving
-         */
+       * Subject for notification when the carousel starts translating or moving
+       */
         this._translateCarousel$ = new Subject();
         /**
-         * Subject for notification when the carousel stopped translating or moving
-         */
+       * Subject for notification when the carousel stopped translating or moving
+       */
         this._translatedCarousel$ = new Subject();
         /**
-         * Subject for notification when the carousel's rebuilding caused by 'resize' event starts
-         */
+       * Subject for notification when the carousel's rebuilding caused by 'resize' event starts
+       */
         this._resizeCarousel$ = new Subject();
         /**
-         * Subject for notification  when the carousel's rebuilding caused by 'resize' event is ended
-         */
+       * Subject for notification  when the carousel's rebuilding caused by 'resize' event is ended
+       */
         this._resizedCarousel$ = new Subject();
         /**
-         * Subject for notification when the refresh of carousel starts
-         */
+       * Subject for notification when the refresh of carousel starts
+       */
         this._refreshCarousel$ = new Subject();
         /**
-         * Subject for notification when the refresh of carousel is ended
-         */
+       * Subject for notification when the refresh of carousel is ended
+       */
         this._refreshedCarousel$ = new Subject();
         /**
-         * Subject for notification when the dragging of carousel starts
-         */
+       * Subject for notification when the dragging of carousel starts
+       */
         this._dragCarousel$ = new Subject();
         /**
-         * Subject for notification when the dragging of carousel is ended
-         */
+       * Subject for notification when the dragging of carousel is ended
+       */
         this._draggedCarousel$ = new Subject();
         /**
          * Current settings for the carousel.
@@ -337,8 +261,8 @@ var CarouselService = /** @class */ (function () {
             items: 0
         };
         /**
-         * Initial data for setting classes to element .owl-carousel
-         */
+       * Initial data for setting classes to element .owl-carousel
+       */
         this.owlDOMData = {
             rtl: false,
             isResponsive: false,
@@ -350,8 +274,8 @@ var CarouselService = /** @class */ (function () {
             isTouchDragable: false
         };
         /**
-         * Initial data of .owl-stage
-         */
+       * Initial data of .owl-stage
+       */
         this.stageData = {
             transform: 'translate3d(0px,0px,0px)',
             transition: '0s',
@@ -363,45 +287,44 @@ var CarouselService = /** @class */ (function () {
          * All real items.
          */
         this._items = []; // is equal to this.slides
-        // is equal to this.slides
         /**
-         * Array with width of every slide.
-         */
+       * Array with width of every slide.
+       */
         this._widths = [];
         /**
-         * Currently suppressed events to prevent them from beeing retriggered.
-         */
+       * Currently suppressed events to prevent them from beeing retriggered.
+       */
         this._supress = {};
         /**
          * References to the running plugins of this carousel.
          */
         this._plugins = {};
         /**
-         * Absolute current position.
-         */
+       * Absolute current position.
+       */
         this._current = null;
         /**
-         * All cloned items.
-         */
+       * All cloned items.
+       */
         this._clones = [];
         /**
          * Merge values of all items.
-         * \@todo Maybe this could be part of a plugin.
+         * @todo Maybe this could be part of a plugin.
          */
         this._mergers = [];
         /**
-         * Animation speed in milliseconds.
-         */
+       * Animation speed in milliseconds.
+       */
         this._speed = null;
         /**
-         * Coordinates of all items in pixel.
-         * \@todo The name of this member is missleading.
-         */
+       * Coordinates of all items in pixel.
+       * @todo The name of this member is missleading.
+       */
         this._coordinates = [];
         /**
-         * Current breakpoint.
-         * \@todo Real media queries would be nice.
-         */
+       * Current breakpoint.
+       * @todo Real media queries would be nice.
+       */
         this._breakpoint = null;
         /**
          * Prefix for id of cloned slides
@@ -428,7 +351,7 @@ var CarouselService = /** @class */ (function () {
         };
         /**
          * Ordered list of workers for the update process.
-         */
+       */
         this._pipe = [
             // {
             //   filter: ['width', 'settings'],
@@ -451,14 +374,7 @@ var CarouselService = /** @class */ (function () {
             {
                 filter: ['width', 'items', 'settings'],
                 run: function (cache) {
-                    /** @type {?} */
-                    var margin = _this.settings.margin || '';
-                    /** @type {?} */
-                    var grid = !_this.settings.autoWidth;
-                    /** @type {?} */
-                    var rtl = _this.settings.rtl;
-                    /** @type {?} */
-                    var css = {
+                    var margin = _this.settings.margin || '', grid = !_this.settings.autoWidth, rtl = _this.settings.rtl, css = {
                         'margin-left': rtl ? margin : '',
                         'margin-right': rtl ? '' : margin
                     };
@@ -473,25 +389,17 @@ var CarouselService = /** @class */ (function () {
             }, {
                 filter: ['width', 'items', 'settings'],
                 run: function (cache) {
-                    /** @type {?} */
-                    var width = +(_this.width() / _this.settings.items).toFixed(3) - _this.settings.margin;
-                    /** @type {?} */
-                    var grid = !_this.settings.autoWidth;
-                    /** @type {?} */
-                    var widths = [];
-                    /** @type {?} */
-                    var merge$$1 = null;
-                    /** @type {?} */
-                    var iterator = _this._items.length;
+                    var width = +(_this.width() / _this.settings.items).toFixed(3) - _this.settings.margin, grid = !_this.settings.autoWidth, widths = [];
+                    var merge = null, iterator = _this._items.length;
                     cache.items = {
                         merge: false,
                         width: width
                     };
                     while (iterator--) {
-                        merge$$1 = _this._mergers[iterator];
-                        merge$$1 = _this.settings.mergeFit && Math.min(merge$$1, _this.settings.items) || merge$$1;
-                        cache.items.merge = merge$$1 > 1 || cache.items.merge;
-                        widths[iterator] = !grid ? _this._items[iterator].width ? _this._items[iterator].width : width : width * merge$$1;
+                        merge = _this._mergers[iterator];
+                        merge = _this.settings.mergeFit && Math.min(merge, _this.settings.items) || merge;
+                        cache.items.merge = merge > 1 || cache.items.merge;
+                        widths[iterator] = !grid ? _this._items[iterator].width ? _this._items[iterator].width : width : width * merge;
                     }
                     _this._widths = widths;
                     _this.slidesData.forEach(function (slide, i) {
@@ -503,24 +411,10 @@ var CarouselService = /** @class */ (function () {
             }, {
                 filter: ['items', 'settings'],
                 run: function () {
-                    /** @type {?} */
-                    var clones = [];
-                    /** @type {?} */
-                    var items = _this._items;
-                    /** @type {?} */
-                    var settings = _this.settings;
-                    /** @type {?} */
-                    var 
+                    var clones = [], items = _this._items, settings = _this.settings, 
                     // TODO: Should be computed from number of min width items in stage
-                    view = Math.max(settings.items * 2, 4);
-                    /** @type {?} */
-                    var size = Math.ceil(items.length / 2) * 2;
-                    /** @type {?} */
-                    var append = [];
-                    /** @type {?} */
-                    var prepend = [];
-                    /** @type {?} */
-                    var repeat = settings.loop && items.length ? settings.rewind ? view : Math.max(view, size) : 0;
+                    view = Math.max(settings.items * 2, 4), size = Math.ceil(items.length / 2) * 2;
+                    var append = [], prepend = [], repeat = settings.loop && items.length ? settings.rewind ? view : Math.max(view, size) : 0;
                     repeat /= 2;
                     while (repeat--) {
                         // Switch to only using appended clones
@@ -547,18 +441,8 @@ var CarouselService = /** @class */ (function () {
             }, {
                 filter: ['width', 'items', 'settings'],
                 run: function () {
-                    /** @type {?} */
-                    var rtl = _this.settings.rtl ? 1 : -1;
-                    /** @type {?} */
-                    var size = _this._clones.length + _this._items.length;
-                    /** @type {?} */
-                    var coordinates = [];
-                    /** @type {?} */
-                    var iterator = -1;
-                    /** @type {?} */
-                    var previous = 0;
-                    /** @type {?} */
-                    var current = 0;
+                    var rtl = _this.settings.rtl ? 1 : -1, size = _this._clones.length + _this._items.length, coordinates = [];
+                    var iterator = -1, previous = 0, current = 0;
                     while (++iterator < size) {
                         previous = coordinates[iterator - 1] || 0;
                         current = _this._widths[_this.relative(iterator)] + _this.settings.margin;
@@ -569,12 +453,7 @@ var CarouselService = /** @class */ (function () {
             }, {
                 filter: ['width', 'items', 'settings'],
                 run: function () {
-                    /** @type {?} */
-                    var padding = _this.settings.stagePadding;
-                    /** @type {?} */
-                    var coordinates = _this._coordinates;
-                    /** @type {?} */
-                    var css = {
+                    var padding = _this.settings.stagePadding, coordinates = _this._coordinates, css = {
                         'width': Math.ceil(Math.abs(coordinates[coordinates.length - 1])) + padding * 2,
                         'padding-left': padding || '',
                         'padding-right': padding || ''
@@ -608,7 +487,6 @@ var CarouselService = /** @class */ (function () {
                 // }, {
                 filter: ['width', 'items', 'settings'],
                 run: function (cache) {
-                    /** @type {?} */
                     var current = cache.current ? _this.slidesData.findIndex(function (slide) { return slide.id === cache.current; }) : 0;
                     current = Math.max(_this.minimum(), Math.min(_this.maximum(), current));
                     _this.reset(current);
@@ -621,24 +499,8 @@ var CarouselService = /** @class */ (function () {
             }, {
                 filter: ['width', 'position', 'items', 'settings'],
                 run: function () {
-                    /** @type {?} */
-                    var rtl = _this.settings.rtl ? 1 : -1;
-                    /** @type {?} */
-                    var padding = _this.settings.stagePadding * 2;
-                    /** @type {?} */
-                    var matches = [];
-                    /** @type {?} */
-                    var begin;
-                    /** @type {?} */
-                    var end;
-                    /** @type {?} */
-                    var inner;
-                    /** @type {?} */
-                    var outer;
-                    /** @type {?} */
-                    var i;
-                    /** @type {?} */
-                    var n;
+                    var rtl = _this.settings.rtl ? 1 : -1, padding = _this.settings.stagePadding * 2, matches = [];
+                    var begin, end, inner, outer, i, n;
                     begin = _this.coordinates(_this.current());
                     if (typeof begin === 'number') {
                         begin += padding;
@@ -648,7 +510,6 @@ var CarouselService = /** @class */ (function () {
                     }
                     end = begin + _this.width() * rtl;
                     if (rtl === -1 && _this.settings.center) {
-                        /** @type {?} */
                         var result = _this._coordinates.filter(function (element) {
                             return _this.settings.items % 2 === 1 ? element >= begin : element > begin;
                         });
@@ -682,12 +543,7 @@ var CarouselService = /** @class */ (function () {
     }
     Object.defineProperty(CarouselService.prototype, "invalidated", {
         // Is needed for tests
-        get: 
-        // Is needed for tests
-        /**
-         * @return {?}
-         */
-        function () {
+        get: function () {
             return this._invalidated;
         },
         enumerable: true,
@@ -695,12 +551,7 @@ var CarouselService = /** @class */ (function () {
     });
     Object.defineProperty(CarouselService.prototype, "states", {
         // is needed for tests
-        get: 
-        // is needed for tests
-        /**
-         * @return {?}
-         */
-        function () {
+        get: function () {
             return this._states;
         },
         enumerable: true,
@@ -710,200 +561,92 @@ var CarouselService = /** @class */ (function () {
      * Makes _viewSettingsShipper$ Subject become Observable
      * @returns Observable of _viewSettingsShipper$ Subject
      */
-    /**
-     * Makes _viewSettingsShipper$ Subject become Observable
-     * @return {?} Observable of _viewSettingsShipper$ Subject
-     */
-    CarouselService.prototype.getViewCurSettings = /**
-     * Makes _viewSettingsShipper$ Subject become Observable
-     * @return {?} Observable of _viewSettingsShipper$ Subject
-     */
-    function () {
+    CarouselService.prototype.getViewCurSettings = function () {
         return this._viewSettingsShipper$.asObservable();
     };
     /**
      * Makes _initializedCarousel$ Subject become Observable
      * @returns Observable of _initializedCarousel$ Subject
      */
-    /**
-     * Makes _initializedCarousel$ Subject become Observable
-     * @return {?} Observable of _initializedCarousel$ Subject
-     */
-    CarouselService.prototype.getInitializedState = /**
-     * Makes _initializedCarousel$ Subject become Observable
-     * @return {?} Observable of _initializedCarousel$ Subject
-     */
-    function () {
+    CarouselService.prototype.getInitializedState = function () {
         return this._initializedCarousel$.asObservable();
     };
     /**
      * Makes _changeSettingsCarousel$ Subject become Observable
      * @returns Observable of _changeSettingsCarousel$ Subject
      */
-    /**
-     * Makes _changeSettingsCarousel$ Subject become Observable
-     * @return {?} Observable of _changeSettingsCarousel$ Subject
-     */
-    CarouselService.prototype.getChangeState = /**
-     * Makes _changeSettingsCarousel$ Subject become Observable
-     * @return {?} Observable of _changeSettingsCarousel$ Subject
-     */
-    function () {
+    CarouselService.prototype.getChangeState = function () {
         return this._changeSettingsCarousel$.asObservable();
     };
     /**
      * Makes _changedSettingsCarousel$ Subject become Observable
      * @returns Observable of _changedSettingsCarousel$ Subject
      */
-    /**
-     * Makes _changedSettingsCarousel$ Subject become Observable
-     * @return {?} Observable of _changedSettingsCarousel$ Subject
-     */
-    CarouselService.prototype.getChangedState = /**
-     * Makes _changedSettingsCarousel$ Subject become Observable
-     * @return {?} Observable of _changedSettingsCarousel$ Subject
-     */
-    function () {
+    CarouselService.prototype.getChangedState = function () {
         return this._changedSettingsCarousel$.asObservable();
     };
     /**
      * Makes _translateCarousel$ Subject become Observable
      * @returns Observable of _translateCarousel$ Subject
      */
-    /**
-     * Makes _translateCarousel$ Subject become Observable
-     * @return {?} Observable of _translateCarousel$ Subject
-     */
-    CarouselService.prototype.getTranslateState = /**
-     * Makes _translateCarousel$ Subject become Observable
-     * @return {?} Observable of _translateCarousel$ Subject
-     */
-    function () {
+    CarouselService.prototype.getTranslateState = function () {
         return this._translateCarousel$.asObservable();
     };
     /**
      * Makes _translatedCarousel$ Subject become Observable
      * @returns Observable of _translatedCarousel$ Subject
      */
-    /**
-     * Makes _translatedCarousel$ Subject become Observable
-     * @return {?} Observable of _translatedCarousel$ Subject
-     */
-    CarouselService.prototype.getTranslatedState = /**
-     * Makes _translatedCarousel$ Subject become Observable
-     * @return {?} Observable of _translatedCarousel$ Subject
-     */
-    function () {
+    CarouselService.prototype.getTranslatedState = function () {
         return this._translatedCarousel$.asObservable();
     };
     /**
      * Makes _resizeCarousel$ Subject become Observable
      * @returns Observable of _resizeCarousel$ Subject
      */
-    /**
-     * Makes _resizeCarousel$ Subject become Observable
-     * @return {?} Observable of _resizeCarousel$ Subject
-     */
-    CarouselService.prototype.getResizeState = /**
-     * Makes _resizeCarousel$ Subject become Observable
-     * @return {?} Observable of _resizeCarousel$ Subject
-     */
-    function () {
+    CarouselService.prototype.getResizeState = function () {
         return this._resizeCarousel$.asObservable();
     };
     /**
      * Makes _resizedCarousel$ Subject become Observable
      * @returns Observable of _resizedCarousel$ Subject
      */
-    /**
-     * Makes _resizedCarousel$ Subject become Observable
-     * @return {?} Observable of _resizedCarousel$ Subject
-     */
-    CarouselService.prototype.getResizedState = /**
-     * Makes _resizedCarousel$ Subject become Observable
-     * @return {?} Observable of _resizedCarousel$ Subject
-     */
-    function () {
+    CarouselService.prototype.getResizedState = function () {
         return this._resizedCarousel$.asObservable();
     };
     /**
      * Makes _refreshCarousel$ Subject become Observable
      * @returns Observable of _refreshCarousel$ Subject
      */
-    /**
-     * Makes _refreshCarousel$ Subject become Observable
-     * @return {?} Observable of _refreshCarousel$ Subject
-     */
-    CarouselService.prototype.getRefreshState = /**
-     * Makes _refreshCarousel$ Subject become Observable
-     * @return {?} Observable of _refreshCarousel$ Subject
-     */
-    function () {
+    CarouselService.prototype.getRefreshState = function () {
         return this._refreshCarousel$.asObservable();
     };
     /**
      * Makes _refreshedCarousel$ Subject become Observable
      * @returns Observable of _refreshedCarousel$ Subject
      */
-    /**
-     * Makes _refreshedCarousel$ Subject become Observable
-     * @return {?} Observable of _refreshedCarousel$ Subject
-     */
-    CarouselService.prototype.getRefreshedState = /**
-     * Makes _refreshedCarousel$ Subject become Observable
-     * @return {?} Observable of _refreshedCarousel$ Subject
-     */
-    function () {
+    CarouselService.prototype.getRefreshedState = function () {
         return this._refreshedCarousel$.asObservable();
     };
     /**
      * Makes _dragCarousel$ Subject become Observable
      * @returns Observable of _dragCarousel$ Subject
      */
-    /**
-     * Makes _dragCarousel$ Subject become Observable
-     * @return {?} Observable of _dragCarousel$ Subject
-     */
-    CarouselService.prototype.getDragState = /**
-     * Makes _dragCarousel$ Subject become Observable
-     * @return {?} Observable of _dragCarousel$ Subject
-     */
-    function () {
+    CarouselService.prototype.getDragState = function () {
         return this._dragCarousel$.asObservable();
     };
     /**
      * Makes _draggedCarousel$ Subject become Observable
      * @returns Observable of _draggedCarousel$ Subject
      */
-    /**
-     * Makes _draggedCarousel$ Subject become Observable
-     * @return {?} Observable of _draggedCarousel$ Subject
-     */
-    CarouselService.prototype.getDraggedState = /**
-     * Makes _draggedCarousel$ Subject become Observable
-     * @return {?} Observable of _draggedCarousel$ Subject
-     */
-    function () {
+    CarouselService.prototype.getDraggedState = function () {
         return this._draggedCarousel$.asObservable();
     };
     /**
      * Setups custom options expanding default options
      * @param options custom options
      */
-    /**
-     * Setups custom options expanding default options
-     * @param {?} options custom options
-     * @return {?}
-     */
-    CarouselService.prototype.setOptions = /**
-     * Setups custom options expanding default options
-     * @param {?} options custom options
-     * @return {?}
-     */
-    function (options) {
-        /** @type {?} */
+    CarouselService.prototype.setOptions = function (options) {
         var configOptions = new OwlCarouselOConfig();
-        /** @type {?} */
         var checkedOptions = this._validateOptions(options, configOptions);
         this._options = __assign({}, configOptions, checkedOptions);
     };
@@ -916,31 +659,10 @@ var CarouselService = /** @class */ (function () {
      * Notes:
      * 	- if user set option with wrong type, it'll be written in console
      */
-    /**
-     * Checks whether user's option are set properly. Cheking is based on typings;
-     * @param {?} options options set by user
-     * @param {?} configOptions default options
-     * @return {?} checked and modified (if it's needed) user's options
-     *
-     * Notes:
-     * 	- if user set option with wrong type, it'll be written in console
-     */
-    CarouselService.prototype._validateOptions = /**
-     * Checks whether user's option are set properly. Cheking is based on typings;
-     * @param {?} options options set by user
-     * @param {?} configOptions default options
-     * @return {?} checked and modified (if it's needed) user's options
-     *
-     * Notes:
-     * 	- if user set option with wrong type, it'll be written in console
-     */
-    function (options, configOptions) {
+    CarouselService.prototype._validateOptions = function (options, configOptions) {
         var _this = this;
-        /** @type {?} */
         var checkedOptions = __assign({}, options);
-        /** @type {?} */
         var mockedTypes = new OwlOptionsMockedTypes();
-        /** @type {?} */
         var setRightOption = function (type, key) {
             _this.logger.log("options." + key + " must be type of " + type + "; " + key + "=" + options[key] + " skipped to defaults: " + key + "=" + configOptions[key]);
             return configOptions[key];
@@ -971,7 +693,6 @@ var CarouselService = /** @class */ (function () {
                 }
                 else if (mockedTypes[key] === 'string[]') {
                     if (Array.isArray(checkedOptions[key])) {
-                        /** @type {?} */
                         var isString_1 = false;
                         checkedOptions[key].forEach(function (element) {
                             isString_1 = typeof element === 'string' ? true : false;
@@ -997,18 +718,7 @@ var CarouselService = /** @class */ (function () {
      * @param items option items set by user
      * @returns right number of items
      */
-    /**
-     * Checks option items set by user and if it bigger than number of slides then returns number of slides
-     * @param {?} items option items set by user
-     * @return {?} right number of items
-     */
-    CarouselService.prototype._validateItems = /**
-     * Checks option items set by user and if it bigger than number of slides then returns number of slides
-     * @param {?} items option items set by user
-     * @return {?} right number of items
-     */
-    function (items) {
-        /** @type {?} */
+    CarouselService.prototype._validateItems = function (items) {
         var result;
         if (items > this._items.length) {
             result = this._items.length;
@@ -1026,17 +736,7 @@ var CarouselService = /** @class */ (function () {
      * Set current width of carousel
      * @param width width of carousel Window
      */
-    /**
-     * Set current width of carousel
-     * @param {?} width width of carousel Window
-     * @return {?}
-     */
-    CarouselService.prototype.setCarouselWidth = /**
-     * Set current width of carousel
-     * @param {?} width width of carousel Window
-     * @return {?}
-     */
-    function (width) {
+    CarouselService.prototype.setCarouselWidth = function (width) {
         this._width = width;
     };
     /**
@@ -1047,23 +747,7 @@ var CarouselService = /** @class */ (function () {
        * @param slides array of slides
        * @param options options set by user
        */
-    /**
-     * Setups the current settings.
-     * \@todo Remove responsive classes. Why should adaptive designs be brought into IE8? / Support for media queries by using `matchMedia` would be nice.
-     * @param {?} carouselWidth width of carousel
-     * @param {?} slides array of slides
-     * @param {?} options options set by user
-     * @return {?}
-     */
-    CarouselService.prototype.setup = /**
-     * Setups the current settings.
-     * \@todo Remove responsive classes. Why should adaptive designs be brought into IE8? / Support for media queries by using `matchMedia` would be nice.
-     * @param {?} carouselWidth width of carousel
-     * @param {?} slides array of slides
-     * @param {?} options options set by user
-     * @return {?}
-     */
-    function (carouselWidth, slides, options) {
+    CarouselService.prototype.setup = function (carouselWidth, slides, options) {
         this.setCarouselWidth(carouselWidth);
         this.setItems(slides);
         this._defineSlidesData();
@@ -1077,21 +761,9 @@ var CarouselService = /** @class */ (function () {
     /**
      * Set options for current viewport
      */
-    /**
-     * Set options for current viewport
-     * @return {?}
-     */
-    CarouselService.prototype.setOptionsForViewport = /**
-     * Set options for current viewport
-     * @return {?}
-     */
-    function () {
+    CarouselService.prototype.setOptionsForViewport = function () {
         var _this = this;
-        /** @type {?} */
-        var viewport = this._width;
-        /** @type {?} */
-        var overwrites = this._options.responsive;
-        /** @type {?} */
+        var viewport = this._width, overwrites = this._options.responsive;
         var match = -1;
         if (!Object.keys(overwrites).length) {
             return;
@@ -1115,10 +787,8 @@ var CarouselService = /** @class */ (function () {
         this.owlDOMData.isResponsive = true;
         this.owlDOMData.isMouseDragable = this.settings.mouseDrag;
         this.owlDOMData.isTouchDragable = this.settings.touchDrag;
-        /** @type {?} */
         var mergers = [];
         this._items.forEach(function (item) {
-            /** @type {?} */
             var mergeN = _this.settings.merge ? item.dataMerge : 1;
             mergers.push(mergeN);
         });
@@ -1130,17 +800,7 @@ var CarouselService = /** @class */ (function () {
      * Initializes the carousel.
      * @param slides array of CarouselSlideDirective
      */
-    /**
-     * Initializes the carousel.
-     * @param {?} slides array of CarouselSlideDirective
-     * @return {?}
-     */
-    CarouselService.prototype.initialize = /**
-     * Initializes the carousel.
-     * @param {?} slides array of CarouselSlideDirective
-     * @return {?}
-     */
-    function (slides) {
+    CarouselService.prototype.initialize = function (slides) {
         var _this = this;
         this.enter('initializing');
         // this.trigger('initialize');
@@ -1149,7 +809,6 @@ var CarouselService = /** @class */ (function () {
             this._mergers = [];
         }
         slides.forEach(function (item) {
-            /** @type {?} */
             var mergeN = _this.settings.merge ? item.dataMerge : 1;
             _this._mergers.push(mergeN);
         });
@@ -1167,15 +826,7 @@ var CarouselService = /** @class */ (function () {
     /**
      * Sends all data needed for View
      */
-    /**
-     * Sends all data needed for View
-     * @return {?}
-     */
-    CarouselService.prototype.sendChanges = /**
-     * Sends all data needed for View
-     * @return {?}
-     */
-    function () {
+    CarouselService.prototype.sendChanges = function () {
         this._viewSettingsShipper$.next({
             owlDOMData: this.owlDOMData,
             stageData: this.stageData,
@@ -1187,15 +838,7 @@ var CarouselService = /** @class */ (function () {
     /**
        * Updates option logic if necessery
        */
-    /**
-     * Updates option logic if necessery
-     * @return {?}
-     */
-    CarouselService.prototype._optionsLogic = /**
-     * Updates option logic if necessery
-     * @return {?}
-     */
-    function () {
+    CarouselService.prototype._optionsLogic = function () {
         if (this.settings.autoWidth) {
             this.settings.stagePadding = 0;
             this.settings.merge = false;
@@ -1204,27 +847,12 @@ var CarouselService = /** @class */ (function () {
     /**
      * Updates the view
      */
-    /**
-     * Updates the view
-     * @return {?}
-     */
-    CarouselService.prototype.update = /**
-     * Updates the view
-     * @return {?}
-     */
-    function () {
+    CarouselService.prototype.update = function () {
         var _this = this;
-        /** @type {?} */
         var i = 0;
-        /** @type {?} */
-        var n = this._pipe.length;
-        /** @type {?} */
-        var filter$$1 = function (item) { return _this._invalidated[item]; };
-        /** @type {?} */
-        var cache = {};
+        var n = this._pipe.length, filter = function (item) { return _this._invalidated[item]; }, cache = {};
         while (i < n) {
-            /** @type {?} */
-            var filteredPipe = this._pipe[i].filter.filter(filter$$1);
+            var filteredPipe = this._pipe[i].filter.filter(filter);
             if (this._invalidated.all || filteredPipe.length > 0) {
                 this._pipe[i].run(cache);
             }
@@ -1242,17 +870,7 @@ var CarouselService = /** @class */ (function () {
        * @param [dimension=Width.Default] The dimension to return
        * @returns The width of the view in pixel.
        */
-    /**
-     * Gets the width of the view.
-     * @param {?=} dimension
-     * @return {?} The width of the view in pixel.
-     */
-    CarouselService.prototype.width = /**
-     * Gets the width of the view.
-     * @param {?=} dimension
-     * @return {?} The width of the view in pixel.
-     */
-    function (dimension) {
+    CarouselService.prototype.width = function (dimension) {
         dimension = dimension || Width.Default;
         switch (dimension) {
             case Width.Inner:
@@ -1265,15 +883,7 @@ var CarouselService = /** @class */ (function () {
     /**
        * Refreshes the carousel primarily for adaptive purposes.
        */
-    /**
-     * Refreshes the carousel primarily for adaptive purposes.
-     * @return {?}
-     */
-    CarouselService.prototype.refresh = /**
-     * Refreshes the carousel primarily for adaptive purposes.
-     * @return {?}
-     */
-    function () {
+    CarouselService.prototype.refresh = function () {
         this.enter('refreshing');
         this._trigger('refresh');
         this._defineSlidesData();
@@ -1289,17 +899,7 @@ var CarouselService = /** @class */ (function () {
        * Checks window `resize` event.
        * @param curWidth width of .owl-carousel
        */
-    /**
-     * Checks window `resize` event.
-     * @param {?} curWidth width of .owl-carousel
-     * @return {?}
-     */
-    CarouselService.prototype.onResize = /**
-     * Checks window `resize` event.
-     * @param {?} curWidth width of .owl-carousel
-     * @return {?}
-     */
-    function (curWidth) {
+    CarouselService.prototype.onResize = function (curWidth) {
         if (!this._items.length) {
             return false;
         }
@@ -1322,23 +922,8 @@ var CarouselService = /** @class */ (function () {
        * @param event - The event arguments.
        * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
        */
-    /**
-     * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
-     * \@todo Horizontal swipe threshold as option / #261
-     * @param {?} event - The event arguments.
-     * @return {?} stage - object with 'x' and 'y' coordinates of .owl-stage
-     */
-    CarouselService.prototype.prepareDragging = /**
-     * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
-     * \@todo Horizontal swipe threshold as option / #261
-     * @param {?} event - The event arguments.
-     * @return {?} stage - object with 'x' and 'y' coordinates of .owl-stage
-     */
-    function (event) {
-        /** @type {?} */
-        var stage = null;
-        /** @type {?} */
-        var transformArr;
+    CarouselService.prototype.prepareDragging = function (event) {
+        var stage = null, transformArr;
         // could be 5 commented lines below; However there's stage transform in stageData and in updates after each move of stage
         // stage = getComputedStyle(this.el.nativeElement).transform.replace(/.*\(|\)| /g, '').split(',');
         // stage = {
@@ -1362,15 +947,7 @@ var CarouselService = /** @class */ (function () {
     /**
      * Enters into a 'dragging' state
      */
-    /**
-     * Enters into a 'dragging' state
-     * @return {?}
-     */
-    CarouselService.prototype.enterDragging = /**
-     * Enters into a 'dragging' state
-     * @return {?}
-     */
-    function () {
+    CarouselService.prototype.enterDragging = function () {
         this.enter('dragging');
         this._trigger('drag');
     };
@@ -1381,31 +958,9 @@ var CarouselService = /** @class */ (function () {
        * @param dragData initial data got after starting dragging
        * @returns coords or false
        */
-    /**
-     * Defines new coords for .owl-stage while dragging it
-     * \@todo #261
-     * @param {?} event the event arguments.
-     * @param {?} dragData initial data got after starting dragging
-     * @return {?} coords or false
-     */
-    CarouselService.prototype.defineNewCoordsDrag = /**
-     * Defines new coords for .owl-stage while dragging it
-     * \@todo #261
-     * @param {?} event the event arguments.
-     * @param {?} dragData initial data got after starting dragging
-     * @return {?} coords or false
-     */
-    function (event, dragData) {
-        /** @type {?} */
-        var minimum = null;
-        /** @type {?} */
-        var maximum = null;
-        /** @type {?} */
-        var pull = null;
-        /** @type {?} */
-        var delta = this.difference(dragData.pointer, this.pointer(event));
-        /** @type {?} */
-        var stage = this.difference(dragData.stage.start, delta);
+    CarouselService.prototype.defineNewCoordsDrag = function (event, dragData) {
+        var minimum = null, maximum = null, pull = null;
+        var delta = this.difference(dragData.pointer, this.pointer(event)), stage = this.difference(dragData.stage.start, delta);
         if (!this.is('dragging')) {
             return false;
         }
@@ -1430,37 +985,9 @@ var CarouselService = /** @class */ (function () {
        * @param dragObj the object with dragging settings and states
        * @param clickAttacher function which attaches click handler to slide or its children elements in order to prevent event bubling
        */
-    /**
-     * Finishes dragging of carousel when `touchend` and `mouseup` events fire.
-     * \@todo #261 / Threshold for click event
-     * @param {?} event the event arguments.
-     * @param {?} dragObj the object with dragging settings and states
-     * @param {?} clickAttacher function which attaches click handler to slide or its children elements in order to prevent event bubling
-     * @return {?}
-     */
-    CarouselService.prototype.finishDragging = /**
-     * Finishes dragging of carousel when `touchend` and `mouseup` events fire.
-     * \@todo #261 / Threshold for click event
-     * @param {?} event the event arguments.
-     * @param {?} dragObj the object with dragging settings and states
-     * @param {?} clickAttacher function which attaches click handler to slide or its children elements in order to prevent event bubling
-     * @return {?}
-     */
-    function (event, dragObj, clickAttacher) {
-        /** @type {?} */
-        var directions = ['right', 'left'];
-        /** @type {?} */
-        var delta = this.difference(dragObj.pointer, this.pointer(event));
-        /** @type {?} */
-        var stage = dragObj.stage.current;
-        /** @type {?} */
-        var direction = directions[+(this.settings.rtl ? delta.x < +this.settings.rtl : delta.x > +this.settings.rtl)];
-        /** @type {?} */
-        var currentSlideI;
-        /** @type {?} */
-        var current;
-        /** @type {?} */
-        var newCurrent;
+    CarouselService.prototype.finishDragging = function (event, dragObj, clickAttacher) {
+        var directions = ['right', 'left'], delta = this.difference(dragObj.pointer, this.pointer(event)), stage = dragObj.stage.current, direction = directions[+(this.settings.rtl ? delta.x < +this.settings.rtl : delta.x > +this.settings.rtl)];
+        var currentSlideI, current, newCurrent;
         if (delta.x !== 0 && this.is('dragging') || !this.is('valid')) {
             this.speed(+this.settings.dragEndSpeed || this.settings.smartSpeed);
             currentSlideI = this.closest(stage.x, delta.x !== 0 ? direction : dragObj.direction);
@@ -1488,29 +1015,9 @@ var CarouselService = /** @class */ (function () {
        * @param direction The direction to check for the closest item. Ether `left` or `right`.
        * @returns The absolute position of the closest item.
        */
-    /**
-     * Gets absolute position of the closest item for a coordinate.
-     * \@todo Setting `freeDrag` makes `closest` not reusable. See #165.
-     * @param {?} coordinate The coordinate in pixel.
-     * @param {?} direction The direction to check for the closest item. Ether `left` or `right`.
-     * @return {?} The absolute position of the closest item.
-     */
-    CarouselService.prototype.closest = /**
-     * Gets absolute position of the closest item for a coordinate.
-     * \@todo Setting `freeDrag` makes `closest` not reusable. See #165.
-     * @param {?} coordinate The coordinate in pixel.
-     * @param {?} direction The direction to check for the closest item. Ether `left` or `right`.
-     * @return {?} The absolute position of the closest item.
-     */
-    function (coordinate, direction) {
-        /** @type {?} */
-        var pull = 30;
-        /** @type {?} */
-        var width = this.width();
-        /** @type {?} */
-        var coordinates = (/** @type {?} */ (this.coordinates()));
-        /** @type {?} */
-        var position = -1;
+    CarouselService.prototype.closest = function (coordinate, direction) {
+        var pull = 30, width = this.width();
+        var coordinates = this.coordinates(), position = -1;
         if (this.settings.center) {
             coordinates = coordinates.map(function (item) {
                 if (item === 0) {
@@ -1562,25 +1069,12 @@ var CarouselService = /** @class */ (function () {
        * @todo #270
        * @param coordinate The coordinate in pixels.
        */
-    /**
-     * Animates the stage.
-     * \@todo #270
-     * @param {?} coordinate The coordinate in pixels.
-     * @return {?}
-     */
-    CarouselService.prototype.animate = /**
-     * Animates the stage.
-     * \@todo #270
-     * @param {?} coordinate The coordinate in pixels.
-     * @return {?}
-     */
-    function (coordinate) {
-        /** @type {?} */
-        var animate$$1 = this.speed() > 0;
+    CarouselService.prototype.animate = function (coordinate) {
+        var animate = this.speed() > 0;
         if (this.is('animating')) {
             this.onTransitionEnd();
         }
-        if (animate$$1) {
+        if (animate) {
             this.enter('animating');
             this._trigger('translate');
         }
@@ -1593,35 +1087,15 @@ var CarouselService = /** @class */ (function () {
        * @param state The state to check.
        * @returns The flag which indicates if the carousel is busy.
        */
-    /**
-     * Checks whether the carousel is in a specific state or not.
-     * @param {?} state The state to check.
-     * @return {?} The flag which indicates if the carousel is busy.
-     */
-    CarouselService.prototype.is = /**
-     * Checks whether the carousel is in a specific state or not.
-     * @param {?} state The state to check.
-     * @return {?} The flag which indicates if the carousel is busy.
-     */
-    function (state$$1) {
-        return this._states.current[state$$1] && this._states.current[state$$1] > 0;
+    CarouselService.prototype.is = function (state) {
+        return this._states.current[state] && this._states.current[state] > 0;
     };
     /**
        * Sets the absolute position of the current item.
        * @param position The new absolute position or nothing to leave it unchanged.
        * @returns The absolute position of the current item.
        */
-    /**
-     * Sets the absolute position of the current item.
-     * @param {?=} position The new absolute position or nothing to leave it unchanged.
-     * @return {?} The absolute position of the current item.
-     */
-    CarouselService.prototype.current = /**
-     * Sets the absolute position of the current item.
-     * @param {?=} position The new absolute position or nothing to leave it unchanged.
-     * @return {?} The absolute position of the current item.
-     */
-    function (position) {
+    CarouselService.prototype.current = function (position) {
         if (position === undefined) {
             return this._current;
         }
@@ -1630,7 +1104,6 @@ var CarouselService = /** @class */ (function () {
         }
         position = this.normalize(position);
         if (this._current !== position) {
-            /** @type {?} */
             var event_1 = this._trigger('change', { property: { name: 'position', value: position } });
             // if (event.data !== undefined) {
             // 	position = this.normalize(event.data);
@@ -1646,17 +1119,7 @@ var CarouselService = /** @class */ (function () {
        * @param part The part to invalidate.
        * @returns The invalidated parts.
        */
-    /**
-     * Invalidates the given part of the update routine.
-     * @param {?} part The part to invalidate.
-     * @return {?} The invalidated parts.
-     */
-    CarouselService.prototype.invalidate = /**
-     * Invalidates the given part of the update routine.
-     * @param {?} part The part to invalidate.
-     * @return {?} The invalidated parts.
-     */
-    function (part) {
+    CarouselService.prototype.invalidate = function (part) {
         if (typeof part === 'string') {
             this._invalidated[part] = true;
             if (this.is('valid')) {
@@ -1669,17 +1132,7 @@ var CarouselService = /** @class */ (function () {
      * Resets the absolute position of the current item.
      * @param position the absolute position of the new item.
      */
-    /**
-     * Resets the absolute position of the current item.
-     * @param {?} position the absolute position of the new item.
-     * @return {?}
-     */
-    CarouselService.prototype.reset = /**
-     * Resets the absolute position of the current item.
-     * @param {?} position the absolute position of the new item.
-     * @return {?}
-     */
-    function (position) {
+    CarouselService.prototype.reset = function (position) {
         position = this.normalize(position);
         if (position === undefined) {
             return;
@@ -1696,23 +1149,8 @@ var CarouselService = /** @class */ (function () {
        * @param relative Whether the given position is relative or not.
        * @returns The normalized position.
        */
-    /**
-     * Normalizes an absolute or a relative position of an item.
-     * @param {?} position The absolute or relative position to normalize.
-     * @param {?=} relative Whether the given position is relative or not.
-     * @return {?} The normalized position.
-     */
-    CarouselService.prototype.normalize = /**
-     * Normalizes an absolute or a relative position of an item.
-     * @param {?} position The absolute or relative position to normalize.
-     * @param {?=} relative Whether the given position is relative or not.
-     * @return {?} The normalized position.
-     */
-    function (position, relative) {
-        /** @type {?} */
-        var n = this._items.length;
-        /** @type {?} */
-        var m = relative ? 0 : this._clones.length;
+    CarouselService.prototype.normalize = function (position, relative) {
+        var n = this._items.length, m = relative ? 0 : this._clones.length;
         if (!this._isNumeric(position) || n < 1) {
             position = undefined;
         }
@@ -1726,17 +1164,7 @@ var CarouselService = /** @class */ (function () {
        * @param position The absolute position to convert.
        * @returns The converted position.
        */
-    /**
-     * Converts an absolute position of an item into a relative one.
-     * @param {?} position The absolute position to convert.
-     * @return {?} The converted position.
-     */
-    CarouselService.prototype.relative = /**
-     * Converts an absolute position of an item into a relative one.
-     * @param {?} position The absolute position to convert.
-     * @return {?} The converted position.
-     */
-    function (position) {
+    CarouselService.prototype.relative = function (position) {
         position -= this._clones.length / 2;
         return this.normalize(position, true);
     };
@@ -1745,28 +1173,10 @@ var CarouselService = /** @class */ (function () {
        * @param relative Whether to return an absolute position or a relative position.
        * @returns number of maximum position
        */
-    /**
-     * Gets the maximum position for the current item.
-     * @param {?=} relative Whether to return an absolute position or a relative position.
-     * @return {?} number of maximum position
-     */
-    CarouselService.prototype.maximum = /**
-     * Gets the maximum position for the current item.
-     * @param {?=} relative Whether to return an absolute position or a relative position.
-     * @return {?} number of maximum position
-     */
-    function (relative) {
+    CarouselService.prototype.maximum = function (relative) {
         if (relative === void 0) { relative = false; }
-        /** @type {?} */
         var settings = this.settings;
-        /** @type {?} */
-        var maximum = this._coordinates.length;
-        /** @type {?} */
-        var iterator;
-        /** @type {?} */
-        var reciprocalItemsWidth;
-        /** @type {?} */
-        var elementWidth;
+        var maximum = this._coordinates.length, iterator, reciprocalItemsWidth, elementWidth;
         if (settings.loop) {
             maximum = this._clones.length / 2 + this._items.length - 1;
         }
@@ -1799,17 +1209,7 @@ var CarouselService = /** @class */ (function () {
        * @param relative Whether to return an absolute position or a relative position.
        * @returns number of minimum position
        */
-    /**
-     * Gets the minimum position for the current item.
-     * @param {?=} relative Whether to return an absolute position or a relative position.
-     * @return {?} number of minimum position
-     */
-    CarouselService.prototype.minimum = /**
-     * Gets the minimum position for the current item.
-     * @param {?=} relative Whether to return an absolute position or a relative position.
-     * @return {?} number of minimum position
-     */
-    function (relative) {
+    CarouselService.prototype.minimum = function (relative) {
         if (relative === void 0) { relative = false; }
         return relative ? 0 : this._clones.length / 2;
     };
@@ -1818,17 +1218,7 @@ var CarouselService = /** @class */ (function () {
        * @param position The relative position of the item.
        * @returns The item at the given position or all items if no position was given.
        */
-    /**
-     * Gets an item at the specified relative position.
-     * @param {?=} position The relative position of the item.
-     * @return {?} The item at the given position or all items if no position was given.
-     */
-    CarouselService.prototype.items = /**
-     * Gets an item at the specified relative position.
-     * @param {?=} position The relative position of the item.
-     * @return {?} The item at the given position or all items if no position was given.
-     */
-    function (position) {
+    CarouselService.prototype.items = function (position) {
         if (position === undefined) {
             return this._items.slice();
         }
@@ -1840,17 +1230,7 @@ var CarouselService = /** @class */ (function () {
        * @param position The relative position of the item.
        * @returns The item at the given position or all items if no position was given.
        */
-    /**
-     * Gets an item at the specified relative position.
-     * @param {?} position The relative position of the item.
-     * @return {?} The item at the given position or all items if no position was given.
-     */
-    CarouselService.prototype.mergers = /**
-     * Gets an item at the specified relative position.
-     * @param {?} position The relative position of the item.
-     * @return {?} The item at the given position or all items if no position was given.
-     */
-    function (position) {
+    CarouselService.prototype.mergers = function (position) {
         if (position === undefined) {
             return this._mergers.slice();
         }
@@ -1862,44 +1242,19 @@ var CarouselService = /** @class */ (function () {
        * @param position The relative position of the item.
        * @returns The absolute positions of clones for the item or all if no position was given.
        */
-    /**
-     * Gets the absolute positions of clones for an item.
-     * @param {?=} position The relative position of the item.
-     * @return {?} The absolute positions of clones for the item or all if no position was given.
-     */
-    CarouselService.prototype.clones = /**
-     * Gets the absolute positions of clones for an item.
-     * @param {?=} position The relative position of the item.
-     * @return {?} The absolute positions of clones for the item or all if no position was given.
-     */
-    function (position) {
-        /** @type {?} */
-        var odd = this._clones.length / 2;
-        /** @type {?} */
-        var even = odd + this._items.length;
-        /** @type {?} */
-        var map$$1 = function (index) { return index % 2 === 0 ? even + index / 2 : odd - (index + 1) / 2; };
+    CarouselService.prototype.clones = function (position) {
+        var odd = this._clones.length / 2, even = odd + this._items.length, map = function (index) { return index % 2 === 0 ? even + index / 2 : odd - (index + 1) / 2; };
         if (position === undefined) {
-            return this._clones.map(function (v, i) { return map$$1(i); });
+            return this._clones.map(function (v, i) { return map(i); });
         }
-        return this._clones.map(function (v, i) { return v === position ? map$$1(i) : null; }).filter(function (item) { return item; });
+        return this._clones.map(function (v, i) { return v === position ? map(i) : null; }).filter(function (item) { return item; });
     };
     /**
        * Sets the current animation speed.
        * @param speed The animation speed in milliseconds or nothing to leave it unchanged.
        * @returns The current animation speed in milliseconds.
        */
-    /**
-     * Sets the current animation speed.
-     * @param {?=} speed The animation speed in milliseconds or nothing to leave it unchanged.
-     * @return {?} The current animation speed in milliseconds.
-     */
-    CarouselService.prototype.speed = /**
-     * Sets the current animation speed.
-     * @param {?=} speed The animation speed in milliseconds or nothing to leave it unchanged.
-     * @return {?} The current animation speed in milliseconds.
-     */
-    function (speed) {
+    CarouselService.prototype.speed = function (speed) {
         if (speed !== undefined) {
             this._speed = speed;
         }
@@ -1911,31 +1266,12 @@ var CarouselService = /** @class */ (function () {
        * @param position The absolute position of the item within `minimum()` and `maximum()`.
        * @returns The coordinate of the item in pixel or all coordinates.
        */
-    /**
-     * Gets the coordinate of an item.
-     * \@todo The name of this method is missleanding.
-     * @param {?=} position The absolute position of the item within `minimum()` and `maximum()`.
-     * @return {?} The coordinate of the item in pixel or all coordinates.
-     */
-    CarouselService.prototype.coordinates = /**
-     * Gets the coordinate of an item.
-     * \@todo The name of this method is missleanding.
-     * @param {?=} position The absolute position of the item within `minimum()` and `maximum()`.
-     * @return {?} The coordinate of the item in pixel or all coordinates.
-     */
-    function (position) {
+    CarouselService.prototype.coordinates = function (position) {
         var _this = this;
-        /** @type {?} */
-        var multiplier = 1;
-        /** @type {?} */
-        var newPosition = position - 1;
-        /** @type {?} */
-        var coordinate;
-        /** @type {?} */
-        var result;
+        var multiplier = 1, newPosition = position - 1, coordinate, result;
         if (position === undefined) {
             result = this._coordinates.map(function (item, index) {
-                return (/** @type {?} */ (_this.coordinates(index)));
+                return _this.coordinates(index);
             });
             return result;
         }
@@ -1960,61 +1296,21 @@ var CarouselService = /** @class */ (function () {
        * @param factor [factor=undefined] - The time factor in milliseconds.
        * @returns The time in milliseconds for the translation.
        */
-    /**
-     * Calculates the speed for a translation.
-     * @param {?} from The absolute position of the start item.
-     * @param {?} to The absolute position of the target item.
-     * @param {?=} factor [factor=undefined] - The time factor in milliseconds.
-     * @return {?} The time in milliseconds for the translation.
-     */
-    CarouselService.prototype._duration = /**
-     * Calculates the speed for a translation.
-     * @param {?} from The absolute position of the start item.
-     * @param {?} to The absolute position of the target item.
-     * @param {?=} factor [factor=undefined] - The time factor in milliseconds.
-     * @return {?} The time in milliseconds for the translation.
-     */
-    function (from$$1, to, factor) {
+    CarouselService.prototype._duration = function (from, to, factor) {
         if (factor === 0) {
             return 0;
         }
-        return Math.min(Math.max(Math.abs(to - from$$1), 1), 6) * Math.abs((+factor || this.settings.smartSpeed));
+        return Math.min(Math.max(Math.abs(to - from), 1), 6) * Math.abs((+factor || this.settings.smartSpeed));
     };
     /**
        * Slides to the specified item.
        * @param position The position of the item.
        * @param speed The time in milliseconds for the transition.
        */
-    /**
-     * Slides to the specified item.
-     * @param {?} position The position of the item.
-     * @param {?} speed The time in milliseconds for the transition.
-     * @return {?}
-     */
-    CarouselService.prototype.to = /**
-     * Slides to the specified item.
-     * @param {?} position The position of the item.
-     * @param {?} speed The time in milliseconds for the transition.
-     * @return {?}
-     */
-    function (position, speed) {
+    CarouselService.prototype.to = function (position, speed) {
         var _this = this;
-        /** @type {?} */
-        var current = this.current();
-        /** @type {?} */
-        var revert = null;
-        /** @type {?} */
-        var distance = position - this.relative(current);
-        /** @type {?} */
-        var maximum = this.maximum();
-        /** @type {?} */
-        var delayForLoop = 0;
-        /** @type {?} */
-        var direction = +(distance > 0) - +(distance < 0);
-        /** @type {?} */
-        var items = this._items.length;
-        /** @type {?} */
-        var minimum = this.minimum();
+        var current = this.current(), revert = null, distance = position - this.relative(current), maximum = this.maximum(), delayForLoop = 0;
+        var direction = +(distance > 0) - +(distance < 0), items = this._items.length, minimum = this.minimum();
         if (this.settings.loop) {
             if (!this.settings.rewind && Math.abs(distance) > items / 2) {
                 distance += direction * -1 * items;
@@ -2046,17 +1342,7 @@ var CarouselService = /** @class */ (function () {
        * Slides to the next item.
        * @param speed The time in milliseconds for the transition.
        */
-    /**
-     * Slides to the next item.
-     * @param {?} speed The time in milliseconds for the transition.
-     * @return {?}
-     */
-    CarouselService.prototype.next = /**
-     * Slides to the next item.
-     * @param {?} speed The time in milliseconds for the transition.
-     * @return {?}
-     */
-    function (speed) {
+    CarouselService.prototype.next = function (speed) {
         speed = speed || false;
         this.to(this.relative(this.current()) + 1, speed);
     };
@@ -2064,17 +1350,7 @@ var CarouselService = /** @class */ (function () {
        * Slides to the previous item.
        * @param speed The time in milliseconds for the transition.
        */
-    /**
-     * Slides to the previous item.
-     * @param {?} speed The time in milliseconds for the transition.
-     * @return {?}
-     */
-    CarouselService.prototype.prev = /**
-     * Slides to the previous item.
-     * @param {?} speed The time in milliseconds for the transition.
-     * @return {?}
-     */
-    function (speed) {
+    CarouselService.prototype.prev = function (speed) {
         speed = speed || false;
         this.to(this.relative(this.current()) - 1, speed);
     };
@@ -2082,17 +1358,7 @@ var CarouselService = /** @class */ (function () {
        * Handles the end of an animation.
        * @param event - The event arguments.
        */
-    /**
-     * Handles the end of an animation.
-     * @param {?=} event - The event arguments.
-     * @return {?}
-     */
-    CarouselService.prototype.onTransitionEnd = /**
-     * Handles the end of an animation.
-     * @param {?=} event - The event arguments.
-     * @return {?}
-     */
-    function (event) {
+    CarouselService.prototype.onTransitionEnd = function (event) {
         // if css2 animation then event object is undefined
         if (event !== undefined) {
             // event.stopPropagation();
@@ -2109,16 +1375,7 @@ var CarouselService = /** @class */ (function () {
        * Gets viewport width.
        * @returns - The width in pixel.
        */
-    /**
-     * Gets viewport width.
-     * @return {?} - The width in pixel.
-     */
-    CarouselService.prototype._viewport = /**
-     * Gets viewport width.
-     * @return {?} - The width in pixel.
-     */
-    function () {
-        /** @type {?} */
+    CarouselService.prototype._viewport = function () {
         var width;
         if (this._width) {
             width = this._width;
@@ -2132,36 +1389,17 @@ var CarouselService = /** @class */ (function () {
        * Sets _items
        * @param content The list of slides put into CarouselSlideDirectives.
        */
-    /**
-     * Sets _items
-     * @param {?} content The list of slides put into CarouselSlideDirectives.
-     * @return {?}
-     */
-    CarouselService.prototype.setItems = /**
-     * Sets _items
-     * @param {?} content The list of slides put into CarouselSlideDirectives.
-     * @return {?}
-     */
-    function (content) {
+    CarouselService.prototype.setItems = function (content) {
         this._items = content;
     };
     /**
      * Sets slidesData using this._items
      */
-    /**
-     * Sets slidesData using this._items
-     * @return {?}
-     */
-    CarouselService.prototype._defineSlidesData = /**
-     * Sets slidesData using this._items
-     * @return {?}
-     */
-    function () {
+    CarouselService.prototype._defineSlidesData = function () {
         // Maybe creating and using loadMap would be better in LazyLoadService.
         // Hovewer in that case when 'resize' event fires, prop 'load' of all slides will get 'false' and such state of prop will be seen by View during its updating. Accordingly the code will remove slides's content from DOM even if it was loaded before.
         // Thus it would be needed to add that content into DOM again.
         // In order to avoid additional removing/adding loaded slides's content we use loadMap here and set restore state of prop 'load' before the View will get it.
-        /** @type {?} */
         var loadMap;
         if (this.slidesData && this.slidesData.length) {
             loadMap = new Map();
@@ -2189,19 +1427,8 @@ var CarouselService = /** @class */ (function () {
      * @param slide Slide of carousel
      * @returns object with names of css-classes which are keys and true/false values
      */
-    /**
-     * Sets current classes for slide
-     * @param {?} slide Slide of carousel
-     * @return {?} object with names of css-classes which are keys and true/false values
-     */
-    CarouselService.prototype.setCurSlideClasses = /**
-     * Sets current classes for slide
-     * @param {?} slide Slide of carousel
-     * @return {?} object with names of css-classes which are keys and true/false values
-     */
-    function (slide) {
+    CarouselService.prototype.setCurSlideClasses = function (slide) {
         // CSS classes: added/removed per current state of component properties
-        /** @type {?} */
         var currentClasses = {
             'active': slide.isActive,
             'center': slide.isCentered,
@@ -2211,10 +1438,10 @@ var CarouselService = /** @class */ (function () {
             'owl-animated-out': slide.isDefAnimatedOut
         };
         if (this.settings.animateIn) {
-            currentClasses[(/** @type {?} */ (this.settings.animateIn))] = slide.isCustomAnimatedIn;
+            currentClasses[this.settings.animateIn] = slide.isCustomAnimatedIn;
         }
         if (this.settings.animateOut) {
-            currentClasses[(/** @type {?} */ (this.settings.animateOut))] = slide.isCustomAnimatedOut;
+            currentClasses[this.settings.animateOut] = slide.isCustomAnimatedOut;
         }
         return currentClasses;
     };
@@ -2225,22 +1452,7 @@ var CarouselService = /** @class */ (function () {
        * @param b - The right side operand.
        * @returns true/false meaning right-to-left or left-to-right
        */
-    /**
-     * Operators to calculate right-to-left and left-to-right.
-     * @param {?} a - The left side operand.
-     * @param {?} o - The operator.
-     * @param {?} b - The right side operand.
-     * @return {?} true/false meaning right-to-left or left-to-right
-     */
-    CarouselService.prototype._op = /**
-     * Operators to calculate right-to-left and left-to-right.
-     * @param {?} a - The left side operand.
-     * @param {?} o - The operator.
-     * @param {?} b - The right side operand.
-     * @return {?} true/false meaning right-to-left or left-to-right
-     */
-    function (a, o, b) {
-        /** @type {?} */
+    CarouselService.prototype._op = function (a, o, b) {
         var rtl = this.settings.rtl;
         switch (o) {
             case '<':
@@ -2264,27 +1476,7 @@ var CarouselService = /** @class */ (function () {
        * @param state The state which is associated with the event.
        * @param enter Indicates if the call enters the specified state or not.
        */
-    /**
-     * Triggers a public event.
-     * \@todo Remove `status`, `relatedTarget` should be used instead.
-     * @param {?} name The event name.
-     * @param {?=} data The event data.
-     * @param {?=} namespace The event namespace.
-     * @param {?=} state The state which is associated with the event.
-     * @param {?=} enter Indicates if the call enters the specified state or not.
-     * @return {?}
-     */
-    CarouselService.prototype._trigger = /**
-     * Triggers a public event.
-     * \@todo Remove `status`, `relatedTarget` should be used instead.
-     * @param {?} name The event name.
-     * @param {?=} data The event data.
-     * @param {?=} namespace The event namespace.
-     * @param {?=} state The state which is associated with the event.
-     * @param {?=} enter Indicates if the call enters the specified state or not.
-     * @return {?}
-     */
-    function (name, data, namespace, state$$1, enter) {
+    CarouselService.prototype._trigger = function (name, data, namespace, state, enter) {
         switch (name) {
             case 'initialized':
                 this._initializedCarousel$.next(name);
@@ -2327,17 +1519,7 @@ var CarouselService = /** @class */ (function () {
      * Enters a state.
      * @param name - The state name.
      */
-    /**
-     * Enters a state.
-     * @param {?} name - The state name.
-     * @return {?}
-     */
-    CarouselService.prototype.enter = /**
-     * Enters a state.
-     * @param {?} name - The state name.
-     * @return {?}
-     */
-    function (name) {
+    CarouselService.prototype.enter = function (name) {
         var _this = this;
         [name].concat(this._states.tags[name] || []).forEach(function (stateName) {
             if (_this._states.current[stateName] === undefined) {
@@ -2350,17 +1532,7 @@ var CarouselService = /** @class */ (function () {
        * Leaves a state.
        * @param name - The state name.
        */
-    /**
-     * Leaves a state.
-     * @param {?} name - The state name.
-     * @return {?}
-     */
-    CarouselService.prototype.leave = /**
-     * Leaves a state.
-     * @param {?} name - The state name.
-     * @return {?}
-     */
-    function (name) {
+    CarouselService.prototype.leave = function (name) {
         var _this = this;
         [name].concat(this._states.tags[name] || []).forEach(function (stateName) {
             if (_this._states.current[stateName] === 0 || !!_this._states.current[stateName]) {
@@ -2372,17 +1544,7 @@ var CarouselService = /** @class */ (function () {
        * Registers an event or state.
        * @param object - The event or state to register.
        */
-    /**
-     * Registers an event or state.
-     * @param {?} object - The event or state to register.
-     * @return {?}
-     */
-    CarouselService.prototype.register = /**
-     * Registers an event or state.
-     * @param {?} object - The event or state to register.
-     * @return {?}
-     */
-    function (object) {
+    CarouselService.prototype.register = function (object) {
         var _this = this;
         if (object.type === Type.State) {
             if (!this._states.tags[object.name]) {
@@ -2400,17 +1562,7 @@ var CarouselService = /** @class */ (function () {
        * Suppresses events.
        * @param events The events to suppress.
        */
-    /**
-     * Suppresses events.
-     * @param {?} events The events to suppress.
-     * @return {?}
-     */
-    CarouselService.prototype._suppress = /**
-     * Suppresses events.
-     * @param {?} events The events to suppress.
-     * @return {?}
-     */
-    function (events) {
+    CarouselService.prototype._suppress = function (events) {
         var _this = this;
         events.forEach(function (event) {
             _this._supress[event] = true;
@@ -2420,17 +1572,7 @@ var CarouselService = /** @class */ (function () {
        * Releases suppressed events.
        * @param events The events to release.
        */
-    /**
-     * Releases suppressed events.
-     * @param {?} events The events to release.
-     * @return {?}
-     */
-    CarouselService.prototype._release = /**
-     * Releases suppressed events.
-     * @param {?} events The events to release.
-     * @return {?}
-     */
-    function (events) {
+    CarouselService.prototype._release = function (events) {
         var _this = this;
         events.forEach(function (event) {
             delete _this._supress[event];
@@ -2442,20 +1584,7 @@ var CarouselService = /** @class */ (function () {
        * @param event The `mousedown` or `touchstart` event.
        * @returns Object Coords which contains `x` and `y` coordinates of current pointer position.
        */
-    /**
-     * Gets unified pointer coordinates from event.
-     * \@todo #261
-     * @param {?} event The `mousedown` or `touchstart` event.
-     * @return {?} Object Coords which contains `x` and `y` coordinates of current pointer position.
-     */
-    CarouselService.prototype.pointer = /**
-     * Gets unified pointer coordinates from event.
-     * \@todo #261
-     * @param {?} event The `mousedown` or `touchstart` event.
-     * @return {?} Object Coords which contains `x` and `y` coordinates of current pointer position.
-     */
-    function (event) {
-        /** @type {?} */
+    CarouselService.prototype.pointer = function (event) {
         var result = { x: null, y: null };
         event = event.originalEvent || event || window.event;
         event = event.touches && event.touches.length ?
@@ -2476,17 +1605,7 @@ var CarouselService = /** @class */ (function () {
        * @param number The input to be tested
        * @returns An indication if the input is a Number or can be coerced to a Number
        */
-    /**
-     * Determines if the input is a Number or something that can be coerced to a Number
-     * @param {?} number The input to be tested
-     * @return {?} An indication if the input is a Number or can be coerced to a Number
-     */
-    CarouselService.prototype._isNumeric = /**
-     * Determines if the input is a Number or something that can be coerced to a Number
-     * @param {?} number The input to be tested
-     * @return {?} An indication if the input is a Number or can be coerced to a Number
-     */
-    function (number) {
+    CarouselService.prototype._isNumeric = function (number) {
         return !isNaN(parseFloat(number));
     };
     /**
@@ -2494,17 +1613,7 @@ var CarouselService = /** @class */ (function () {
      * @param value The input to be tested
      * @returns An indication if the input is a Number or can be coerced to a Number, or Boolean
      */
-    /**
-     * Determines whether value is number or boolean type
-     * @param {?} value The input to be tested
-     * @return {?} An indication if the input is a Number or can be coerced to a Number, or Boolean
-     */
-    CarouselService.prototype._isNumberOrBoolean = /**
-     * Determines whether value is number or boolean type
-     * @param {?} value The input to be tested
-     * @return {?} An indication if the input is a Number or can be coerced to a Number, or Boolean
-     */
-    function (value) {
+    CarouselService.prototype._isNumberOrBoolean = function (value) {
         return this._isNumeric(value) || typeof value === 'boolean';
     };
     /**
@@ -2512,17 +1621,7 @@ var CarouselService = /** @class */ (function () {
      * @param value The input to be tested
      * @returns An indication if the input is a Number or can be coerced to a Number, or String
      */
-    /**
-     * Determines whether value is number or string type
-     * @param {?} value The input to be tested
-     * @return {?} An indication if the input is a Number or can be coerced to a Number, or String
-     */
-    CarouselService.prototype._isNumberOrString = /**
-     * Determines whether value is number or string type
-     * @param {?} value The input to be tested
-     * @return {?} An indication if the input is a Number or can be coerced to a Number, or String
-     */
-    function (value) {
+    CarouselService.prototype._isNumberOrString = function (value) {
         return this._isNumeric(value) || typeof value === 'string';
     };
     /**
@@ -2530,17 +1629,7 @@ var CarouselService = /** @class */ (function () {
      * @param value The input to be tested
      * @returns An indication if the input is a Number or can be coerced to a Number, or String
      */
-    /**
-     * Determines whether value is number or string type
-     * @param {?} value The input to be tested
-     * @return {?} An indication if the input is a Number or can be coerced to a Number, or String
-     */
-    CarouselService.prototype._isStringOrBoolean = /**
-     * Determines whether value is number or string type
-     * @param {?} value The input to be tested
-     * @return {?} An indication if the input is a Number or can be coerced to a Number, or String
-     */
-    function (value) {
+    CarouselService.prototype._isStringOrBoolean = function (value) {
         return typeof value === 'string' || typeof value === 'boolean';
     };
     /**
@@ -2550,40 +1639,19 @@ var CarouselService = /** @class */ (function () {
        * @param second- The second vector.
        * @returns The difference.
        */
-    /**
-     * Gets the difference of two vectors.
-     * \@todo #261
-     * @param {?} first The first vector.
-     * @param {?} second
-     * @return {?} The difference.
-     */
-    CarouselService.prototype.difference = /**
-     * Gets the difference of two vectors.
-     * \@todo #261
-     * @param {?} first The first vector.
-     * @param {?} second
-     * @return {?} The difference.
-     */
-    function (first$$1, second) {
+    CarouselService.prototype.difference = function (first, second) {
         return {
-            x: first$$1.x - second.x,
-            y: first$$1.y - second.y
+            x: first.x - second.x,
+            y: first.y - second.y
         };
     };
-    CarouselService.decorators = [
-        { type: Injectable }
-    ];
-    /** @nocollapse */
-    CarouselService.ctorParameters = function () { return [
-        { type: OwlLogger }
-    ]; };
+    CarouselService = __decorate([
+        Injectable(),
+        __metadata("design:paramtypes", [OwlLogger])
+    ], CarouselService);
     return CarouselService;
 }());
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
 var NavigationService = /** @class */ (function () {
     function NavigationService(carouselService) {
         this.carouselService = carouselService;
@@ -2618,30 +1686,15 @@ var NavigationService = /** @class */ (function () {
         };
         this.spyDataStreams();
     }
-    /**
-     * @return {?}
-     */
-    NavigationService.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
+    NavigationService.prototype.ngOnDestroy = function () {
         this.navSubscription.unsubscribe();
     };
     /**
      * Defines Observables which service must observe
      */
-    /**
-     * Defines Observables which service must observe
-     * @return {?}
-     */
-    NavigationService.prototype.spyDataStreams = /**
-     * Defines Observables which service must observe
-     * @return {?}
-     */
-    function () {
+    NavigationService.prototype.spyDataStreams = function () {
         var _this = this;
-        /** @type {?} */
-        var initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(function (state$$1) {
+        var initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(function (state) {
             _this.initialize();
             _this._updateNavPages();
             _this.draw();
@@ -2650,7 +1703,6 @@ var NavigationService = /** @class */ (function () {
         }));
         // mostly changes in carouselService and carousel at all causes carouselService.to(). It moves stage right-left by its code and calling needed functions
         // Thus this method by calling carouselService.current(position) notifies about changes
-        /** @type {?} */
         var changedSettings$ = this.carouselService.getChangedState().pipe(filter(function (data) { return data.property.name === 'position'; }), tap(function (data) {
             _this.update();
             // should be the call of the function written at the end of comment
@@ -2660,29 +1712,19 @@ var NavigationService = /** @class */ (function () {
             // carouselService.current(position) is being calling earlier than carouselServive.update();
             // this.carouselService.sendChanges();
         }));
-        /** @type {?} */
         var refreshedCarousel$ = this.carouselService.getRefreshedState().pipe(tap(function () {
             _this._updateNavPages();
             _this.draw();
             _this.update();
             _this.carouselService.sendChanges();
         }));
-        /** @type {?} */
         var navMerge$ = merge(initializedCarousel$, changedSettings$, refreshedCarousel$);
         this.navSubscription = navMerge$.subscribe(function () { });
     };
     /**
        * Initializes the layout of the plugin and extends the carousel.
        */
-    /**
-     * Initializes the layout of the plugin and extends the carousel.
-     * @return {?}
-     */
-    NavigationService.prototype.initialize = /**
-     * Initializes the layout of the plugin and extends the carousel.
-     * @return {?}
-     */
-    function () {
+    NavigationService.prototype.initialize = function () {
         this._navData.disabled = true;
         this._navData.prev.htmlText = this.carouselService.settings.navText[0];
         this._navData.next.htmlText = this.carouselService.settings.navText[1];
@@ -2693,32 +1735,9 @@ var NavigationService = /** @class */ (function () {
     /**
      * Calculates internal states and updates prop _pages
      */
-    /**
-     * Calculates internal states and updates prop _pages
-     * @return {?}
-     */
-    NavigationService.prototype._updateNavPages = /**
-     * Calculates internal states and updates prop _pages
-     * @return {?}
-     */
-    function () {
-        /** @type {?} */
-        var i;
-        /** @type {?} */
-        var j;
-        /** @type {?} */
-        var k;
-        /** @type {?} */
-        var lower = this.carouselService.clones().length / 2;
-        /** @type {?} */
-        var upper = lower + this.carouselService.items().length;
-        /** @type {?} */
-        var maximum = this.carouselService.maximum(true);
-        /** @type {?} */
-        var pages = [];
-        /** @type {?} */
-        var settings = this.carouselService.settings;
-        /** @type {?} */
+    NavigationService.prototype._updateNavPages = function () {
+        var i, j, k;
+        var lower = this.carouselService.clones().length / 2, upper = lower + this.carouselService.items().length, maximum = this.carouselService.maximum(true), pages = [], settings = this.carouselService.settings;
         var size = settings.center || settings.autoWidth || settings.dotsData
             ? 1 : settings.dotsEach || settings.items;
         size = +size;
@@ -2737,7 +1756,7 @@ var NavigationService = /** @class */ (function () {
                     }
                     j = 0, ++k;
                 }
-                j += (/** @type {?} */ (this.carouselService.mergers(this.carouselService.relative(i))));
+                j += this.carouselService.mergers(this.carouselService.relative(i));
             }
         }
         this._pages = pages;
@@ -2746,26 +1765,10 @@ var NavigationService = /** @class */ (function () {
        * Draws the user interface.
        * @todo The option `dotsData` wont work.
        */
-    /**
-     * Draws the user interface.
-     * \@todo The option `dotsData` wont work.
-     * @return {?}
-     */
-    NavigationService.prototype.draw = /**
-     * Draws the user interface.
-     * \@todo The option `dotsData` wont work.
-     * @return {?}
-     */
-    function () {
+    NavigationService.prototype.draw = function () {
         var _this = this;
-        /** @type {?} */
         var difference;
-        /** @type {?} */
-        var settings = this.carouselService.settings;
-        /** @type {?} */
-        var items = this.carouselService.items();
-        /** @type {?} */
-        var disabled = items.length <= settings.items;
+        var settings = this.carouselService.settings, items = this.carouselService.items(), disabled = items.length <= settings.items;
         this._navData.disabled = !settings.nav || disabled;
         this._dotsData.disabled = !settings.dots || disabled;
         if (settings.dots) {
@@ -2782,7 +1785,6 @@ var NavigationService = /** @class */ (function () {
                 });
             }
             else if (difference > 0) {
-                /** @type {?} */
                 var startI = this._dotsData.dots.length > 0 ? this._dotsData.dots.length : 0;
                 for (var i = 0; i < difference; i++) {
                     this._dotsData.dots.push({
@@ -2803,36 +1805,15 @@ var NavigationService = /** @class */ (function () {
     /**
      * Updates navigation buttons's and dots's states
      */
-    /**
-     * Updates navigation buttons's and dots's states
-     * @return {?}
-     */
-    NavigationService.prototype.update = /**
-     * Updates navigation buttons's and dots's states
-     * @return {?}
-     */
-    function () {
+    NavigationService.prototype.update = function () {
         this._updateNavButtons();
         this._updateDots();
     };
     /**
      * Changes state of nav buttons (disabled, enabled)
      */
-    /**
-     * Changes state of nav buttons (disabled, enabled)
-     * @return {?}
-     */
-    NavigationService.prototype._updateNavButtons = /**
-     * Changes state of nav buttons (disabled, enabled)
-     * @return {?}
-     */
-    function () {
-        /** @type {?} */
-        var settings = this.carouselService.settings;
-        /** @type {?} */
-        var loop = settings.loop || settings.rewind;
-        /** @type {?} */
-        var index = this.carouselService.relative(this.carouselService.current());
+    NavigationService.prototype._updateNavButtons = function () {
+        var settings = this.carouselService.settings, loop = settings.loop || settings.rewind, index = this.carouselService.relative(this.carouselService.current());
         if (settings.nav) {
             this._navData.prev.disabled = !loop && index <= this.carouselService.minimum(true);
             this._navData.next.disabled = !loop && index >= this.carouselService.maximum(true);
@@ -2842,16 +1823,7 @@ var NavigationService = /** @class */ (function () {
     /**
      * Changes active dot if page becomes changed
      */
-    /**
-     * Changes active dot if page becomes changed
-     * @return {?}
-     */
-    NavigationService.prototype._updateDots = /**
-     * Changes active dot if page becomes changed
-     * @return {?}
-     */
-    function () {
-        /** @type {?} */
+    NavigationService.prototype._updateDots = function () {
         var curActiveDotI;
         if (!this.carouselService.settings.dots) {
             return;
@@ -2871,20 +1843,9 @@ var NavigationService = /** @class */ (function () {
        * Gets the current page position of the carousel.
        * @returns the current page position of the carousel
        */
-    /**
-     * Gets the current page position of the carousel.
-     * @return {?} the current page position of the carousel
-     */
-    NavigationService.prototype._current = /**
-     * Gets the current page position of the carousel.
-     * @return {?} the current page position of the carousel
-     */
-    function () {
-        /** @type {?} */
+    NavigationService.prototype._current = function () {
         var current = this.carouselService.relative(this.carouselService.current());
-        /** @type {?} */
         var finalCurrent;
-        /** @type {?} */
         var pages = this._pages.filter(function (page, index) {
             return page.start <= current && page.end >= current;
         }).pop();
@@ -2898,22 +1859,8 @@ var NavigationService = /** @class */ (function () {
      * @param sussessor position of slide
        * @returns the current succesor/predecessor position
        */
-    /**
-     * Gets the current succesor/predecessor position.
-     * @param {?} successor
-     * @return {?} the current succesor/predecessor position
-     */
-    NavigationService.prototype._getPosition = /**
-     * Gets the current succesor/predecessor position.
-     * @param {?} successor
-     * @return {?} the current succesor/predecessor position
-     */
-    function (successor) {
-        /** @type {?} */
-        var position;
-        /** @type {?} */
-        var length;
-        /** @type {?} */
+    NavigationService.prototype._getPosition = function (successor) {
+        var position, length;
         var settings = this.carouselService.settings;
         if (settings.slideBy === 'page') {
             position = this._current();
@@ -2932,34 +1879,14 @@ var NavigationService = /** @class */ (function () {
        * Slides to the next item or page.
        * @param speed The time in milliseconds for the transition.
        */
-    /**
-     * Slides to the next item or page.
-     * @param {?} speed The time in milliseconds for the transition.
-     * @return {?}
-     */
-    NavigationService.prototype.next = /**
-     * Slides to the next item or page.
-     * @param {?} speed The time in milliseconds for the transition.
-     * @return {?}
-     */
-    function (speed) {
+    NavigationService.prototype.next = function (speed) {
         this.carouselService.to(this._getPosition(true), speed);
     };
     /**
      * Slides to the previous item or page.
      * @param speed The time in milliseconds for the transition.
      */
-    /**
-     * Slides to the previous item or page.
-     * @param {?} speed The time in milliseconds for the transition.
-     * @return {?}
-     */
-    NavigationService.prototype.prev = /**
-     * Slides to the previous item or page.
-     * @param {?} speed The time in milliseconds for the transition.
-     * @return {?}
-     */
-    function (speed) {
+    NavigationService.prototype.prev = function (speed) {
         this.carouselService.to(this._getPosition(false), speed);
     };
     /**
@@ -2968,22 +1895,7 @@ var NavigationService = /** @class */ (function () {
      * @param speed - The time in milliseconds for the transition.
      * @param standard - Whether to use the standard behaviour or not. Default meaning false
      */
-    /**
-     * Slides to the specified item or page.
-     * @param {?} position - The position of the item or page.
-     * @param {?} speed - The time in milliseconds for the transition.
-     * @param {?=} standard - Whether to use the standard behaviour or not. Default meaning false
-     * @return {?}
-     */
-    NavigationService.prototype.to = /**
-     * Slides to the specified item or page.
-     * @param {?} position - The position of the item or page.
-     * @param {?} speed - The time in milliseconds for the transition.
-     * @param {?=} standard - Whether to use the standard behaviour or not. Default meaning false
-     * @return {?}
-     */
-    function (position, speed, standard) {
-        /** @type {?} */
+    NavigationService.prototype.to = function (position, speed, standard) {
         var length;
         if (!standard && this._pages.length) {
             length = this._pages.length;
@@ -2996,18 +1908,7 @@ var NavigationService = /** @class */ (function () {
     /**
      * Moves carousel after user's clicking on any dots
      */
-    /**
-     * Moves carousel after user's clicking on any dots
-     * @param {?} dotId
-     * @return {?}
-     */
-    NavigationService.prototype.moveByDot = /**
-     * Moves carousel after user's clicking on any dots
-     * @param {?} dotId
-     * @return {?}
-     */
-    function (dotId) {
-        /** @type {?} */
+    NavigationService.prototype.moveByDot = function (dotId) {
         var index = this._dotsData.dots.findIndex(function (dot) { return dotId === dot.id; });
         this.to(index, this.carouselService.settings.dotsSpeed);
     };
@@ -3015,59 +1916,33 @@ var NavigationService = /** @class */ (function () {
      * rewinds carousel to slide with needed id
      * @param id id of slide
      */
-    /**
-     * rewinds carousel to slide with needed id
-     * @param {?} id id of slide
-     * @return {?}
-     */
-    NavigationService.prototype.toSlideById = /**
-     * rewinds carousel to slide with needed id
-     * @param {?} id id of slide
-     * @return {?}
-     */
-    function (id) {
-        /** @type {?} */
+    NavigationService.prototype.toSlideById = function (id) {
         var position = this.carouselService.slidesData.findIndex(function (slide) { return slide.id === id && slide.isCloned === false; });
         if (position === -1 || position === this.carouselService.current()) {
             return;
         }
         this.carouselService.to(this.carouselService.relative(position), false);
     };
-    NavigationService.decorators = [
-        { type: Injectable }
-    ];
-    /** @nocollapse */
-    NavigationService.ctorParameters = function () { return [
-        { type: CarouselService }
-    ]; };
+    NavigationService = __decorate([
+        Injectable(),
+        __metadata("design:paramtypes", [CarouselService])
+    ], NavigationService);
     return NavigationService;
 }());
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
+// import { Injectable } from '@angular/core';
 /**
  * Create a new injection token for injecting the window into a component.
- * @type {?}
  */
 var WINDOW = new InjectionToken('WindowToken');
 /**
  * Define abstract class for obtaining reference to the global window object.
- * @abstract
  */
-var  /**
- * Define abstract class for obtaining reference to the global window object.
- * @abstract
- */
-WindowRef = /** @class */ (function () {
+var WindowRef = /** @class */ (function () {
     function WindowRef() {
     }
     Object.defineProperty(WindowRef.prototype, "nativeWindow", {
-        get: /**
-         * @return {?}
-         */
-        function () {
+        get: function () {
             throw new Error('Not implemented.');
         },
         enumerable: true,
@@ -3078,10 +1953,7 @@ WindowRef = /** @class */ (function () {
 /**
  * Define class that implements the abstract class and returns the native window object.
  */
-var  /**
- * Define class that implements the abstract class and returns the native window object.
- */
-BrowserWindowRef = /** @class */ (function (_super) {
+var BrowserWindowRef = /** @class */ (function (_super) {
     __extends(BrowserWindowRef, _super);
     function BrowserWindowRef() {
         return _super.call(this) || this;
@@ -3090,10 +1962,7 @@ BrowserWindowRef = /** @class */ (function (_super) {
         /**
          * @returns window object
          */
-        get: /**
-         * @return {?} window object
-         */
-        function () {
+        get: function () {
             return window;
         },
         enumerable: true,
@@ -3103,15 +1972,14 @@ BrowserWindowRef = /** @class */ (function (_super) {
 }(WindowRef));
 /**
  * Create an factory function that returns the native window object.
- * @param {?} browserWindowRef Native window object
- * @param {?} platformId id of platform
- * @return {?} type of platform of empty object
+ * @param browserWindowRef Native window object
+ * @param platformId id of platform
+ * @returns type of platform of empty object
  */
 function windowFactory(browserWindowRef, platformId) {
     if (isPlatformBrowser(platformId)) {
         return browserWindowRef.nativeWindow;
     }
-    /** @type {?} */
     var obj = {
         setTimeout: function (func, time) { },
         clearTimeout: function (a) { }
@@ -3120,7 +1988,6 @@ function windowFactory(browserWindowRef, platformId) {
 }
 /**
  * Create a injectable provider for the WindowRef token that uses the BrowserWindowRef class.
- * @type {?}
  */
 var browserWindowProvider = {
     provide: WindowRef,
@@ -3128,7 +1995,6 @@ var browserWindowProvider = {
 };
 /**
  * Create an injectable provider that uses the windowFactory function for returning the native window object.
- * @type {?}
  */
 var windowProvider = {
     provide: WINDOW,
@@ -3137,35 +2003,21 @@ var windowProvider = {
 };
 /**
  * Create an array of providers.
- * @type {?}
  */
 var WINDOW_PROVIDERS = [browserWindowProvider, windowProvider];
 
 /**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
-/**
  * Create a new injection token for injecting the Document into a component.
- * @type {?}
  */
 var DOCUMENT = new InjectionToken('DocumentToken');
 /**
  * Define abstract class for obtaining reference to the global Document object.
- * @abstract
  */
-var  /**
- * Define abstract class for obtaining reference to the global Document object.
- * @abstract
- */
-DocumentRef = /** @class */ (function () {
+var DocumentRef = /** @class */ (function () {
     function DocumentRef() {
     }
     Object.defineProperty(DocumentRef.prototype, "nativeDocument", {
-        get: /**
-         * @return {?}
-         */
-        function () {
+        get: function () {
             throw new Error('Not implemented.');
         },
         enumerable: true,
@@ -3176,10 +2028,7 @@ DocumentRef = /** @class */ (function () {
 /**
  * Define class that implements the abstract class and returns the native Document object.
  */
-var  /**
- * Define class that implements the abstract class and returns the native Document object.
- */
-BrowserDocumentRef = /** @class */ (function (_super) {
+var BrowserDocumentRef = /** @class */ (function (_super) {
     __extends(BrowserDocumentRef, _super);
     function BrowserDocumentRef() {
         return _super.call(this) || this;
@@ -3188,10 +2037,7 @@ BrowserDocumentRef = /** @class */ (function (_super) {
         /**
          * @returns Document object
          */
-        get: /**
-         * @return {?} Document object
-         */
-        function () {
+        get: function () {
             return document;
         },
         enumerable: true,
@@ -3201,15 +2047,14 @@ BrowserDocumentRef = /** @class */ (function (_super) {
 }(DocumentRef));
 /**
  * Create an factory function that returns the native Document object.
- * @param {?} browserDocumentRef Native Document object
- * @param {?} platformId id of platform
- * @return {?} type of platform of empty object
+ * @param browserDocumentRef Native Document object
+ * @param platformId id of platform
+ * @returns type of platform of empty object
  */
 function documentFactory(browserDocumentRef, platformId) {
     if (isPlatformBrowser(platformId)) {
         return browserDocumentRef.nativeDocument;
     }
-    /** @type {?} */
     var doc = {
         hidden: false,
         visibilityState: 'visible'
@@ -3218,7 +2063,6 @@ function documentFactory(browserDocumentRef, platformId) {
 }
 /**
  * Create a injectable provider for the DocumentRef token that uses the BrowserDocumentRef class.
- * @type {?}
  */
 var browserDocumentProvider = {
     provide: DocumentRef,
@@ -3226,7 +2070,6 @@ var browserDocumentProvider = {
 };
 /**
  * Create an injectable provider that uses the DocumentFactory function for returning the native Document object.
- * @type {?}
  */
 var documentProvider = {
     provide: DOCUMENT,
@@ -3235,14 +2078,9 @@ var documentProvider = {
 };
 /**
  * Create an array of providers.
- * @type {?}
  */
 var DOCUMENT_PROVIDERS = [browserDocumentProvider, documentProvider];
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
 var AutoplayService = /** @class */ (function () {
     function AutoplayService(carouselService, winRef, docRef) {
         this.carouselService = carouselService;
@@ -3254,43 +2092,26 @@ var AutoplayService = /** @class */ (function () {
          * Indicates whenever the autoplay is paused.
          */
         this._paused = false;
-        this.winRef = (/** @type {?} */ (winRef));
-        this.docRef = (/** @type {?} */ (docRef));
+        this.winRef = winRef;
+        this.docRef = docRef;
         this.spyDataStreams();
     }
-    /**
-     * @return {?}
-     */
-    AutoplayService.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
+    AutoplayService.prototype.ngOnDestroy = function () {
         this.autoplaySubscription.unsubscribe();
     };
     /**
      * Defines Observables which service must observe
      */
-    /**
-     * Defines Observables which service must observe
-     * @return {?}
-     */
-    AutoplayService.prototype.spyDataStreams = /**
-     * Defines Observables which service must observe
-     * @return {?}
-     */
-    function () {
+    AutoplayService.prototype.spyDataStreams = function () {
         var _this = this;
-        /** @type {?} */
         var initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(function () {
             if (_this.carouselService.settings.autoplay) {
                 _this.play();
             }
         }));
-        /** @type {?} */
         var changedSettings$ = this.carouselService.getChangedState().pipe(tap(function (data) {
             _this._handleChangeObservable(data);
         }));
-        /** @type {?} */
         var resized$ = this.carouselService.getResizedState().pipe(tap(function () {
             if (_this.carouselService.settings.autoplay) {
                 _this.play();
@@ -3298,13 +2119,9 @@ var AutoplayService = /** @class */ (function () {
             else {
                 _this.stop();
             }
-        }))
+        }));
         // original Autoplay Plugin has listeners on play.owl.core and stop.owl.core events.
         // They are triggered by Video Plugin
-        ;
-        // original Autoplay Plugin has listeners on play.owl.core and stop.owl.core events.
-        // They are triggered by Video Plugin
-        /** @type {?} */
         var autoplayMerge$ = merge(initializedCarousel$, changedSettings$, resized$);
         this.autoplaySubscription = autoplayMerge$.subscribe(function () { });
     };
@@ -3313,19 +2130,7 @@ var AutoplayService = /** @class */ (function () {
        * @param timeout The interval before the next animation starts.
        * @param speed The animation speed for the animations.
        */
-    /**
-     * Starts the autoplay.
-     * @param {?=} timeout The interval before the next animation starts.
-     * @param {?=} speed The animation speed for the animations.
-     * @return {?}
-     */
-    AutoplayService.prototype.play = /**
-     * Starts the autoplay.
-     * @param {?=} timeout The interval before the next animation starts.
-     * @param {?=} speed The animation speed for the animations.
-     * @return {?}
-     */
-    function (timeout, speed) {
+    AutoplayService.prototype.play = function (timeout, speed) {
         if (this._paused) {
             this._paused = false;
             this._setAutoPlayInterval(1);
@@ -3342,19 +2147,7 @@ var AutoplayService = /** @class */ (function () {
        * @param speed - The animation speed for the animations.
        * @return
        */
-    /**
-     * Gets a new timeout
-     * @param {?=} timeout - The interval before the next animation starts.
-     * @param {?=} speed - The animation speed for the animations.
-     * @return {?}
-     */
-    AutoplayService.prototype._getNextTimeout = /**
-     * Gets a new timeout
-     * @param {?=} timeout - The interval before the next animation starts.
-     * @param {?=} speed - The animation speed for the animations.
-     * @return {?}
-     */
-    function (timeout, speed) {
+    AutoplayService.prototype._getNextTimeout = function (timeout, speed) {
         var _this = this;
         if (this._timeout) {
             this.winRef.clearTimeout(this._timeout);
@@ -3370,31 +2163,13 @@ var AutoplayService = /** @class */ (function () {
     /**
        * Sets autoplay in motion.
        */
-    /**
-     * Sets autoplay in motion.
-     * @param {?=} timeout
-     * @return {?}
-     */
-    AutoplayService.prototype._setAutoPlayInterval = /**
-     * Sets autoplay in motion.
-     * @param {?=} timeout
-     * @return {?}
-     */
-    function (timeout) {
+    AutoplayService.prototype._setAutoPlayInterval = function (timeout) {
         this._timeout = this._getNextTimeout(timeout);
     };
     /**
      * Stops the autoplay.
      */
-    /**
-     * Stops the autoplay.
-     * @return {?}
-     */
-    AutoplayService.prototype.stop = /**
-     * Stops the autoplay.
-     * @return {?}
-     */
-    function () {
+    AutoplayService.prototype.stop = function () {
         if (!this.carouselService.is('rotating')) {
             return;
         }
@@ -3405,15 +2180,7 @@ var AutoplayService = /** @class */ (function () {
     /**
        * Stops the autoplay.
        */
-    /**
-     * Stops the autoplay.
-     * @return {?}
-     */
-    AutoplayService.prototype.pause = /**
-     * Stops the autoplay.
-     * @return {?}
-     */
-    function () {
+    AutoplayService.prototype.pause = function () {
         if (!this.carouselService.is('rotating')) {
             return;
         }
@@ -3423,17 +2190,7 @@ var AutoplayService = /** @class */ (function () {
      * Manages by autoplaying according to data passed by _changedSettingsCarousel$ Obsarvable
      * @param data object with current position of carousel and type of change
      */
-    /**
-     * Manages by autoplaying according to data passed by _changedSettingsCarousel$ Obsarvable
-     * @param {?} data object with current position of carousel and type of change
-     * @return {?}
-     */
-    AutoplayService.prototype._handleChangeObservable = /**
-     * Manages by autoplaying according to data passed by _changedSettingsCarousel$ Obsarvable
-     * @param {?} data object with current position of carousel and type of change
-     * @return {?}
-     */
-    function (data) {
+    AutoplayService.prototype._handleChangeObservable = function (data) {
         if (data.property.name === 'settings') {
             if (this.carouselService.settings.autoplay) {
                 this.play();
@@ -3452,30 +2209,14 @@ var AutoplayService = /** @class */ (function () {
     /**
      * Starts autoplaying of the carousel in the case when user leaves the carousel before it starts translateing (moving)
      */
-    /**
-     * Starts autoplaying of the carousel in the case when user leaves the carousel before it starts translateing (moving)
-     * @return {?}
-     */
-    AutoplayService.prototype._playAfterTranslated = /**
-     * Starts autoplaying of the carousel in the case when user leaves the carousel before it starts translateing (moving)
-     * @return {?}
-     */
-    function () {
+    AutoplayService.prototype._playAfterTranslated = function () {
         var _this = this;
         of('translated').pipe(switchMap(function (data) { return _this.carouselService.getTranslatedState(); }), first(), filter(function () { return _this._isArtificialAutoplayTimeout; }), tap(function () { return _this._setAutoPlayInterval(); })).subscribe(function () { });
     };
     /**
      * Starts pausing
      */
-    /**
-     * Starts pausing
-     * @return {?}
-     */
-    AutoplayService.prototype.startPausing = /**
-     * Starts pausing
-     * @return {?}
-     */
-    function () {
+    AutoplayService.prototype.startPausing = function () {
         if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
             this.pause();
         }
@@ -3483,15 +2224,7 @@ var AutoplayService = /** @class */ (function () {
     /**
      * Starts playing after mouse leaves carousel
      */
-    /**
-     * Starts playing after mouse leaves carousel
-     * @return {?}
-     */
-    AutoplayService.prototype.startPlayingMouseLeave = /**
-     * Starts playing after mouse leaves carousel
-     * @return {?}
-     */
-    function () {
+    AutoplayService.prototype.startPlayingMouseLeave = function () {
         if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
             this.play();
             this._playAfterTranslated();
@@ -3500,101 +2233,51 @@ var AutoplayService = /** @class */ (function () {
     /**
      * Starts playing after touch ends
      */
-    /**
-     * Starts playing after touch ends
-     * @return {?}
-     */
-    AutoplayService.prototype.startPlayingTouchEnd = /**
-     * Starts playing after touch ends
-     * @return {?}
-     */
-    function () {
+    AutoplayService.prototype.startPlayingTouchEnd = function () {
         if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
             this.play();
             this._playAfterTranslated();
         }
     };
-    AutoplayService.decorators = [
-        { type: Injectable }
-    ];
-    /** @nocollapse */
-    AutoplayService.ctorParameters = function () { return [
-        { type: CarouselService },
-        { type: undefined, decorators: [{ type: Inject, args: [WINDOW,] }] },
-        { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
-    ]; };
+    AutoplayService = __decorate([
+        Injectable(),
+        __param(1, Inject(WINDOW)),
+        __param(2, Inject(DOCUMENT)),
+        __metadata("design:paramtypes", [CarouselService, Object, Object])
+    ], AutoplayService);
     return AutoplayService;
 }());
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
 var LazyLoadService = /** @class */ (function () {
     function LazyLoadService(carouselService) {
         this.carouselService = carouselService;
         this.spyDataStreams();
     }
-    /**
-     * @return {?}
-     */
-    LazyLoadService.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
+    LazyLoadService.prototype.ngOnDestroy = function () {
         this.lazyLoadSubscription.unsubscribe();
     };
     /**
      * Defines Observables which service must observe
      */
-    /**
-     * Defines Observables which service must observe
-     * @return {?}
-     */
-    LazyLoadService.prototype.spyDataStreams = /**
-     * Defines Observables which service must observe
-     * @return {?}
-     */
-    function () {
+    LazyLoadService.prototype.spyDataStreams = function () {
         var _this = this;
-        /** @type {?} */
         var initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(function () {
-            /** @type {?} */
             var isLazyLoad = _this.carouselService.settings && !_this.carouselService.settings.lazyLoad;
             _this.carouselService.slidesData.forEach(function (item) { return item.load = isLazyLoad ? true : false; });
         }));
-        /** @type {?} */
         var changeSettings$ = this.carouselService.getChangeState();
-        /** @type {?} */
         var resizedCarousel$ = this.carouselService.getResizedState();
-        /** @type {?} */
         var lazyLoadMerge$ = merge(initializedCarousel$, changeSettings$, resizedCarousel$).pipe(tap(function (data) { return _this._defineLazyLoadSlides(data); }));
         this.lazyLoadSubscription = lazyLoadMerge$.subscribe(function () { });
     };
-    /**
-     * @param {?} data
-     * @return {?}
-     */
-    LazyLoadService.prototype._defineLazyLoadSlides = /**
-     * @param {?} data
-     * @return {?}
-     */
-    function (data) {
+    LazyLoadService.prototype._defineLazyLoadSlides = function (data) {
         var _this = this;
         if (!this.carouselService.settings || !this.carouselService.settings.lazyLoad) {
             return;
         }
         if ((data.property && data.property.name === 'position') || data === 'initialized' || data === "resized") {
-            /** @type {?} */
-            var settings = this.carouselService.settings;
-            /** @type {?} */
-            var clones = this.carouselService.clones().length;
-            /** @type {?} */
-            var n = (settings.center && Math.ceil(settings.items / 2) || settings.items);
-            /** @type {?} */
-            var i = ((settings.center && n * -1) || 0);
-            /** @type {?} */
-            var position = (data.property && data.property.value !== undefined ? data.property.value : this.carouselService.current()) + i;
+            var settings = this.carouselService.settings, clones = this.carouselService.clones().length;
+            var n = (settings.center && Math.ceil(settings.items / 2) || settings.items), i = ((settings.center && n * -1) || 0), position = (data.property && data.property.value !== undefined ? data.property.value : this.carouselService.current()) + i;
             // load = $.proxy(function(i, v) { this.load(v) }, this);
             //TODO: Need documentation for this new option
             if (settings.lazyLoadEager > 0) {
@@ -3618,36 +2301,19 @@ var LazyLoadService = /** @class */ (function () {
        * Loads all resources of an item at the specified position.
        * @param position - The absolute position of the item.
        */
-    /**
-     * Loads all resources of an item at the specified position.
-     * @param {?} position - The absolute position of the item.
-     * @return {?}
-     */
-    LazyLoadService.prototype._load = /**
-     * Loads all resources of an item at the specified position.
-     * @param {?} position - The absolute position of the item.
-     * @return {?}
-     */
-    function (position) {
+    LazyLoadService.prototype._load = function (position) {
         if (this.carouselService.slidesData[position].load) {
             return;
         }
         this.carouselService.slidesData[position].load = true;
     };
-    LazyLoadService.decorators = [
-        { type: Injectable }
-    ];
-    /** @nocollapse */
-    LazyLoadService.ctorParameters = function () { return [
-        { type: CarouselService }
-    ]; };
+    LazyLoadService = __decorate([
+        Injectable(),
+        __metadata("design:paramtypes", [CarouselService])
+    ], LazyLoadService);
     return LazyLoadService;
 }());
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
 var AnimateService = /** @class */ (function () {
     function AnimateService(carouselService) {
         this.carouselService = carouselService;
@@ -3665,50 +2331,29 @@ var AnimateService = /** @class */ (function () {
         this.next = undefined;
         this.spyDataStreams();
     }
-    /**
-     * @return {?}
-     */
-    AnimateService.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
+    AnimateService.prototype.ngOnDestroy = function () {
         this.animateSubscription.unsubscribe();
     };
     /**
      * Defines Observables which service must observe
      */
-    /**
-     * Defines Observables which service must observe
-     * @return {?}
-     */
-    AnimateService.prototype.spyDataStreams = /**
-     * Defines Observables which service must observe
-     * @return {?}
-     */
-    function () {
+    AnimateService.prototype.spyDataStreams = function () {
         var _this = this;
-        /** @type {?} */
         var changeSettings$ = this.carouselService.getChangeState().pipe(tap(function (data) {
             if (data.property.name === 'position') {
                 _this.previous = _this.carouselService.current();
                 _this.next = data.property.value;
             }
         }));
-        /** @type {?} */
         var dragCarousel$ = this.carouselService.getDragState();
-        /** @type {?} */
         var draggedCarousel$ = this.carouselService.getDraggedState();
-        /** @type {?} */
         var translatedCarousel$ = this.carouselService.getTranslatedState();
-        /** @type {?} */
         var dragTranslatedMerge$ = merge(dragCarousel$, draggedCarousel$, translatedCarousel$).pipe(tap(function (data) { return _this.swapping = data === 'translated'; }));
-        /** @type {?} */
         var translateCarousel$ = this.carouselService.getTranslateState().pipe(tap(function (data) {
             if (_this.swapping && (_this.carouselService._options.animateOut || _this.carouselService._options.animateIn)) {
                 _this._swap();
             }
         }));
-        /** @type {?} */
         var animateMerge$ = merge(changeSettings$, translateCarousel$, dragTranslatedMerge$).pipe();
         this.animateSubscription = animateMerge$.subscribe(function () { });
     };
@@ -3716,15 +2361,7 @@ var AnimateService = /** @class */ (function () {
        * Toggles the animation classes whenever an translations starts.
        * @returns
        */
-    /**
-     * Toggles the animation classes whenever an translations starts.
-     * @return {?}
-     */
-    AnimateService.prototype._swap = /**
-     * Toggles the animation classes whenever an translations starts.
-     * @return {?}
-     */
-    function () {
+    AnimateService.prototype._swap = function () {
         if (this.carouselService.settings.items !== 1) {
             return;
         }
@@ -3732,16 +2369,8 @@ var AnimateService = /** @class */ (function () {
         // 	return;
         // }
         this.carouselService.speed(0);
-        /** @type {?} */
         var left;
-        /** @type {?} */
-        var previous = this.carouselService.slidesData[this.previous];
-        /** @type {?} */
-        var next = this.carouselService.slidesData[this.next];
-        /** @type {?} */
-        var incoming = this.carouselService.settings.animateIn;
-        /** @type {?} */
-        var outgoing = this.carouselService.settings.animateOut;
+        var previous = this.carouselService.slidesData[this.previous], next = this.carouselService.slidesData[this.next], incoming = this.carouselService.settings.animateIn, outgoing = this.carouselService.settings.animateOut;
         if (this.carouselService.current() === this.previous) {
             return;
         }
@@ -3770,17 +2399,7 @@ var AnimateService = /** @class */ (function () {
      * Handles the end of 'animationend' event
      * @param id Id of slides
      */
-    /**
-     * Handles the end of 'animationend' event
-     * @param {?} id Id of slides
-     * @return {?}
-     */
-    AnimateService.prototype.clear = /**
-     * Handles the end of 'animationend' event
-     * @param {?} id Id of slides
-     * @return {?}
-     */
-    function (id) {
+    AnimateService.prototype.clear = function (id) {
         var _this = this;
         this.carouselService.slidesData.forEach(function (slide) {
             if (slide.id === id) {
@@ -3795,48 +2414,26 @@ var AnimateService = /** @class */ (function () {
         });
         this.carouselService.onTransitionEnd();
     };
-    AnimateService.decorators = [
-        { type: Injectable }
-    ];
-    /** @nocollapse */
-    AnimateService.ctorParameters = function () { return [
-        { type: CarouselService }
-    ]; };
+    AnimateService = __decorate([
+        Injectable(),
+        __metadata("design:paramtypes", [CarouselService])
+    ], AnimateService);
     return AnimateService;
 }());
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
 var AutoHeightService = /** @class */ (function () {
     function AutoHeightService(carouselService) {
         this.carouselService = carouselService;
         this.spyDataStreams();
     }
-    /**
-     * @return {?}
-     */
-    AutoHeightService.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
+    AutoHeightService.prototype.ngOnDestroy = function () {
         this.autoHeightSubscription.unsubscribe();
     };
     /**
      * Defines Observables which service must observe
      */
-    /**
-     * Defines Observables which service must observe
-     * @return {?}
-     */
-    AutoHeightService.prototype.spyDataStreams = /**
-     * Defines Observables which service must observe
-     * @return {?}
-     */
-    function () {
+    AutoHeightService.prototype.spyDataStreams = function () {
         var _this = this;
-        /** @type {?} */
         var initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(function (data) {
             if (_this.carouselService.settings.autoHeight) {
                 _this.update();
@@ -3845,40 +2442,25 @@ var AutoHeightService = /** @class */ (function () {
                 _this.carouselService.slidesData.forEach(function (slide) { return slide.heightState = 'full'; });
             }
         }));
-        /** @type {?} */
         var changedSettings$ = this.carouselService.getChangedState().pipe(tap(function (data) {
             if (_this.carouselService.settings.autoHeight && data.property.name === 'position') {
                 _this.update();
             }
         }));
-        /** @type {?} */
         var refreshedCarousel$ = this.carouselService.getRefreshedState().pipe(tap(function (data) {
             if (_this.carouselService.settings.autoHeight) {
                 _this.update();
             }
         }));
-        /** @type {?} */
         var autoHeight$ = merge(initializedCarousel$, changedSettings$, refreshedCarousel$);
         this.autoHeightSubscription = autoHeight$.subscribe(function () { });
     };
     /**
      * Updates the prop 'heightState' of slides
      */
-    /**
-     * Updates the prop 'heightState' of slides
-     * @return {?}
-     */
-    AutoHeightService.prototype.update = /**
-     * Updates the prop 'heightState' of slides
-     * @return {?}
-     */
-    function () {
-        /** @type {?} */
+    AutoHeightService.prototype.update = function () {
         var items = this.carouselService.settings.items;
-        /** @type {?} */
-        var start = this.carouselService.current();
-        /** @type {?} */
-        var end = start + items;
+        var start = this.carouselService.current(), end = start + items;
         if (this.carouselService.settings.center) {
             start = items % 2 === 1 ? start - (items - 1) / 2 : start - items / 2;
             end = items % 2 === 1 ? start + items : start + items + 1;
@@ -3887,20 +2469,13 @@ var AutoHeightService = /** @class */ (function () {
             slide.heightState = (i >= start && i < end) ? 'full' : 'nulled';
         });
     };
-    AutoHeightService.decorators = [
-        { type: Injectable }
-    ];
-    /** @nocollapse */
-    AutoHeightService.ctorParameters = function () { return [
-        { type: CarouselService }
-    ]; };
+    AutoHeightService = __decorate([
+        Injectable(),
+        __metadata("design:paramtypes", [CarouselService])
+    ], AutoHeightService);
     return AutoHeightService;
 }());
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
 var HashService = /** @class */ (function () {
     function HashService(carouselService, route, router) {
         this.carouselService = carouselService;
@@ -3908,46 +2483,28 @@ var HashService = /** @class */ (function () {
         this.router = router;
         this.spyDataStreams();
         if (!this.route) {
-            this.route = (/** @type {?} */ ({
+            this.route = {
                 fragment: of('no route').pipe(take(1))
-            }));
+            };
         }
         if (!this.router) {
-            this.router = (/** @type {?} */ ({
+            this.router = {
                 navigate: function (commands, extras) { return; }
-            }));
+            };
         }
     }
-    /**
-     * @return {?}
-     */
-    HashService.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
+    HashService.prototype.ngOnDestroy = function () {
         this.hashSubscription.unsubscribe();
     };
     /**
      * Defines Observables which service must observe
      */
-    /**
-     * Defines Observables which service must observe
-     * @return {?}
-     */
-    HashService.prototype.spyDataStreams = /**
-     * Defines Observables which service must observe
-     * @return {?}
-     */
-    function () {
+    HashService.prototype.spyDataStreams = function () {
         var _this = this;
-        /** @type {?} */
         var initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(function () { return _this.listenToRoute(); }));
-        /** @type {?} */
         var changedSettings$ = this.carouselService.getChangedState().pipe(tap(function (data) {
             if (_this.carouselService.settings.URLhashListener && data.property.name === 'position') {
-                /** @type {?} */
                 var newCurSlide = _this.carouselService.current();
-                /** @type {?} */
                 var newCurFragment = _this.carouselService.slidesData[newCurSlide].hashFragment;
                 if (!newCurFragment || newCurFragment === _this.currentHashFragment) {
                     return;
@@ -3955,7 +2512,6 @@ var HashService = /** @class */ (function () {
                 _this.router.navigate(['./'], { fragment: newCurFragment, relativeTo: _this.route });
             }
         }));
-        /** @type {?} */
         var hashFragment$ = merge(initializedCarousel$, changedSettings$);
         this.hashSubscription = hashFragment$.subscribe(function () { });
     };
@@ -3963,18 +2519,7 @@ var HashService = /** @class */ (function () {
      * rewinds carousel to slide which has the same hashFragment as fragment of current url
      * @param fragment fragment of url
      */
-    /**
-     * rewinds carousel to slide which has the same hashFragment as fragment of current url
-     * @param {?} fragment fragment of url
-     * @return {?}
-     */
-    HashService.prototype.rewind = /**
-     * rewinds carousel to slide which has the same hashFragment as fragment of current url
-     * @param {?} fragment fragment of url
-     * @return {?}
-     */
-    function (fragment) {
-        /** @type {?} */
+    HashService.prototype.rewind = function (fragment) {
         var position = this.carouselService.slidesData.findIndex(function (slide) { return slide.hashFragment === fragment && slide.isCloned === false; });
         if (position === -1 || position === this.carouselService.current()) {
             return;
@@ -3984,17 +2529,8 @@ var HashService = /** @class */ (function () {
     /**
      * Initiate listening to ActivatedRoute.fragment
      */
-    /**
-     * Initiate listening to ActivatedRoute.fragment
-     * @return {?}
-     */
-    HashService.prototype.listenToRoute = /**
-     * Initiate listening to ActivatedRoute.fragment
-     * @return {?}
-     */
-    function () {
+    HashService.prototype.listenToRoute = function () {
         var _this = this;
-        /** @type {?} */
         var count = this.carouselService.settings.startPosition === 'URLHash' ? 0 : 2;
         this.route.fragment.pipe(skip(count))
             .subscribe(function (fragment) {
@@ -4002,23 +2538,17 @@ var HashService = /** @class */ (function () {
             _this.rewind(fragment);
         });
     };
-    HashService.decorators = [
-        { type: Injectable }
-    ];
-    /** @nocollapse */
-    HashService.ctorParameters = function () { return [
-        { type: CarouselService },
-        { type: ActivatedRoute, decorators: [{ type: Optional }] },
-        { type: Router, decorators: [{ type: Optional }] }
-    ]; };
+    HashService = __decorate([
+        Injectable(),
+        __param(1, Optional()),
+        __param(2, Optional()),
+        __metadata("design:paramtypes", [CarouselService,
+            ActivatedRoute,
+            Router])
+    ], HashService);
     return HashService;
 }());
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
-/** @type {?} */
 var nextId = 0;
 var CarouselSlideDirective = /** @class */ (function () {
     function CarouselSlideDirective(tplRef) {
@@ -4047,15 +2577,8 @@ var CarouselSlideDirective = /** @class */ (function () {
         this.dataHash = '';
     }
     Object.defineProperty(CarouselSlideDirective.prototype, "dataMerge", {
-        get: /**
-         * @return {?}
-         */
-        function () { return this._dataMerge; },
-        set: /**
-         * @param {?} data
-         * @return {?}
-         */
-        function (data) {
+        get: function () { return this._dataMerge; },
+        set: function (data) {
             this._dataMerge = this.isNumeric(data) ? data : 1;
         },
         enumerable: true,
@@ -4066,42 +2589,40 @@ var CarouselSlideDirective = /** @class */ (function () {
        * @param - The input to be tested
        * @returns - An indication if the input is a Number or can be coerced to a Number
        */
-    /**
-     * Determines if the input is a Number or something that can be coerced to a Number
-     * @param {?} number
-     * @return {?} - An indication if the input is a Number or can be coerced to a Number
-     */
-    CarouselSlideDirective.prototype.isNumeric = /**
-     * Determines if the input is a Number or something that can be coerced to a Number
-     * @param {?} number
-     * @return {?} - An indication if the input is a Number or can be coerced to a Number
-     */
-    function (number) {
+    CarouselSlideDirective.prototype.isNumeric = function (number) {
         return !isNaN(parseFloat(number));
     };
-    CarouselSlideDirective.decorators = [
-        { type: Directive, args: [{ selector: 'ng-template[carouselSlide]' },] }
-    ];
-    /** @nocollapse */
-    CarouselSlideDirective.ctorParameters = function () { return [
-        { type: TemplateRef }
-    ]; };
-    CarouselSlideDirective.propDecorators = {
-        id: [{ type: Input }],
-        dataMerge: [{ type: Input }],
-        width: [{ type: Input }],
-        dotContent: [{ type: Input }],
-        dataHash: [{ type: Input }]
-    };
+    __decorate([
+        Input(),
+        __metadata("design:type", Object)
+    ], CarouselSlideDirective.prototype, "id", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Number),
+        __metadata("design:paramtypes", [Number])
+    ], CarouselSlideDirective.prototype, "dataMerge", null);
+    __decorate([
+        Input(),
+        __metadata("design:type", Object)
+    ], CarouselSlideDirective.prototype, "width", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Object)
+    ], CarouselSlideDirective.prototype, "dotContent", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Object)
+    ], CarouselSlideDirective.prototype, "dataHash", void 0);
+    CarouselSlideDirective = __decorate([
+        Directive({ selector: 'ng-template[carouselSlide]' }),
+        __metadata("design:paramtypes", [TemplateRef])
+    ], CarouselSlideDirective);
     return CarouselSlideDirective;
 }());
 /**
  * Data which will be passed out after ending of transition of carousel
  */
-var  /**
- * Data which will be passed out after ending of transition of carousel
- */
-SlidesOutputData = /** @class */ (function () {
+var SlidesOutputData = /** @class */ (function () {
     function SlidesOutputData() {
     }
     return SlidesOutputData;
@@ -4131,17 +2652,9 @@ var CarouselComponent = /** @class */ (function () {
          * Shows whether carousel is loaded of not.
          */
         this.carouselLoaded = false;
-        this.docRef = (/** @type {?} */ (docRef));
+        this.docRef = docRef;
     }
-    /**
-     * @param {?} ev
-     * @return {?}
-     */
-    CarouselComponent.prototype.onVisibilityChange = /**
-     * @param {?} ev
-     * @return {?}
-     */
-    function (ev) {
+    CarouselComponent.prototype.onVisibilityChange = function (ev) {
         if (!this.carouselService.settings.autoplay)
             return;
         switch (this.docRef.visibilityState) {
@@ -4155,35 +2668,14 @@ var CarouselComponent = /** @class */ (function () {
                 break;
         }
     };
-    /**
-     * @return {?}
-     */
-    CarouselComponent.prototype.ngOnInit = /**
-     * @return {?}
-     */
-    function () {
+    CarouselComponent.prototype.ngOnInit = function () {
         this.spyDataStreams();
         this.carouselWindowWidth = this.el.nativeElement.querySelector('.owl-carousel').clientWidth;
     };
-    /**
-     * @return {?}
-     */
-    CarouselComponent.prototype.ngAfterContentChecked = /**
-     * @return {?}
-     */
-    function () {
+    CarouselComponent.prototype.ngAfterContentChecked = function () {
     };
     // ngAfterContentChecked() END
-    // ngAfterContentChecked() END
-    /**
-     * @return {?}
-     */
-    CarouselComponent.prototype.ngAfterContentInit = 
-    // ngAfterContentChecked() END
-    /**
-     * @return {?}
-     */
-    function () {
+    CarouselComponent.prototype.ngAfterContentInit = function () {
         var _this = this;
         if (this.slides.toArray().length) {
             this.carouselService.setup(this.carouselWindowWidth, this.slides.toArray(), this.options);
@@ -4205,13 +2697,7 @@ var CarouselComponent = /** @class */ (function () {
             }
         })).subscribe(function () { });
     };
-    /**
-     * @return {?}
-     */
-    CarouselComponent.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
+    CarouselComponent.prototype.ngOnDestroy = function () {
         if (this.resizeSubscription) {
             this.resizeSubscription.unsubscribe();
         }
@@ -4222,17 +2708,7 @@ var CarouselComponent = /** @class */ (function () {
      * Joins the observable login in one place: sets values to some observables, merges this observables and
      * subcribes to merge func
      */
-    /**
-     * Joins the observable login in one place: sets values to some observables, merges this observables and
-     * subcribes to merge func
-     * @return {?}
-     */
-    CarouselComponent.prototype.spyDataStreams = /**
-     * Joins the observable login in one place: sets values to some observables, merges this observables and
-     * subcribes to merge func
-     * @return {?}
-     */
-    function () {
+    CarouselComponent.prototype.spyDataStreams = function () {
         var _this = this;
         this._viewCurSettings$ = this.carouselService.getViewCurSettings().pipe(tap(function (data) {
             _this.owlDOMData = data.owlDOMData;
@@ -4260,11 +2736,8 @@ var CarouselComponent = /** @class */ (function () {
             // this.slidesOutputData = {};
         }));
         this._changedCarousel$ = this.carouselService.getChangeState().pipe(switchMap(function (value) {
-            /** @type {?} */
             var changedPosition = of(value).pipe(filter(function () { return value.property.name === 'position'; }), switchMap(function () { return from(_this.slidesData); }), skip(value.property.value), take(_this.carouselService.settings.items), map(function (slide) {
-                /** @type {?} */
                 var clonedIdPrefix = _this.carouselService.clonedIdPrefix;
-                /** @type {?} */
                 var id = slide.id.indexOf(clonedIdPrefix) >= 0 ? slide.id.slice(clonedIdPrefix.length) : slide.id;
                 return __assign({}, slide, { id: id, isActive: true });
             }), toArray(), map(function (slides) {
@@ -4308,15 +2781,7 @@ var CarouselComponent = /** @class */ (function () {
     /**
      * Init subscription to resize event and attaches handler for this event
      */
-    /**
-     * Init subscription to resize event and attaches handler for this event
-     * @return {?}
-     */
-    CarouselComponent.prototype._winResizeWatcher = /**
-     * Init subscription to resize event and attaches handler for this event
-     * @return {?}
-     */
-    function () {
+    CarouselComponent.prototype._winResizeWatcher = function () {
         var _this = this;
         if (Object.keys(this.carouselService._options.responsive).length) {
             this.resizeSubscription = this.resizeService.onResize$
@@ -4330,29 +2795,13 @@ var CarouselComponent = /** @class */ (function () {
     /**
      * Handler for transitioend event
      */
-    /**
-     * Handler for transitioend event
-     * @return {?}
-     */
-    CarouselComponent.prototype.onTransitionEnd = /**
-     * Handler for transitioend event
-     * @return {?}
-     */
-    function () {
+    CarouselComponent.prototype.onTransitionEnd = function () {
         this.carouselService.onTransitionEnd();
     };
     /**
      * Handler for click event, attached to next button
      */
-    /**
-     * Handler for click event, attached to next button
-     * @return {?}
-     */
-    CarouselComponent.prototype.next = /**
-     * Handler for click event, attached to next button
-     * @return {?}
-     */
-    function () {
+    CarouselComponent.prototype.next = function () {
         if (!this.carouselLoaded)
             return;
         this.navigationService.next(this.carouselService.settings.navSpeed);
@@ -4360,15 +2809,7 @@ var CarouselComponent = /** @class */ (function () {
     /**
      * Handler for click event, attached to prev button
      */
-    /**
-     * Handler for click event, attached to prev button
-     * @return {?}
-     */
-    CarouselComponent.prototype.prev = /**
-     * Handler for click event, attached to prev button
-     * @return {?}
-     */
-    function () {
+    CarouselComponent.prototype.prev = function () {
         if (!this.carouselLoaded)
             return;
         this.navigationService.prev(this.carouselService.settings.navSpeed);
@@ -4376,17 +2817,7 @@ var CarouselComponent = /** @class */ (function () {
     /**
      * Handler for click event, attached to dots
      */
-    /**
-     * Handler for click event, attached to dots
-     * @param {?} dotId
-     * @return {?}
-     */
-    CarouselComponent.prototype.moveByDot = /**
-     * Handler for click event, attached to dots
-     * @param {?} dotId
-     * @return {?}
-     */
-    function (dotId) {
+    CarouselComponent.prototype.moveByDot = function (dotId) {
         if (!this.carouselLoaded)
             return;
         this.navigationService.moveByDot(dotId);
@@ -4395,17 +2826,7 @@ var CarouselComponent = /** @class */ (function () {
      * rewinds carousel to slide with needed id
      * @param id fragment of url
      */
-    /**
-     * rewinds carousel to slide with needed id
-     * @param {?} id fragment of url
-     * @return {?}
-     */
-    CarouselComponent.prototype.to = /**
-     * rewinds carousel to slide with needed id
-     * @param {?} id fragment of url
-     * @return {?}
-     */
-    function (id) {
+    CarouselComponent.prototype.to = function (id) {
         // if (!this.carouselLoaded || ((this.navData && this.navData.disabled) && (this.dotsData && this.dotsData.disabled))) return;
         if (!this.carouselLoaded)
             return;
@@ -4414,24 +2835,12 @@ var CarouselComponent = /** @class */ (function () {
     /**
      * Gathers and prepares data intended for passing to the user by means of firing event translatedCarousel
      */
-    /**
-     * Gathers and prepares data intended for passing to the user by means of firing event translatedCarousel
-     * @return {?}
-     */
-    CarouselComponent.prototype.gatherTranslatedData = /**
-     * Gathers and prepares data intended for passing to the user by means of firing event translatedCarousel
-     * @return {?}
-     */
-    function () {
-        /** @type {?} */
+    CarouselComponent.prototype.gatherTranslatedData = function () {
         var startPosition;
-        /** @type {?} */
         var clonedIdPrefix = this.carouselService.clonedIdPrefix;
-        /** @type {?} */
         var activeSlides = this.slidesData
             .filter(function (slide) { return slide.isActive === true; })
             .map(function (slide) {
-            /** @type {?} */
             var id = slide.id.indexOf(clonedIdPrefix) >= 0 ? slide.id.slice(clonedIdPrefix.length) : slide.id;
             return {
                 id: id,
@@ -4450,97 +2859,94 @@ var CarouselComponent = /** @class */ (function () {
     /**
      * Starts pausing
      */
-    /**
-     * Starts pausing
-     * @return {?}
-     */
-    CarouselComponent.prototype.startPausing = /**
-     * Starts pausing
-     * @return {?}
-     */
-    function () {
+    CarouselComponent.prototype.startPausing = function () {
         this.autoplayService.startPausing();
     };
     /**
      * Starts playing after mouse leaves carousel
      */
-    /**
-     * Starts playing after mouse leaves carousel
-     * @return {?}
-     */
-    CarouselComponent.prototype.startPlayML = /**
-     * Starts playing after mouse leaves carousel
-     * @return {?}
-     */
-    function () {
+    CarouselComponent.prototype.startPlayML = function () {
         this.autoplayService.startPlayingMouseLeave();
     };
     /**
      * Starts playing after touch ends
      */
-    /**
-     * Starts playing after touch ends
-     * @return {?}
-     */
-    CarouselComponent.prototype.startPlayTE = /**
-     * Starts playing after touch ends
-     * @return {?}
-     */
-    function () {
+    CarouselComponent.prototype.startPlayTE = function () {
         this.autoplayService.startPlayingTouchEnd();
     };
-    CarouselComponent.decorators = [
-        { type: Component, args: [{
-                    selector: 'owl-carousel-o',
-                    template: "\n    <div class=\"owl-carousel owl-theme\" #owlCarousel\n      [ngClass]=\"{'owl-rtl': owlDOMData?.rtl,\n                  'owl-loaded': owlDOMData?.isLoaded,\n                  'owl-responsive': owlDOMData?.isResponsive,\n                  'owl-drag': owlDOMData?.isMouseDragable,\n                  'owl-grab': owlDOMData?.isGrab}\"\n      (mouseover)=\"startPausing()\"\n      (mouseleave)=\"startPlayML()\"\n      (touchstart)=\"startPausing()\"\n      (touchend)=\"startPlayTE()\">\n\n      <div *ngIf=\"carouselLoaded\" class=\"owl-stage-outer\">\n        <owl-stage [owlDraggable]=\"{'isMouseDragable': owlDOMData?.isMouseDragable, 'isTouchDragable': owlDOMData?.isTouchDragable}\"\n                    [stageData]=\"stageData\"\n                    [slidesData]=\"slidesData\"></owl-stage>\n      </div> <!-- /.owl-stage-outer -->\n      <ng-container *ngIf=\"slides.toArray().length\">\n        <div class=\"owl-nav\" [ngClass]=\"{'disabled': navData?.disabled}\">\n          <div class=\"owl-prev\" [ngClass]=\"{'disabled': navData?.prev?.disabled}\" (click)=\"prev()\" [innerHTML]=\"navData?.prev?.htmlText\"></div>\n          <div class=\"owl-next\" [ngClass]=\"{'disabled': navData?.next?.disabled}\" (click)=\"next()\" [innerHTML]=\"navData?.next?.htmlText\"></div>\n        </div> <!-- /.owl-nav -->\n        <div class=\"owl-dots\" [ngClass]=\"{'disabled': dotsData?.disabled}\">\n          <div *ngFor=\"let dot of dotsData?.dots\" class=\"owl-dot\" [ngClass]=\"{'active': dot.active, 'owl-dot-text': dot.showInnerContent}\" (click)=\"moveByDot(dot.id)\">\n            <span [innerHTML]=\"dot.innerContent\"></span>\n          </div>\n        </div> <!-- /.owl-dots -->\n      </ng-container>\n    </div> <!-- /.owl-carousel owl-loaded -->\n  ",
-                    providers: [
-                        NavigationService,
-                        AutoplayService,
-                        CarouselService,
-                        LazyLoadService,
-                        AnimateService,
-                        AutoHeightService,
-                        HashService
-                    ],
-                    styles: [".owl-theme { display: block; }"]
-                }] }
-    ];
-    /** @nocollapse */
-    CarouselComponent.ctorParameters = function () { return [
-        { type: ElementRef },
-        { type: ResizeService },
-        { type: CarouselService },
-        { type: NavigationService },
-        { type: AutoplayService },
-        { type: LazyLoadService },
-        { type: AnimateService },
-        { type: AutoHeightService },
-        { type: HashService },
-        { type: OwlLogger },
-        { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
-    ]; };
-    CarouselComponent.propDecorators = {
-        slides: [{ type: ContentChildren, args: [CarouselSlideDirective,] }],
-        translated: [{ type: Output }],
-        dragging: [{ type: Output }],
-        change: [{ type: Output }],
-        changed: [{ type: Output }],
-        initialized: [{ type: Output }],
-        options: [{ type: Input }],
-        onVisibilityChange: [{ type: HostListener, args: ['document:visibilitychange', ['$event'],] }]
-    };
+    __decorate([
+        ContentChildren(CarouselSlideDirective),
+        __metadata("design:type", QueryList)
+    ], CarouselComponent.prototype, "slides", void 0);
+    __decorate([
+        Output(),
+        __metadata("design:type", Object)
+    ], CarouselComponent.prototype, "translated", void 0);
+    __decorate([
+        Output(),
+        __metadata("design:type", Object)
+    ], CarouselComponent.prototype, "dragging", void 0);
+    __decorate([
+        Output(),
+        __metadata("design:type", Object)
+    ], CarouselComponent.prototype, "change", void 0);
+    __decorate([
+        Output(),
+        __metadata("design:type", Object)
+    ], CarouselComponent.prototype, "changed", void 0);
+    __decorate([
+        Output(),
+        __metadata("design:type", Object)
+    ], CarouselComponent.prototype, "initialized", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Object)
+    ], CarouselComponent.prototype, "options", void 0);
+    __decorate([
+        HostListener('document:visibilitychange', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Event]),
+        __metadata("design:returntype", void 0)
+    ], CarouselComponent.prototype, "onVisibilityChange", null);
+    CarouselComponent = __decorate([
+        Component({
+            selector: 'owl-carousel-o',
+            template: "\n    <div class=\"owl-carousel owl-theme\" #owlCarousel\n      [ngClass]=\"{'owl-rtl': owlDOMData?.rtl,\n                  'owl-loaded': owlDOMData?.isLoaded,\n                  'owl-responsive': owlDOMData?.isResponsive,\n                  'owl-drag': owlDOMData?.isMouseDragable,\n                  'owl-grab': owlDOMData?.isGrab}\"\n      (mouseover)=\"startPausing()\"\n      (mouseleave)=\"startPlayML()\"\n      (touchstart)=\"startPausing()\"\n      (touchend)=\"startPlayTE()\">\n\n      <div *ngIf=\"carouselLoaded\" class=\"owl-stage-outer\">\n        <owl-stage [owlDraggable]=\"{'isMouseDragable': owlDOMData?.isMouseDragable, 'isTouchDragable': owlDOMData?.isTouchDragable}\"\n                    [stageData]=\"stageData\"\n                    [slidesData]=\"slidesData\"></owl-stage>\n      </div> <!-- /.owl-stage-outer -->\n      <ng-container *ngIf=\"slides.toArray().length\">\n        <div class=\"owl-nav\" [ngClass]=\"{'disabled': navData?.disabled}\">\n          <div class=\"owl-prev\" [ngClass]=\"{'disabled': navData?.prev?.disabled}\" (click)=\"prev()\" [innerHTML]=\"navData?.prev?.htmlText\"></div>\n          <div class=\"owl-next\" [ngClass]=\"{'disabled': navData?.next?.disabled}\" (click)=\"next()\" [innerHTML]=\"navData?.next?.htmlText\"></div>\n        </div> <!-- /.owl-nav -->\n        <div class=\"owl-dots\" [ngClass]=\"{'disabled': dotsData?.disabled}\">\n          <div *ngFor=\"let dot of dotsData?.dots\" class=\"owl-dot\" [ngClass]=\"{'active': dot.active, 'owl-dot-text': dot.showInnerContent}\" (click)=\"moveByDot(dot.id)\">\n            <span [innerHTML]=\"dot.innerContent\"></span>\n          </div>\n        </div> <!-- /.owl-dots -->\n      </ng-container>\n    </div> <!-- /.owl-carousel owl-loaded -->\n  ",
+            providers: [
+                NavigationService,
+                AutoplayService,
+                CarouselService,
+                LazyLoadService,
+                AnimateService,
+                AutoHeightService,
+                HashService
+            ],
+            styles: [".owl-theme { display: block; }"]
+        }),
+        __param(10, Inject(DOCUMENT)),
+        __metadata("design:paramtypes", [ElementRef,
+            ResizeService,
+            CarouselService,
+            NavigationService,
+            AutoplayService,
+            LazyLoadService,
+            AnimateService,
+            AutoHeightService,
+            HashService,
+            OwlLogger, Object])
+    ], CarouselComponent);
     return CarouselComponent;
 }());
 
 /**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * Data model for managing classes of .owl-stage DOM element
  */
+var StageData = /** @class */ (function () {
+    function StageData() {
+    }
+    return StageData;
+}());
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
 var StageComponent = /** @class */ (function () {
     function StageComponent(zone, el, renderer, carouselService, animateService) {
         var _this = this;
@@ -4596,72 +3002,30 @@ var StageComponent = /** @class */ (function () {
             _this.listenerOneClick();
         };
     }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
-    StageComponent.prototype.onMouseDown = /**
-     * @param {?} event
-     * @return {?}
-     */
-    function (event) {
+    StageComponent.prototype.onMouseDown = function (event) {
         if (this.owlDraggable.isMouseDragable) {
             this._onDragStart(event);
         }
     };
-    /**
-     * @param {?} event
-     * @return {?}
-     */
-    StageComponent.prototype.onTouchStart = /**
-     * @param {?} event
-     * @return {?}
-     */
-    function (event) {
+    StageComponent.prototype.onTouchStart = function (event) {
         if (this.owlDraggable.isTouchDragable) {
             this._onDragStart(event);
         }
     };
-    /**
-     * @param {?} event
-     * @return {?}
-     */
-    StageComponent.prototype.onTouchCancel = /**
-     * @param {?} event
-     * @return {?}
-     */
-    function (event) {
+    StageComponent.prototype.onTouchCancel = function (event) {
         this._onDragEnd(event);
     };
-    /**
-     * @return {?}
-     */
-    StageComponent.prototype.onDragStart = /**
-     * @return {?}
-     */
-    function () {
+    StageComponent.prototype.onDragStart = function () {
         if (this.owlDraggable.isMouseDragable) {
             return false;
         }
     };
-    /**
-     * @return {?}
-     */
-    StageComponent.prototype.onSelectStart = /**
-     * @return {?}
-     */
-    function () {
+    StageComponent.prototype.onSelectStart = function () {
         if (this.owlDraggable.isMouseDragable) {
             return false;
         }
     };
-    /**
-     * @return {?}
-     */
-    StageComponent.prototype.ngOnInit = /**
-     * @return {?}
-     */
-    function () {
+    StageComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._oneMoveSubsription = this._oneDragMove$
             .pipe(first())
@@ -4669,13 +3033,7 @@ var StageComponent = /** @class */ (function () {
             _this._sendChanges();
         });
     };
-    /**
-     * @return {?}
-     */
-    StageComponent.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () {
+    StageComponent.prototype.ngOnDestroy = function () {
         this._oneMoveSubsription.unsubscribe();
     };
     /**
@@ -4684,21 +3042,8 @@ var StageComponent = /** @class */ (function () {
        * @todo #261
        * @param event - The event arguments.
        */
-    /**
-     * Handles `touchstart` and `mousedown` events.
-     * \@todo Horizontal swipe threshold as option / #261
-     * @param {?} event - The event arguments.
-     * @return {?}
-     */
-    StageComponent.prototype._onDragStart = /**
-     * Handles `touchstart` and `mousedown` events.
-     * \@todo Horizontal swipe threshold as option / #261
-     * @param {?} event - The event arguments.
-     * @return {?}
-     */
-    function (event) {
+    StageComponent.prototype._onDragStart = function (event) {
         var _this = this;
-        /** @type {?} */
         var stage = null;
         if (event.which === 3) {
             return;
@@ -4720,18 +3065,7 @@ var StageComponent = /** @class */ (function () {
      * Attaches listeners to `touchmove` and `mousemove` events; initiates updating carousel after starting dragging
      * @param event event objech of mouse or touch event
      */
-    /**
-     * Attaches listeners to `touchmove` and `mousemove` events; initiates updating carousel after starting dragging
-     * @param {?} event event objech of mouse or touch event
-     * @return {?}
-     */
-    StageComponent.prototype._oneMouseTouchMove = /**
-     * Attaches listeners to `touchmove` and `mousemove` events; initiates updating carousel after starting dragging
-     * @param {?} event event objech of mouse or touch event
-     * @return {?}
-     */
-    function (event) {
-        /** @type {?} */
+    StageComponent.prototype._oneMouseTouchMove = function (event) {
         var delta = this._difference(this._drag.pointer, this._pointer(event));
         if (this.listenerATag) {
             this.listenerATag();
@@ -4757,18 +3091,7 @@ var StageComponent = /** @class */ (function () {
      * Attaches handler to HTMLAnchorElement for preventing click while carousel is being dragged
      * @param event event object
      */
-    /**
-     * Attaches handler to HTMLAnchorElement for preventing click while carousel is being dragged
-     * @param {?} event event object
-     * @return {?}
-     */
-    StageComponent.prototype.blockClickAnchorInDragging = /**
-     * Attaches handler to HTMLAnchorElement for preventing click while carousel is being dragged
-     * @param {?} event event object
-     * @return {?}
-     */
-    function (event) {
-        /** @type {?} */
+    StageComponent.prototype.blockClickAnchorInDragging = function (event) {
         var target = event.target;
         while (target && !(target instanceof HTMLAnchorElement)) {
             target = target.parentElement;
@@ -4782,27 +3105,13 @@ var StageComponent = /** @class */ (function () {
      * @todo #261
      * @param event - The event arguments.
      */
-    /**
-     * Handles the `touchmove` and `mousemove` events.
-     * \@todo #261
-     * @param {?} event - The event arguments.
-     * @return {?}
-     */
-    StageComponent.prototype._onDragMove = /**
-     * Handles the `touchmove` and `mousemove` events.
-     * \@todo #261
-     * @param {?} event - The event arguments.
-     * @return {?}
-     */
-    function (event) {
-        /** @type {?} */
+    StageComponent.prototype._onDragMove = function (event) {
         var stage;
-        /** @type {?} */
         var stageOrExit = this.carouselService.defineNewCoordsDrag(event, this._drag);
         if (stageOrExit === false) {
             return;
         }
-        stage = (/** @type {?} */ (stageOrExit));
+        stage = stageOrExit;
         event.preventDefault();
         this._drag.stage.current = stage;
         this._animate(stage.x - this._drag.stage.start.x);
@@ -4811,17 +3120,7 @@ var StageComponent = /** @class */ (function () {
      * Moves .owl-stage left-right
      * @param coordinate coordinate to be set to .owl-stage
      */
-    /**
-     * Moves .owl-stage left-right
-     * @param {?} coordinate coordinate to be set to .owl-stage
-     * @return {?}
-     */
-    StageComponent.prototype._animate = /**
-     * Moves .owl-stage left-right
-     * @param {?} coordinate coordinate to be set to .owl-stage
-     * @return {?}
-     */
-    function (coordinate) {
+    StageComponent.prototype._animate = function (coordinate) {
         this.renderer.setStyle(this.el.nativeElement.children[0], 'transform', "translate3d(" + coordinate + "px,0px,0px");
         this.renderer.setStyle(this.el.nativeElement.children[0], 'transition', '0s');
     };
@@ -4831,19 +3130,7 @@ var StageComponent = /** @class */ (function () {
        * @todo Threshold for click event
        * @param event - The event arguments.
        */
-    /**
-     * Handles the `touchend` and `mouseup` events.
-     * \@todo #261 / Threshold for click event
-     * @param {?} event - The event arguments.
-     * @return {?}
-     */
-    StageComponent.prototype._onDragEnd = /**
-     * Handles the `touchend` and `mouseup` events.
-     * \@todo #261 / Threshold for click event
-     * @param {?} event - The event arguments.
-     * @return {?}
-     */
-    function (event) {
+    StageComponent.prototype._onDragEnd = function (event) {
         this.carouselService.owlDOMData.isGrab = false;
         this.listenerOneMouseMove();
         this.listenerOneTouchMove();
@@ -4875,34 +3162,14 @@ var StageComponent = /** @class */ (function () {
        * @param event - The event arguments.
        * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
        */
-    /**
-     * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
-     * @param {?} event - The event arguments.
-     * @return {?} stage - object with 'x' and 'y' coordinates of .owl-stage
-     */
-    StageComponent.prototype._prepareDragging = /**
-     * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
-     * @param {?} event - The event arguments.
-     * @return {?} stage - object with 'x' and 'y' coordinates of .owl-stage
-     */
-    function (event) {
+    StageComponent.prototype._prepareDragging = function (event) {
         return this.carouselService.prepareDragging(event);
     };
     /**
      * Finishes dragging
      * @param event object event of 'mouseUp' of 'touchend' events
      */
-    /**
-     * Finishes dragging
-     * @param {?} event object event of 'mouseUp' of 'touchend' events
-     * @return {?}
-     */
-    StageComponent.prototype._finishDragging = /**
-     * Finishes dragging
-     * @param {?} event object event of 'mouseUp' of 'touchend' events
-     * @return {?}
-     */
-    function (event) {
+    StageComponent.prototype._finishDragging = function (event) {
         this.carouselService.finishDragging(event, this._drag, this._oneClickHandler);
     };
     /**
@@ -4910,17 +3177,7 @@ var StageComponent = /** @class */ (function () {
        * @param event The `mousedown` or `touchstart` event.
        * @returns Contains `x` and `y` coordinates of current pointer position.
        */
-    /**
-     * Gets unified pointer coordinates from event.
-     * @param {?} event The `mousedown` or `touchstart` event.
-     * @return {?} Contains `x` and `y` coordinates of current pointer position.
-     */
-    StageComponent.prototype._pointer = /**
-     * Gets unified pointer coordinates from event.
-     * @param {?} event The `mousedown` or `touchstart` event.
-     * @return {?} Contains `x` and `y` coordinates of current pointer position.
-     */
-    function (event) {
+    StageComponent.prototype._pointer = function (event) {
         return this.carouselService.pointer(event);
     };
     /**
@@ -4929,19 +3186,7 @@ var StageComponent = /** @class */ (function () {
        * @param second- The second vector.
        * @returns The difference.
        */
-    /**
-     * Gets the difference of two vectors.
-     * @param {?} firstC
-     * @param {?} second
-     * @return {?} The difference.
-     */
-    StageComponent.prototype._difference = /**
-     * Gets the difference of two vectors.
-     * @param {?} firstC
-     * @param {?} second
-     * @return {?} The difference.
-     */
-    function (firstC, second) {
+    StageComponent.prototype._difference = function (firstC, second) {
         return this.carouselService.difference(firstC, second);
     };
     /**
@@ -4949,140 +3194,111 @@ var StageComponent = /** @class */ (function () {
        * @param specificState The state to check.
        * @returns The flag which indicates if the carousel is busy.
        */
-    /**
-     * Checks whether the carousel is in a specific state or not.
-     * @param {?} specificState The state to check.
-     * @return {?} The flag which indicates if the carousel is busy.
-     */
-    StageComponent.prototype._is = /**
-     * Checks whether the carousel is in a specific state or not.
-     * @param {?} specificState The state to check.
-     * @return {?} The flag which indicates if the carousel is busy.
-     */
-    function (specificState) {
+    StageComponent.prototype._is = function (specificState) {
         return this.carouselService.is(specificState);
     };
     /**
     * Enters a state.
     * @param name The state name.
     */
-    /**
-     * Enters a state.
-     * @param {?} name The state name.
-     * @return {?}
-     */
-    StageComponent.prototype._enter = /**
-     * Enters a state.
-     * @param {?} name The state name.
-     * @return {?}
-     */
-    function (name) {
+    StageComponent.prototype._enter = function (name) {
         this.carouselService.enter(name);
     };
     /**
        * Sends all data needed for View.
        */
-    /**
-     * Sends all data needed for View.
-     * @return {?}
-     */
-    StageComponent.prototype._sendChanges = /**
-     * Sends all data needed for View.
-     * @return {?}
-     */
-    function () {
+    StageComponent.prototype._sendChanges = function () {
         this.carouselService.sendChanges();
     };
     /**
      * Handler for transitioend event
      */
-    /**
-     * Handler for transitioend event
-     * @return {?}
-     */
-    StageComponent.prototype.onTransitionEnd = /**
-     * Handler for transitioend event
-     * @return {?}
-     */
-    function () {
+    StageComponent.prototype.onTransitionEnd = function () {
         this.carouselService.onTransitionEnd();
     };
     /**
        * Enters into a 'dragging' state
        */
-    /**
-     * Enters into a 'dragging' state
-     * @return {?}
-     */
-    StageComponent.prototype._enterDragging = /**
-     * Enters into a 'dragging' state
-     * @return {?}
-     */
-    function () {
+    StageComponent.prototype._enterDragging = function () {
         this.carouselService.enterDragging();
     };
     /**
      * Handles the end of 'animationend' event
      * @param id Id of slides
      */
-    /**
-     * Handles the end of 'animationend' event
-     * @param {?} id Id of slides
-     * @return {?}
-     */
-    StageComponent.prototype.clear = /**
-     * Handles the end of 'animationend' event
-     * @param {?} id Id of slides
-     * @return {?}
-     */
-    function (id) {
+    StageComponent.prototype.clear = function (id) {
         this.animateService.clear(id);
     };
-    StageComponent.decorators = [
-        { type: Component, args: [{
-                    selector: 'owl-stage',
-                    template: "\n    <div>\n      <div class=\"owl-stage\" [ngStyle]=\"{'width': stageData.width + 'px',\n                                        'transform': stageData.transform,\n                                        'transition': stageData.transition,\n                                        'padding-left': stageData.paddingL ? stageData.paddingL + 'px' : '',\n                                        'padding-right': stageData.paddingR ? stageData.paddingR + 'px' : '' }\"\n          (transitionend)=\"onTransitionEnd()\">\n        <ng-container *ngFor=\"let slide of slidesData; let i = index\">\n          <div class=\"owl-item\" [ngClass]=\"slide.classes\"\n                                [ngStyle]=\"{'width': slide.width + 'px',\n                                            'margin-left': slide.marginL ? slide.marginL + 'px' : '',\n                                            'margin-right': slide.marginR ? slide.marginR + 'px' : '',\n                                            'left': slide.left}\"\n                                (animationend)=\"clear(slide.id)\"\n                                [@autoHeight]=\"slide.heightState\">\n            <ng-template *ngIf=\"slide.load\" [ngTemplateOutlet]=\"slide.tplRef\"></ng-template>\n          </div><!-- /.owl-item -->\n        </ng-container>\n      </div><!-- /.owl-stage -->\n    </div>\n  ",
-                    animations: [
-                        trigger('autoHeight', [
-                            state('nulled', style({ height: 0 })),
-                            state('full', style({ height: '*' })),
-                            transition('full => nulled', [
-                                // style({height: '*'}),
-                                animate('700ms 350ms')
-                            ]),
-                            transition('nulled => full', [
-                                // style({height: 0}),
-                                animate(350)
-                            ]),
-                        ])
-                    ]
-                }] }
-    ];
-    /** @nocollapse */
-    StageComponent.ctorParameters = function () { return [
-        { type: NgZone },
-        { type: ElementRef },
-        { type: Renderer2 },
-        { type: CarouselService },
-        { type: AnimateService }
-    ]; };
-    StageComponent.propDecorators = {
-        owlDraggable: [{ type: Input }],
-        stageData: [{ type: Input }],
-        slidesData: [{ type: Input }],
-        onMouseDown: [{ type: HostListener, args: ['mousedown', ['$event'],] }],
-        onTouchStart: [{ type: HostListener, args: ['touchstart', ['$event'],] }],
-        onTouchCancel: [{ type: HostListener, args: ['touchcancel', ['$event'],] }],
-        onDragStart: [{ type: HostListener, args: ['dragstart',] }],
-        onSelectStart: [{ type: HostListener, args: ['selectstart',] }]
-    };
+    __decorate([
+        Input(),
+        __metadata("design:type", Object)
+    ], StageComponent.prototype, "owlDraggable", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", StageData)
+    ], StageComponent.prototype, "stageData", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Array)
+    ], StageComponent.prototype, "slidesData", void 0);
+    __decorate([
+        HostListener('mousedown', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object]),
+        __metadata("design:returntype", void 0)
+    ], StageComponent.prototype, "onMouseDown", null);
+    __decorate([
+        HostListener('touchstart', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object]),
+        __metadata("design:returntype", void 0)
+    ], StageComponent.prototype, "onTouchStart", null);
+    __decorate([
+        HostListener('touchcancel', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object]),
+        __metadata("design:returntype", void 0)
+    ], StageComponent.prototype, "onTouchCancel", null);
+    __decorate([
+        HostListener('dragstart'),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", void 0)
+    ], StageComponent.prototype, "onDragStart", null);
+    __decorate([
+        HostListener('selectstart'),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", void 0)
+    ], StageComponent.prototype, "onSelectStart", null);
+    StageComponent = __decorate([
+        Component({
+            selector: 'owl-stage',
+            template: "\n    <div>\n      <div class=\"owl-stage\" [ngStyle]=\"{'width': stageData.width + 'px',\n                                        'transform': stageData.transform,\n                                        'transition': stageData.transition,\n                                        'padding-left': stageData.paddingL ? stageData.paddingL + 'px' : '',\n                                        'padding-right': stageData.paddingR ? stageData.paddingR + 'px' : '' }\"\n          (transitionend)=\"onTransitionEnd()\">\n        <ng-container *ngFor=\"let slide of slidesData; let i = index\">\n          <div class=\"owl-item\" [ngClass]=\"slide.classes\"\n                                [ngStyle]=\"{'width': slide.width + 'px',\n                                            'margin-left': slide.marginL ? slide.marginL + 'px' : '',\n                                            'margin-right': slide.marginR ? slide.marginR + 'px' : '',\n                                            'left': slide.left}\"\n                                (animationend)=\"clear(slide.id)\"\n                                [@autoHeight]=\"slide.heightState\">\n            <ng-template *ngIf=\"slide.load\" [ngTemplateOutlet]=\"slide.tplRef\"></ng-template>\n          </div><!-- /.owl-item -->\n        </ng-container>\n      </div><!-- /.owl-stage -->\n    </div>\n  ",
+            animations: [
+                trigger('autoHeight', [
+                    state('nulled', style({ height: 0 })),
+                    state('full', style({ height: '*' })),
+                    transition('full => nulled', [
+                        // style({height: '*'}),
+                        animate('700ms 350ms')
+                    ]),
+                    transition('nulled => full', [
+                        // style({height: 0}),
+                        animate(350)
+                    ]),
+                ])
+            ]
+        }),
+        __metadata("design:paramtypes", [NgZone,
+            ElementRef,
+            Renderer2,
+            CarouselService,
+            AnimateService])
+    ], StageComponent);
     return StageComponent;
 }());
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
 var OwlRouterLinkDirective = /** @class */ (function () {
     function OwlRouterLinkDirective(router, route, tabIndex, renderer, el) {
         this.router = router;
@@ -5094,11 +3310,7 @@ var OwlRouterLinkDirective = /** @class */ (function () {
         }
     }
     Object.defineProperty(OwlRouterLinkDirective.prototype, "owlRouterLink", {
-        set: /**
-         * @param {?} commands
-         * @return {?}
-         */
-        function (commands) {
+        set: function (commands) {
             if (commands != null) {
                 this.commands = Array.isArray(commands) ? commands : [commands];
             }
@@ -5113,13 +3325,8 @@ var OwlRouterLinkDirective = /** @class */ (function () {
         /**
          * @deprecated 4.0.0 use `queryParamsHandling` instead.
          */
-        set: /**
-         * @deprecated 4.0.0 use `queryParamsHandling` instead.
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            if (isDevMode() && (/** @type {?} */ (console)) && (/** @type {?} */ (console.warn))) {
+        set: function (value) {
+            if (isDevMode() && console && console.warn) {
                 console.warn('preserveQueryParams is deprecated!, use queryParamsHandling instead.');
             }
             this.preserve = value;
@@ -5127,14 +3334,7 @@ var OwlRouterLinkDirective = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    /**
-     * @return {?}
-     */
-    OwlRouterLinkDirective.prototype.onClick = /**
-     * @return {?}
-     */
-    function () {
-        /** @type {?} */
+    OwlRouterLinkDirective.prototype.onClick = function () {
         var extras = {
             skipLocationChange: attrBoolValue(this.skipLocationChange),
             replaceUrl: attrBoolValue(this.replaceUrl),
@@ -5146,10 +3346,7 @@ var OwlRouterLinkDirective = /** @class */ (function () {
         return true;
     };
     Object.defineProperty(OwlRouterLinkDirective.prototype, "urlTree", {
-        get: /**
-         * @return {?}
-         */
-        function () {
+        get: function () {
             return this.router.createUrlTree(this.commands, {
                 relativeTo: this.route,
                 queryParams: this.queryParams,
@@ -5162,41 +3359,67 @@ var OwlRouterLinkDirective = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    OwlRouterLinkDirective.decorators = [
-        { type: Directive, args: [{ selector: ':not(a)[owlRouterLink]' },] }
-    ];
-    /** @nocollapse */
-    OwlRouterLinkDirective.ctorParameters = function () { return [
-        { type: Router },
-        { type: ActivatedRoute },
-        { type: String, decorators: [{ type: Attribute, args: ['tabindex',] }] },
-        { type: Renderer2 },
-        { type: ElementRef }
-    ]; };
-    OwlRouterLinkDirective.propDecorators = {
-        queryParams: [{ type: Input }],
-        fragment: [{ type: Input }],
-        queryParamsHandling: [{ type: Input }],
-        preserveFragment: [{ type: Input }],
-        skipLocationChange: [{ type: Input }],
-        replaceUrl: [{ type: Input }],
-        stopLink: [{ type: Input }],
-        owlRouterLink: [{ type: Input }],
-        preserveQueryParams: [{ type: Input }],
-        onClick: [{ type: HostListener, args: ['click',] }]
-    };
+    __decorate([
+        Input(),
+        __metadata("design:type", Object)
+    ], OwlRouterLinkDirective.prototype, "queryParams", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", String)
+    ], OwlRouterLinkDirective.prototype, "fragment", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", String)
+    ], OwlRouterLinkDirective.prototype, "queryParamsHandling", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Boolean)
+    ], OwlRouterLinkDirective.prototype, "preserveFragment", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Boolean)
+    ], OwlRouterLinkDirective.prototype, "skipLocationChange", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Boolean)
+    ], OwlRouterLinkDirective.prototype, "replaceUrl", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Object)
+    ], OwlRouterLinkDirective.prototype, "stopLink", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Object),
+        __metadata("design:paramtypes", [Object])
+    ], OwlRouterLinkDirective.prototype, "owlRouterLink", null);
+    __decorate([
+        Input(),
+        __metadata("design:type", Boolean),
+        __metadata("design:paramtypes", [Boolean])
+    ], OwlRouterLinkDirective.prototype, "preserveQueryParams", null);
+    __decorate([
+        HostListener('click'),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", Boolean)
+    ], OwlRouterLinkDirective.prototype, "onClick", null);
+    OwlRouterLinkDirective = __decorate([
+        Directive({ selector: ':not(a)[owlRouterLink]' }),
+        __param(2, Attribute('tabindex')),
+        __metadata("design:paramtypes", [Router, ActivatedRoute, String, Renderer2, ElementRef])
+    ], OwlRouterLinkDirective);
     return OwlRouterLinkDirective;
 }());
 /**
- * \@description
+ * @description
  *
  * Lets you link to specific routes in your app.
  *
  * See `RouterLink` for more information.
  *
- * \@ngModule RouterModule
+ * @ngModule RouterModule
  *
- * \@publicApi
+ * @publicApi
  */
 var OwlRouterLinkWithHrefDirective = /** @class */ (function () {
     function OwlRouterLinkWithHrefDirective(router, route, locationStrategy) {
@@ -5213,11 +3436,7 @@ var OwlRouterLinkWithHrefDirective = /** @class */ (function () {
         });
     }
     Object.defineProperty(OwlRouterLinkWithHrefDirective.prototype, "owlRouterLink", {
-        set: /**
-         * @param {?} commands
-         * @return {?}
-         */
-        function (commands) {
+        set: function (commands) {
             if (commands != null) {
                 this.commands = Array.isArray(commands) ? commands : [commands];
             }
@@ -5229,12 +3448,8 @@ var OwlRouterLinkWithHrefDirective = /** @class */ (function () {
         configurable: true
     });
     Object.defineProperty(OwlRouterLinkWithHrefDirective.prototype, "preserveQueryParams", {
-        set: /**
-         * @param {?} value
-         * @return {?}
-         */
-        function (value) {
-            if (isDevMode() && (/** @type {?} */ (console)) && (/** @type {?} */ (console.warn))) {
+        set: function (value) {
+            if (isDevMode() && console && console.warn) {
                 console.warn('preserveQueryParams is deprecated, use queryParamsHandling instead.');
             }
             this.preserve = value;
@@ -5242,37 +3457,9 @@ var OwlRouterLinkWithHrefDirective = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    /**
-     * @param {?} changes
-     * @return {?}
-     */
-    OwlRouterLinkWithHrefDirective.prototype.ngOnChanges = /**
-     * @param {?} changes
-     * @return {?}
-     */
-    function (changes) { this.updateTargetUrlAndHref(); };
-    /**
-     * @return {?}
-     */
-    OwlRouterLinkWithHrefDirective.prototype.ngOnDestroy = /**
-     * @return {?}
-     */
-    function () { this.subscription.unsubscribe(); };
-    /**
-     * @param {?} button
-     * @param {?} ctrlKey
-     * @param {?} metaKey
-     * @param {?} shiftKey
-     * @return {?}
-     */
-    OwlRouterLinkWithHrefDirective.prototype.onClick = /**
-     * @param {?} button
-     * @param {?} ctrlKey
-     * @param {?} metaKey
-     * @param {?} shiftKey
-     * @return {?}
-     */
-    function (button, ctrlKey, metaKey, shiftKey) {
+    OwlRouterLinkWithHrefDirective.prototype.ngOnChanges = function (changes) { this.updateTargetUrlAndHref(); };
+    OwlRouterLinkWithHrefDirective.prototype.ngOnDestroy = function () { this.subscription.unsubscribe(); };
+    OwlRouterLinkWithHrefDirective.prototype.onClick = function (button, ctrlKey, metaKey, shiftKey) {
         if (button !== 0 || ctrlKey || metaKey || shiftKey) {
             return true;
         }
@@ -5282,7 +3469,6 @@ var OwlRouterLinkWithHrefDirective = /** @class */ (function () {
         if (this.stopLink) {
             return false;
         }
-        /** @type {?} */
         var extras = {
             skipLocationChange: attrBoolValue(this.skipLocationChange),
             replaceUrl: attrBoolValue(this.replaceUrl),
@@ -5290,20 +3476,11 @@ var OwlRouterLinkWithHrefDirective = /** @class */ (function () {
         this.router.navigateByUrl(this.urlTree, extras);
         return false;
     };
-    /**
-     * @return {?}
-     */
-    OwlRouterLinkWithHrefDirective.prototype.updateTargetUrlAndHref = /**
-     * @return {?}
-     */
-    function () {
+    OwlRouterLinkWithHrefDirective.prototype.updateTargetUrlAndHref = function () {
         this.href = this.locationStrategy.prepareExternalUrl(this.router.serializeUrl(this.urlTree));
     };
     Object.defineProperty(OwlRouterLinkWithHrefDirective.prototype, "urlTree", {
-        get: /**
-         * @return {?}
-         */
-        function () {
+        get: function () {
             return this.router.createUrlTree(this.commands, {
                 relativeTo: this.route,
                 queryParams: this.queryParams,
@@ -5316,74 +3493,84 @@ var OwlRouterLinkWithHrefDirective = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    OwlRouterLinkWithHrefDirective.decorators = [
-        { type: Directive, args: [{ selector: 'a[owlRouterLink]' },] }
-    ];
-    /** @nocollapse */
-    OwlRouterLinkWithHrefDirective.ctorParameters = function () { return [
-        { type: Router },
-        { type: ActivatedRoute },
-        { type: LocationStrategy }
-    ]; };
-    OwlRouterLinkWithHrefDirective.propDecorators = {
-        target: [{ type: HostBinding, args: ['attr.target',] }, { type: Input }],
-        queryParams: [{ type: Input }],
-        fragment: [{ type: Input }],
-        queryParamsHandling: [{ type: Input }],
-        preserveFragment: [{ type: Input }],
-        skipLocationChange: [{ type: Input }],
-        replaceUrl: [{ type: Input }],
-        stopLink: [{ type: Input }],
-        href: [{ type: HostBinding }],
-        owlRouterLink: [{ type: Input }],
-        preserveQueryParams: [{ type: Input }],
-        onClick: [{ type: HostListener, args: ['click', ['$event.button', '$event.ctrlKey', '$event.metaKey', '$event.shiftKey'],] }]
-    };
+    __decorate([
+        HostBinding('attr.target'), Input(),
+        __metadata("design:type", String)
+    ], OwlRouterLinkWithHrefDirective.prototype, "target", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Object)
+    ], OwlRouterLinkWithHrefDirective.prototype, "queryParams", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", String)
+    ], OwlRouterLinkWithHrefDirective.prototype, "fragment", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", String)
+    ], OwlRouterLinkWithHrefDirective.prototype, "queryParamsHandling", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Boolean)
+    ], OwlRouterLinkWithHrefDirective.prototype, "preserveFragment", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Boolean)
+    ], OwlRouterLinkWithHrefDirective.prototype, "skipLocationChange", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Boolean)
+    ], OwlRouterLinkWithHrefDirective.prototype, "replaceUrl", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Object)
+    ], OwlRouterLinkWithHrefDirective.prototype, "stopLink", void 0);
+    __decorate([
+        HostBinding(),
+        __metadata("design:type", String)
+    ], OwlRouterLinkWithHrefDirective.prototype, "href", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Object),
+        __metadata("design:paramtypes", [Object])
+    ], OwlRouterLinkWithHrefDirective.prototype, "owlRouterLink", null);
+    __decorate([
+        Input(),
+        __metadata("design:type", Boolean),
+        __metadata("design:paramtypes", [Boolean])
+    ], OwlRouterLinkWithHrefDirective.prototype, "preserveQueryParams", null);
+    __decorate([
+        HostListener('click', ['$event.button', '$event.ctrlKey', '$event.metaKey', '$event.shiftKey']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Number, Boolean, Boolean, Boolean]),
+        __metadata("design:returntype", Boolean)
+    ], OwlRouterLinkWithHrefDirective.prototype, "onClick", null);
+    OwlRouterLinkWithHrefDirective = __decorate([
+        Directive({ selector: 'a[owlRouterLink]' }),
+        __metadata("design:paramtypes", [Router, ActivatedRoute,
+            LocationStrategy])
+    ], OwlRouterLinkWithHrefDirective);
     return OwlRouterLinkWithHrefDirective;
 }());
-/**
- * @param {?} s
- * @return {?}
- */
 function attrBoolValue(s) {
     return s === '' || !!s;
 }
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
 var CarouselModule = /** @class */ (function () {
     function CarouselModule() {
     }
-    CarouselModule.decorators = [
-        { type: NgModule, args: [{
-                    imports: [
-                        CommonModule,
-                    ],
-                    declarations: [CarouselComponent, CarouselSlideDirective, StageComponent, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
-                    exports: [CarouselComponent, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
-                    providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS, OwlLogger]
-                },] }
-    ];
+    CarouselModule = __decorate([
+        NgModule({
+            imports: [
+                CommonModule,
+            ],
+            declarations: [CarouselComponent, CarouselSlideDirective, StageComponent, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
+            exports: [CarouselComponent, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
+            providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS, OwlLogger]
+        })
+    ], CarouselModule);
     return CarouselModule;
 }());
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
- */
-
-export { CarouselModule, CarouselComponent, CarouselSlideDirective, SlidesOutputData, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective, StageComponent as ɵx, AnimateService as ɵt, AutoHeightService as ɵu, AutoplayService as ɵd, CarouselService as ɵb, BrowserDocumentRef as ɵn, DOCUMENT as ɵl, DOCUMENT_PROVIDERS as ɵr, DocumentRef as ɵm, browserDocumentProvider as ɵp, documentFactory as ɵo, documentProvider as ɵq, HashService as ɵv, LazyLoadService as ɵs, OwlLogger as ɵc, NavigationService as ɵa, ResizeService as ɵw, BrowserWindowRef as ɵg, WINDOW as ɵe, WINDOW_PROVIDERS as ɵk, WindowRef as ɵf, browserWindowProvider as ɵi, windowFactory as ɵh, windowProvider as ɵj };
-
+export { CarouselComponent, CarouselModule, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective, SlidesOutputData, NavigationService as ɵa, CarouselService as ɵb, OwlLogger as ɵc, AutoplayService as ɵd, WINDOW as ɵe, WindowRef as ɵf, BrowserWindowRef as ɵg, windowFactory as ɵh, browserWindowProvider as ɵi, windowProvider as ɵj, WINDOW_PROVIDERS as ɵk, DOCUMENT as ɵl, DocumentRef as ɵm, BrowserDocumentRef as ɵn, documentFactory as ɵo, browserDocumentProvider as ɵp, documentProvider as ɵq, DOCUMENT_PROVIDERS as ɵr, LazyLoadService as ɵs, AnimateService as ɵt, AutoHeightService as ɵu, HashService as ɵv, ResizeService as ɵw, StageComponent as ɵx };
 //# sourceMappingURL=ngx-owl-carousel-o.js.map
