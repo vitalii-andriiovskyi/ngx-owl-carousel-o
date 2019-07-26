@@ -902,7 +902,16 @@ error Command failed with exit code 1.
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 ```
 
-The solution (pay attention to comments):  
+The issue 
+```
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [Event]),
+                                                                                   ^
+
+ReferenceError: Event is not defined
+``` 
+is connected with decorator `@HostListener`. In the case of `ngx-owl-carousel-o`, it emerges just in Angular 8. 
+
+### The solution (_pay attention to comments_):   
 `server.ts`:
 ``` typescript
 import * as express from 'express';
