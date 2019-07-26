@@ -1,10 +1,12 @@
 # ngx-owl-carousel-o
 
-**ngx-owl-carousel-o** is built for Angular >=6.0.0. It doesn't use jQuery. 
+## Compatibility
 
-The version `1.x.x` relies on Angular 7. 
-
-If it's needed to use the library for Angular 6, install the v0.1.2 by running the command `yarn add ngx-owl-carousel-o@0.1.2` or `npm i ngx-owl-carousel-o@0.1.2`.
+ngx-owl-carousel-o      | Angular
+------------------------|--------
+2.x.x                   | 8.x.x
+1.x.x  (latest `1.1.6`) | 7.x.x
+0.x.x  (latest `0.1.2`) | 6.x.x
 
 [CHANGELOG](./CHANGELOG.md)
 
@@ -16,6 +18,7 @@ If it's needed to use the library for Angular 6, install the v0.1.2 by running t
 - [Events](#events)
 - [Plugins](#plugins)
 - [Tips](#tips)
+- [Issue with Angular Universal and Solution](#issue-with-angular-universal-and-solution)
 
 ## Get started
 
@@ -865,6 +868,76 @@ Key points are:
    - `owlCar.prev()` shows the previous slide.
    - `owlCar.next()` shows the next slide.
    - `owlCar.to('slide-3')` moves the carousel to the slide with needed `id`. In this case `slide-3` is the needed slide. **NOTE**: it's needed to supply own ids to slides. The code above has `[id]="item.id"`. This is the way of supplying `ids`.
+
+## Issue with Angular Universal and Solution
+The details of the issue are following:
+```
+$ yarn serve:ssr
+yarn run v1.17.3
+$ node dist/server
+D:\WEB-learning\Angular\projects-libs\owl-carousel\owl-carousel-test-for-built-lib\test-project\owl-carousel-o-demo-ng8\dist\ser
+ver\main.js:87252
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [Event]),
+                                                                                   ^
+
+ReferenceError: Event is not defined
+    at Module.KMir (D:\WEB-learning\Angular\projects-libs\owl-carousel\owl-carousel-test-for-built-lib\test-project\owl-carousel
+-o-demo-ng8\dist\server\main.js:87252:84)
+    at __webpack_require__ (D:\WEB-learning\Angular\projects-libs\owl-carousel\owl-carousel-test-for-built-lib\test-project\owl-
+carousel-o-demo-ng8\dist\server\main.js:20:30)
+    at Object.F+o+ (D:\WEB-learning\Angular\projects-libs\owl-carousel\owl-carousel-test-for-built-lib\test-project\owl-carousel
+-o-demo-ng8\dist\server\main.js:79718:12)
+    at __webpack_require__ (D:\WEB-learning\Angular\projects-libs\owl-carousel\owl-carousel-test-for-built-lib\test-project\owl-
+carousel-o-demo-ng8\dist\server\main.js:20:30)
+    at Object.V7fC (D:\WEB-learning\Angular\projects-libs\owl-carousel\owl-carousel-test-for-built-lib\test-project\owl-carousel
+-o-demo-ng8\dist\server\main.js:99395:12)
+    at __webpack_require__ (D:\WEB-learning\Angular\projects-libs\owl-carousel\owl-carousel-test-for-built-lib\test-project\owl-
+carousel-o-demo-ng8\dist\server\main.js:20:30)
+    at Object.K011 (D:\WEB-learning\Angular\projects-libs\owl-carousel\owl-carousel-test-for-built-lib\test-project\owl-carousel
+
+demo-ng8\dist\server\main.js:92:18)    at __webpack_require__ (D:\WEB-learning\Angular\projects-libs\owl-carousel\owl-carousel-test-for-built-lib\test-project\owl-
+carousel-o-demo-ng8\dist\server\main.js:20:30)
+
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+```
+
+The issue 
+```
+Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [Event]),
+                                                                                   ^
+
+ReferenceError: Event is not defined
+``` 
+is connected with decorator `@HostListener`. In the case of `ngx-owl-carousel-o`, it emerges just in Angular 8. 
+
+### The solution (_pay attention to comments_):   
+`server.ts`:
+``` typescript
+import * as express from 'express';
+import {join} from 'path';
+
+// -----------------------------------------------------------------------------------
+import { readFileSync } from 'fs'; // import readFileSync            (1)
+const domino = require('domino');  // import the library `domino`    (2)
+// -----------------------------------------------------------------------------------
+
+const app = express();
+
+const PORT = process.env.PORT || 4000;
+const DIST_FOLDER = join(process.cwd(), 'dist/browser');
+
+// -----------------------------------------------------------------------------------
+const template = readFileSync(join(DIST_FOLDER, 'index.html')).toString(); // use `index.html` as template (3)
+const win = domino.createWindow(template); // create object Window                     (4)
+global['Event'] = win.Event;               // assign the `win.Event` to prop `Event`   (5)
+// -----------------------------------------------------------------------------------
+
+// * NOTE :: leave this as require() since this file is built Dynamically from webpack
+const {AppServerModuleNgFactory, LAZY_MODULE_MAP, ngExpressEngine, provideModuleMap} = require('./dist/server/main');
+```
+
+This solution is taken from [https://github.com/hippee-lee/3940-v8-ssr/blob/master/server.ts#L29](https://github.com/hippee-lee/3940-v8-ssr/blob/master/server.ts#L29)
 
 ## License
 This project is licensed under the terms of the [MIT License](./LICENSE).
