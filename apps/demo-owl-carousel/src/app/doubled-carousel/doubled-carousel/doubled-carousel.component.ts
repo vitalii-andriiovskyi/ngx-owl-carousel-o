@@ -7,8 +7,8 @@ import { CarouselComponent, OwlOptions } from 'ngx-owl-carousel-o';
   styleUrls: ['./doubled-carousel.component.scss']
 })
 export class DoubledCarouselComponent implements OnInit {
-  @ViewChild('owlMac') owlMac: CarouselComponent;
-  @ViewChild('owlCat') owlCat: CarouselComponent;
+  @ViewChild('owlMac', { static: false }) owlMac: CarouselComponent;
+  @ViewChild('owlCat', { static: false }) owlCat: CarouselComponent;
 
   categoriesOptions: any = {
     loop: true,
