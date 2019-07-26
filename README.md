@@ -916,18 +916,22 @@ is connected with decorator `@HostListener`. In the case of `ngx-owl-carousel-o`
 ``` typescript
 import * as express from 'express';
 import {join} from 'path';
-import { readFileSync } from 'fs'; // import readFileSync
 
-const domino = require('domino'); // import the library `domino`
+// -----------------------------------------------------------------------------------
+import { readFileSync } from 'fs'; // import readFileSync            (1)
+const domino = require('domino');  // import the library `domino`    (2)
+// -----------------------------------------------------------------------------------
 
 const app = express();
 
 const PORT = process.env.PORT || 4000;
 const DIST_FOLDER = join(process.cwd(), 'dist/browser');
 
-const template = readFileSync(join(DIST_FOLDER, 'index.html')).toString(); // use `index.html` as template
-const win = domino.createWindow(template); // create object Window
-global['Event'] = win.Event; // define the object `Event`
+// -----------------------------------------------------------------------------------
+const template = readFileSync(join(DIST_FOLDER, 'index.html')).toString(); // use `index.html` as template (3)
+const win = domino.createWindow(template); // create object Window                     (4)
+global['Event'] = win.Event;               // assign the `win.Event` to prop `Event`   (5)
+// -----------------------------------------------------------------------------------
 
 // * NOTE :: leave this as require() since this file is built Dynamically from webpack
 const {AppServerModuleNgFactory, LAZY_MODULE_MAP, ngExpressEngine, provideModuleMap} = require('./dist/server/main');
