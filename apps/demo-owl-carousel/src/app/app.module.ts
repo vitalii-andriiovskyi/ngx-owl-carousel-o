@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { NxModule } from '@nrwl/nx';
+import { NxModule } from '@nrwl/angular';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { HomeModule } from './home/home.module';
 // import { PresentModule } from './present/present.module';
@@ -14,11 +14,12 @@ import { LinkComponent } from './link/link.component';
 const appRoutes: Routes = [
   {
     path: 'present',
-    loadChildren: './present/present.module#PresentModule',
+    loadChildren: './present/present.module#PresentModule'
   },
   {
     path: 'doubled-carousel',
-    loadChildren: './doubled-carousel/doubled-carousel.module#DoubledCarouselModule',
+    loadChildren:
+      './doubled-carousel/doubled-carousel.module#DoubledCarouselModule'
   },
   {
     path: 'link-comp',
