@@ -2625,8 +2625,12 @@ let CarouselComponent = class CarouselComponent {
         if (this.resizeSubscription) {
             this.resizeSubscription.unsubscribe();
         }
-        this._slidesChangesSubscription.unsubscribe();
-        this._allObservSubscription.unsubscribe();
+        if (this._slidesChangesSubscription) {
+            this._slidesChangesSubscription.unsubscribe();
+        }
+        if (this._allObservSubscription) {
+            this._allObservSubscription.unsubscribe();
+        }
     }
     /**
      * Joins the observable login in one place: sets values to some observables, merges this observables and

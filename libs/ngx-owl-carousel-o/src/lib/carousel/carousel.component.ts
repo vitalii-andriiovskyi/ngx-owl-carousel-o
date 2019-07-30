@@ -320,9 +320,13 @@ export class CarouselComponent
       this.resizeSubscription.unsubscribe();
     }
 
-    this._slidesChangesSubscription.unsubscribe();
+    if (this._slidesChangesSubscription) {
+      this._slidesChangesSubscription.unsubscribe();
+    }
 
-    this._allObservSubscription.unsubscribe();
+    if (this._allObservSubscription) {
+      this._allObservSubscription.unsubscribe();
+    }
   }
 
   /**
