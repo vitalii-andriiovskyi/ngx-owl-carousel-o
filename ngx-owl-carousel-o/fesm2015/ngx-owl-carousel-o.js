@@ -7,7 +7,14 @@ import { tap, filter, switchMap, first, take, skip, map, toArray, delay } from '
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
-let ResizeService = class ResizeService {
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class ResizeService {
+    /**
+     * @param {?} eventManager
+     */
     constructor(eventManager) {
         this.eventManager = eventManager;
         this.resizeSubject = new Subject();
@@ -23,24 +30,34 @@ let ResizeService = class ResizeService {
     }
     /**
      * Handler of 'resize' event. Passes data throw resizeSubject
-     * @param event Event Object of 'resize' event
+     * @private
+     * @param {?} event Event Object of 'resize' event
+     * @return {?}
      */
     onResize(event) {
         this.resizeSubject.next(event.target);
     }
     /**
      * Handler of 'onload' event. Defines the width of window
-     * @param event Event Object of 'onload' event
+     * @private
+     * @param {?} event Event Object of 'onload' event
+     * @return {?}
      */
     onLoaded(event) {
         this.windowWidth = event.target;
     }
-};
-ResizeService = __decorate([
-    Injectable(),
-    __metadata("design:paramtypes", [EventManager])
-], ResizeService);
+}
+ResizeService.decorators = [
+    { type: Injectable }
+];
+ResizeService.ctorParameters = () => [
+    { type: EventManager }
+];
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
 /**
  * Defaults value of options
  */
@@ -146,7 +163,14 @@ class OwlOptionsMockedTypes {
     }
 }
 
-let OwlLogger = class OwlLogger {
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class OwlLogger {
+    /**
+     * @param {?} errorHandler
+     */
     constructor(errorHandler) {
         this.errorHandler = errorHandler;
     }
@@ -161,15 +185,17 @@ let OwlLogger = class OwlLogger {
     warn(value, ...rest) {
         console.warn(value, ...rest);
     }
-};
-OwlLogger = __decorate([
-    Injectable(),
-    __metadata("design:paramtypes", [ErrorHandler])
-], OwlLogger);
+}
+OwlLogger.decorators = [
+    { type: Injectable }
+];
+OwlLogger.ctorParameters = () => [
+    { type: ErrorHandler }
+];
 
 /**
- * Enumeration for types.
- * @enum {String}
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var Type;
 (function (Type) {
@@ -627,9 +653,10 @@ let CarouselService = class CarouselService {
     }
     /**
      * Checks whether user's option are set properly. Cheking is based on typings;
-     * @param options options set by user
-     * @param configOptions default options
-     * @returns checked and modified (if it's needed) user's options
+     * @private
+     * @param {?} options options set by user
+     * @param {?} configOptions default options
+     * @return {?} checked and modified (if it's needed) user's options
      *
      * Notes:
      * 	- if user set option with wrong type, it'll be written in console
@@ -685,8 +712,9 @@ let CarouselService = class CarouselService {
     }
     /**
      * Checks option items set by user and if it bigger than number of slides then returns number of slides
-     * @param items option items set by user
-     * @returns right number of items
+     * @private
+     * @param {?} items option items set by user
+     * @return {?} right number of items
      */
     _validateItems(items) {
         let result;
@@ -805,8 +833,10 @@ let CarouselService = class CarouselService {
         });
     }
     /**
-       * Updates option logic if necessery
-       */
+     * Updates option logic if necessery
+     * @private
+     * @return {?}
+     */
     _optionsLogic() {
         if (this.settings.autoWidth) {
             this.settings.stagePadding = 0;
@@ -1257,13 +1287,14 @@ let CarouselService = class CarouselService {
         return coordinate;
     }
     /**
-       * Calculates the speed for a translation.
-       * @param from The absolute position of the start item.
-       * @param to The absolute position of the target item.
-       * @param factor [factor=undefined] - The time factor in milliseconds.
-       * @returns The time in milliseconds for the translation.
-       */
-    _duration(from, to, factor) {
+     * Calculates the speed for a translation.
+     * @private
+     * @param {?} from The absolute position of the start item.
+     * @param {?} to The absolute position of the target item.
+     * @param {?=} factor [factor=undefined] - The time factor in milliseconds.
+     * @return {?} The time in milliseconds for the translation.
+     */
+    _duration(from$$1, to, factor) {
         if (factor === 0) {
             return 0;
         }
@@ -1338,9 +1369,10 @@ let CarouselService = class CarouselService {
         this._trigger('translated');
     }
     /**
-       * Gets viewport width.
-       * @returns - The width in pixel.
-       */
+     * Gets viewport width.
+     * @private
+     * @return {?} - The width in pixel.
+     */
     _viewport() {
         let width;
         if (this._width) {
@@ -1360,6 +1392,8 @@ let CarouselService = class CarouselService {
     }
     /**
      * Sets slidesData using this._items
+     * @private
+     * @return {?}
      */
     _defineSlidesData() {
         // Maybe creating and using loadMap would be better in LazyLoadService.
@@ -1412,12 +1446,13 @@ let CarouselService = class CarouselService {
         return currentClasses;
     }
     /**
-       * Operators to calculate right-to-left and left-to-right.
-       * @param a - The left side operand.
-       * @param o - The operator.
-       * @param b - The right side operand.
-       * @returns true/false meaning right-to-left or left-to-right
-       */
+     * Operators to calculate right-to-left and left-to-right.
+     * @private
+     * @param {?} a - The left side operand.
+     * @param {?} o - The operator.
+     * @param {?} b - The right side operand.
+     * @return {?} true/false meaning right-to-left or left-to-right
+     */
     _op(a, o, b) {
         const rtl = this.settings.rtl;
         switch (o) {
@@ -1434,15 +1469,17 @@ let CarouselService = class CarouselService {
         }
     }
     /**
-       * Triggers a public event.
-       * @todo Remove `status`, `relatedTarget` should be used instead.
-       * @param name The event name.
-       * @param data The event data.
-       * @param namespace The event namespace.
-       * @param state The state which is associated with the event.
-       * @param enter Indicates if the call enters the specified state or not.
-       */
-    _trigger(name, data, namespace, state, enter) {
+     * Triggers a public event.
+     * \@todo Remove `status`, `relatedTarget` should be used instead.
+     * @private
+     * @param {?} name The event name.
+     * @param {?=} data The event data.
+     * @param {?=} namespace The event namespace.
+     * @param {?=} state The state which is associated with the event.
+     * @param {?=} enter Indicates if the call enters the specified state or not.
+     * @return {?}
+     */
+    _trigger(name, data, namespace, state$$1, enter) {
         switch (name) {
             case 'initialized':
                 this._initializedCarousel$.next(name);
@@ -1524,18 +1561,22 @@ let CarouselService = class CarouselService {
         }
     }
     /**
-       * Suppresses events.
-       * @param events The events to suppress.
-       */
+     * Suppresses events.
+     * @private
+     * @param {?} events The events to suppress.
+     * @return {?}
+     */
     _suppress(events) {
         events.forEach(event => {
             this._supress[event] = true;
         });
     }
     /**
-       * Releases suppressed events.
-       * @param events The events to release.
-       */
+     * Releases suppressed events.
+     * @private
+     * @param {?} events The events to release.
+     * @return {?}
+     */
     _release(events) {
         events.forEach(event => {
             delete this._supress[event];
@@ -1564,33 +1605,37 @@ let CarouselService = class CarouselService {
         return result;
     }
     /**
-       * Determines if the input is a Number or something that can be coerced to a Number
-       * @param number The input to be tested
-       * @returns An indication if the input is a Number or can be coerced to a Number
-       */
+     * Determines if the input is a Number or something that can be coerced to a Number
+     * @private
+     * @param {?} number The input to be tested
+     * @return {?} An indication if the input is a Number or can be coerced to a Number
+     */
     _isNumeric(number) {
         return !isNaN(parseFloat(number));
     }
     /**
      * Determines whether value is number or boolean type
-     * @param value The input to be tested
-     * @returns An indication if the input is a Number or can be coerced to a Number, or Boolean
+     * @private
+     * @param {?} value The input to be tested
+     * @return {?} An indication if the input is a Number or can be coerced to a Number, or Boolean
      */
     _isNumberOrBoolean(value) {
         return this._isNumeric(value) || typeof value === 'boolean';
     }
     /**
      * Determines whether value is number or string type
-     * @param value The input to be tested
-     * @returns An indication if the input is a Number or can be coerced to a Number, or String
+     * @private
+     * @param {?} value The input to be tested
+     * @return {?} An indication if the input is a Number or can be coerced to a Number, or String
      */
     _isNumberOrString(value) {
         return this._isNumeric(value) || typeof value === 'string';
     }
     /**
      * Determines whether value is number or string type
-     * @param value The input to be tested
-     * @returns An indication if the input is a Number or can be coerced to a Number, or String
+     * @private
+     * @param {?} value The input to be tested
+     * @return {?} An indication if the input is a Number or can be coerced to a Number, or String
      */
     _isStringOrBoolean(value) {
         return typeof value === 'string' || typeof value === 'boolean';
@@ -1608,13 +1653,22 @@ let CarouselService = class CarouselService {
             y: first.y - second.y
         };
     }
-};
-CarouselService = __decorate([
-    Injectable(),
-    __metadata("design:paramtypes", [OwlLogger])
-], CarouselService);
+}
+CarouselService.decorators = [
+    { type: Injectable }
+];
+CarouselService.ctorParameters = () => [
+    { type: OwlLogger }
+];
 
-let NavigationService = class NavigationService {
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class NavigationService {
+    /**
+     * @param {?} carouselService
+     */
     constructor(carouselService) {
         this.carouselService = carouselService;
         /**
@@ -1695,6 +1749,8 @@ let NavigationService = class NavigationService {
     }
     /**
      * Calculates internal states and updates prop _pages
+     * @private
+     * @return {?}
      */
     _updateNavPages() {
         let i, j, k;
@@ -1772,6 +1828,8 @@ let NavigationService = class NavigationService {
     }
     /**
      * Changes state of nav buttons (disabled, enabled)
+     * @private
+     * @return {?}
      */
     _updateNavButtons() {
         const settings = this.carouselService.settings, loop = settings.loop || settings.rewind, index = this.carouselService.relative(this.carouselService.current());
@@ -1783,6 +1841,8 @@ let NavigationService = class NavigationService {
     }
     /**
      * Changes active dot if page becomes changed
+     * @private
+     * @return {?}
      */
     _updateDots() {
         let curActiveDotI;
@@ -1801,9 +1861,10 @@ let NavigationService = class NavigationService {
         this.carouselService.dotsData = this._dotsData;
     }
     /**
-       * Gets the current page position of the carousel.
-       * @returns the current page position of the carousel
-       */
+     * Gets the current page position of the carousel.
+     * @private
+     * @return {?} the current page position of the carousel
+     */
     _current() {
         const current = this.carouselService.relative(this.carouselService.current());
         let finalCurrent;
@@ -1817,10 +1878,11 @@ let NavigationService = class NavigationService {
     }
     ;
     /**
-       * Gets the current succesor/predecessor position.
-     * @param sussessor position of slide
-       * @returns the current succesor/predecessor position
-       */
+     * Gets the current succesor/predecessor position.
+     * @private
+     * @param {?} successor
+     * @return {?} the current succesor/predecessor position
+     */
     _getPosition(successor) {
         let position, length;
         const settings = this.carouselService.settings;
@@ -1889,13 +1951,18 @@ let NavigationService = class NavigationService {
         }
         this.carouselService.to(this.carouselService.relative(position), false);
     }
-};
-NavigationService = __decorate([
-    Injectable(),
-    __metadata("design:paramtypes", [CarouselService])
-], NavigationService);
+}
+NavigationService.decorators = [
+    { type: Injectable }
+];
+NavigationService.ctorParameters = () => [
+    { type: CarouselService }
+];
 
-// import { Injectable } from '@angular/core';
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
 /**
  * Create a new injection token for injecting the window into a component.
  */
@@ -1959,6 +2026,10 @@ const windowProvider = {
 const WINDOW_PROVIDERS = [browserWindowProvider, windowProvider];
 
 /**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
  * Create a new injection token for injecting the Document into a component.
  */
 const DOCUMENT = new InjectionToken('DocumentToken');
@@ -2020,7 +2091,16 @@ const documentProvider = {
  */
 const DOCUMENT_PROVIDERS = [browserDocumentProvider, documentProvider];
 
-let AutoplayService = class AutoplayService {
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class AutoplayService {
+    /**
+     * @param {?} carouselService
+     * @param {?} winRef
+     * @param {?} docRef
+     */
     constructor(carouselService, winRef, docRef) {
         this.carouselService = carouselService;
         /**
@@ -2081,11 +2161,12 @@ let AutoplayService = class AutoplayService {
     }
     ;
     /**
-       * Gets a new timeout
-       * @param timeout - The interval before the next animation starts.
-       * @param speed - The animation speed for the animations.
-       * @return
-       */
+     * Gets a new timeout
+     * @private
+     * @param {?=} timeout - The interval before the next animation starts.
+     * @param {?=} speed - The animation speed for the animations.
+     * @return {?}
+     */
     _getNextTimeout(timeout, speed) {
         if (this._timeout) {
             this.winRef.clearTimeout(this._timeout);
@@ -2100,8 +2181,11 @@ let AutoplayService = class AutoplayService {
     }
     ;
     /**
-       * Sets autoplay in motion.
-       */
+     * Sets autoplay in motion.
+     * @private
+     * @param {?=} timeout
+     * @return {?}
+     */
     _setAutoPlayInterval(timeout) {
         this._timeout = this._getNextTimeout(timeout);
     }
@@ -2130,7 +2214,9 @@ let AutoplayService = class AutoplayService {
     ;
     /**
      * Manages by autoplaying according to data passed by _changedSettingsCarousel$ Obsarvable
-     * @param data object with current position of carousel and type of change
+     * @private
+     * @param {?} data object with current position of carousel and type of change
+     * @return {?}
      */
     _handleChangeObservable(data) {
         if (data.property.name === 'settings') {
@@ -2150,6 +2236,8 @@ let AutoplayService = class AutoplayService {
     }
     /**
      * Starts autoplaying of the carousel in the case when user leaves the carousel before it starts translateing (moving)
+     * @private
+     * @return {?}
      */
     _playAfterTranslated() {
         of('translated').pipe(switchMap(data => this.carouselService.getTranslatedState()), first(), filter(() => this._isArtificialAutoplayTimeout), tap(() => this._setAutoPlayInterval())).subscribe(() => { });
@@ -2180,15 +2268,24 @@ let AutoplayService = class AutoplayService {
             this._playAfterTranslated();
         }
     }
-};
-AutoplayService = __decorate([
-    Injectable(),
-    __param(1, Inject(WINDOW)),
-    __param(2, Inject(DOCUMENT)),
-    __metadata("design:paramtypes", [CarouselService, Object, Object])
-], AutoplayService);
+}
+AutoplayService.decorators = [
+    { type: Injectable }
+];
+AutoplayService.ctorParameters = () => [
+    { type: CarouselService },
+    { type: undefined, decorators: [{ type: Inject, args: [WINDOW,] }] },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
+];
 
-let LazyLoadService = class LazyLoadService {
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class LazyLoadService {
+    /**
+     * @param {?} carouselService
+     */
     constructor(carouselService) {
         this.carouselService = carouselService;
         this.spyDataStreams();
@@ -2209,6 +2306,11 @@ let LazyLoadService = class LazyLoadService {
         const lazyLoadMerge$ = merge(initializedCarousel$, changeSettings$, resizedCarousel$).pipe(tap(data => this._defineLazyLoadSlides(data)));
         this.lazyLoadSubscription = lazyLoadMerge$.subscribe(() => { });
     }
+    /**
+     * @private
+     * @param {?} data
+     * @return {?}
+     */
     _defineLazyLoadSlides(data) {
         if (!this.carouselService.settings || !this.carouselService.settings.lazyLoad) {
             return;
@@ -2236,22 +2338,33 @@ let LazyLoadService = class LazyLoadService {
         }
     }
     /**
-       * Loads all resources of an item at the specified position.
-       * @param position - The absolute position of the item.
-       */
+     * Loads all resources of an item at the specified position.
+     * @private
+     * @param {?} position - The absolute position of the item.
+     * @return {?}
+     */
     _load(position) {
         if (this.carouselService.slidesData[position].load) {
             return;
         }
         this.carouselService.slidesData[position].load = true;
     }
-};
-LazyLoadService = __decorate([
-    Injectable(),
-    __metadata("design:paramtypes", [CarouselService])
-], LazyLoadService);
+}
+LazyLoadService.decorators = [
+    { type: Injectable }
+];
+LazyLoadService.ctorParameters = () => [
+    { type: CarouselService }
+];
 
-let AnimateService = class AnimateService {
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class AnimateService {
+    /**
+     * @param {?} carouselService
+     */
     constructor(carouselService) {
         this.carouselService = carouselService;
         /**
@@ -2294,9 +2407,10 @@ let AnimateService = class AnimateService {
         this.animateSubscription = animateMerge$.subscribe(() => { });
     }
     /**
-       * Toggles the animation classes whenever an translations starts.
-       * @returns
-       */
+     * Toggles the animation classes whenever an translations starts.
+     * @private
+     * @return {?}
+     */
     _swap() {
         if (this.carouselService.settings.items !== 1) {
             return;
@@ -2351,13 +2465,22 @@ let AnimateService = class AnimateService {
         this.carouselService.onTransitionEnd();
     }
     ;
-};
-AnimateService = __decorate([
-    Injectable(),
-    __metadata("design:paramtypes", [CarouselService])
-], AnimateService);
+}
+AnimateService.decorators = [
+    { type: Injectable }
+];
+AnimateService.ctorParameters = () => [
+    { type: CarouselService }
+];
 
-let AutoHeightService = class AutoHeightService {
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class AutoHeightService {
+    /**
+     * @param {?} carouselService
+     */
     constructor(carouselService) {
         this.carouselService = carouselService;
         this.spyDataStreams();
@@ -2404,13 +2527,24 @@ let AutoHeightService = class AutoHeightService {
             slide.heightState = (i >= start && i < end) ? 'full' : 'nulled';
         });
     }
-};
-AutoHeightService = __decorate([
-    Injectable(),
-    __metadata("design:paramtypes", [CarouselService])
-], AutoHeightService);
+}
+AutoHeightService.decorators = [
+    { type: Injectable }
+];
+AutoHeightService.ctorParameters = () => [
+    { type: CarouselService }
+];
 
-let HashService = class HashService {
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class HashService {
+    /**
+     * @param {?} carouselService
+     * @param {?} route
+     * @param {?} router
+     */
     constructor(carouselService, route, router) {
         this.carouselService = carouselService;
         this.route = route;
@@ -2470,16 +2604,21 @@ let HashService = class HashService {
             this.rewind(fragment);
         });
     }
-};
-HashService = __decorate([
-    Injectable(),
-    __param(1, Optional()),
-    __param(2, Optional()),
-    __metadata("design:paramtypes", [CarouselService,
-        ActivatedRoute,
-        Router])
-], HashService);
+}
+HashService.decorators = [
+    { type: Injectable }
+];
+HashService.ctorParameters = () => [
+    { type: CarouselService },
+    { type: ActivatedRoute, decorators: [{ type: Optional }] },
+    { type: Router, decorators: [{ type: Optional }] }
+];
 
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/** @type {?} */
 let nextId = 0;
 let CarouselSlideDirective = class CarouselSlideDirective {
     constructor(tplRef) {
@@ -2520,6 +2659,19 @@ let CarouselSlideDirective = class CarouselSlideDirective {
     isNumeric(number) {
         return !isNaN(parseFloat(number));
     }
+}
+CarouselSlideDirective.decorators = [
+    { type: Directive, args: [{ selector: 'ng-template[carouselSlide]' },] }
+];
+CarouselSlideDirective.ctorParameters = () => [
+    { type: TemplateRef }
+];
+CarouselSlideDirective.propDecorators = {
+    id: [{ type: Input }],
+    dataMerge: [{ type: Input }],
+    width: [{ type: Input }],
+    dotContent: [{ type: Input }],
+    dataHash: [{ type: Input }]
 };
 __decorate([
     Input(),
@@ -2625,8 +2777,12 @@ let CarouselComponent = class CarouselComponent {
         if (this.resizeSubscription) {
             this.resizeSubscription.unsubscribe();
         }
-        this._slidesChangesSubscription.unsubscribe();
-        this._allObservSubscription.unsubscribe();
+        if (this._slidesChangesSubscription) {
+            this._slidesChangesSubscription.unsubscribe();
+        }
+        if (this._allObservSubscription) {
+            this._allObservSubscription.unsubscribe();
+        }
     }
     /**
      * Joins the observable login in one place: sets values to some observables, merges this observables and
@@ -2703,6 +2859,8 @@ let CarouselComponent = class CarouselComponent {
     }
     /**
      * Init subscription to resize event and attaches handler for this event
+     * @private
+     * @return {?}
      */
     _winResizeWatcher() {
         if (Object.keys(this.carouselService._options.responsive).length) {
@@ -2864,37 +3022,61 @@ CarouselComponent = __decorate([
       </ng-container>
     </div> <!-- /.owl-carousel owl-loaded -->
   `,
-        providers: [
-            NavigationService,
-            AutoplayService,
-            CarouselService,
-            LazyLoadService,
-            AnimateService,
-            AutoHeightService,
-            HashService
-        ],
-        styles: [`.owl-theme { display: block; }`]
-    }),
-    __param(10, Inject(DOCUMENT)),
-    __metadata("design:paramtypes", [ElementRef,
-        ResizeService,
-        CarouselService,
-        NavigationService,
-        AutoplayService,
-        LazyLoadService,
-        AnimateService,
-        AutoHeightService,
-        HashService,
-        OwlLogger, Object])
-], CarouselComponent);
+                providers: [
+                    NavigationService,
+                    AutoplayService,
+                    CarouselService,
+                    LazyLoadService,
+                    AnimateService,
+                    AutoHeightService,
+                    HashService
+                ],
+                styles: [`.owl-theme { display: block; }`]
+            }] }
+];
+CarouselComponent.ctorParameters = () => [
+    { type: ElementRef },
+    { type: ResizeService },
+    { type: CarouselService },
+    { type: NavigationService },
+    { type: AutoplayService },
+    { type: LazyLoadService },
+    { type: AnimateService },
+    { type: AutoHeightService },
+    { type: HashService },
+    { type: OwlLogger },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
+];
+CarouselComponent.propDecorators = {
+    slides: [{ type: ContentChildren, args: [CarouselSlideDirective,] }],
+    translated: [{ type: Output }],
+    dragging: [{ type: Output }],
+    change: [{ type: Output }],
+    changed: [{ type: Output }],
+    initialized: [{ type: Output }],
+    options: [{ type: Input }],
+    onVisibilityChange: [{ type: HostListener, args: ['document:visibilitychange', ['$event'],] }]
+};
 
 /**
- * Data model for managing classes of .owl-stage DOM element
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class StageData {
 }
 
-let StageComponent = class StageComponent {
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class StageComponent {
+    /**
+     * @param {?} zone
+     * @param {?} el
+     * @param {?} renderer
+     * @param {?} carouselService
+     * @param {?} animateService
+     */
     constructor(zone, el, renderer, carouselService, animateService) {
         this.zone = zone;
         this.el = el;
@@ -2982,11 +3164,12 @@ let StageComponent = class StageComponent {
         this._oneMoveSubsription.unsubscribe();
     }
     /**
-       * Handles `touchstart` and `mousedown` events.
-       * @todo Horizontal swipe threshold as option
-       * @todo #261
-       * @param event - The event arguments.
-       */
+     * Handles `touchstart` and `mousedown` events.
+     * \@todo Horizontal swipe threshold as option / #261
+     * @private
+     * @param {?} event - The event arguments.
+     * @return {?}
+     */
     _onDragStart(event) {
         let stage = null;
         if (event.which === 3) {
@@ -3007,7 +3190,9 @@ let StageComponent = class StageComponent {
     }
     /**
      * Attaches listeners to `touchmove` and `mousemove` events; initiates updating carousel after starting dragging
-     * @param event event objech of mouse or touch event
+     * @private
+     * @param {?} event event objech of mouse or touch event
+     * @return {?}
      */
     _oneMouseTouchMove(event) {
         const delta = this._difference(this._drag.pointer, this._pointer(event));
@@ -3033,7 +3218,9 @@ let StageComponent = class StageComponent {
     }
     /**
      * Attaches handler to HTMLAnchorElement for preventing click while carousel is being dragged
-     * @param event event object
+     * @private
+     * @param {?} event event object
+     * @return {?}
      */
     blockClickAnchorInDragging(event) {
         let target = event.target;
@@ -3046,8 +3233,10 @@ let StageComponent = class StageComponent {
     }
     /**
      * Handles the `touchmove` and `mousemove` events.
-     * @todo #261
-     * @param event - The event arguments.
+     * \@todo #261
+     * @private
+     * @param {?} event - The event arguments.
+     * @return {?}
      */
     _onDragMove(event) {
         let stage;
@@ -3063,18 +3252,21 @@ let StageComponent = class StageComponent {
     ;
     /**
      * Moves .owl-stage left-right
-     * @param coordinate coordinate to be set to .owl-stage
+     * @private
+     * @param {?} coordinate coordinate to be set to .owl-stage
+     * @return {?}
      */
     _animate(coordinate) {
         this.renderer.setStyle(this.el.nativeElement.children[0], 'transform', `translate3d(${coordinate}px,0px,0px`);
         this.renderer.setStyle(this.el.nativeElement.children[0], 'transition', '0s');
     }
     /**
-       * Handles the `touchend` and `mouseup` events.
-       * @todo #261
-       * @todo Threshold for click event
-       * @param event - The event arguments.
-       */
+     * Handles the `touchend` and `mouseup` events.
+     * \@todo #261 / Threshold for click event
+     * @private
+     * @param {?} event - The event arguments.
+     * @return {?}
+     */
     _onDragEnd(event) {
         this.carouselService.owlDOMData.isGrab = false;
         this.listenerOneMouseMove();
@@ -3104,55 +3296,65 @@ let StageComponent = class StageComponent {
     }
     ;
     /**
-       * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
-       * @param event - The event arguments.
-       * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
-       */
+     * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
+     * @private
+     * @param {?} event - The event arguments.
+     * @return {?} stage - object with 'x' and 'y' coordinates of .owl-stage
+     */
     _prepareDragging(event) {
         return this.carouselService.prepareDragging(event);
     }
     /**
      * Finishes dragging
-     * @param event object event of 'mouseUp' of 'touchend' events
+     * @private
+     * @param {?} event object event of 'mouseUp' of 'touchend' events
+     * @return {?}
      */
     _finishDragging(event) {
         this.carouselService.finishDragging(event, this._drag, this._oneClickHandler);
     }
     /**
-       * Gets unified pointer coordinates from event.
-       * @param event The `mousedown` or `touchstart` event.
-       * @returns Contains `x` and `y` coordinates of current pointer position.
-       */
+     * Gets unified pointer coordinates from event.
+     * @private
+     * @param {?} event The `mousedown` or `touchstart` event.
+     * @return {?} Contains `x` and `y` coordinates of current pointer position.
+     */
     _pointer(event) {
         return this.carouselService.pointer(event);
     }
     /**
-       * Gets the difference of two vectors.
-       * @param first The first vector.
-       * @param second- The second vector.
-       * @returns The difference.
-       */
+     * Gets the difference of two vectors.
+     * @private
+     * @param {?} firstC
+     * @param {?} second
+     * @return {?} The difference.
+     */
     _difference(firstC, second) {
         return this.carouselService.difference(firstC, second);
     }
     /**
-       * Checks whether the carousel is in a specific state or not.
-       * @param specificState The state to check.
-       * @returns The flag which indicates if the carousel is busy.
-       */
+     * Checks whether the carousel is in a specific state or not.
+     * @private
+     * @param {?} specificState The state to check.
+     * @return {?} The flag which indicates if the carousel is busy.
+     */
     _is(specificState) {
         return this.carouselService.is(specificState);
     }
     /**
-    * Enters a state.
-    * @param name The state name.
-    */
+     * Enters a state.
+     * @private
+     * @param {?} name The state name.
+     * @return {?}
+     */
     _enter(name) {
         this.carouselService.enter(name);
     }
     /**
-       * Sends all data needed for View.
-       */
+     * Sends all data needed for View.
+     * @private
+     * @return {?}
+     */
     _sendChanges() {
         this.carouselService.sendChanges();
     }
@@ -3163,8 +3365,10 @@ let StageComponent = class StageComponent {
         this.carouselService.onTransitionEnd();
     }
     /**
-       * Enters into a 'dragging' state
-       */
+     * Enters into a 'dragging' state
+     * @private
+     * @return {?}
+     */
     _enterDragging() {
         this.carouselService.enterDragging();
     }
@@ -3243,29 +3447,52 @@ StageComponent = __decorate([
       </div><!-- /.owl-stage -->
     </div>
   `,
-        animations: [
-            trigger('autoHeight', [
-                state('nulled', style({ height: 0 })),
-                state('full', style({ height: '*' })),
-                transition('full => nulled', [
-                    // style({height: '*'}),
-                    animate('700ms 350ms')
-                ]),
-                transition('nulled => full', [
-                    // style({height: 0}),
-                    animate(350)
-                ]),
-            ])
-        ]
-    }),
-    __metadata("design:paramtypes", [NgZone,
-        ElementRef,
-        Renderer2,
-        CarouselService,
-        AnimateService])
-], StageComponent);
+                animations: [
+                    trigger('autoHeight', [
+                        state('nulled', style({ height: 0 })),
+                        state('full', style({ height: '*' })),
+                        transition('full => nulled', [
+                            // style({height: '*'}),
+                            animate('700ms 350ms')
+                        ]),
+                        transition('nulled => full', [
+                            // style({height: 0}),
+                            animate(350)
+                        ]),
+                    ])
+                ]
+            }] }
+];
+StageComponent.ctorParameters = () => [
+    { type: NgZone },
+    { type: ElementRef },
+    { type: Renderer2 },
+    { type: CarouselService },
+    { type: AnimateService }
+];
+StageComponent.propDecorators = {
+    owlDraggable: [{ type: Input }],
+    stageData: [{ type: Input }],
+    slidesData: [{ type: Input }],
+    onMouseDown: [{ type: HostListener, args: ['mousedown', ['$event'],] }],
+    onTouchStart: [{ type: HostListener, args: ['touchstart', ['$event'],] }],
+    onTouchCancel: [{ type: HostListener, args: ['touchcancel', ['$event'],] }],
+    onDragStart: [{ type: HostListener, args: ['dragstart',] }],
+    onSelectStart: [{ type: HostListener, args: ['selectstart',] }]
+};
 
-let OwlRouterLinkDirective = class OwlRouterLinkDirective {
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class OwlRouterLinkDirective {
+    /**
+     * @param {?} router
+     * @param {?} route
+     * @param {?} tabIndex
+     * @param {?} renderer
+     * @param {?} el
+     */
     constructor(router, route, tabIndex, renderer, el) {
         this.router = router;
         this.route = route;
@@ -3313,6 +3540,28 @@ let OwlRouterLinkDirective = class OwlRouterLinkDirective {
             preserveFragment: attrBoolValue(this.preserveFragment),
         });
     }
+}
+OwlRouterLinkDirective.decorators = [
+    { type: Directive, args: [{ selector: ':not(a)[owlRouterLink]' },] }
+];
+OwlRouterLinkDirective.ctorParameters = () => [
+    { type: Router },
+    { type: ActivatedRoute },
+    { type: String, decorators: [{ type: Attribute, args: ['tabindex',] }] },
+    { type: Renderer2 },
+    { type: ElementRef }
+];
+OwlRouterLinkDirective.propDecorators = {
+    queryParams: [{ type: Input }],
+    fragment: [{ type: Input }],
+    queryParamsHandling: [{ type: Input }],
+    preserveFragment: [{ type: Input }],
+    skipLocationChange: [{ type: Input }],
+    replaceUrl: [{ type: Input }],
+    stopLink: [{ type: Input }],
+    owlRouterLink: [{ type: Input }],
+    preserveQueryParams: [{ type: Input }],
+    onClick: [{ type: HostListener, args: ['click',] }]
 };
 __decorate([
     Input(),
@@ -3420,6 +3669,10 @@ let OwlRouterLinkWithHrefDirective = class OwlRouterLinkWithHrefDirective {
         this.router.navigateByUrl(this.urlTree, extras);
         return false;
     }
+    /**
+     * @private
+     * @return {?}
+     */
     updateTargetUrlAndHref() {
         this.href = this.locationStrategy.prepareExternalUrl(this.router.serializeUrl(this.urlTree));
     }
@@ -3433,6 +3686,28 @@ let OwlRouterLinkWithHrefDirective = class OwlRouterLinkWithHrefDirective {
             preserveFragment: attrBoolValue(this.preserveFragment),
         });
     }
+}
+OwlRouterLinkWithHrefDirective.decorators = [
+    { type: Directive, args: [{ selector: 'a[owlRouterLink]' },] }
+];
+OwlRouterLinkWithHrefDirective.ctorParameters = () => [
+    { type: Router },
+    { type: ActivatedRoute },
+    { type: LocationStrategy }
+];
+OwlRouterLinkWithHrefDirective.propDecorators = {
+    target: [{ type: HostBinding, args: ['attr.target',] }, { type: Input }],
+    queryParams: [{ type: Input }],
+    fragment: [{ type: Input }],
+    queryParamsHandling: [{ type: Input }],
+    preserveFragment: [{ type: Input }],
+    skipLocationChange: [{ type: Input }],
+    replaceUrl: [{ type: Input }],
+    stopLink: [{ type: Input }],
+    href: [{ type: HostBinding }],
+    owlRouterLink: [{ type: Input }],
+    preserveQueryParams: [{ type: Input }],
+    onClick: [{ type: HostListener, args: ['click', ['$event.button', '$event.ctrlKey', '$event.metaKey', '$event.shiftKey'],] }]
 };
 __decorate([
     HostBinding('attr.target'), Input(),
@@ -3495,18 +3770,39 @@ function attrBoolValue(s) {
     return s === '' || !!s;
 }
 
-let CarouselModule = class CarouselModule {
-};
-CarouselModule = __decorate([
-    NgModule({
-        imports: [
-            CommonModule,
-        ],
-        declarations: [CarouselComponent, CarouselSlideDirective, StageComponent, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
-        exports: [CarouselComponent, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
-        providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS, OwlLogger]
-    })
-], CarouselModule);
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class CarouselModule {
+}
+CarouselModule.decorators = [
+    { type: NgModule, args: [{
+                imports: [
+                    CommonModule,
+                ],
+                declarations: [CarouselComponent, CarouselSlideDirective, StageComponent, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
+                exports: [CarouselComponent, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
+                providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS, OwlLogger]
+            },] }
+];
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+export { CarouselModule, CarouselComponent, CarouselSlideDirective, SlidesOutputData, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective, StageComponent as ɵx, AnimateService as ɵt, AutoHeightService as ɵu, AutoplayService as ɵd, CarouselService as ɵb, BrowserDocumentRef as ɵn, DOCUMENT as ɵl, DOCUMENT_PROVIDERS as ɵr, DocumentRef as ɵm, browserDocumentProvider as ɵp, documentFactory as ɵo, documentProvider as ɵq, HashService as ɵv, LazyLoadService as ɵs, OwlLogger as ɵc, NavigationService as ɵa, ResizeService as ɵw, BrowserWindowRef as ɵg, WINDOW as ɵe, WINDOW_PROVIDERS as ɵk, WindowRef as ɵf, browserWindowProvider as ɵi, windowFactory as ɵh, windowProvider as ɵj };
 
 export { CarouselComponent, CarouselModule, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective, SlidesOutputData, NavigationService as ɵa, CarouselService as ɵb, OwlLogger as ɵc, AutoplayService as ɵd, WINDOW as ɵe, WindowRef as ɵf, BrowserWindowRef as ɵg, windowFactory as ɵh, browserWindowProvider as ɵi, windowProvider as ɵj, WINDOW_PROVIDERS as ɵk, DOCUMENT as ɵl, DocumentRef as ɵm, BrowserDocumentRef as ɵn, documentFactory as ɵo, browserDocumentProvider as ɵp, documentProvider as ɵq, DOCUMENT_PROVIDERS as ɵr, LazyLoadService as ɵs, AnimateService as ɵt, AutoHeightService as ɵu, HashService as ɵv, ResizeService as ɵw, StageComponent as ɵx };
 //# sourceMappingURL=ngx-owl-carousel-o.js.map
