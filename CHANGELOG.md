@@ -1,6 +1,9 @@
 # Versions Changes
 
+* [v2.0.1](#v2.0.1)
+* [v2.0.0](#v2.0.0)
 * [v1.1.7](#v1.1.7)
+* [v1.1.6](#v1.1.6)
 * [v1.1.6](#v1.1.6)
 * [v1.1.5](#v1.1.5)
 * [v1.1.4](#v1.1.4)
@@ -25,15 +28,17 @@
 * [v0.1.0](#v0.1.0)
 * [v0.0.5](#v0.0.5)
 
-## v1.1.7
+## v2.0.1
 
-The version `v1.1.7` solves the issue [`#38`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/38).
+The version `v2.0.1` solves the issue [`#38`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/38).
 
 ## v2.0.0
 The version `v2.0.0` is generated for Angular 8. It's the same as `v1.1.6` but it's compiled by Angular 8.
 
-## v1.1.6
-The version `v1.1.6` solves the issue [`#35`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/35).
+## v1.1.7
+
+The version `v1.1.7` solves the issue [`#38`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/38).
+
 ## v1.1.5
 The version `v1.1.5` adds the export of `ResponsiveSettings` and `BreakpointOptions` from `public_api.ts`.
 

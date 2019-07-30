@@ -3496,39 +3496,19 @@
                     _this.carouselLoaded = false;
                     _this.logger.log("There are no slides to show. So the carousel won't be re-rendered");
                 }
-                this._slidesChangesSubscription = this.slides.changes.pipe(operators.tap(function (slides) {
-                    if (slides.toArray().length) {
-                        // this.carouselService.setItems(slides.toArray());
-                        _this.carouselService.setup(_this.carouselWindowWidth, slides.toArray(), _this.options);
-                        _this.carouselService.initialize(slides.toArray());
-                    }
-                    else {
-                        _this.carouselLoaded = false;
-                        _this.logger.log("There are no slides to show. So the carousel won't be re-rendered");
-                    }
-                })).subscribe(function () { });
-            };
-        /**
-         * @return {?}
-         */
-        CarouselComponent.prototype.ngOnDestroy = /**
-         * @return {?}
-         */
-            function () {
-                if (this.resizeSubscription) {
-                    this.resizeSubscription.unsubscribe();
-                }
-                if (this._slidesChangesSubscription) {
-                    this._slidesChangesSubscription.unsubscribe();
-                }
-                if (this._allObservSubscription) {
-                    this._allObservSubscription.unsubscribe();
-                }
-            };
-        /**
-         * Joins the observable login in one place: sets values to some observables, merges this observables and
-         * subcribes to merge func
-         */
+            })).subscribe(function () { });
+        };
+        CarouselComponent.prototype.ngOnDestroy = function () {
+            if (this.resizeSubscription) {
+                this.resizeSubscription.unsubscribe();
+            }
+            if (this._slidesChangesSubscription) {
+                this._slidesChangesSubscription.unsubscribe();
+            }
+            if (this._allObservSubscription) {
+                this._allObservSubscription.unsubscribe();
+            }
+        };
         /**
          * Joins the observable login in one place: sets values to some observables, merges this observables and
          * subcribes to merge func
