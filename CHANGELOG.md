@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v1.1.7](#v1.1.7)
 * [v1.1.6](#v1.1.6)
 * [v1.1.5](#v1.1.5)
 * [v1.1.4](#v1.1.4)
@@ -24,6 +25,9 @@
 * [v0.1.0](#v0.1.0)
 * [v0.0.5](#v0.0.5)
 
+## v1.1.7
+
+The version `v1.1.7` solves the issue [`#38`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/38).
 
 ## v1.1.6
 The version `v1.1.6` solves the issue [`#35`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/35).
