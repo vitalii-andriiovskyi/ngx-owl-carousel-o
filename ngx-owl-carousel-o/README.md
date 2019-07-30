@@ -7,12 +7,13 @@
 ngx-owl-carousel-o      | Angular
 ------------------------|--------
 2.x.x                   | 8.x.x
-1.x.x  (latest `1.1.6`) | 7.x.x
+1.x.x  (latest `1.1.7`) | 7.x.x
 0.x.x  (latest `0.1.2`) | 6.x.x
  
 [CHANGELOG](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/update-to-v7-of-nrwl-and-angular/CHANGELOG.md)
 
 ## Table of Contents
+
 - [Get started](#get-started)
 - [Setting custom slides ids](#setting-custom-slides-ids)
 - [Options](#options)
