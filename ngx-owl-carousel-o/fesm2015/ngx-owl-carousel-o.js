@@ -8,7 +8,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class ResizeService {
     /**
@@ -29,6 +29,7 @@ class ResizeService {
     }
     /**
      * Handler of 'resize' event. Passes data throw resizeSubject
+     * @private
      * @param {?} event Event Object of 'resize' event
      * @return {?}
      */
@@ -37,6 +38,7 @@ class ResizeService {
     }
     /**
      * Handler of 'onload' event. Defines the width of window
+     * @private
      * @param {?} event Event Object of 'onload' event
      * @return {?}
      */
@@ -47,14 +49,13 @@ class ResizeService {
 ResizeService.decorators = [
     { type: Injectable }
 ];
-/** @nocollapse */
 ResizeService.ctorParameters = () => [
     { type: EventManager }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Defaults value of options
@@ -86,7 +87,6 @@ class OwlCarouselOConfig {
         this.navText = ['prev', 'next'];
         this.navSpeed = false;
         this.slideBy = 1; // stage moves on 1 width of slide; if slideBy = 2, stage moves on 2 widths of slide
-        // stage moves on 1 width of slide; if slideBy = 2, stage moves on 2 widths of slide
         this.dots = true;
         this.dotsEach = false;
         this.dotsData = false;
@@ -140,7 +140,6 @@ class OwlOptionsMockedTypes {
         this.navText = 'string[]';
         this.navSpeed = 'number|boolean';
         this.slideBy = 'number|string'; // stage moves on 1 width of slide; if slideBy = 2, stage moves on 2 widths of slide
-        // stage moves on 1 width of slide; if slideBy = 2, stage moves on 2 widths of slide
         this.dots = 'boolean';
         this.dotsEach = 'number|boolean';
         this.dotsData = 'boolean';
@@ -165,7 +164,7 @@ class OwlOptionsMockedTypes {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class OwlLogger {
     /**
@@ -203,14 +202,13 @@ class OwlLogger {
 OwlLogger.decorators = [
     { type: Injectable }
 ];
-/** @nocollapse */
 OwlLogger.ctorParameters = () => [
     { type: ErrorHandler }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @enum {string} */
 const Type = {
@@ -230,52 +228,52 @@ class CarouselService {
     constructor(logger) {
         this.logger = logger;
         /**
-         * Subject for passing data needed for managing View
-         */
+       * Subject for passing data needed for managing View
+       */
         this._viewSettingsShipper$ = new Subject();
         /**
-         * Subject for notification when the carousel got initializes
-         */
+       * Subject for notification when the carousel got initializes
+       */
         this._initializedCarousel$ = new Subject();
         /**
-         * Subject for notification when the carousel's settings start changinf
-         */
+       * Subject for notification when the carousel's settings start changinf
+       */
         this._changeSettingsCarousel$ = new Subject();
         /**
-         * Subject for notification when the carousel's settings have changed
-         */
+       * Subject for notification when the carousel's settings have changed
+       */
         this._changedSettingsCarousel$ = new Subject();
         /**
-         * Subject for notification when the carousel starts translating or moving
-         */
+       * Subject for notification when the carousel starts translating or moving
+       */
         this._translateCarousel$ = new Subject();
         /**
-         * Subject for notification when the carousel stopped translating or moving
-         */
+       * Subject for notification when the carousel stopped translating or moving
+       */
         this._translatedCarousel$ = new Subject();
         /**
-         * Subject for notification when the carousel's rebuilding caused by 'resize' event starts
-         */
+       * Subject for notification when the carousel's rebuilding caused by 'resize' event starts
+       */
         this._resizeCarousel$ = new Subject();
         /**
-         * Subject for notification  when the carousel's rebuilding caused by 'resize' event is ended
-         */
+       * Subject for notification  when the carousel's rebuilding caused by 'resize' event is ended
+       */
         this._resizedCarousel$ = new Subject();
         /**
-         * Subject for notification when the refresh of carousel starts
-         */
+       * Subject for notification when the refresh of carousel starts
+       */
         this._refreshCarousel$ = new Subject();
         /**
-         * Subject for notification when the refresh of carousel is ended
-         */
+       * Subject for notification when the refresh of carousel is ended
+       */
         this._refreshedCarousel$ = new Subject();
         /**
-         * Subject for notification when the dragging of carousel starts
-         */
+       * Subject for notification when the dragging of carousel starts
+       */
         this._dragCarousel$ = new Subject();
         /**
-         * Subject for notification when the dragging of carousel is ended
-         */
+       * Subject for notification when the dragging of carousel is ended
+       */
         this._draggedCarousel$ = new Subject();
         /**
          * Current settings for the carousel.
@@ -284,8 +282,8 @@ class CarouselService {
             items: 0
         };
         /**
-         * Initial data for setting classes to element .owl-carousel
-         */
+       * Initial data for setting classes to element .owl-carousel
+       */
         this.owlDOMData = {
             rtl: false,
             isResponsive: false,
@@ -297,8 +295,8 @@ class CarouselService {
             isTouchDragable: false
         };
         /**
-         * Initial data of .owl-stage
-         */
+       * Initial data of .owl-stage
+       */
         this.stageData = {
             transform: 'translate3d(0px,0px,0px)',
             transition: '0s',
@@ -310,45 +308,44 @@ class CarouselService {
          * All real items.
          */
         this._items = []; // is equal to this.slides
-        // is equal to this.slides
         /**
-         * Array with width of every slide.
-         */
+       * Array with width of every slide.
+       */
         this._widths = [];
         /**
-         * Currently suppressed events to prevent them from beeing retriggered.
-         */
+       * Currently suppressed events to prevent them from beeing retriggered.
+       */
         this._supress = {};
         /**
          * References to the running plugins of this carousel.
          */
         this._plugins = {};
         /**
-         * Absolute current position.
-         */
+       * Absolute current position.
+       */
         this._current = null;
         /**
-         * All cloned items.
-         */
+       * All cloned items.
+       */
         this._clones = [];
         /**
          * Merge values of all items.
-         * \@todo Maybe this could be part of a plugin.
+         * @todo Maybe this could be part of a plugin.
          */
         this._mergers = [];
         /**
-         * Animation speed in milliseconds.
-         */
+       * Animation speed in milliseconds.
+       */
         this._speed = null;
         /**
-         * Coordinates of all items in pixel.
-         * \@todo The name of this member is missleading.
-         */
+       * Coordinates of all items in pixel.
+       * @todo The name of this member is missleading.
+       */
         this._coordinates = [];
         /**
-         * Current breakpoint.
-         * \@todo Real media queries would be nice.
-         */
+       * Current breakpoint.
+       * @todo Real media queries would be nice.
+       */
         this._breakpoint = null;
         /**
          * Prefix for id of cloned slides
@@ -375,7 +372,7 @@ class CarouselService {
         };
         /**
          * Ordered list of workers for the update process.
-         */
+       */
         this._pipe = [
             // {
             //   filter: ['width', 'settings'],
@@ -739,6 +736,7 @@ class CarouselService {
     }
     /**
      * Checks whether user's option are set properly. Cheking is based on typings;
+     * @private
      * @param {?} options options set by user
      * @param {?} configOptions default options
      * @return {?} checked and modified (if it's needed) user's options
@@ -801,6 +799,7 @@ class CarouselService {
     }
     /**
      * Checks option items set by user and if it bigger than number of slides then returns number of slides
+     * @private
      * @param {?} items option items set by user
      * @return {?} right number of items
      */
@@ -934,6 +933,7 @@ class CarouselService {
     }
     /**
      * Updates option logic if necessery
+     * @private
      * @return {?}
      */
     _optionsLogic() {
@@ -1453,6 +1453,7 @@ class CarouselService {
     }
     /**
      * Calculates the speed for a translation.
+     * @private
      * @param {?} from The absolute position of the start item.
      * @param {?} to The absolute position of the target item.
      * @param {?=} factor [factor=undefined] - The time factor in milliseconds.
@@ -1552,6 +1553,7 @@ class CarouselService {
     }
     /**
      * Gets viewport width.
+     * @private
      * @return {?} - The width in pixel.
      */
     _viewport() {
@@ -1575,6 +1577,7 @@ class CarouselService {
     }
     /**
      * Sets slidesData using this._items
+     * @private
      * @return {?}
      */
     _defineSlidesData() {
@@ -1631,6 +1634,7 @@ class CarouselService {
     }
     /**
      * Operators to calculate right-to-left and left-to-right.
+     * @private
      * @param {?} a - The left side operand.
      * @param {?} o - The operator.
      * @param {?} b - The right side operand.
@@ -1655,6 +1659,7 @@ class CarouselService {
     /**
      * Triggers a public event.
      * \@todo Remove `status`, `relatedTarget` should be used instead.
+     * @private
      * @param {?} name The event name.
      * @param {?=} data The event data.
      * @param {?=} namespace The event namespace.
@@ -1748,6 +1753,7 @@ class CarouselService {
     }
     /**
      * Suppresses events.
+     * @private
      * @param {?} events The events to suppress.
      * @return {?}
      */
@@ -1758,6 +1764,7 @@ class CarouselService {
     }
     /**
      * Releases suppressed events.
+     * @private
      * @param {?} events The events to release.
      * @return {?}
      */
@@ -1791,6 +1798,7 @@ class CarouselService {
     }
     /**
      * Determines if the input is a Number or something that can be coerced to a Number
+     * @private
      * @param {?} number The input to be tested
      * @return {?} An indication if the input is a Number or can be coerced to a Number
      */
@@ -1799,6 +1807,7 @@ class CarouselService {
     }
     /**
      * Determines whether value is number or boolean type
+     * @private
      * @param {?} value The input to be tested
      * @return {?} An indication if the input is a Number or can be coerced to a Number, or Boolean
      */
@@ -1807,6 +1816,7 @@ class CarouselService {
     }
     /**
      * Determines whether value is number or string type
+     * @private
      * @param {?} value The input to be tested
      * @return {?} An indication if the input is a Number or can be coerced to a Number, or String
      */
@@ -1815,6 +1825,7 @@ class CarouselService {
     }
     /**
      * Determines whether value is number or string type
+     * @private
      * @param {?} value The input to be tested
      * @return {?} An indication if the input is a Number or can be coerced to a Number, or String
      */
@@ -1838,14 +1849,13 @@ class CarouselService {
 CarouselService.decorators = [
     { type: Injectable }
 ];
-/** @nocollapse */
 CarouselService.ctorParameters = () => [
     { type: OwlLogger }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class NavigationService {
     /**
@@ -1940,6 +1950,7 @@ class NavigationService {
     }
     /**
      * Calculates internal states and updates prop _pages
+     * @private
      * @return {?}
      */
     _updateNavPages() {
@@ -2042,6 +2053,7 @@ class NavigationService {
     }
     /**
      * Changes state of nav buttons (disabled, enabled)
+     * @private
      * @return {?}
      */
     _updateNavButtons() {
@@ -2059,6 +2071,7 @@ class NavigationService {
     }
     /**
      * Changes active dot if page becomes changed
+     * @private
      * @return {?}
      */
     _updateDots() {
@@ -2080,6 +2093,7 @@ class NavigationService {
     }
     /**
      * Gets the current page position of the carousel.
+     * @private
      * @return {?} the current page position of the carousel
      */
     _current() {
@@ -2099,6 +2113,7 @@ class NavigationService {
     ;
     /**
      * Gets the current succesor/predecessor position.
+     * @private
      * @param {?} successor
      * @return {?} the current succesor/predecessor position
      */
@@ -2187,14 +2202,13 @@ class NavigationService {
 NavigationService.decorators = [
     { type: Injectable }
 ];
-/** @nocollapse */
 NavigationService.ctorParameters = () => [
     { type: CarouselService }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Create a new injection token for injecting the window into a component.
@@ -2269,7 +2283,7 @@ const WINDOW_PROVIDERS = [browserWindowProvider, windowProvider];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Create a new injection token for injecting the Document into a component.
@@ -2344,7 +2358,7 @@ const DOCUMENT_PROVIDERS = [browserDocumentProvider, documentProvider];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class AutoplayService {
     /**
@@ -2425,6 +2439,7 @@ class AutoplayService {
     ;
     /**
      * Gets a new timeout
+     * @private
      * @param {?=} timeout - The interval before the next animation starts.
      * @param {?=} speed - The animation speed for the animations.
      * @return {?}
@@ -2444,6 +2459,7 @@ class AutoplayService {
     ;
     /**
      * Sets autoplay in motion.
+     * @private
      * @param {?=} timeout
      * @return {?}
      */
@@ -2477,6 +2493,7 @@ class AutoplayService {
     ;
     /**
      * Manages by autoplaying according to data passed by _changedSettingsCarousel$ Obsarvable
+     * @private
      * @param {?} data object with current position of carousel and type of change
      * @return {?}
      */
@@ -2498,6 +2515,7 @@ class AutoplayService {
     }
     /**
      * Starts autoplaying of the carousel in the case when user leaves the carousel before it starts translateing (moving)
+     * @private
      * @return {?}
      */
     _playAfterTranslated() {
@@ -2536,7 +2554,6 @@ class AutoplayService {
 AutoplayService.decorators = [
     { type: Injectable }
 ];
-/** @nocollapse */
 AutoplayService.ctorParameters = () => [
     { type: CarouselService },
     { type: undefined, decorators: [{ type: Inject, args: [WINDOW,] }] },
@@ -2545,7 +2562,7 @@ AutoplayService.ctorParameters = () => [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class LazyLoadService {
     /**
@@ -2581,6 +2598,7 @@ class LazyLoadService {
         this.lazyLoadSubscription = lazyLoadMerge$.subscribe(() => { });
     }
     /**
+     * @private
      * @param {?} data
      * @return {?}
      */
@@ -2620,6 +2638,7 @@ class LazyLoadService {
     }
     /**
      * Loads all resources of an item at the specified position.
+     * @private
      * @param {?} position - The absolute position of the item.
      * @return {?}
      */
@@ -2633,14 +2652,13 @@ class LazyLoadService {
 LazyLoadService.decorators = [
     { type: Injectable }
 ];
-/** @nocollapse */
 LazyLoadService.ctorParameters = () => [
     { type: CarouselService }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class AnimateService {
     /**
@@ -2700,6 +2718,7 @@ class AnimateService {
     }
     /**
      * Toggles the animation classes whenever an translations starts.
+     * @private
      * @return {?}
      */
     _swap() {
@@ -2769,14 +2788,13 @@ class AnimateService {
 AnimateService.decorators = [
     { type: Injectable }
 ];
-/** @nocollapse */
 AnimateService.ctorParameters = () => [
     { type: CarouselService }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class AutoHeightService {
     /**
@@ -2845,14 +2863,13 @@ class AutoHeightService {
 AutoHeightService.decorators = [
     { type: Injectable }
 ];
-/** @nocollapse */
 AutoHeightService.ctorParameters = () => [
     { type: CarouselService }
 ];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class HashService {
     /**
@@ -2936,7 +2953,6 @@ class HashService {
 HashService.decorators = [
     { type: Injectable }
 ];
-/** @nocollapse */
 HashService.ctorParameters = () => [
     { type: CarouselService },
     { type: ActivatedRoute, decorators: [{ type: Optional }] },
@@ -2945,7 +2961,7 @@ HashService.ctorParameters = () => [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 let nextId = 0;
@@ -3002,7 +3018,6 @@ class CarouselSlideDirective {
 CarouselSlideDirective.decorators = [
     { type: Directive, args: [{ selector: 'ng-template[carouselSlide]' },] }
 ];
-/** @nocollapse */
 CarouselSlideDirective.ctorParameters = () => [
     { type: TemplateRef }
 ];
@@ -3121,8 +3136,12 @@ class CarouselComponent {
         if (this.resizeSubscription) {
             this.resizeSubscription.unsubscribe();
         }
-        this._slidesChangesSubscription.unsubscribe();
-        this._allObservSubscription.unsubscribe();
+        if (this._slidesChangesSubscription) {
+            this._slidesChangesSubscription.unsubscribe();
+        }
+        if (this._allObservSubscription) {
+            this._allObservSubscription.unsubscribe();
+        }
     }
     /**
      * Joins the observable login in one place: sets values to some observables, merges this observables and
@@ -3203,6 +3222,7 @@ class CarouselComponent {
     }
     /**
      * Init subscription to resize event and attaches handler for this event
+     * @private
      * @return {?}
      */
     _winResizeWatcher() {
@@ -3357,7 +3377,6 @@ CarouselComponent.decorators = [
                 styles: [`.owl-theme { display: block; }`]
             }] }
 ];
-/** @nocollapse */
 CarouselComponent.ctorParameters = () => [
     { type: ElementRef },
     { type: ResizeService },
@@ -3384,12 +3403,12 @@ CarouselComponent.propDecorators = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class StageComponent {
     /**
@@ -3512,6 +3531,7 @@ class StageComponent {
     /**
      * Handles `touchstart` and `mousedown` events.
      * \@todo Horizontal swipe threshold as option / #261
+     * @private
      * @param {?} event - The event arguments.
      * @return {?}
      */
@@ -3536,6 +3556,7 @@ class StageComponent {
     }
     /**
      * Attaches listeners to `touchmove` and `mousemove` events; initiates updating carousel after starting dragging
+     * @private
      * @param {?} event event objech of mouse or touch event
      * @return {?}
      */
@@ -3564,6 +3585,7 @@ class StageComponent {
     }
     /**
      * Attaches handler to HTMLAnchorElement for preventing click while carousel is being dragged
+     * @private
      * @param {?} event event object
      * @return {?}
      */
@@ -3580,6 +3602,7 @@ class StageComponent {
     /**
      * Handles the `touchmove` and `mousemove` events.
      * \@todo #261
+     * @private
      * @param {?} event - The event arguments.
      * @return {?}
      */
@@ -3599,6 +3622,7 @@ class StageComponent {
     ;
     /**
      * Moves .owl-stage left-right
+     * @private
      * @param {?} coordinate coordinate to be set to .owl-stage
      * @return {?}
      */
@@ -3609,6 +3633,7 @@ class StageComponent {
     /**
      * Handles the `touchend` and `mouseup` events.
      * \@todo #261 / Threshold for click event
+     * @private
      * @param {?} event - The event arguments.
      * @return {?}
      */
@@ -3642,6 +3667,7 @@ class StageComponent {
     ;
     /**
      * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
+     * @private
      * @param {?} event - The event arguments.
      * @return {?} stage - object with 'x' and 'y' coordinates of .owl-stage
      */
@@ -3650,6 +3676,7 @@ class StageComponent {
     }
     /**
      * Finishes dragging
+     * @private
      * @param {?} event object event of 'mouseUp' of 'touchend' events
      * @return {?}
      */
@@ -3658,6 +3685,7 @@ class StageComponent {
     }
     /**
      * Gets unified pointer coordinates from event.
+     * @private
      * @param {?} event The `mousedown` or `touchstart` event.
      * @return {?} Contains `x` and `y` coordinates of current pointer position.
      */
@@ -3666,6 +3694,7 @@ class StageComponent {
     }
     /**
      * Gets the difference of two vectors.
+     * @private
      * @param {?} firstC
      * @param {?} second
      * @return {?} The difference.
@@ -3675,6 +3704,7 @@ class StageComponent {
     }
     /**
      * Checks whether the carousel is in a specific state or not.
+     * @private
      * @param {?} specificState The state to check.
      * @return {?} The flag which indicates if the carousel is busy.
      */
@@ -3683,6 +3713,7 @@ class StageComponent {
     }
     /**
      * Enters a state.
+     * @private
      * @param {?} name The state name.
      * @return {?}
      */
@@ -3691,6 +3722,7 @@ class StageComponent {
     }
     /**
      * Sends all data needed for View.
+     * @private
      * @return {?}
      */
     _sendChanges() {
@@ -3705,6 +3737,7 @@ class StageComponent {
     }
     /**
      * Enters into a 'dragging' state
+     * @private
      * @return {?}
      */
     _enterDragging() {
@@ -3760,7 +3793,6 @@ StageComponent.decorators = [
                 ]
             }] }
 ];
-/** @nocollapse */
 StageComponent.ctorParameters = () => [
     { type: NgZone },
     { type: ElementRef },
@@ -3781,7 +3813,7 @@ StageComponent.propDecorators = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class OwlRouterLinkDirective {
     /**
@@ -3855,7 +3887,6 @@ class OwlRouterLinkDirective {
 OwlRouterLinkDirective.decorators = [
     { type: Directive, args: [{ selector: ':not(a)[owlRouterLink]' },] }
 ];
-/** @nocollapse */
 OwlRouterLinkDirective.ctorParameters = () => [
     { type: Router },
     { type: ActivatedRoute },
@@ -3961,6 +3992,7 @@ class OwlRouterLinkWithHrefDirective {
         return false;
     }
     /**
+     * @private
      * @return {?}
      */
     updateTargetUrlAndHref() {
@@ -3983,7 +4015,6 @@ class OwlRouterLinkWithHrefDirective {
 OwlRouterLinkWithHrefDirective.decorators = [
     { type: Directive, args: [{ selector: 'a[owlRouterLink]' },] }
 ];
-/** @nocollapse */
 OwlRouterLinkWithHrefDirective.ctorParameters = () => [
     { type: Router },
     { type: ActivatedRoute },
@@ -4013,7 +4044,7 @@ function attrBoolValue(s) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class CarouselModule {
 }
@@ -4030,17 +4061,17 @@ CarouselModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 export { CarouselModule, CarouselComponent, CarouselSlideDirective, SlidesOutputData, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective, StageComponent as ɵx, AnimateService as ɵt, AutoHeightService as ɵu, AutoplayService as ɵd, CarouselService as ɵb, BrowserDocumentRef as ɵn, DOCUMENT as ɵl, DOCUMENT_PROVIDERS as ɵr, DocumentRef as ɵm, browserDocumentProvider as ɵp, documentFactory as ɵo, documentProvider as ɵq, HashService as ɵv, LazyLoadService as ɵs, OwlLogger as ɵc, NavigationService as ɵa, ResizeService as ɵw, BrowserWindowRef as ɵg, WINDOW as ɵe, WINDOW_PROVIDERS as ɵk, WindowRef as ɵf, browserWindowProvider as ɵi, windowFactory as ɵh, windowProvider as ɵj };
