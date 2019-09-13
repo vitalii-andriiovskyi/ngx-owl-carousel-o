@@ -14,12 +14,18 @@ import { LinkComponent } from './link/link.component';
 const appRoutes: Routes = [
   {
     path: 'present',
-    loadChildren: './present/present.module#PresentModule'
+    loadChildren: () => import('./present/present.module').then(mod => mod.PresentModule)
   },
   {
     path: 'doubled-carousel',
     loadChildren:
-      './doubled-carousel/doubled-carousel.module#DoubledCarouselModule'
+      () => import('./doubled-carousel/doubled-carousel.module').then(
+        mod => mod.DoubledCarouselModule
+      )
+  },
+  {
+    path: 'gallery-carousel',
+    loadChildren: () => import('./gallery/gallery.module').then(mod => mod.GalleryModule)
   },
   {
     path: 'link-comp',
