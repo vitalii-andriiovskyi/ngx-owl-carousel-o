@@ -52,6 +52,7 @@ export class OwlCarouselOConfig implements OwlOptions {
   lazyLoadEager = 0;
 
   // defaults to Animate
+  slideTransition = '';
   animateOut = false;
   animateIn = false;
 
@@ -117,6 +118,7 @@ export class OwlOptionsMockedTypes {
   lazyLoadEager = 'number';
 
   // defaults to Animate
+  slideTransition = 'string';
   animateOut = 'string|boolean';
   animateIn = 'string|boolean';
 
