@@ -8,6 +8,37 @@ ngx-owl-carousel-o      | Angular
 1.x.x  (latest `1.1.7`) | 7.x.x
 0.x.x  (latest `0.1.2`) | 6.x.x
 
+### Angular 9
+
+Although the latest version of Angular 9 is `9.0.0-rc.6` that is it's in RC mode the latest version of `ngx-owl-carousel-o` `2.0.2` is still built on the Angular 8. It can work in Angular 9 projects too because Angular 9 supports Angular 8.
+
+But there's one small problem. If we use `<ng-container>` inside `<owl-carousel-o>` like in the example below or like this `<ng-container><ng-template carouselSlide>Slide 1</ng-template><ng-container>`, the code doesn't see any slides and the warning "There are no slides to show. So the carousel won't be rendered" emerges.
+
+```html
+<owl-carousel-o [options]="customOptions">
+
+  <ng-container *ngFor="let slide of slidesStore">
+    <ng-template carouselSlide [id]="slide.id">
+      <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
+    </ng-template>
+  </ng-container>
+
+</owl-carousel-o>
+```
+
+The solution is to avoid `<ng-container>`. So this works:
+
+```html
+<owl-carousel-o [options]="customOptions">
+
+  <ng-template carouselSlide *ngFor="let slide of slidesStore" [id]="slide.id">
+    <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
+  </ng-template>
+
+</owl-carousel-o>
+```
+
+
 [CHANGELOG](./CHANGELOG.md)
 
 ##### Table of Contents
