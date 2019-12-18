@@ -89,6 +89,7 @@ var OwlCarouselOConfig = /** @class */ (function () {
         this.lazyLoad = false;
         this.lazyLoadEager = 0;
         // defaults to Animate
+        this.slideTransition = '';
         this.animateOut = false;
         this.animateIn = false;
         // defaults to AutoHeight
@@ -143,6 +144,7 @@ var OwlOptionsMockedTypes = /** @class */ (function () {
         this.lazyLoad = 'boolean';
         this.lazyLoadEager = 'number';
         // defaults to Animate
+        this.slideTransition = 'string';
         this.animateOut = 'string|boolean';
         this.animateIn = 'string|boolean';
         // defaults to AutoHeight
@@ -1079,7 +1081,7 @@ var CarouselService = /** @class */ (function () {
             this._trigger('translate');
         }
         this.stageData.transform = 'translate3d(' + coordinate + 'px,0px,0px)';
-        this.stageData.transition = (this.speed() / 1000) + 's';
+        this.stageData.transition = (this.speed() / 1000) + 's' + (this.settings.slideTransition ? ' ' + this.settings.slideTransition : '');
         // also there was transition by means of JQuery.animate or css-changing property left
     };
     /**
