@@ -104,6 +104,10 @@ export interface BreakpointOptions {
      */
     autoplaySpeed?: number | boolean;
     /**
+     * You can define the transition for the stage you want to use eg. `linear`.
+     */
+    slideTransition?: string;
+    /**
      * Class for CSS3 animation out.
      */
     animateOut?: string | boolean;
@@ -256,6 +260,10 @@ export interface OwlOptions {
      * Indicates how many items (slides with images) to the right (and left, when loop is true) will be pre-loaded
      */
     lazyLoadEager?: number;
+    /**
+     * You can define the transition for the stage you want to use eg. `linear`.
+     */
+    slideTransition?: string;
     /**
      * Class for CSS3 animation out.
      */

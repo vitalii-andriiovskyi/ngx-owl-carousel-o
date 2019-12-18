@@ -4007,6 +4007,108 @@ describe('CarouselComponent', () => {
     expect(img).toBeTruthy('img in 7th slide is loaded');
   }));
 
+
+  describe(`THE OPTION 'slideTransition'`, () => {
+
+    it(`transition property of '.owl-stage' should be 'ease' if 'slideTransition' isn't set up`, fakeAsync(() => {
+      discardPeriodicTasks();
+      const html = `
+        <div style="width: 920px; margin: auto">
+          <owl-carousel-o [options]="{items: 3}">
+            <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+            <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+            <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+            <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+            <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+          </owl-carousel-o>
+        </div>
+      `;
+      fixtureHost = createTestComponent(html);
+      deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+      tick();
+      fixtureHost.detectChanges();
+
+      deStage = deCarouselComponent.query(By.css('.owl-stage'));
+      expect(getComputedStyle(deStage.nativeElement).transitionTimingFunction).toBe('ease', 'ease');
+    }));
+
+    it(`transition property of '.owl-stage' should be 'ease-in' [options]="{slideTransition: 'ease-in'}`, fakeAsync(() => {
+      discardPeriodicTasks();
+      const html = `
+        <div style="width: 920px; margin: auto">
+          <owl-carousel-o [options]="{slideTransition: 'ease-in'}">
+            <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+            <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+            <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+            <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+            <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+          </owl-carousel-o>
+        </div>
+      `;
+      fixtureHost = createTestComponent(html);
+      deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+      tick();
+      fixtureHost.detectChanges();
+
+      deStage = deCarouselComponent.query(By.css('.owl-stage'));
+      expect(getComputedStyle(deStage.nativeElement).transitionTimingFunction).toBe('ease-in', 'ease-in');
+    }));
+
+    it(`should set 'linear' for the case the carousel has width 700px and 'ease-in' when the carousel has width 1200px: responsive case"`, fakeAsync(() => {
+      const html = `
+        <div style="width: 1200px; margin: auto">
+         <div class="owl-wrapper">
+            <owl-carousel-o [options]="{
+              nav: true,
+              responsive: {
+                '600': {
+                  slideTransition: 'linear'
+                },
+                '900': {
+                  slideTransition: 'ease-in'
+                }
+              }
+            }">
+              <ng-template carouselSlide>Slide 1</ng-template>
+              <ng-template carouselSlide>Slide 2</ng-template>
+              <ng-template carouselSlide>Slide 3</ng-template>
+              <ng-template carouselSlide>Slide 4</ng-template>
+              <ng-template carouselSlide>Slide 5</ng-template>
+              <ng-template carouselSlide>Slide 6</ng-template>
+              <ng-template carouselSlide>Slide 7</ng-template>
+              <ng-template carouselSlide>Slide 8</ng-template>
+              <ng-template carouselSlide>Slide 9</ng-template>
+              <ng-template carouselSlide>Slide 10</ng-template>
+            </owl-carousel-o>
+          </div>
+        </div>
+      `;
+      fixtureHost = createTestComponent(html);
+
+      tick();
+      fixtureHost.detectChanges();
+
+      deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+      carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+      deStage = deCarouselComponent.query(By.css('.owl-stage'));
+      expect(getComputedStyle(deStage.nativeElement).transitionTimingFunction).toBe('ease-in', 'ease-in');
+
+      // ------- set width of carousel to 800px
+      carouselHTML.closest('.owl-wrapper').setAttribute('style', 'width: 800px; margin: auto');
+      fixtureHost.detectChanges();
+
+      expect(carouselHTML.clientWidth).toBe(800);
+
+      window.dispatchEvent(new Event('resize'));
+      tick(200);
+      fixtureHost.detectChanges();
+
+      deStage = deCarouselComponent.query(By.css('.owl-stage'));
+      expect(getComputedStyle(deStage.nativeElement).transitionTimingFunction).toBe('linear', 'linear');
+    }));
+
+  });
+
   it('should animate slides [options]="{nav: true, items: 1, animateOut: \'slideOutDown\', animateIn: \'flipInX\'}"', fakeAsync(() => {
     discardPeriodicTasks();
     const html = `

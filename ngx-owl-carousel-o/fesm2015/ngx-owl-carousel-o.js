@@ -84,6 +84,7 @@ class OwlCarouselOConfig {
         this.lazyLoad = false;
         this.lazyLoadEager = 0;
         // defaults to Animate
+        this.slideTransition = '';
         this.animateOut = false;
         this.animateIn = false;
         // defaults to AutoHeight
@@ -137,6 +138,7 @@ class OwlOptionsMockedTypes {
         this.lazyLoad = 'boolean';
         this.lazyLoadEager = 'number';
         // defaults to Animate
+        this.slideTransition = 'string';
         this.animateOut = 'string|boolean';
         this.animateIn = 'string|boolean';
         // defaults to AutoHeight
@@ -1047,7 +1049,7 @@ let CarouselService = class CarouselService {
             this._trigger('translate');
         }
         this.stageData.transform = 'translate3d(' + coordinate + 'px,0px,0px)';
-        this.stageData.transition = (this.speed() / 1000) + 's';
+        this.stageData.transition = (this.speed() / 1000) + 's' + (this.settings.slideTransition ? ' ' + this.settings.slideTransition : '');
         // also there was transition by means of JQuery.animate or css-changing property left
     }
     /**

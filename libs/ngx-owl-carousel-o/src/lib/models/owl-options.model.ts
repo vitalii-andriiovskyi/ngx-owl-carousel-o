@@ -119,6 +119,11 @@ export interface BreakpointOptions {
 
   // ANIMATE ****************************************
   /**
+   * You can define the transition for the stage you want to use eg. `linear`.
+   */
+  slideTransition?: string;
+
+  /**
    * Class for CSS3 animation out.
    */
   animateOut?: string | boolean;
@@ -295,6 +300,11 @@ export interface OwlOptions {
   lazyLoadEager?: number;
 
   // ANIMATE ****************************************
+  /**
+   * You can define the transition for the stage you want to use eg. `linear`.
+   */
+  slideTransition?: string;
+
   /**
    * Class for CSS3 animation out.
    */
