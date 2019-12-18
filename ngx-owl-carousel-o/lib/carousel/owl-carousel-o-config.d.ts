@@ -37,6 +37,7 @@ export declare class OwlCarouselOConfig implements OwlOptions {
     autoplaySpeed: boolean;
     lazyLoad: boolean;
     lazyLoadEager: number;
+    slideTransition: string;
     animateOut: boolean;
     animateIn: boolean;
     autoHeight: boolean;
@@ -83,6 +84,7 @@ export declare class OwlOptionsMockedTypes {
     autoplaySpeed: string;
     lazyLoad: string;
     lazyLoadEager: string;
+    slideTransition: string;
     animateOut: string;
     animateIn: string;
     autoHeight: string;

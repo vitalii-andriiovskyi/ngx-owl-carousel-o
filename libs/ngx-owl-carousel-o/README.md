@@ -1,6 +1,6 @@
 # ngx-owl-carousel-o
 
-**ngx-owl-carousel-o** is built for Angular >=6.0.0. It doesn't use jQuery. 
+**ngx-owl-carousel-o** is built for Angular >=6.0.0. It doesn't use jQuery.
 
 ## Compatibility
 
@@ -9,7 +9,37 @@ ngx-owl-carousel-o      | Angular
 2.x.x                   | 8.x.x
 1.x.x  (latest `1.1.7`) | 7.x.x
 0.x.x  (latest `0.1.2`) | 6.x.x
- 
+
+### Angular 9
+
+Although the latest version of Angular 9 is `9.0.0-rc.6` that is it's in RC mode the latest version of `ngx-owl-carousel-o` `2.0.2` is still built on the Angular 8. It can work in Angular 9 projects too because Angular 9 supports Angular 8.
+
+But there's one small problem. If we use `<ng-container>` inside `<owl-carousel-o>` like in the example below or like this `<ng-container><ng-template carouselSlide>Slide 1</ng-template><ng-container>`, the code doesn't see any slides and the warning "There are no slides to show. So the carousel won't be rendered" emerges.
+
+```html
+<owl-carousel-o [options]="customOptions">
+
+  <ng-container *ngFor="let slide of slidesStore">
+    <ng-template carouselSlide [id]="slide.id">
+      <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
+    </ng-template>
+  </ng-container>
+
+</owl-carousel-o>
+```
+
+The solution is to avoid `<ng-container>`. So this works:
+
+```html
+<owl-carousel-o [options]="customOptions">
+
+  <ng-template carouselSlide *ngFor="let slide of slidesStore" [id]="slide.id">
+    <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
+  </ng-template>
+
+</owl-carousel-o>
+```
+
 [CHANGELOG](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/update-to-v7-of-nrwl-and-angular/CHANGELOG.md)
 
 ## Table of Contents
@@ -21,13 +51,14 @@ ngx-owl-carousel-o      | Angular
 - [Events](#events)
 - [Plugins](#plugins)
 - [Tips](#tips)
-- [Issue with Angular Universal and Solution](#issue-with-angular-universal-and-solution)
+- [Issue with Angular Universal (`ReferenceError: Event is not defined`) and Solution](#issue-with-angular-universal-(referenceError:-event-is-not-defined)-and-solution)
 
 ## Get started
 
 1. Run `yarn add ngx-owl-carousel-o` or `npm install ngx-owl-carousel-o` or `ng add ngx-owl-carousel-o`.
 2. Add styles (one of these variants).
     -  `angular.json`:
+
         ```json
         "styles": [
             "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
@@ -52,6 +83,7 @@ ngx-owl-carousel-o      | Angular
     export class SomeModule { }
     ```
 6. Add to needed component `customOptions` or named in different way object with options for the carousel:
+
     ```typescript
     import { OwlOptions } from 'ngx-owl-carousel-o';
     @Component({
@@ -843,16 +875,17 @@ Variable `html` contains the HTML-markup of the carousel for `[options]="{nav: t
 However, most of the HTML-markups set to `html` are simplified. There's no property `customOptions`, directive `*ngFor` and `<ng-container>` as it is in examples above.
 
 ### Managing the carousel from outside its markup
+
 It's possible to move the carousel left/right and to needed slide from different places of the html-page. The real is provided in [home.component.html](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/develop/apps/demo-owl-carousel/src/app/home/home.component.html)
 
 ```html
 <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" #owlCar>
-        
+
   <ng-container *ngFor="let item of carouselData">
     <ng-template carouselSlide [id]="item.id" [width]="item.width">
       <div class="slider">
         <p>{{item.text}}</p>
-          
+
       </div><!-- /.carousel-item team-member -->
     </ng-template>
   </ng-container>
@@ -867,15 +900,18 @@ It's possible to move the carousel left/right and to needed slide from different
 ```
 
 Key points are:
-1. Defining in `<owl-carousel-o>` template reference variable `#owlCar`
+
+1. Defining in `<owl-carousel-o>` template reference variable `#owlCar`.
 2. Using it in handlers for events. In the code above, we see `(click)="owlCar.prev()"`, `(click)="owlCar.next()"` and `(click)="owlCar.to('slide-3')"`. `#owlCar` could be passed as an argument of the hanlder: `(click)="handler(owlCar)`.
    - `owlCar.prev()` shows the previous slide.
    - `owlCar.next()` shows the next slide.
    - `owlCar.to('slide-3')` moves the carousel to the slide with needed `id`. In this case `slide-3` is the needed slide. **NOTE**: it's needed to supply own ids to slides. The code above has `[id]="item.id"`. This is the way of supplying `ids`.
 
-## Issue with Angular Universal and Solution
+## Issue with Angular Universal (`ReferenceError: Event is not defined`) and Solution
+
 The details of the issue are following:
-```
+
+```text
 $ yarn serve:ssr
 yarn run v1.17.3
 $ node dist/server
@@ -906,17 +942,21 @@ error Command failed with exit code 1.
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 ```
 
-The issue 
-```
+The issue
+
+```text
 Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"])("design:paramtypes", [Event]),
                                                                                    ^
 
 ReferenceError: Event is not defined
-``` 
-is connected with decorator `@HostListener`. In the case of `ngx-owl-carousel-o`, it emerges just in Angular 8. 
+```
 
-### The solution (_pay attention to comments_):  
+is connected with decorator `@HostListener`. In the case of `ngx-owl-carousel-o`, it emerges just in Angular 8.
+
+### The solution for the `express.js` (_pay attention to comments_)
+
 `server.ts`:
+
 ``` typescript
 import * as express from 'express';
 import {join} from 'path';
@@ -943,5 +983,16 @@ const {AppServerModuleNgFactory, LAZY_MODULE_MAP, ngExpressEngine, provideModule
 
 This solution is taken from [https://github.com/hippee-lee/3940-v8-ssr/blob/master/server.ts#L29](https://github.com/hippee-lee/3940-v8-ssr/blob/master/server.ts#L29)
 
+### The solution for the `NestJs` (_pay attention to comments_)
+
+`server/app.module.ts`
+
+```typescript
+const BROWSER_DIR = join(process.cwd(), 'dist/browser');
+applyDomino(global, join(BROWSER_DIR, 'index.html'));
+global['Event'] = global['window']['Event'];           //  define the global property `Event`
+```
+
 ## License
-This project is licensed under the terms of the [MIT License](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/develop/LICENSE).
+
+This project is licensed under the terms of the [MIT License](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/develop/LICENSE)

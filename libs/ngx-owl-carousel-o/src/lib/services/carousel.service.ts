@@ -1089,7 +1089,9 @@ export class CarouselService {
 		}
 
 		this.stageData.transform = 'translate3d(' + coordinate + 'px,0px,0px)';
-		this.stageData.transition = (this.speed() / 1000) + 's';
+		this.stageData.transition = (this.speed() / 1000) + 's' + (
+			this.settings.slideTransition ? ' ' + this.settings.slideTransition : ''
+		);
 
 		// also there was transition by means of JQuery.animate or css-changing property left
 	 }
