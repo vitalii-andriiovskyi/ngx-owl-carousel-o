@@ -1,11 +1,12 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { CarouselData } from '../app.component';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
   selector: 'owl-carousel-libdemo-present',
   templateUrl: './present.component.html',
-  styleUrls: ['./present.component.sass']
+  styleUrls: ['./present.component.sass'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PresentComponent implements OnInit {
   carouselData: CarouselData[] = [
