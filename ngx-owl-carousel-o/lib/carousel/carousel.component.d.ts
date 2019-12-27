@@ -1,4 +1,4 @@
-import { OnInit, AfterContentChecked, OnDestroy, QueryList, TemplateRef, ElementRef, AfterContentInit, EventEmitter } from '@angular/core';
+import { OnInit, AfterContentChecked, OnDestroy, QueryList, TemplateRef, ElementRef, AfterContentInit, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ResizeService } from '../services/resize.service';
 import { CarouselService } from '../services/carousel.service';
@@ -65,6 +65,7 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
     private autoHeightService;
     private hashService;
     private logger;
+    private changeDetectorRef;
     slides: QueryList<CarouselSlideDirective>;
     translated: EventEmitter<SlidesOutputData>;
     dragging: EventEmitter<{
@@ -101,8 +102,8 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      */
     stageData: StageData;
     /**
-     *  Data of every slide
-     */
+       *  Data of every slide
+       */
     slidesData: SlideModel[];
     /**
        * Data of navigation block
@@ -153,7 +154,7 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      */
     private _carouselMerge$;
     private docRef;
-    constructor(el: ElementRef, resizeService: ResizeService, carouselService: CarouselService, navigationService: NavigationService, autoplayService: AutoplayService, lazyLoadService: LazyLoadService, animateService: AnimateService, autoHeightService: AutoHeightService, hashService: HashService, logger: OwlLogger, docRef: any);
+    constructor(el: ElementRef, resizeService: ResizeService, carouselService: CarouselService, navigationService: NavigationService, autoplayService: AutoplayService, lazyLoadService: LazyLoadService, animateService: AnimateService, autoHeightService: AutoHeightService, hashService: HashService, logger: OwlLogger, changeDetectorRef: ChangeDetectorRef, docRef: any);
     onVisibilityChange(ev: Event): void;
     ngOnInit(): void;
     ngAfterContentChecked(): void;

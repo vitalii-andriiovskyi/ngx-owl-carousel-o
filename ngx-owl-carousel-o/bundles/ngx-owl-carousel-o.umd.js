@@ -2705,7 +2705,7 @@
         return SlidesOutputData;
     }());
     var CarouselComponent = /** @class */ (function () {
-        function CarouselComponent(el, resizeService, carouselService, navigationService, autoplayService, lazyLoadService, animateService, autoHeightService, hashService, logger, docRef) {
+        function CarouselComponent(el, resizeService, carouselService, navigationService, autoplayService, lazyLoadService, animateService, autoHeightService, hashService, logger, changeDetectorRef, docRef) {
             this.el = el;
             this.resizeService = resizeService;
             this.carouselService = carouselService;
@@ -2716,14 +2716,15 @@
             this.autoHeightService = autoHeightService;
             this.hashService = hashService;
             this.logger = logger;
+            this.changeDetectorRef = changeDetectorRef;
             this.translated = new core.EventEmitter();
             this.dragging = new core.EventEmitter();
             this.change = new core.EventEmitter();
             this.changed = new core.EventEmitter();
             this.initialized = new core.EventEmitter();
             /**
-             *  Data of every slide
-             */
+               *  Data of every slide
+               */
             this.slidesData = [];
             /**
              * Shows whether carousel is loaded of not.
@@ -2800,6 +2801,7 @@
                 }
                 _this.navData = data.navData;
                 _this.dotsData = data.dotsData;
+                _this.changeDetectorRef.markForCheck();
             }));
             this._initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap(function () {
                 _this.gatherTranslatedData();
@@ -3004,7 +3006,7 @@
                 ],
                 styles: [".owl-theme { display: block; }"]
             }),
-            __param(10, core.Inject(DOCUMENT)),
+            __param(11, core.Inject(DOCUMENT)),
             __metadata("design:paramtypes", [core.ElementRef,
                 ResizeService,
                 CarouselService,
@@ -3014,7 +3016,8 @@
                 AnimateService,
                 AutoHeightService,
                 HashService,
-                OwlLogger, Object])
+                OwlLogger,
+                core.ChangeDetectorRef, Object])
         ], CarouselComponent);
         return CarouselComponent;
     }());
