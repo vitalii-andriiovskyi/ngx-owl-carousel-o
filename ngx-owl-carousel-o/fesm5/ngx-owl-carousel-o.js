@@ -1,5 +1,5 @@
 import { __decorate, __metadata, __spread, __assign, __extends, __param } from 'tslib';
-import { Injectable, isDevMode, ErrorHandler, InjectionToken, PLATFORM_ID, Inject, Optional, Input, Directive, TemplateRef, ContentChildren, QueryList, Output, HostListener, Component, ElementRef, EventEmitter, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
+import { Injectable, isDevMode, ErrorHandler, InjectionToken, PLATFORM_ID, Inject, Optional, Input, Directive, TemplateRef, ContentChildren, QueryList, Output, HostListener, Component, ElementRef, ChangeDetectorRef, EventEmitter, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
 import { isPlatformBrowser, LocationStrategy, CommonModule } from '@angular/common';
 import { Subject, merge, of, from } from 'rxjs';
 import { EventManager } from '@angular/platform-browser';
@@ -2630,7 +2630,7 @@ var SlidesOutputData = /** @class */ (function () {
     return SlidesOutputData;
 }());
 var CarouselComponent = /** @class */ (function () {
-    function CarouselComponent(el, resizeService, carouselService, navigationService, autoplayService, lazyLoadService, animateService, autoHeightService, hashService, logger, docRef) {
+    function CarouselComponent(el, resizeService, carouselService, navigationService, autoplayService, lazyLoadService, animateService, autoHeightService, hashService, logger, changeDetectorRef, docRef) {
         this.el = el;
         this.resizeService = resizeService;
         this.carouselService = carouselService;
@@ -2641,14 +2641,15 @@ var CarouselComponent = /** @class */ (function () {
         this.autoHeightService = autoHeightService;
         this.hashService = hashService;
         this.logger = logger;
+        this.changeDetectorRef = changeDetectorRef;
         this.translated = new EventEmitter();
         this.dragging = new EventEmitter();
         this.change = new EventEmitter();
         this.changed = new EventEmitter();
         this.initialized = new EventEmitter();
         /**
-         *  Data of every slide
-         */
+           *  Data of every slide
+           */
         this.slidesData = [];
         /**
          * Shows whether carousel is loaded of not.
@@ -2725,6 +2726,7 @@ var CarouselComponent = /** @class */ (function () {
             }
             _this.navData = data.navData;
             _this.dotsData = data.dotsData;
+            _this.changeDetectorRef.markForCheck();
         }));
         this._initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(function () {
             _this.gatherTranslatedData();
@@ -2929,7 +2931,7 @@ var CarouselComponent = /** @class */ (function () {
             ],
             styles: [".owl-theme { display: block; }"]
         }),
-        __param(10, Inject(DOCUMENT)),
+        __param(11, Inject(DOCUMENT)),
         __metadata("design:paramtypes", [ElementRef,
             ResizeService,
             CarouselService,
@@ -2939,7 +2941,8 @@ var CarouselComponent = /** @class */ (function () {
             AnimateService,
             AutoHeightService,
             HashService,
-            OwlLogger, Object])
+            OwlLogger,
+            ChangeDetectorRef, Object])
     ], CarouselComponent);
     return CarouselComponent;
 }());

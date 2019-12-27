@@ -13,7 +13,8 @@ import {
   AfterContentInit,
   EventEmitter,
   HostListener,
-  Inject
+  Inject,
+  ChangeDetectorRef
 } from '@angular/core';
 
 import { Subscription, Observable, merge, of, from } from 'rxjs';
@@ -175,9 +176,9 @@ export class CarouselComponent
   /**
    * Data of owl-stage
    */
-	stageData: StageData;
+  stageData: StageData;
 
-	/**
+  /**
 	 *  Data of every slide
 	 */
   slidesData: SlideModel[] = [];
@@ -254,6 +255,7 @@ export class CarouselComponent
     private autoHeightService: AutoHeightService,
     private hashService: HashService,
     private logger: OwlLogger,
+    private changeDetectorRef: ChangeDetectorRef,
     @Inject(DOCUMENT) docRef: any
   ) {
     this.docRef = docRef as Document;
@@ -344,6 +346,7 @@ export class CarouselComponent
         }
         this.navData = data.navData;
         this.dotsData = data.dotsData;
+        this.changeDetectorRef.markForCheck();
       })
     );
 
