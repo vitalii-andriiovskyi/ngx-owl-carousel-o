@@ -1,5 +1,5 @@
 import { __decorate, __metadata, __param } from 'tslib';
-import { Injectable, isDevMode, ErrorHandler, InjectionToken, PLATFORM_ID, Inject, Optional, Input, Directive, TemplateRef, EventEmitter, ContentChildren, QueryList, Output, HostListener, Component, ElementRef, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
+import { Injectable, isDevMode, ErrorHandler, InjectionToken, PLATFORM_ID, Inject, Optional, Input, Directive, TemplateRef, EventEmitter, ContentChildren, QueryList, Output, HostListener, Component, ElementRef, ChangeDetectorRef, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
 import { isPlatformBrowser, LocationStrategy, CommonModule } from '@angular/common';
 import { Subject, merge, of, from } from 'rxjs';
 import { EventManager } from '@angular/platform-browser';
@@ -2706,7 +2706,7 @@ CarouselSlideDirective = __decorate([
 class SlidesOutputData {
 }
 let CarouselComponent = class CarouselComponent {
-    constructor(el, resizeService, carouselService, navigationService, autoplayService, lazyLoadService, animateService, autoHeightService, hashService, logger, docRef) {
+    constructor(el, resizeService, carouselService, navigationService, autoplayService, lazyLoadService, animateService, autoHeightService, hashService, logger, changeDetectorRef, docRef) {
         this.el = el;
         this.resizeService = resizeService;
         this.carouselService = carouselService;
@@ -2717,14 +2717,15 @@ let CarouselComponent = class CarouselComponent {
         this.autoHeightService = autoHeightService;
         this.hashService = hashService;
         this.logger = logger;
+        this.changeDetectorRef = changeDetectorRef;
         this.translated = new EventEmitter();
         this.dragging = new EventEmitter();
         this.change = new EventEmitter();
         this.changed = new EventEmitter();
         this.initialized = new EventEmitter();
         /**
-         *  Data of every slide
-         */
+           *  Data of every slide
+           */
         this.slidesData = [];
         /**
          * Shows whether carousel is loaded of not.
@@ -2800,6 +2801,7 @@ let CarouselComponent = class CarouselComponent {
             }
             this.navData = data.navData;
             this.dotsData = data.dotsData;
+            this.changeDetectorRef.markForCheck();
         }));
         this._initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(() => {
             this.gatherTranslatedData();
@@ -3024,41 +3026,30 @@ CarouselComponent = __decorate([
       </ng-container>
     </div> <!-- /.owl-carousel owl-loaded -->
   `,
-                providers: [
-                    NavigationService,
-                    AutoplayService,
-                    CarouselService,
-                    LazyLoadService,
-                    AnimateService,
-                    AutoHeightService,
-                    HashService
-                ],
-                styles: [`.owl-theme { display: block; }`]
-            }] }
-];
-CarouselComponent.ctorParameters = () => [
-    { type: ElementRef },
-    { type: ResizeService },
-    { type: CarouselService },
-    { type: NavigationService },
-    { type: AutoplayService },
-    { type: LazyLoadService },
-    { type: AnimateService },
-    { type: AutoHeightService },
-    { type: HashService },
-    { type: OwlLogger },
-    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
-];
-CarouselComponent.propDecorators = {
-    slides: [{ type: ContentChildren, args: [CarouselSlideDirective,] }],
-    translated: [{ type: Output }],
-    dragging: [{ type: Output }],
-    change: [{ type: Output }],
-    changed: [{ type: Output }],
-    initialized: [{ type: Output }],
-    options: [{ type: Input }],
-    onVisibilityChange: [{ type: HostListener, args: ['document:visibilitychange', ['$event'],] }]
-};
+        providers: [
+            NavigationService,
+            AutoplayService,
+            CarouselService,
+            LazyLoadService,
+            AnimateService,
+            AutoHeightService,
+            HashService
+        ],
+        styles: [`.owl-theme { display: block; }`]
+    }),
+    __param(11, Inject(DOCUMENT)),
+    __metadata("design:paramtypes", [ElementRef,
+        ResizeService,
+        CarouselService,
+        NavigationService,
+        AutoplayService,
+        LazyLoadService,
+        AnimateService,
+        AutoHeightService,
+        HashService,
+        OwlLogger,
+        ChangeDetectorRef, Object])
+], CarouselComponent);
 
 /**
  * @fileoverview added by tsickle

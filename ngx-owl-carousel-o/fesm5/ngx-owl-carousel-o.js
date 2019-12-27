@@ -1,5 +1,5 @@
 import { __decorate, __metadata, __spread, __assign, __extends, __param } from 'tslib';
-import { Injectable, isDevMode, ErrorHandler, InjectionToken, PLATFORM_ID, Inject, Optional, Input, Directive, TemplateRef, ContentChildren, QueryList, Output, HostListener, Component, ElementRef, EventEmitter, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
+import { Injectable, isDevMode, ErrorHandler, InjectionToken, PLATFORM_ID, Inject, Optional, Input, Directive, TemplateRef, ContentChildren, QueryList, Output, HostListener, Component, ElementRef, ChangeDetectorRef, EventEmitter, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
 import { isPlatformBrowser, LocationStrategy, CommonModule } from '@angular/common';
 import { Subject, merge, of, from } from 'rxjs';
 import { EventManager } from '@angular/platform-browser';
@@ -3070,7 +3070,7 @@ SlidesOutputData = /** @class */ (function () {
     return SlidesOutputData;
 }());
 var CarouselComponent = /** @class */ (function () {
-    function CarouselComponent(el, resizeService, carouselService, navigationService, autoplayService, lazyLoadService, animateService, autoHeightService, hashService, logger, docRef) {
+    function CarouselComponent(el, resizeService, carouselService, navigationService, autoplayService, lazyLoadService, animateService, autoHeightService, hashService, logger, changeDetectorRef, docRef) {
         this.el = el;
         this.resizeService = resizeService;
         this.carouselService = carouselService;
@@ -3081,14 +3081,15 @@ var CarouselComponent = /** @class */ (function () {
         this.autoHeightService = autoHeightService;
         this.hashService = hashService;
         this.logger = logger;
+        this.changeDetectorRef = changeDetectorRef;
         this.translated = new EventEmitter();
         this.dragging = new EventEmitter();
         this.change = new EventEmitter();
         this.changed = new EventEmitter();
         this.initialized = new EventEmitter();
         /**
-         *  Data of every slide
-         */
+           *  Data of every slide
+           */
         this.slidesData = [];
         /**
          * Shows whether carousel is loaded of not.
@@ -3165,6 +3166,7 @@ var CarouselComponent = /** @class */ (function () {
             }
             _this.navData = data.navData;
             _this.dotsData = data.dotsData;
+            _this.changeDetectorRef.markForCheck();
         }));
         this._initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(function () {
             _this.gatherTranslatedData();
@@ -3330,45 +3332,68 @@ var CarouselComponent = /** @class */ (function () {
     CarouselComponent.prototype.startPlayTE = function () {
         this.autoplayService.startPlayingTouchEnd();
     };
-    CarouselComponent.decorators = [
-        { type: Component, args: [{
-                    selector: 'owl-carousel-o',
-                    template: "\n    <div class=\"owl-carousel owl-theme\" #owlCarousel\n      [ngClass]=\"{'owl-rtl': owlDOMData?.rtl,\n                  'owl-loaded': owlDOMData?.isLoaded,\n                  'owl-responsive': owlDOMData?.isResponsive,\n                  'owl-drag': owlDOMData?.isMouseDragable,\n                  'owl-grab': owlDOMData?.isGrab}\"\n      (mouseover)=\"startPausing()\"\n      (mouseleave)=\"startPlayML()\"\n      (touchstart)=\"startPausing()\"\n      (touchend)=\"startPlayTE()\">\n\n      <div *ngIf=\"carouselLoaded\" class=\"owl-stage-outer\">\n        <owl-stage [owlDraggable]=\"{'isMouseDragable': owlDOMData?.isMouseDragable, 'isTouchDragable': owlDOMData?.isTouchDragable}\"\n                    [stageData]=\"stageData\"\n                    [slidesData]=\"slidesData\"></owl-stage>\n      </div> <!-- /.owl-stage-outer -->\n      <ng-container *ngIf=\"slides.toArray().length\">\n        <div class=\"owl-nav\" [ngClass]=\"{'disabled': navData?.disabled}\">\n          <div class=\"owl-prev\" [ngClass]=\"{'disabled': navData?.prev?.disabled}\" (click)=\"prev()\" [innerHTML]=\"navData?.prev?.htmlText\"></div>\n          <div class=\"owl-next\" [ngClass]=\"{'disabled': navData?.next?.disabled}\" (click)=\"next()\" [innerHTML]=\"navData?.next?.htmlText\"></div>\n        </div> <!-- /.owl-nav -->\n        <div class=\"owl-dots\" [ngClass]=\"{'disabled': dotsData?.disabled}\">\n          <div *ngFor=\"let dot of dotsData?.dots\" class=\"owl-dot\" [ngClass]=\"{'active': dot.active, 'owl-dot-text': dot.showInnerContent}\" (click)=\"moveByDot(dot.id)\">\n            <span [innerHTML]=\"dot.innerContent\"></span>\n          </div>\n        </div> <!-- /.owl-dots -->\n      </ng-container>\n    </div> <!-- /.owl-carousel owl-loaded -->\n  ",
-                    providers: [
-                        NavigationService,
-                        AutoplayService,
-                        CarouselService,
-                        LazyLoadService,
-                        AnimateService,
-                        AutoHeightService,
-                        HashService
-                    ],
-                    styles: [".owl-theme { display: block; }"]
-                }] }
-    ];
-    CarouselComponent.ctorParameters = function () { return [
-        { type: ElementRef },
-        { type: ResizeService },
-        { type: CarouselService },
-        { type: NavigationService },
-        { type: AutoplayService },
-        { type: LazyLoadService },
-        { type: AnimateService },
-        { type: AutoHeightService },
-        { type: HashService },
-        { type: OwlLogger },
-        { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
-    ]; };
-    CarouselComponent.propDecorators = {
-        slides: [{ type: ContentChildren, args: [CarouselSlideDirective,] }],
-        translated: [{ type: Output }],
-        dragging: [{ type: Output }],
-        change: [{ type: Output }],
-        changed: [{ type: Output }],
-        initialized: [{ type: Output }],
-        options: [{ type: Input }],
-        onVisibilityChange: [{ type: HostListener, args: ['document:visibilitychange', ['$event'],] }]
-    };
+    __decorate([
+        ContentChildren(CarouselSlideDirective),
+        __metadata("design:type", QueryList)
+    ], CarouselComponent.prototype, "slides", void 0);
+    __decorate([
+        Output(),
+        __metadata("design:type", Object)
+    ], CarouselComponent.prototype, "translated", void 0);
+    __decorate([
+        Output(),
+        __metadata("design:type", Object)
+    ], CarouselComponent.prototype, "dragging", void 0);
+    __decorate([
+        Output(),
+        __metadata("design:type", Object)
+    ], CarouselComponent.prototype, "change", void 0);
+    __decorate([
+        Output(),
+        __metadata("design:type", Object)
+    ], CarouselComponent.prototype, "changed", void 0);
+    __decorate([
+        Output(),
+        __metadata("design:type", Object)
+    ], CarouselComponent.prototype, "initialized", void 0);
+    __decorate([
+        Input(),
+        __metadata("design:type", Object)
+    ], CarouselComponent.prototype, "options", void 0);
+    __decorate([
+        HostListener('document:visibilitychange', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Event]),
+        __metadata("design:returntype", void 0)
+    ], CarouselComponent.prototype, "onVisibilityChange", null);
+    CarouselComponent = __decorate([
+        Component({
+            selector: 'owl-carousel-o',
+            template: "\n    <div class=\"owl-carousel owl-theme\" #owlCarousel\n      [ngClass]=\"{'owl-rtl': owlDOMData?.rtl,\n                  'owl-loaded': owlDOMData?.isLoaded,\n                  'owl-responsive': owlDOMData?.isResponsive,\n                  'owl-drag': owlDOMData?.isMouseDragable,\n                  'owl-grab': owlDOMData?.isGrab}\"\n      (mouseover)=\"startPausing()\"\n      (mouseleave)=\"startPlayML()\"\n      (touchstart)=\"startPausing()\"\n      (touchend)=\"startPlayTE()\">\n\n      <div *ngIf=\"carouselLoaded\" class=\"owl-stage-outer\">\n        <owl-stage [owlDraggable]=\"{'isMouseDragable': owlDOMData?.isMouseDragable, 'isTouchDragable': owlDOMData?.isTouchDragable}\"\n                    [stageData]=\"stageData\"\n                    [slidesData]=\"slidesData\"></owl-stage>\n      </div> <!-- /.owl-stage-outer -->\n      <ng-container *ngIf=\"slides.toArray().length\">\n        <div class=\"owl-nav\" [ngClass]=\"{'disabled': navData?.disabled}\">\n          <div class=\"owl-prev\" [ngClass]=\"{'disabled': navData?.prev?.disabled}\" (click)=\"prev()\" [innerHTML]=\"navData?.prev?.htmlText\"></div>\n          <div class=\"owl-next\" [ngClass]=\"{'disabled': navData?.next?.disabled}\" (click)=\"next()\" [innerHTML]=\"navData?.next?.htmlText\"></div>\n        </div> <!-- /.owl-nav -->\n        <div class=\"owl-dots\" [ngClass]=\"{'disabled': dotsData?.disabled}\">\n          <div *ngFor=\"let dot of dotsData?.dots\" class=\"owl-dot\" [ngClass]=\"{'active': dot.active, 'owl-dot-text': dot.showInnerContent}\" (click)=\"moveByDot(dot.id)\">\n            <span [innerHTML]=\"dot.innerContent\"></span>\n          </div>\n        </div> <!-- /.owl-dots -->\n      </ng-container>\n    </div> <!-- /.owl-carousel owl-loaded -->\n  ",
+            providers: [
+                NavigationService,
+                AutoplayService,
+                CarouselService,
+                LazyLoadService,
+                AnimateService,
+                AutoHeightService,
+                HashService
+            ],
+            styles: [".owl-theme { display: block; }"]
+        }),
+        __param(11, Inject(DOCUMENT)),
+        __metadata("design:paramtypes", [ElementRef,
+            ResizeService,
+            CarouselService,
+            NavigationService,
+            AutoplayService,
+            LazyLoadService,
+            AnimateService,
+            AutoHeightService,
+            HashService,
+            OwlLogger,
+            ChangeDetectorRef, Object])
+    ], CarouselComponent);
     return CarouselComponent;
 }());
 
