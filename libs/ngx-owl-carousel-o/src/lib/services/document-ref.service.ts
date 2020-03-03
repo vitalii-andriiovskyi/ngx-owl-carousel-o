@@ -1,10 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import {
-  ClassProvider,
-  FactoryProvider,
-  InjectionToken,
-  PLATFORM_ID,
-} from '@angular/core';
+import { ClassProvider, FactoryProvider, InjectionToken, PLATFORM_ID, Injectable } from '@angular/core';
 
 /**
  * Create a new injection token for injecting the Document into a component.
@@ -22,6 +17,7 @@ export abstract class DocumentRef {
 /**
  * Define class that implements the abstract class and returns the native Document object.
  */
+@Injectable()
 export class BrowserDocumentRef extends DocumentRef {
   constructor() {
     super();
