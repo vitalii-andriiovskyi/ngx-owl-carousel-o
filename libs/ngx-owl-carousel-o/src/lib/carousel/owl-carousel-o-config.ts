@@ -5,6 +5,7 @@ import { OwlOptions } from "../models/owl-options.model";
  */
 export class OwlCarouselOConfig implements OwlOptions {
   items = 3;
+  skip_validateItems = false;
   loop = false;
   center = false;
   rewind = false;
@@ -70,6 +71,7 @@ export class OwlCarouselOConfig implements OwlOptions {
  */
 export class OwlOptionsMockedTypes {
   items = 'number';
+  skip_validateItems = 'boolean';
   loop = 'boolean';
   center = 'boolean';
   rewind = 'boolean';

@@ -623,7 +623,7 @@ export class CarouselService {
 				if (mockedTypes[key] === 'number') {
 					if (this._isNumeric(checkedOptions[key])) {
 						checkedOptions[key] = +checkedOptions[key];
-						checkedOptions[key] = key === 'items' ? this._validateItems(checkedOptions[key]) : checkedOptions[key];
+						checkedOptions[key] = key === 'items' ? this._validateItems(checkedOptions[key], checkedOptions.skip_validateItems) : checkedOptions[key];
 					} else {
 						checkedOptions[key] = setRightOption(mockedTypes[key], key);
 					}
@@ -653,20 +653,24 @@ export class CarouselService {
 	}
 
 	/**
-	 * Checks option items set by user and if it bigger than number of slides then returns number of slides
+	 * Checks the option `items` set by user and if it bigger than number of slides, the function returns number of slides
 	 * @param items option items set by user
+	 * @param skip_validateItems option `skip_validateItems` set by user
 	 * @returns right number of items
 	 */
-	private _validateItems(items: number): number {
-		let result: number;
+	private _validateItems(items: number, skip_validateItems: boolean): number {
+		let result: number = items;
 		if (items > this._items.length) {
-			result = this._items.length;
-			this.logger.log('The option \'items\' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled');
+			if (skip_validateItems) {
+				this.logger.log('The option \'items\' in your options is bigger than the number of slides. The navigation got disabled');
+			} else {
+				result = this._items.length;
+				this.logger.log('The option \'items\' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled');
+			}
 		} else {
 			if (items === this._items.length && (this.settings.dots || this.settings.nav)) {
 				this.logger.log('Option \'items\' in your options is equal to the number of slides. So the navigation got disabled');
 			}
-			result = items;
 		}
 		return result;
 	}
@@ -727,7 +731,7 @@ export class CarouselService {
 			}
 		}
 
-		this.settings = { ...this._options, ...overwrites[match], items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items) : this._options.items};
+		this.settings = { ...this._options, ...overwrites[match], items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items, this._options.skip_validateItems) : this._options.items};
 		// if (typeof this.settings.stagePadding === 'function') {
 		// 	this.settings.stagePadding = this.settings.stagePadding();
 		// }
