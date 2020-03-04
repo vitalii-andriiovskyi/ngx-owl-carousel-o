@@ -8,7 +8,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class ResizeService {
     /**
@@ -55,7 +55,7 @@ ResizeService.ctorParameters = () => [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Defaults value of options
@@ -63,6 +63,7 @@ ResizeService.ctorParameters = () => [
 class OwlCarouselOConfig {
     constructor() {
         this.items = 3;
+        this.skip_validateItems = false;
         this.loop = false;
         this.center = false;
         this.rewind = false;
@@ -116,6 +117,7 @@ class OwlCarouselOConfig {
 class OwlOptionsMockedTypes {
     constructor() {
         this.items = 'number';
+        this.skip_validateItems = 'boolean';
         this.loop = 'boolean';
         this.center = 'boolean';
         this.rewind = 'boolean';
@@ -164,7 +166,7 @@ class OwlOptionsMockedTypes {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class OwlLogger {
     /**
@@ -208,7 +210,7 @@ OwlLogger.ctorParameters = () => [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @enum {string} */
 const Type = {
@@ -382,9 +384,13 @@ class CarouselService {
             // },
             {
                 filter: ['width', 'items', 'settings'],
-                run: cache => {
+                run: (/**
+                 * @param {?} cache
+                 * @return {?}
+                 */
+                cache => {
                     cache.current = this._items && this._items[this.relative(this._current)].id;
-                }
+                })
             },
             // {
             //   filter: ['items', 'settings'],
@@ -394,7 +400,11 @@ class CarouselService {
             // },
             {
                 filter: ['width', 'items', 'settings'],
-                run: (cache) => {
+                run: (/**
+                 * @param {?} cache
+                 * @return {?}
+                 */
+                (cache) => {
                     /** @type {?} */
                     const margin = this.settings.margin || '';
                     /** @type {?} */
@@ -407,16 +417,24 @@ class CarouselService {
                         'margin-right': rtl ? '' : margin
                     };
                     if (!grid) {
-                        this.slidesData.forEach(slide => {
+                        this.slidesData.forEach((/**
+                         * @param {?} slide
+                         * @return {?}
+                         */
+                        slide => {
                             slide.marginL = css['margin-left'];
                             slide.marginR = css['margin-right'];
-                        });
+                        }));
                     }
                     cache.css = css;
-                }
+                })
             }, {
                 filter: ['width', 'items', 'settings'],
-                run: (cache) => {
+                run: (/**
+                 * @param {?} cache
+                 * @return {?}
+                 */
+                (cache) => {
                     /** @type {?} */
                     const width = +(this.width() / this.settings.items).toFixed(3) - this.settings.margin;
                     /** @type {?} */
@@ -438,15 +456,23 @@ class CarouselService {
                         widths[iterator] = !grid ? this._items[iterator].width ? this._items[iterator].width : width : width * merge$$1;
                     }
                     this._widths = widths;
-                    this.slidesData.forEach((slide, i) => {
+                    this.slidesData.forEach((/**
+                     * @param {?} slide
+                     * @param {?} i
+                     * @return {?}
+                     */
+                    (slide, i) => {
                         slide.width = this._widths[i];
                         slide.marginR = cache.css['margin-right'];
                         slide.marginL = cache.css['margin-left'];
-                    });
-                }
+                    }));
+                })
             }, {
                 filter: ['items', 'settings'],
-                run: () => {
+                run: (/**
+                 * @return {?}
+                 */
+                () => {
                     /** @type {?} */
                     const clones = [];
                     /** @type {?} */
@@ -474,23 +500,34 @@ class CarouselService {
                         prepend.unshift(Object.assign({}, this.slidesData[clones[clones.length - 1]]));
                     }
                     this._clones = clones;
-                    append = append.map(slide => {
+                    append = append.map((/**
+                     * @param {?} slide
+                     * @return {?}
+                     */
+                    slide => {
                         slide.id = `${this.clonedIdPrefix}${slide.id}`;
                         slide.isActive = false;
                         slide.isCloned = true;
                         return slide;
-                    });
-                    prepend = prepend.map(slide => {
+                    }));
+                    prepend = prepend.map((/**
+                     * @param {?} slide
+                     * @return {?}
+                     */
+                    slide => {
                         slide.id = `${this.clonedIdPrefix}${slide.id}`;
                         slide.isActive = false;
                         slide.isCloned = true;
                         return slide;
-                    });
+                    }));
                     this.slidesData = prepend.concat(this.slidesData).concat(append);
-                }
+                })
             }, {
                 filter: ['width', 'items', 'settings'],
-                run: () => {
+                run: (/**
+                 * @return {?}
+                 */
+                () => {
                     /** @type {?} */
                     const rtl = this.settings.rtl ? 1 : -1;
                     /** @type {?} */
@@ -509,10 +546,13 @@ class CarouselService {
                         coordinates.push(previous + current * rtl);
                     }
                     this._coordinates = coordinates;
-                }
+                })
             }, {
                 filter: ['width', 'items', 'settings'],
-                run: () => {
+                run: (/**
+                 * @return {?}
+                 */
+                () => {
                     /** @type {?} */
                     const padding = this.settings.stagePadding;
                     /** @type {?} */
@@ -526,7 +566,7 @@ class CarouselService {
                     this.stageData.width = css.width; // use this property in *ngIf directive for .owl-stage element
                     this.stageData.paddingL = css['padding-left'];
                     this.stageData.paddingR = css['padding-right'];
-                }
+                })
             }, {
                 //   filter: [ 'width', 'items', 'settings' ],
                 //   run: cache => {
@@ -551,20 +591,34 @@ class CarouselService {
                 //   }
                 // }, {
                 filter: ['width', 'items', 'settings'],
-                run: cache => {
+                run: (/**
+                 * @param {?} cache
+                 * @return {?}
+                 */
+                cache => {
                     /** @type {?} */
-                    let current = cache.current ? this.slidesData.findIndex(slide => slide.id === cache.current) : 0;
+                    let current = cache.current ? this.slidesData.findIndex((/**
+                     * @param {?} slide
+                     * @return {?}
+                     */
+                    slide => slide.id === cache.current)) : 0;
                     current = Math.max(this.minimum(), Math.min(this.maximum(), current));
                     this.reset(current);
-                }
+                })
             }, {
                 filter: ['position'],
-                run: () => {
+                run: (/**
+                 * @return {?}
+                 */
+                () => {
                     this.animate(this.coordinates(this._current));
-                }
+                })
             }, {
                 filter: ['width', 'position', 'items', 'settings'],
-                run: () => {
+                run: (/**
+                 * @return {?}
+                 */
+                () => {
                     /** @type {?} */
                     const rtl = this.settings.rtl ? 1 : -1;
                     /** @type {?} */
@@ -593,9 +647,13 @@ class CarouselService {
                     end = begin + this.width() * rtl;
                     if (rtl === -1 && this.settings.center) {
                         /** @type {?} */
-                        const result = this._coordinates.filter(element => {
+                        const result = this._coordinates.filter((/**
+                         * @param {?} element
+                         * @return {?}
+                         */
+                        element => {
                             return this.settings.items % 2 === 1 ? element >= begin : element > begin;
-                        });
+                        }));
                         begin = result.length ? result[result.length - 1] : begin;
                     }
                     for (i = 0, n = this._coordinates.length; i < n; i++) {
@@ -606,21 +664,33 @@ class CarouselService {
                             matches.push(i);
                         }
                     }
-                    this.slidesData.forEach(slide => {
+                    this.slidesData.forEach((/**
+                     * @param {?} slide
+                     * @return {?}
+                     */
+                    slide => {
                         slide.isActive = false;
                         return slide;
-                    });
-                    matches.forEach(item => {
+                    }));
+                    matches.forEach((/**
+                     * @param {?} item
+                     * @return {?}
+                     */
+                    item => {
                         this.slidesData[item].isActive = true;
-                    });
+                    }));
                     if (this.settings.center) {
-                        this.slidesData.forEach(slide => {
+                        this.slidesData.forEach((/**
+                         * @param {?} slide
+                         * @return {?}
+                         */
+                        slide => {
                             slide.isCentered = false;
                             return slide;
-                        });
+                        }));
                         this.slidesData[this.current()].isCentered = true;
                     }
-                }
+                })
             }
         ];
     }
@@ -750,17 +820,22 @@ class CarouselService {
         /** @type {?} */
         const mockedTypes = new OwlOptionsMockedTypes();
         /** @type {?} */
-        const setRightOption = (type, key) => {
+        const setRightOption = (/**
+         * @param {?} type
+         * @param {?} key
+         * @return {?}
+         */
+        (type, key) => {
             this.logger.log(`options.${key} must be type of ${type}; ${key}=${options[key]} skipped to defaults: ${key}=${configOptions[key]}`);
             return configOptions[key];
-        };
+        });
         for (const key in checkedOptions) {
             if (checkedOptions.hasOwnProperty(key)) {
                 // condition could be shortened but it gets harder for understanding
                 if (mockedTypes[key] === 'number') {
                     if (this._isNumeric(checkedOptions[key])) {
                         checkedOptions[key] = +checkedOptions[key];
-                        checkedOptions[key] = key === 'items' ? this._validateItems(checkedOptions[key]) : checkedOptions[key];
+                        checkedOptions[key] = key === 'items' ? this._validateItems(checkedOptions[key], checkedOptions.skip_validateItems) : checkedOptions[key];
                     }
                     else {
                         checkedOptions[key] = setRightOption(mockedTypes[key], key);
@@ -782,9 +857,13 @@ class CarouselService {
                     if (Array.isArray(checkedOptions[key])) {
                         /** @type {?} */
                         let isString = false;
-                        checkedOptions[key].forEach(element => {
+                        checkedOptions[key].forEach((/**
+                         * @param {?} element
+                         * @return {?}
+                         */
+                        element => {
                             isString = typeof element === 'string' ? true : false;
-                        });
+                        }));
                         if (!isString) {
                             checkedOptions[key] = setRightOption(mockedTypes[key], key);
                         }
@@ -798,23 +877,28 @@ class CarouselService {
         return checkedOptions;
     }
     /**
-     * Checks option items set by user and if it bigger than number of slides then returns number of slides
+     * Checks the option `items` set by user and if it bigger than number of slides, the function returns number of slides
      * @private
      * @param {?} items option items set by user
+     * @param {?} skip_validateItems option `skip_validateItems` set by user
      * @return {?} right number of items
      */
-    _validateItems(items) {
+    _validateItems(items, skip_validateItems) {
         /** @type {?} */
-        let result;
+        let result = items;
         if (items > this._items.length) {
-            result = this._items.length;
-            this.logger.log('The option \'items\' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled');
+            if (skip_validateItems) {
+                this.logger.log('The option \'items\' in your options is bigger than the number of slides. The navigation got disabled');
+            }
+            else {
+                result = this._items.length;
+                this.logger.log('The option \'items\' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled');
+            }
         }
         else {
             if (items === this._items.length && (this.settings.dots || this.settings.nav)) {
                 this.logger.log('Option \'items\' in your options is equal to the number of slides. So the navigation got disabled');
             }
-            result = items;
         }
         return result;
     }
@@ -870,7 +954,7 @@ class CarouselService {
                 }
             }
         }
-        this.settings = Object.assign({}, this._options, overwrites[match], { items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items) : this._options.items });
+        this.settings = Object.assign({}, this._options, overwrites[match], { items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items, this._options.skip_validateItems) : this._options.items });
         // if (typeof this.settings.stagePadding === 'function') {
         // 	this.settings.stagePadding = this.settings.stagePadding();
         // }
@@ -880,11 +964,15 @@ class CarouselService {
         this.owlDOMData.isTouchDragable = this.settings.touchDrag;
         /** @type {?} */
         const mergers = [];
-        this._items.forEach(item => {
+        this._items.forEach((/**
+         * @param {?} item
+         * @return {?}
+         */
+        item => {
             /** @type {?} */
             const mergeN = this.settings.merge ? item.dataMerge : 1;
             mergers.push(mergeN);
-        });
+        }));
         this._mergers = mergers;
         this._breakpoint = match;
         this.invalidate('settings');
@@ -901,11 +989,15 @@ class CarouselService {
         if (this._mergers.length) {
             this._mergers = [];
         }
-        slides.forEach(item => {
+        slides.forEach((/**
+         * @param {?} item
+         * @return {?}
+         */
+        item => {
             /** @type {?} */
             const mergeN = this.settings.merge ? item.dataMerge : 1;
             this._mergers.push(mergeN);
-        });
+        }));
         this._clones = [];
         this.reset(this._isNumeric(this.settings.startPosition) ? +this.settings.startPosition : 0);
         this.invalidate('items');
@@ -952,7 +1044,11 @@ class CarouselService {
         /** @type {?} */
         const n = this._pipe.length;
         /** @type {?} */
-        const filter$$1 = item => this._invalidated[item];
+        const filter$$1 = (/**
+         * @param {?} item
+         * @return {?}
+         */
+        item => this._invalidated[item]);
         /** @type {?} */
         const cache = {};
         while (i < n) {
@@ -963,7 +1059,11 @@ class CarouselService {
             }
             i++;
         }
-        this.slidesData.forEach(slide => slide.classes = this.setCurSlideClasses(slide));
+        this.slidesData.forEach((/**
+         * @param {?} slide
+         * @return {?}
+         */
+        slide => slide.classes = this.setCurSlideClasses(slide)));
         this.sendChanges();
         this._invalidated = {};
         if (!this.is('valid')) {
@@ -1155,12 +1255,16 @@ class CarouselService {
         /** @type {?} */
         let position = -1;
         if (this.settings.center) {
-            coordinates = coordinates.map(item => {
+            coordinates = coordinates.map((/**
+             * @param {?} item
+             * @return {?}
+             */
+            item => {
                 if (item === 0) {
                     item += 0.000001;
                 }
                 return item;
-            });
+            }));
         }
         // option 'freeDrag' doesn't have realization and using it here creates problem:
         // variable 'position' stays unchanged (it equals -1 at the begging) and thus method returns -1
@@ -1399,11 +1503,29 @@ class CarouselService {
         /** @type {?} */
         const even = odd + this._items.length;
         /** @type {?} */
-        const map$$1 = index => index % 2 === 0 ? even + index / 2 : odd - (index + 1) / 2;
+        const map$$1 = (/**
+         * @param {?} index
+         * @return {?}
+         */
+        index => index % 2 === 0 ? even + index / 2 : odd - (index + 1) / 2);
         if (position === undefined) {
-            return this._clones.map((v, i) => map$$1(i));
+            return this._clones.map((/**
+             * @param {?} v
+             * @param {?} i
+             * @return {?}
+             */
+            (v, i) => map$$1(i)));
         }
-        return this._clones.map((v, i) => v === position ? map$$1(i) : null).filter(item => item);
+        return this._clones.map((/**
+         * @param {?} v
+         * @param {?} i
+         * @return {?}
+         */
+        (v, i) => v === position ? map$$1(i) : null)).filter((/**
+         * @param {?} item
+         * @return {?}
+         */
+        item => item));
     }
     /**
      * Sets the current animation speed.
@@ -1432,9 +1554,14 @@ class CarouselService {
         /** @type {?} */
         let result;
         if (position === undefined) {
-            result = this._coordinates.map((item, index) => {
+            result = this._coordinates.map((/**
+             * @param {?} item
+             * @param {?} index
+             * @return {?}
+             */
+            (item, index) => {
                 return (/** @type {?} */ (this.coordinates(index)));
-            });
+            }));
             return result;
         }
         if (this.settings.center) {
@@ -1509,11 +1636,14 @@ class CarouselService {
         else {
             position = Math.max(minimum, Math.min(maximum, position));
         }
-        setTimeout(() => {
+        setTimeout((/**
+         * @return {?}
+         */
+        () => {
             this.speed(this._duration(current, position, speed));
             this.current(position);
             this.update();
-        }, delayForLoop);
+        }), delayForLoop);
     }
     /**
      * Slides to the next item.
@@ -1589,13 +1719,21 @@ class CarouselService {
         let loadMap;
         if (this.slidesData && this.slidesData.length) {
             loadMap = new Map();
-            this.slidesData.forEach(item => {
+            this.slidesData.forEach((/**
+             * @param {?} item
+             * @return {?}
+             */
+            item => {
                 if (item.load) {
                     loadMap.set(item.id, item.load);
                 }
-            });
+            }));
         }
-        this.slidesData = this._items.map(slide => {
+        this.slidesData = this._items.map((/**
+         * @param {?} slide
+         * @return {?}
+         */
+        slide => {
             return {
                 id: `${slide.id}`,
                 isActive: false,
@@ -1606,7 +1744,7 @@ class CarouselService {
                 load: loadMap ? loadMap.get(slide.id) : false,
                 hashFragment: slide.dataHash
             };
-        });
+        }));
     }
     /**
      * Sets current classes for slide
@@ -1712,12 +1850,16 @@ class CarouselService {
      * @return {?}
      */
     enter(name) {
-        [name].concat(this._states.tags[name] || []).forEach((stateName) => {
+        [name].concat(this._states.tags[name] || []).forEach((/**
+         * @param {?} stateName
+         * @return {?}
+         */
+        (stateName) => {
             if (this._states.current[stateName] === undefined) {
                 this._states.current[stateName] = 0;
             }
             this._states.current[stateName]++;
-        });
+        }));
     }
     ;
     /**
@@ -1726,11 +1868,15 @@ class CarouselService {
      * @return {?}
      */
     leave(name) {
-        [name].concat(this._states.tags[name] || []).forEach((stateName) => {
+        [name].concat(this._states.tags[name] || []).forEach((/**
+         * @param {?} stateName
+         * @return {?}
+         */
+        (stateName) => {
             if (this._states.current[stateName] === 0 || !!this._states.current[stateName]) {
                 this._states.current[stateName]--;
             }
-        });
+        }));
     }
     ;
     /**
@@ -1746,9 +1892,14 @@ class CarouselService {
             else {
                 this._states.tags[object.name] = this._states.tags[object.name].concat(object.tags);
             }
-            this._states.tags[object.name] = this._states.tags[object.name].filter((tag, i) => {
+            this._states.tags[object.name] = this._states.tags[object.name].filter((/**
+             * @param {?} tag
+             * @param {?} i
+             * @return {?}
+             */
+            (tag, i) => {
                 return this._states.tags[object.name].indexOf(tag) === i;
-            });
+            }));
         }
     }
     /**
@@ -1758,9 +1909,13 @@ class CarouselService {
      * @return {?}
      */
     _suppress(events) {
-        events.forEach(event => {
+        events.forEach((/**
+         * @param {?} event
+         * @return {?}
+         */
+        event => {
             this._supress[event] = true;
-        });
+        }));
     }
     /**
      * Releases suppressed events.
@@ -1769,9 +1924,13 @@ class CarouselService {
      * @return {?}
      */
     _release(events) {
-        events.forEach(event => {
+        events.forEach((/**
+         * @param {?} event
+         * @return {?}
+         */
+        event => {
             delete this._supress[event];
-        });
+        }));
     }
     /**
      * Gets unified pointer coordinates from event.
@@ -1855,7 +2014,7 @@ CarouselService.ctorParameters = () => [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class NavigationService {
     /**
@@ -1906,17 +2065,29 @@ class NavigationService {
      */
     spyDataStreams() {
         /** @type {?} */
-        const initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(state$$1 => {
+        const initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap((/**
+         * @param {?} state
+         * @return {?}
+         */
+        state$$1 => {
             this.initialize();
             this._updateNavPages();
             this.draw();
             this.update();
             this.carouselService.sendChanges();
-        }));
+        })));
         // mostly changes in carouselService and carousel at all causes carouselService.to(). It moves stage right-left by its code and calling needed functions
         // Thus this method by calling carouselService.current(position) notifies about changes
         /** @type {?} */
-        const changedSettings$ = this.carouselService.getChangedState().pipe(filter(data => data.property.name === 'position'), tap(data => {
+        const changedSettings$ = this.carouselService.getChangedState().pipe(filter((/**
+         * @param {?} data
+         * @return {?}
+         */
+        data => data.property.name === 'position')), tap((/**
+         * @param {?} data
+         * @return {?}
+         */
+        data => {
             this.update();
             // should be the call of the function written at the end of comment
             // but the method carouselServive.to() has setTimeout(f, 0) which contains carouselServive.update() which calls sendChanges() method.
@@ -1924,17 +2095,23 @@ class NavigationService {
             // updates of carouselService.navData and carouselService.dotsData are being happening withing carouselService.current(position) method which calls next() of _changedSettingsCarousel$
             // carouselService.current(position) is being calling earlier than carouselServive.update();
             // this.carouselService.sendChanges();
-        }));
+        })));
         /** @type {?} */
-        const refreshedCarousel$ = this.carouselService.getRefreshedState().pipe(tap(() => {
+        const refreshedCarousel$ = this.carouselService.getRefreshedState().pipe(tap((/**
+         * @return {?}
+         */
+        () => {
             this._updateNavPages();
             this.draw();
             this.update();
             this.carouselService.sendChanges();
-        }));
+        })));
         /** @type {?} */
         const navMerge$ = merge(initializedCarousel$, changedSettings$, refreshedCarousel$);
-        this.navSubscription = navMerge$.subscribe(() => { });
+        this.navSubscription = navMerge$.subscribe((/**
+         * @return {?}
+         */
+        () => { }));
     }
     /**
      * Initializes the layout of the plugin and extends the carousel.
@@ -2014,14 +2191,18 @@ class NavigationService {
             difference = this._pages.length - this._dotsData.dots.length;
             if (settings.dotsData && difference !== 0) {
                 this._dotsData.dots = [];
-                items.forEach(item => {
+                items.forEach((/**
+                 * @param {?} item
+                 * @return {?}
+                 */
+                item => {
                     this._dotsData.dots.push({
                         active: false,
                         id: `dot-${item.id}`,
                         innerContent: item.dotContent,
                         showInnerContent: true
                     });
-                });
+                }));
             }
             else if (difference > 0) {
                 /** @type {?} */
@@ -2080,11 +2261,15 @@ class NavigationService {
         if (!this.carouselService.settings.dots) {
             return;
         }
-        this._dotsData.dots.forEach(item => {
+        this._dotsData.dots.forEach((/**
+         * @param {?} item
+         * @return {?}
+         */
+        item => {
             if (item.active === true) {
                 item.active = false;
             }
-        });
+        }));
         curActiveDotI = this._current();
         if (this._dotsData.dots.length) {
             this._dotsData.dots[curActiveDotI].active = true;
@@ -2102,12 +2287,21 @@ class NavigationService {
         /** @type {?} */
         let finalCurrent;
         /** @type {?} */
-        const pages = this._pages.filter((page, index) => {
+        const pages = this._pages.filter((/**
+         * @param {?} page
+         * @param {?} index
+         * @return {?}
+         */
+        (page, index) => {
             return page.start <= current && page.end >= current;
-        }).pop();
-        finalCurrent = this._pages.findIndex(page => {
+        })).pop();
+        finalCurrent = this._pages.findIndex((/**
+         * @param {?} page
+         * @return {?}
+         */
+        page => {
             return page.start === pages.start && page.end === pages.end;
-        });
+        }));
         return finalCurrent;
     }
     ;
@@ -2182,7 +2376,11 @@ class NavigationService {
      */
     moveByDot(dotId) {
         /** @type {?} */
-        const index = this._dotsData.dots.findIndex(dot => dotId === dot.id);
+        const index = this._dotsData.dots.findIndex((/**
+         * @param {?} dot
+         * @return {?}
+         */
+        dot => dotId === dot.id));
         this.to(index, this.carouselService.settings.dotsSpeed);
     }
     /**
@@ -2192,7 +2390,11 @@ class NavigationService {
      */
     toSlideById(id) {
         /** @type {?} */
-        const position = this.carouselService.slidesData.findIndex(slide => slide.id === id && slide.isCloned === false);
+        const position = this.carouselService.slidesData.findIndex((/**
+         * @param {?} slide
+         * @return {?}
+         */
+        slide => slide.id === id && slide.isCloned === false));
         if (position === -1 || position === this.carouselService.current()) {
             return;
         }
@@ -2208,7 +2410,7 @@ NavigationService.ctorParameters = () => [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Create a new injection token for injecting the window into a component.
@@ -2253,8 +2455,17 @@ function windowFactory(browserWindowRef, platformId) {
     }
     /** @type {?} */
     const obj = {
-        setTimeout: (func, time) => { },
-        clearTimeout: (a) => { }
+        setTimeout: (/**
+         * @param {?} func
+         * @param {?} time
+         * @return {?}
+         */
+        (func, time) => { }),
+        clearTimeout: (/**
+         * @param {?} a
+         * @return {?}
+         */
+        (a) => { })
     };
     return obj;
 }
@@ -2283,7 +2494,7 @@ const WINDOW_PROVIDERS = [browserWindowProvider, windowProvider];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Create a new injection token for injecting the Document into a component.
@@ -2358,7 +2569,7 @@ const DOCUMENT_PROVIDERS = [browserDocumentProvider, documentProvider];
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class AutoplayService {
     /**
@@ -2392,24 +2603,34 @@ class AutoplayService {
      */
     spyDataStreams() {
         /** @type {?} */
-        const initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(() => {
+        const initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap((/**
+         * @return {?}
+         */
+        () => {
             if (this.carouselService.settings.autoplay) {
                 this.play();
             }
-        }));
+        })));
         /** @type {?} */
-        const changedSettings$ = this.carouselService.getChangedState().pipe(tap(data => {
+        const changedSettings$ = this.carouselService.getChangedState().pipe(tap((/**
+         * @param {?} data
+         * @return {?}
+         */
+        data => {
             this._handleChangeObservable(data);
-        }));
+        })));
         /** @type {?} */
-        const resized$ = this.carouselService.getResizedState().pipe(tap(() => {
+        const resized$ = this.carouselService.getResizedState().pipe(tap((/**
+         * @return {?}
+         */
+        () => {
             if (this.carouselService.settings.autoplay) {
                 this.play();
             }
             else {
                 this.stop();
             }
-        }))
+        })))
         // original Autoplay Plugin has listeners on play.owl.core and stop.owl.core events.
         // They are triggered by Video Plugin
         ;
@@ -2417,7 +2638,10 @@ class AutoplayService {
         // They are triggered by Video Plugin
         /** @type {?} */
         const autoplayMerge$ = merge(initializedCarousel$, changedSettings$, resized$);
-        this.autoplaySubscription = autoplayMerge$.subscribe(() => { });
+        this.autoplaySubscription = autoplayMerge$.subscribe((/**
+         * @return {?}
+         */
+        () => { }));
     }
     /**
      * Starts the autoplay.
@@ -2449,12 +2673,15 @@ class AutoplayService {
             this.winRef.clearTimeout(this._timeout);
         }
         this._isArtificialAutoplayTimeout = timeout ? true : false;
-        return this.winRef.setTimeout(() => {
+        return this.winRef.setTimeout((/**
+         * @return {?}
+         */
+        () => {
             if (this._paused || this.carouselService.is('busy') || this.carouselService.is('interacting') || this.docRef.hidden) {
                 return;
             }
             this.carouselService.next(speed || this.carouselService.settings.autoplaySpeed);
-        }, timeout || this.carouselService.settings.autoplayTimeout);
+        }), timeout || this.carouselService.settings.autoplayTimeout);
     }
     ;
     /**
@@ -2519,7 +2746,20 @@ class AutoplayService {
      * @return {?}
      */
     _playAfterTranslated() {
-        of('translated').pipe(switchMap(data => this.carouselService.getTranslatedState()), first(), filter(() => this._isArtificialAutoplayTimeout), tap(() => this._setAutoPlayInterval())).subscribe(() => { });
+        of('translated').pipe(switchMap((/**
+         * @param {?} data
+         * @return {?}
+         */
+        data => this.carouselService.getTranslatedState())), first(), filter((/**
+         * @return {?}
+         */
+        () => this._isArtificialAutoplayTimeout)), tap((/**
+         * @return {?}
+         */
+        () => this._setAutoPlayInterval()))).subscribe((/**
+         * @return {?}
+         */
+        () => { }));
     }
     /**
      * Starts pausing
@@ -2562,7 +2802,7 @@ AutoplayService.ctorParameters = () => [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class LazyLoadService {
     /**
@@ -2584,18 +2824,32 @@ class LazyLoadService {
      */
     spyDataStreams() {
         /** @type {?} */
-        const initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(() => {
+        const initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap((/**
+         * @return {?}
+         */
+        () => {
             /** @type {?} */
             const isLazyLoad = this.carouselService.settings && !this.carouselService.settings.lazyLoad;
-            this.carouselService.slidesData.forEach(item => item.load = isLazyLoad ? true : false);
-        }));
+            this.carouselService.slidesData.forEach((/**
+             * @param {?} item
+             * @return {?}
+             */
+            item => item.load = isLazyLoad ? true : false));
+        })));
         /** @type {?} */
         const changeSettings$ = this.carouselService.getChangeState();
         /** @type {?} */
         const resizedCarousel$ = this.carouselService.getResizedState();
         /** @type {?} */
-        const lazyLoadMerge$ = merge(initializedCarousel$, changeSettings$, resizedCarousel$).pipe(tap(data => this._defineLazyLoadSlides(data)));
-        this.lazyLoadSubscription = lazyLoadMerge$.subscribe(() => { });
+        const lazyLoadMerge$ = merge(initializedCarousel$, changeSettings$, resizedCarousel$).pipe(tap((/**
+         * @param {?} data
+         * @return {?}
+         */
+        data => this._defineLazyLoadSlides(data))));
+        this.lazyLoadSubscription = lazyLoadMerge$.subscribe((/**
+         * @return {?}
+         */
+        () => { }));
     }
     /**
      * @private
@@ -2630,7 +2884,11 @@ class LazyLoadService {
             while (i++ < n) {
                 this._load(clones / 2 + this.carouselService.relative(position));
                 if (clones) {
-                    this.carouselService.clones(this.carouselService.relative(position)).forEach(value => this._load(value));
+                    this.carouselService.clones(this.carouselService.relative(position)).forEach((/**
+                     * @param {?} value
+                     * @return {?}
+                     */
+                    value => this._load(value)));
                 }
                 position++;
             }
@@ -2658,7 +2916,7 @@ LazyLoadService.ctorParameters = () => [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class AnimateService {
     /**
@@ -2692,12 +2950,16 @@ class AnimateService {
      */
     spyDataStreams() {
         /** @type {?} */
-        const changeSettings$ = this.carouselService.getChangeState().pipe(tap(data => {
+        const changeSettings$ = this.carouselService.getChangeState().pipe(tap((/**
+         * @param {?} data
+         * @return {?}
+         */
+        data => {
             if (data.property.name === 'position') {
                 this.previous = this.carouselService.current();
                 this.next = data.property.value;
             }
-        }));
+        })));
         /** @type {?} */
         const dragCarousel$ = this.carouselService.getDragState();
         /** @type {?} */
@@ -2705,16 +2967,27 @@ class AnimateService {
         /** @type {?} */
         const translatedCarousel$ = this.carouselService.getTranslatedState();
         /** @type {?} */
-        const dragTranslatedMerge$ = merge(dragCarousel$, draggedCarousel$, translatedCarousel$).pipe(tap(data => this.swapping = data === 'translated'));
+        const dragTranslatedMerge$ = merge(dragCarousel$, draggedCarousel$, translatedCarousel$).pipe(tap((/**
+         * @param {?} data
+         * @return {?}
+         */
+        data => this.swapping = data === 'translated')));
         /** @type {?} */
-        const translateCarousel$ = this.carouselService.getTranslateState().pipe(tap(data => {
+        const translateCarousel$ = this.carouselService.getTranslateState().pipe(tap((/**
+         * @param {?} data
+         * @return {?}
+         */
+        data => {
             if (this.swapping && (this.carouselService._options.animateOut || this.carouselService._options.animateIn)) {
                 this._swap();
             }
-        }));
+        })));
         /** @type {?} */
         const animateMerge$ = merge(changeSettings$, translateCarousel$, dragTranslatedMerge$).pipe();
-        this.animateSubscription = animateMerge$.subscribe(() => { });
+        this.animateSubscription = animateMerge$.subscribe((/**
+         * @return {?}
+         */
+        () => { }));
     }
     /**
      * Toggles the animation classes whenever an translations starts.
@@ -2744,23 +3017,31 @@ class AnimateService {
         }
         if (outgoing) {
             left = +this.carouselService.coordinates(this.previous) - +this.carouselService.coordinates(this.next);
-            this.carouselService.slidesData.forEach(slide => {
+            this.carouselService.slidesData.forEach((/**
+             * @param {?} slide
+             * @return {?}
+             */
+            slide => {
                 if (slide.id === previous.id) {
                     slide.left = `${left}px`;
                     slide.isAnimated = true;
                     slide.isDefAnimatedOut = true;
                     slide.isCustomAnimatedOut = true;
                 }
-            });
+            }));
         }
         if (incoming) {
-            this.carouselService.slidesData.forEach(slide => {
+            this.carouselService.slidesData.forEach((/**
+             * @param {?} slide
+             * @return {?}
+             */
+            slide => {
                 if (slide.id === next.id) {
                     slide.isAnimated = true;
                     slide.isDefAnimatedIn = true;
                     slide.isCustomAnimatedIn = true;
                 }
-            });
+            }));
         }
     }
     ;
@@ -2770,7 +3051,11 @@ class AnimateService {
      * @return {?}
      */
     clear(id) {
-        this.carouselService.slidesData.forEach(slide => {
+        this.carouselService.slidesData.forEach((/**
+         * @param {?} slide
+         * @return {?}
+         */
+        slide => {
             if (slide.id === id) {
                 slide.left = '';
                 slide.isAnimated = false;
@@ -2780,7 +3065,7 @@ class AnimateService {
                 slide.isCustomAnimatedIn = false;
                 slide.classes = this.carouselService.setCurSlideClasses(slide);
             }
-        });
+        }));
         this.carouselService.onTransitionEnd();
     }
     ;
@@ -2794,7 +3079,7 @@ AnimateService.ctorParameters = () => [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class AutoHeightService {
     /**
@@ -2816,29 +3101,48 @@ class AutoHeightService {
      */
     spyDataStreams() {
         /** @type {?} */
-        const initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(data => {
+        const initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap((/**
+         * @param {?} data
+         * @return {?}
+         */
+        data => {
             if (this.carouselService.settings.autoHeight) {
                 this.update();
             }
             else {
-                this.carouselService.slidesData.forEach(slide => slide.heightState = 'full');
+                this.carouselService.slidesData.forEach((/**
+                 * @param {?} slide
+                 * @return {?}
+                 */
+                slide => slide.heightState = 'full'));
             }
-        }));
+        })));
         /** @type {?} */
-        const changedSettings$ = this.carouselService.getChangedState().pipe(tap(data => {
+        const changedSettings$ = this.carouselService.getChangedState().pipe(tap((/**
+         * @param {?} data
+         * @return {?}
+         */
+        data => {
             if (this.carouselService.settings.autoHeight && data.property.name === 'position') {
                 this.update();
             }
-        }));
+        })));
         /** @type {?} */
-        const refreshedCarousel$ = this.carouselService.getRefreshedState().pipe(tap(data => {
+        const refreshedCarousel$ = this.carouselService.getRefreshedState().pipe(tap((/**
+         * @param {?} data
+         * @return {?}
+         */
+        data => {
             if (this.carouselService.settings.autoHeight) {
                 this.update();
             }
-        }));
+        })));
         /** @type {?} */
         const autoHeight$ = merge(initializedCarousel$, changedSettings$, refreshedCarousel$);
-        this.autoHeightSubscription = autoHeight$.subscribe(() => { });
+        this.autoHeightSubscription = autoHeight$.subscribe((/**
+         * @return {?}
+         */
+        () => { }));
     }
     /**
      * Updates the prop 'heightState' of slides
@@ -2855,9 +3159,14 @@ class AutoHeightService {
             start = items % 2 === 1 ? start - (items - 1) / 2 : start - items / 2;
             end = items % 2 === 1 ? start + items : start + items + 1;
         }
-        this.carouselService.slidesData.forEach((slide, i) => {
+        this.carouselService.slidesData.forEach((/**
+         * @param {?} slide
+         * @param {?} i
+         * @return {?}
+         */
+        (slide, i) => {
             slide.heightState = (i >= start && i < end) ? 'full' : 'nulled';
-        });
+        }));
     }
 }
 AutoHeightService.decorators = [
@@ -2869,7 +3178,7 @@ AutoHeightService.ctorParameters = () => [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class HashService {
     /**
@@ -2889,7 +3198,12 @@ class HashService {
         }
         if (!this.router) {
             this.router = (/** @type {?} */ ({
-                navigate: (commands, extras) => { return; }
+                navigate: (/**
+                 * @param {?} commands
+                 * @param {?=} extras
+                 * @return {?}
+                 */
+                (commands, extras) => { return; })
             }));
         }
     }
@@ -2905,9 +3219,16 @@ class HashService {
      */
     spyDataStreams() {
         /** @type {?} */
-        const initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(() => this.listenToRoute()));
+        const initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap((/**
+         * @return {?}
+         */
+        () => this.listenToRoute())));
         /** @type {?} */
-        const changedSettings$ = this.carouselService.getChangedState().pipe(tap(data => {
+        const changedSettings$ = this.carouselService.getChangedState().pipe(tap((/**
+         * @param {?} data
+         * @return {?}
+         */
+        data => {
             if (this.carouselService.settings.URLhashListener && data.property.name === 'position') {
                 /** @type {?} */
                 const newCurSlide = this.carouselService.current();
@@ -2918,10 +3239,13 @@ class HashService {
                 }
                 this.router.navigate(['./'], { fragment: newCurFragment, relativeTo: this.route });
             }
-        }));
+        })));
         /** @type {?} */
         const hashFragment$ = merge(initializedCarousel$, changedSettings$);
-        this.hashSubscription = hashFragment$.subscribe(() => { });
+        this.hashSubscription = hashFragment$.subscribe((/**
+         * @return {?}
+         */
+        () => { }));
     }
     /**
      * rewinds carousel to slide which has the same hashFragment as fragment of current url
@@ -2930,7 +3254,11 @@ class HashService {
      */
     rewind(fragment) {
         /** @type {?} */
-        const position = this.carouselService.slidesData.findIndex(slide => slide.hashFragment === fragment && slide.isCloned === false);
+        const position = this.carouselService.slidesData.findIndex((/**
+         * @param {?} slide
+         * @return {?}
+         */
+        slide => slide.hashFragment === fragment && slide.isCloned === false));
         if (position === -1 || position === this.carouselService.current()) {
             return;
         }
@@ -2944,10 +3272,14 @@ class HashService {
         /** @type {?} */
         const count = this.carouselService.settings.startPosition === 'URLHash' ? 0 : 2;
         this.route.fragment.pipe(skip(count))
-            .subscribe(fragment => {
+            .subscribe((/**
+         * @param {?} fragment
+         * @return {?}
+         */
+        fragment => {
             this.currentHashFragment = fragment;
             this.rewind(fragment);
-        });
+        }));
     }
 }
 HashService.decorators = [
@@ -2961,7 +3293,7 @@ HashService.ctorParameters = () => [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /** @type {?} */
 let nextId = 0;
@@ -3117,7 +3449,11 @@ class CarouselComponent {
         else {
             this.logger.log(`There are no slides to show. So the carousel won't be rendered`);
         }
-        this._slidesChangesSubscription = this.slides.changes.pipe(tap((slides) => {
+        this._slidesChangesSubscription = this.slides.changes.pipe(tap((/**
+         * @param {?} slides
+         * @return {?}
+         */
+        (slides) => {
             if (slides.toArray().length) {
                 // this.carouselService.setItems(slides.toArray());
                 this.carouselService.setup(this.carouselWindowWidth, slides.toArray(), this.options);
@@ -3127,7 +3463,10 @@ class CarouselComponent {
                 this.carouselLoaded = false;
                 this.logger.log(`There are no slides to show. So the carousel won't be re-rendered`);
             }
-        })).subscribe(() => { });
+        }))).subscribe((/**
+         * @return {?}
+         */
+        () => { }));
     }
     /**
      * @return {?}
@@ -3149,7 +3488,11 @@ class CarouselComponent {
      * @return {?}
      */
     spyDataStreams() {
-        this._viewCurSettings$ = this.carouselService.getViewCurSettings().pipe(tap(data => {
+        this._viewCurSettings$ = this.carouselService.getViewCurSettings().pipe(tap((/**
+         * @param {?} data
+         * @return {?}
+         */
+        data => {
             this.owlDOMData = data.owlDOMData;
             this.stageData = data.stageData;
             this.slidesData = data.slidesData;
@@ -3158,36 +3501,63 @@ class CarouselComponent {
             }
             this.navData = data.navData;
             this.dotsData = data.dotsData;
-        }));
-        this._initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(() => {
+        })));
+        this._initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap((/**
+         * @return {?}
+         */
+        () => {
             this.gatherTranslatedData();
             this.initialized.emit(this.slidesOutputData);
             // this.slidesOutputData = {};
-        }));
-        this._translatedCarousel$ = this.carouselService.getTranslatedState().pipe(tap(() => {
+        })));
+        this._translatedCarousel$ = this.carouselService.getTranslatedState().pipe(tap((/**
+         * @return {?}
+         */
+        () => {
             this.gatherTranslatedData();
             this.translated.emit(this.slidesOutputData);
             // this.slidesOutputData = {};
-        }));
-        this._changeCarousel$ = this.carouselService.getChangeState().pipe(tap(() => {
+        })));
+        this._changeCarousel$ = this.carouselService.getChangeState().pipe(tap((/**
+         * @return {?}
+         */
+        () => {
             this.gatherTranslatedData();
             this.change.emit(this.slidesOutputData);
             // this.slidesOutputData = {};
-        }));
-        this._changedCarousel$ = this.carouselService.getChangeState().pipe(switchMap(value => {
+        })));
+        this._changedCarousel$ = this.carouselService.getChangeState().pipe(switchMap((/**
+         * @param {?} value
+         * @return {?}
+         */
+        value => {
             /** @type {?} */
-            const changedPosition = of(value).pipe(filter(() => value.property.name === 'position'), switchMap(() => from(this.slidesData)), skip(value.property.value), take(this.carouselService.settings.items), map(slide => {
+            const changedPosition = of(value).pipe(filter((/**
+             * @return {?}
+             */
+            () => value.property.name === 'position')), switchMap((/**
+             * @return {?}
+             */
+            () => from(this.slidesData))), skip(value.property.value), take(this.carouselService.settings.items), map((/**
+             * @param {?} slide
+             * @return {?}
+             */
+            slide => {
                 /** @type {?} */
                 const clonedIdPrefix = this.carouselService.clonedIdPrefix;
                 /** @type {?} */
                 const id = slide.id.indexOf(clonedIdPrefix) >= 0 ? slide.id.slice(clonedIdPrefix.length) : slide.id;
                 return Object.assign({}, slide, { id: id, isActive: true });
-            }), toArray(), map(slides => {
+            })), toArray(), map((/**
+             * @param {?} slides
+             * @return {?}
+             */
+            slides => {
                 return {
                     slides: slides,
                     startPosition: this.carouselService.relative(value.property.value)
                 };
-            }));
+            })));
             // const changedSetting: Observable<SlidesOutputData> = of(value).pipe(
             //   filter(() => value.property.name === 'settings'),
             //   map(() => {
@@ -3198,27 +3568,50 @@ class CarouselComponent {
             //   })
             // )
             return merge(changedPosition);
-        }), tap(slidesData => {
+        })), tap((/**
+         * @param {?} slidesData
+         * @return {?}
+         */
+        slidesData => {
             this.gatherTranslatedData();
             this.changed.emit(slidesData.slides.length ? slidesData : this.slidesOutputData);
             // console.log(this.slidesOutputData);
             // this.slidesOutputData = {};
-        }));
-        this._draggingCarousel$ = this.carouselService.getDragState().pipe(tap(() => {
+        })));
+        this._draggingCarousel$ = this.carouselService.getDragState().pipe(tap((/**
+         * @return {?}
+         */
+        () => {
             this.gatherTranslatedData();
             this.dragging.emit({ dragging: true, data: this.slidesOutputData });
-        }), switchMap(() => this.carouselService.getDraggedState().pipe(map(() => !!this.carouselService.is('animating')))), switchMap(anim => {
+        })), switchMap((/**
+         * @return {?}
+         */
+        () => this.carouselService.getDraggedState().pipe(map((/**
+         * @return {?}
+         */
+        () => !!this.carouselService.is('animating')))))), switchMap((/**
+         * @param {?} anim
+         * @return {?}
+         */
+        anim => {
             if (anim) {
                 return this.carouselService.getTranslatedState().pipe(first());
             }
             else {
                 return of('not animating');
             }
-        }), tap(() => {
+        })), tap((/**
+         * @return {?}
+         */
+        () => {
             this.dragging.emit({ dragging: false, data: this.slidesOutputData });
-        }));
+        })));
         this._carouselMerge$ = merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$, this._changedCarousel$, this._initializedCarousel$);
-        this._allObservSubscription = this._carouselMerge$.subscribe(() => { });
+        this._allObservSubscription = this._carouselMerge$.subscribe((/**
+         * @return {?}
+         */
+        () => { }));
     }
     /**
      * Init subscription to resize event and attaches handler for this event
@@ -3228,11 +3621,17 @@ class CarouselComponent {
     _winResizeWatcher() {
         if (Object.keys(this.carouselService._options.responsive).length) {
             this.resizeSubscription = this.resizeService.onResize$
-                .pipe(filter(() => this.carouselWindowWidth !== this.el.nativeElement.querySelector('.owl-carousel').clientWidth), delay(this.carouselService.settings.responsiveRefreshRate))
-                .subscribe(() => {
+                .pipe(filter((/**
+             * @return {?}
+             */
+            () => this.carouselWindowWidth !== this.el.nativeElement.querySelector('.owl-carousel').clientWidth)), delay(this.carouselService.settings.responsiveRefreshRate))
+                .subscribe((/**
+             * @return {?}
+             */
+            () => {
                 this.carouselService.onResize(this.el.nativeElement.querySelector('.owl-carousel').clientWidth);
                 this.carouselWindowWidth = this.el.nativeElement.querySelector('.owl-carousel').clientWidth;
-            });
+            }));
         }
     }
     /**
@@ -3292,8 +3691,16 @@ class CarouselComponent {
         const clonedIdPrefix = this.carouselService.clonedIdPrefix;
         /** @type {?} */
         const activeSlides = this.slidesData
-            .filter(slide => slide.isActive === true)
-            .map(slide => {
+            .filter((/**
+         * @param {?} slide
+         * @return {?}
+         */
+        slide => slide.isActive === true))
+            .map((/**
+         * @param {?} slide
+         * @return {?}
+         */
+        slide => {
             /** @type {?} */
             const id = slide.id.indexOf(clonedIdPrefix) >= 0 ? slide.id.slice(clonedIdPrefix.length) : slide.id;
             return {
@@ -3303,7 +3710,7 @@ class CarouselComponent {
                 marginR: slide.marginR,
                 center: slide.isCentered
             };
-        });
+        }));
         startPosition = this.carouselService.relative(this.carouselService.current());
         this.slidesOutputData = {
             startPosition: startPosition,
@@ -3403,12 +3810,12 @@ CarouselComponent.propDecorators = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class StageComponent {
     /**
@@ -3446,30 +3853,48 @@ class StageComponent {
         /**
          * Passes this to _oneMouseTouchMove();
          */
-        this.bindOneMouseTouchMove = (ev) => {
+        this.bindOneMouseTouchMove = (/**
+         * @param {?} ev
+         * @return {?}
+         */
+        (ev) => {
             this._oneMouseTouchMove(ev);
-        };
+        });
         /**
          * Passes this to _onDragMove();
          */
-        this.bindOnDragMove = (ev) => {
+        this.bindOnDragMove = (/**
+         * @param {?} ev
+         * @return {?}
+         */
+        (ev) => {
             this._onDragMove(ev);
-        };
+        });
         /**
          * Passes this to _onDragMove();
          */
-        this.bindOnDragEnd = (ev) => {
+        this.bindOnDragEnd = (/**
+         * @param {?} ev
+         * @return {?}
+         */
+        (ev) => {
             // this.zone.run(() => {
             this._onDragEnd(ev);
             // });
-        };
+        });
         /**
          * Attaches handler for 'click' event on any element in .owl-stage in order to prevent dragging when moving of cursor is less than 3px
          */
-        this._oneClickHandler = () => {
-            this.listenerOneClick = this.renderer.listen(this._drag.target, 'click', () => false);
+        this._oneClickHandler = (/**
+         * @return {?}
+         */
+        () => {
+            this.listenerOneClick = this.renderer.listen(this._drag.target, 'click', (/**
+             * @return {?}
+             */
+            () => false));
             this.listenerOneClick();
-        };
+        });
     }
     /**
      * @param {?} event
@@ -3518,9 +3943,12 @@ class StageComponent {
     ngOnInit() {
         this._oneMoveSubsription = this._oneDragMove$
             .pipe(first())
-            .subscribe(() => {
+            .subscribe((/**
+         * @return {?}
+         */
+        () => {
             this._sendChanges();
-        });
+        }));
     }
     /**
      * @return {?}
@@ -3549,10 +3977,13 @@ class StageComponent {
         this._drag.pointer = this._pointer(event);
         this.listenerMouseUp = this.renderer.listen(document, 'mouseup', this.bindOnDragEnd);
         this.listenerTouchEnd = this.renderer.listen(document, 'touchend', this.bindOnDragEnd);
-        this.zone.runOutsideAngular(() => {
+        this.zone.runOutsideAngular((/**
+         * @return {?}
+         */
+        () => {
             this.listenerOneMouseMove = this.renderer.listen(document, 'mousemove', this.bindOneMouseTouchMove);
             this.listenerOneTouchMove = this.renderer.listen(document, 'touchmove', this.bindOneMouseTouchMove);
-        });
+        }));
     }
     /**
      * Attaches listeners to `touchmove` and `mousemove` events; initiates updating carousel after starting dragging
@@ -3596,7 +4027,10 @@ class StageComponent {
             target = target.parentElement;
         }
         if (target instanceof HTMLAnchorElement) {
-            this.listenerATag = this.renderer.listen(target, 'click', () => false);
+            this.listenerATag = this.renderer.listen(target, 'click', (/**
+             * @return {?}
+             */
+            () => false));
         }
     }
     /**
@@ -3813,7 +4247,7 @@ StageComponent.propDecorators = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class OwlRouterLinkDirective {
     /**
@@ -3929,11 +4363,15 @@ class OwlRouterLinkWithHrefDirective {
         this.locationStrategy = locationStrategy;
         this.stopLink = false;
         this.commands = [];
-        this.subscription = router.events.subscribe((s) => {
+        this.subscription = router.events.subscribe((/**
+         * @param {?} s
+         * @return {?}
+         */
+        (s) => {
             if (s instanceof NavigationEnd) {
                 this.updateTargetUrlAndHref();
             }
-        });
+        }));
     }
     /**
      * @param {?} commands
@@ -4044,7 +4482,7 @@ function attrBoolValue(s) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class CarouselModule {
 }
@@ -4061,17 +4499,17 @@ CarouselModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 export { CarouselModule, CarouselComponent, CarouselSlideDirective, SlidesOutputData, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective, StageComponent as ɵx, AnimateService as ɵt, AutoHeightService as ɵu, AutoplayService as ɵd, CarouselService as ɵb, BrowserDocumentRef as ɵn, DOCUMENT as ɵl, DOCUMENT_PROVIDERS as ɵr, DocumentRef as ɵm, browserDocumentProvider as ɵp, documentFactory as ɵo, documentProvider as ɵq, HashService as ɵv, LazyLoadService as ɵs, OwlLogger as ɵc, NavigationService as ɵa, ResizeService as ɵw, BrowserWindowRef as ɵg, WINDOW as ɵe, WINDOW_PROVIDERS as ɵk, WindowRef as ɵf, browserWindowProvider as ɵi, windowFactory as ɵh, windowProvider as ɵj };

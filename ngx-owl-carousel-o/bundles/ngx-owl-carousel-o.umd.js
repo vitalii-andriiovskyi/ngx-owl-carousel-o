@@ -76,7 +76,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var ResizeService = (function () {
         function ResizeService(eventManager) {
@@ -150,7 +150,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /**
      * Defaults value of options
@@ -160,6 +160,7 @@
      */ OwlCarouselOConfig = (function () {
         function OwlCarouselOConfig() {
             this.items = 3;
+            this.skip_validateItems = false;
             this.loop = false;
             this.center = false;
             this.rewind = false;
@@ -218,6 +219,7 @@
      */ OwlOptionsMockedTypes = (function () {
         function OwlOptionsMockedTypes() {
             this.items = 'number';
+            this.skip_validateItems = 'boolean';
             this.loop = 'boolean';
             this.center = 'boolean';
             this.rewind = 'boolean';
@@ -267,7 +269,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var OwlLogger = (function () {
         function OwlLogger(errorHandler) {
@@ -333,7 +335,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /** @enum {string} */
     var Type = {
@@ -505,9 +507,9 @@
                 // },
                 {
                     filter: ['width', 'items', 'settings'],
-                    run: function (cache) {
+                    run: (function (cache) {
                         cache.current = _this._items && _this._items[_this.relative(_this._current)].id;
-                    }
+                    })
                 },
                 // {
                 //   filter: ['items', 'settings'],
@@ -517,7 +519,7 @@
                 // },
                 {
                     filter: ['width', 'items', 'settings'],
-                    run: function (cache) {
+                    run: (function (cache) {
                         /** @type {?} */
                         var margin = _this.settings.margin || '';
                         /** @type {?} */
@@ -530,16 +532,16 @@
                             'margin-right': rtl ? '' : margin
                         };
                         if (!grid) {
-                            _this.slidesData.forEach(function (slide) {
+                            _this.slidesData.forEach((function (slide) {
                                 slide.marginL = css['margin-left'];
                                 slide.marginR = css['margin-right'];
-                            });
+                            }));
                         }
                         cache.css = css;
-                    }
+                    })
                 }, {
                     filter: ['width', 'items', 'settings'],
-                    run: function (cache) {
+                    run: (function (cache) {
                         /** @type {?} */
                         var width = +(_this.width() / _this.settings.items).toFixed(3) - _this.settings.margin;
                         /** @type {?} */
@@ -561,15 +563,15 @@
                             widths[iterator] = !grid ? _this._items[iterator].width ? _this._items[iterator].width : width : width * merge;
                         }
                         _this._widths = widths;
-                        _this.slidesData.forEach(function (slide, i) {
+                        _this.slidesData.forEach((function (slide, i) {
                             slide.width = _this._widths[i];
                             slide.marginR = cache.css['margin-right'];
                             slide.marginL = cache.css['margin-left'];
-                        });
-                    }
+                        }));
+                    })
                 }, {
                     filter: ['items', 'settings'],
-                    run: function () {
+                    run: (function () {
                         /** @type {?} */
                         var clones = [];
                         /** @type {?} */
@@ -597,23 +599,23 @@
                             prepend.unshift(__assign({}, _this.slidesData[clones[clones.length - 1]]));
                         }
                         _this._clones = clones;
-                        append = append.map(function (slide) {
+                        append = append.map((function (slide) {
                             slide.id = "" + _this.clonedIdPrefix + slide.id;
                             slide.isActive = false;
                             slide.isCloned = true;
                             return slide;
-                        });
-                        prepend = prepend.map(function (slide) {
+                        }));
+                        prepend = prepend.map((function (slide) {
                             slide.id = "" + _this.clonedIdPrefix + slide.id;
                             slide.isActive = false;
                             slide.isCloned = true;
                             return slide;
-                        });
+                        }));
                         _this.slidesData = prepend.concat(_this.slidesData).concat(append);
-                    }
+                    })
                 }, {
                     filter: ['width', 'items', 'settings'],
-                    run: function () {
+                    run: (function () {
                         /** @type {?} */
                         var rtl = _this.settings.rtl ? 1 : -1;
                         /** @type {?} */
@@ -632,10 +634,10 @@
                             coordinates.push(previous + current * rtl);
                         }
                         _this._coordinates = coordinates;
-                    }
+                    })
                 }, {
                     filter: ['width', 'items', 'settings'],
-                    run: function () {
+                    run: (function () {
                         /** @type {?} */
                         var padding = _this.settings.stagePadding;
                         /** @type {?} */
@@ -649,7 +651,7 @@
                         _this.stageData.width = css.width; // use this property in *ngIf directive for .owl-stage element
                         _this.stageData.paddingL = css['padding-left'];
                         _this.stageData.paddingR = css['padding-right'];
-                    }
+                    })
                 }, {
                     //   filter: [ 'width', 'items', 'settings' ],
                     //   run: cache => {
@@ -674,20 +676,20 @@
                     //   }
                     // }, {
                     filter: ['width', 'items', 'settings'],
-                    run: function (cache) {
+                    run: (function (cache) {
                         /** @type {?} */
-                        var current = cache.current ? _this.slidesData.findIndex(function (slide) { return slide.id === cache.current; }) : 0;
+                        var current = cache.current ? _this.slidesData.findIndex((function (slide) { return slide.id === cache.current; })) : 0;
                         current = Math.max(_this.minimum(), Math.min(_this.maximum(), current));
                         _this.reset(current);
-                    }
+                    })
                 }, {
                     filter: ['position'],
-                    run: function () {
+                    run: (function () {
                         _this.animate(_this.coordinates(_this._current));
-                    }
+                    })
                 }, {
                     filter: ['width', 'position', 'items', 'settings'],
-                    run: function () {
+                    run: (function () {
                         /** @type {?} */
                         var rtl = _this.settings.rtl ? 1 : -1;
                         /** @type {?} */
@@ -716,9 +718,9 @@
                         end = begin + _this.width() * rtl;
                         if (rtl === -1 && _this.settings.center) {
                             /** @type {?} */
-                            var result = _this._coordinates.filter(function (element) {
+                            var result = _this._coordinates.filter((function (element) {
                                 return _this.settings.items % 2 === 1 ? element >= begin : element > begin;
-                            });
+                            }));
                             begin = result.length ? result[result.length - 1] : begin;
                         }
                         for (i = 0, n = _this._coordinates.length; i < n; i++) {
@@ -729,21 +731,21 @@
                                 matches.push(i);
                             }
                         }
-                        _this.slidesData.forEach(function (slide) {
+                        _this.slidesData.forEach((function (slide) {
                             slide.isActive = false;
                             return slide;
-                        });
-                        matches.forEach(function (item) {
+                        }));
+                        matches.forEach((function (item) {
                             _this.slidesData[item].isActive = true;
-                        });
+                        }));
                         if (_this.settings.center) {
-                            _this.slidesData.forEach(function (slide) {
+                            _this.slidesData.forEach((function (slide) {
                                 slide.isCentered = false;
                                 return slide;
-                            });
+                            }));
                             _this.slidesData[_this.current()].isCentered = true;
                         }
-                    }
+                    })
                 }
             ];
         }
@@ -1010,17 +1012,17 @@
                 /** @type {?} */
                 var mockedTypes = new OwlOptionsMockedTypes();
                 /** @type {?} */
-                var setRightOption = function (type, key) {
+                var setRightOption = (function (type, key) {
                     _this.logger.log("options." + key + " must be type of " + type + "; " + key + "=" + options[key] + " skipped to defaults: " + key + "=" + configOptions[key]);
                     return configOptions[key];
-                };
+                });
                 var _loop_1 = function (key) {
                     if (checkedOptions.hasOwnProperty(key)) {
                         // condition could be shortened but it gets harder for understanding
                         if (mockedTypes[key] === 'number') {
                             if (this_1._isNumeric(checkedOptions[key])) {
                                 checkedOptions[key] = +checkedOptions[key];
-                                checkedOptions[key] = key === 'items' ? this_1._validateItems(checkedOptions[key]) : checkedOptions[key];
+                                checkedOptions[key] = key === 'items' ? this_1._validateItems(checkedOptions[key], checkedOptions.skip_validateItems) : checkedOptions[key];
                             }
                             else {
                                 checkedOptions[key] = setRightOption(mockedTypes[key], key);
@@ -1042,9 +1044,9 @@
                             if (Array.isArray(checkedOptions[key])) {
                                 /** @type {?} */
                                 var isString_1 = false;
-                                checkedOptions[key].forEach(function (element) {
+                                checkedOptions[key].forEach((function (element) {
                                     isString_1 = typeof element === 'string' ? true : false;
-                                });
+                                }));
                                 if (!isString_1) {
                                     checkedOptions[key] = setRightOption(mockedTypes[key], key);
                                 }
@@ -1062,34 +1064,41 @@
                 return checkedOptions;
             };
         /**
-         * Checks option items set by user and if it bigger than number of slides then returns number of slides
+         * Checks the option `items` set by user and if it bigger than number of slides, the function returns number of slides
          * @param items option items set by user
+         * @param skip_validateItems option `skip_validateItems` set by user
          * @returns right number of items
          */
         /**
-         * Checks option items set by user and if it bigger than number of slides then returns number of slides
+         * Checks the option `items` set by user and if it bigger than number of slides, the function returns number of slides
          * @private
          * @param {?} items option items set by user
+         * @param {?} skip_validateItems option `skip_validateItems` set by user
          * @return {?} right number of items
          */
         CarouselService.prototype._validateItems = /**
-         * Checks option items set by user and if it bigger than number of slides then returns number of slides
+         * Checks the option `items` set by user and if it bigger than number of slides, the function returns number of slides
          * @private
          * @param {?} items option items set by user
+         * @param {?} skip_validateItems option `skip_validateItems` set by user
          * @return {?} right number of items
          */
-            function (items) {
+            function (items, skip_validateItems) {
                 /** @type {?} */
-                var result;
+                var result = items;
                 if (items > this._items.length) {
-                    result = this._items.length;
-                    this.logger.log('The option \'items\' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled');
+                    if (skip_validateItems) {
+                        this.logger.log('The option \'items\' in your options is bigger than the number of slides. The navigation got disabled');
+                    }
+                    else {
+                        result = this._items.length;
+                        this.logger.log('The option \'items\' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled');
+                    }
                 }
                 else {
                     if (items === this._items.length && (this.settings.dots || this.settings.nav)) {
                         this.logger.log('Option \'items\' in your options is equal to the number of slides. So the navigation got disabled');
                     }
-                    result = items;
                 }
                 return result;
             };
@@ -1178,7 +1187,7 @@
                         }
                     }
                 }
-                this.settings = __assign({}, this._options, overwrites[match], { items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items) : this._options.items });
+                this.settings = __assign({}, this._options, overwrites[match], { items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items, this._options.skip_validateItems) : this._options.items });
                 // if (typeof this.settings.stagePadding === 'function') {
                 // 	this.settings.stagePadding = this.settings.stagePadding();
                 // }
@@ -1188,11 +1197,11 @@
                 this.owlDOMData.isTouchDragable = this.settings.touchDrag;
                 /** @type {?} */
                 var mergers = [];
-                this._items.forEach(function (item) {
+                this._items.forEach((function (item) {
                     /** @type {?} */
                     var mergeN = _this.settings.merge ? item.dataMerge : 1;
                     mergers.push(mergeN);
-                });
+                }));
                 this._mergers = mergers;
                 this._breakpoint = match;
                 this.invalidate('settings');
@@ -1219,11 +1228,11 @@
                 if (this._mergers.length) {
                     this._mergers = [];
                 }
-                slides.forEach(function (item) {
+                slides.forEach((function (item) {
                     /** @type {?} */
                     var mergeN = _this.settings.merge ? item.dataMerge : 1;
                     _this._mergers.push(mergeN);
-                });
+                }));
                 this._clones = [];
                 this.reset(this._isNumeric(this.settings.startPosition) ? +this.settings.startPosition : 0);
                 this.invalidate('items');
@@ -1292,7 +1301,7 @@
                 /** @type {?} */
                 var n = this._pipe.length;
                 /** @type {?} */
-                var filter = function (item) { return _this._invalidated[item]; };
+                var filter = (function (item) { return _this._invalidated[item]; });
                 /** @type {?} */
                 var cache = {};
                 while (i < n) {
@@ -1303,7 +1312,7 @@
                     }
                     i++;
                 }
-                this.slidesData.forEach(function (slide) { return slide.classes = _this.setCurSlideClasses(slide); });
+                this.slidesData.forEach((function (slide) { return slide.classes = _this.setCurSlideClasses(slide); }));
                 this.sendChanges();
                 this._invalidated = {};
                 if (!this.is('valid')) {
@@ -1585,12 +1594,12 @@
                 /** @type {?} */
                 var position = -1;
                 if (this.settings.center) {
-                    coordinates = coordinates.map(function (item) {
+                    coordinates = coordinates.map((function (item) {
                         if (item === 0) {
                             item += 0.000001;
                         }
                         return item;
-                    });
+                    }));
                 }
                 // option 'freeDrag' doesn't have realization and using it here creates problem:
                 // variable 'position' stays unchanged (it equals -1 at the begging) and thus method returns -1
@@ -1955,11 +1964,11 @@
                 /** @type {?} */
                 var even = odd + this._items.length;
                 /** @type {?} */
-                var map = function (index) { return index % 2 === 0 ? even + index / 2 : odd - (index + 1) / 2; };
+                var map = (function (index) { return index % 2 === 0 ? even + index / 2 : odd - (index + 1) / 2; });
                 if (position === undefined) {
-                    return this._clones.map(function (v, i) { return map(i); });
+                    return this._clones.map((function (v, i) { return map(i); }));
                 }
-                return this._clones.map(function (v, i) { return v === position ? map(i) : null; }).filter(function (item) { return item; });
+                return this._clones.map((function (v, i) { return v === position ? map(i) : null; })).filter((function (item) { return item; }));
             };
         /**
            * Sets the current animation speed.
@@ -2011,9 +2020,9 @@
                 /** @type {?} */
                 var result;
                 if (position === undefined) {
-                    result = this._coordinates.map(function (item, index) {
+                    result = this._coordinates.map((function (item, index) {
                         return ((_this.coordinates(index)));
-                    });
+                    }));
                     return result;
                 }
                 if (this.settings.center) {
@@ -2115,11 +2124,11 @@
                 else {
                     position = Math.max(minimum, Math.min(maximum, position));
                 }
-                setTimeout(function () {
+                setTimeout((function () {
                     _this.speed(_this._duration(current, position, speed));
                     _this.current(position);
                     _this.update();
-                }, delayForLoop);
+                }), delayForLoop);
             };
         /**
            * Slides to the next item.
@@ -2248,13 +2257,13 @@
                 var loadMap;
                 if (this.slidesData && this.slidesData.length) {
                     loadMap = new Map();
-                    this.slidesData.forEach(function (item) {
+                    this.slidesData.forEach((function (item) {
                         if (item.load) {
                             loadMap.set(item.id, item.load);
                         }
-                    });
+                    }));
                 }
-                this.slidesData = this._items.map(function (slide) {
+                this.slidesData = this._items.map((function (slide) {
                     return {
                         id: "" + slide.id,
                         isActive: false,
@@ -2265,7 +2274,7 @@
                         load: loadMap ? loadMap.get(slide.id) : false,
                         hashFragment: slide.dataHash
                     };
-                });
+                }));
             };
         /**
          * Sets current classes for slide
@@ -2426,12 +2435,12 @@
          */
             function (name) {
                 var _this = this;
-                [name].concat(this._states.tags[name] || []).forEach(function (stateName) {
+                [name].concat(this._states.tags[name] || []).forEach((function (stateName) {
                     if (_this._states.current[stateName] === undefined) {
                         _this._states.current[stateName] = 0;
                     }
                     _this._states.current[stateName]++;
-                });
+                }));
             };
         /**
            * Leaves a state.
@@ -2449,11 +2458,11 @@
          */
             function (name) {
                 var _this = this;
-                [name].concat(this._states.tags[name] || []).forEach(function (stateName) {
+                [name].concat(this._states.tags[name] || []).forEach((function (stateName) {
                     if (_this._states.current[stateName] === 0 || !!_this._states.current[stateName]) {
                         _this._states.current[stateName]--;
                     }
-                });
+                }));
             };
         /**
            * Registers an event or state.
@@ -2478,9 +2487,9 @@
                     else {
                         this._states.tags[object.name] = this._states.tags[object.name].concat(object.tags);
                     }
-                    this._states.tags[object.name] = this._states.tags[object.name].filter(function (tag, i) {
+                    this._states.tags[object.name] = this._states.tags[object.name].filter((function (tag, i) {
                         return _this._states.tags[object.name].indexOf(tag) === i;
-                    });
+                    }));
                 }
             };
         /**
@@ -2501,9 +2510,9 @@
          */
             function (events) {
                 var _this = this;
-                events.forEach(function (event) {
+                events.forEach((function (event) {
                     _this._supress[event] = true;
-                });
+                }));
             };
         /**
            * Releases suppressed events.
@@ -2523,9 +2532,9 @@
          */
             function (events) {
                 var _this = this;
-                events.forEach(function (event) {
+                events.forEach((function (event) {
                     delete _this._supress[event];
-                });
+                }));
             };
         /**
            * Gets unified pointer coordinates from event.
@@ -2682,7 +2691,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var NavigationService = (function () {
         function NavigationService(carouselService) {
@@ -2741,17 +2750,17 @@
             function () {
                 var _this = this;
                 /** @type {?} */
-                var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap(function (state) {
+                var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap((function (state) {
                     _this.initialize();
                     _this._updateNavPages();
                     _this.draw();
                     _this.update();
                     _this.carouselService.sendChanges();
-                }));
+                })));
                 // mostly changes in carouselService and carousel at all causes carouselService.to(). It moves stage right-left by its code and calling needed functions
                 // Thus this method by calling carouselService.current(position) notifies about changes
                 /** @type {?} */
-                var changedSettings$ = this.carouselService.getChangedState().pipe(operators.filter(function (data) { return data.property.name === 'position'; }), operators.tap(function (data) {
+                var changedSettings$ = this.carouselService.getChangedState().pipe(operators.filter((function (data) { return data.property.name === 'position'; })), operators.tap((function (data) {
                     _this.update();
                     // should be the call of the function written at the end of comment
                     // but the method carouselServive.to() has setTimeout(f, 0) which contains carouselServive.update() which calls sendChanges() method.
@@ -2759,17 +2768,17 @@
                     // updates of carouselService.navData and carouselService.dotsData are being happening withing carouselService.current(position) method which calls next() of _changedSettingsCarousel$
                     // carouselService.current(position) is being calling earlier than carouselServive.update();
                     // this.carouselService.sendChanges();
-                }));
+                })));
                 /** @type {?} */
-                var refreshedCarousel$ = this.carouselService.getRefreshedState().pipe(operators.tap(function () {
+                var refreshedCarousel$ = this.carouselService.getRefreshedState().pipe(operators.tap((function () {
                     _this._updateNavPages();
                     _this.draw();
                     _this.update();
                     _this.carouselService.sendChanges();
-                }));
+                })));
                 /** @type {?} */
                 var navMerge$ = rxjs.merge(initializedCarousel$, changedSettings$, refreshedCarousel$);
-                this.navSubscription = navMerge$.subscribe(function () { });
+                this.navSubscription = navMerge$.subscribe((function () { }));
             };
         /**
            * Initializes the layout of the plugin and extends the carousel.
@@ -2874,14 +2883,14 @@
                     difference = this._pages.length - this._dotsData.dots.length;
                     if (settings.dotsData && difference !== 0) {
                         this._dotsData.dots = [];
-                        items.forEach(function (item) {
+                        items.forEach((function (item) {
                             _this._dotsData.dots.push({
                                 active: false,
                                 id: "dot-" + item.id,
                                 innerContent: item.dotContent,
                                 showInnerContent: true
                             });
-                        });
+                        }));
                     }
                     else if (difference > 0) {
                         /** @type {?} */
@@ -2962,11 +2971,11 @@
                 if (!this.carouselService.settings.dots) {
                     return;
                 }
-                this._dotsData.dots.forEach(function (item) {
+                this._dotsData.dots.forEach((function (item) {
                     if (item.active === true) {
                         item.active = false;
                     }
-                });
+                }));
                 curActiveDotI = this._current();
                 if (this._dotsData.dots.length) {
                     this._dotsData.dots[curActiveDotI].active = true;
@@ -2993,12 +3002,12 @@
                 /** @type {?} */
                 var finalCurrent;
                 /** @type {?} */
-                var pages = this._pages.filter(function (page, index) {
+                var pages = this._pages.filter((function (page, index) {
                     return page.start <= current && page.end >= current;
-                }).pop();
-                finalCurrent = this._pages.findIndex(function (page) {
+                })).pop();
+                finalCurrent = this._pages.findIndex((function (page) {
                     return page.start === pages.start && page.end === pages.end;
-                });
+                }));
                 return finalCurrent;
             };
         /**
@@ -3118,7 +3127,7 @@
          */
             function (dotId) {
                 /** @type {?} */
-                var index = this._dotsData.dots.findIndex(function (dot) { return dotId === dot.id; });
+                var index = this._dotsData.dots.findIndex((function (dot) { return dotId === dot.id; }));
                 this.to(index, this.carouselService.settings.dotsSpeed);
             };
         /**
@@ -3137,7 +3146,7 @@
          */
             function (id) {
                 /** @type {?} */
-                var position = this.carouselService.slidesData.findIndex(function (slide) { return slide.id === id && slide.isCloned === false; });
+                var position = this.carouselService.slidesData.findIndex((function (slide) { return slide.id === id && slide.isCloned === false; }));
                 if (position === -1 || position === this.carouselService.current()) {
                     return;
                 }
@@ -3156,7 +3165,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /**
      * Create a new injection token for injecting the window into a component.
@@ -3223,8 +3232,8 @@
         }
         /** @type {?} */
         var obj = {
-            setTimeout: function (func, time) { },
-            clearTimeout: function (a) { }
+            setTimeout: (function (func, time) { }),
+            clearTimeout: (function (a) { })
         };
         return obj;
     }
@@ -3253,7 +3262,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /**
      * Create a new injection token for injecting the Document into a component.
@@ -3350,7 +3359,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var AutoplayService = (function () {
         function AutoplayService(carouselService, winRef, docRef) {
@@ -3390,29 +3399,29 @@
             function () {
                 var _this = this;
                 /** @type {?} */
-                var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap(function () {
+                var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap((function () {
                     if (_this.carouselService.settings.autoplay) {
                         _this.play();
                     }
-                }));
+                })));
                 /** @type {?} */
-                var changedSettings$ = this.carouselService.getChangedState().pipe(operators.tap(function (data) {
+                var changedSettings$ = this.carouselService.getChangedState().pipe(operators.tap((function (data) {
                     _this._handleChangeObservable(data);
-                }));
+                })));
                 /** @type {?} */
-                var resized$ = this.carouselService.getResizedState().pipe(operators.tap(function () {
+                var resized$ = this.carouselService.getResizedState().pipe(operators.tap((function () {
                     if (_this.carouselService.settings.autoplay) {
                         _this.play();
                     }
                     else {
                         _this.stop();
                     }
-                }));
+                })));
                 // original Autoplay Plugin has listeners on play.owl.core and stop.owl.core events.
                 // They are triggered by Video Plugin
                 /** @type {?} */
                 var autoplayMerge$ = rxjs.merge(initializedCarousel$, changedSettings$, resized$);
-                this.autoplaySubscription = autoplayMerge$.subscribe(function () { });
+                this.autoplaySubscription = autoplayMerge$.subscribe((function () { }));
             };
         /**
            * Starts the autoplay.
@@ -3468,12 +3477,12 @@
                     this.winRef.clearTimeout(this._timeout);
                 }
                 this._isArtificialAutoplayTimeout = timeout ? true : false;
-                return this.winRef.setTimeout(function () {
+                return this.winRef.setTimeout((function () {
                     if (_this._paused || _this.carouselService.is('busy') || _this.carouselService.is('interacting') || _this.docRef.hidden) {
                         return;
                     }
                     _this.carouselService.next(speed || _this.carouselService.settings.autoplaySpeed);
-                }, timeout || this.carouselService.settings.autoplayTimeout);
+                }), timeout || this.carouselService.settings.autoplayTimeout);
             };
         /**
            * Sets autoplay in motion.
@@ -3576,7 +3585,7 @@
          */
             function () {
                 var _this = this;
-                rxjs.of('translated').pipe(operators.switchMap(function (data) { return _this.carouselService.getTranslatedState(); }), operators.first(), operators.filter(function () { return _this._isArtificialAutoplayTimeout; }), operators.tap(function () { return _this._setAutoPlayInterval(); })).subscribe(function () { });
+                rxjs.of('translated').pipe(operators.switchMap((function (data) { return _this.carouselService.getTranslatedState(); })), operators.first(), operators.filter((function () { return _this._isArtificialAutoplayTimeout; })), operators.tap((function () { return _this._setAutoPlayInterval(); }))).subscribe((function () { }));
             };
         /**
          * Starts pausing
@@ -3643,7 +3652,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var LazyLoadService = (function () {
         function LazyLoadService(carouselService) {
@@ -3673,18 +3682,18 @@
             function () {
                 var _this = this;
                 /** @type {?} */
-                var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap(function () {
+                var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap((function () {
                     /** @type {?} */
                     var isLazyLoad = _this.carouselService.settings && !_this.carouselService.settings.lazyLoad;
-                    _this.carouselService.slidesData.forEach(function (item) { return item.load = isLazyLoad ? true : false; });
-                }));
+                    _this.carouselService.slidesData.forEach((function (item) { return item.load = isLazyLoad ? true : false; }));
+                })));
                 /** @type {?} */
                 var changeSettings$ = this.carouselService.getChangeState();
                 /** @type {?} */
                 var resizedCarousel$ = this.carouselService.getResizedState();
                 /** @type {?} */
-                var lazyLoadMerge$ = rxjs.merge(initializedCarousel$, changeSettings$, resizedCarousel$).pipe(operators.tap(function (data) { return _this._defineLazyLoadSlides(data); }));
-                this.lazyLoadSubscription = lazyLoadMerge$.subscribe(function () { });
+                var lazyLoadMerge$ = rxjs.merge(initializedCarousel$, changeSettings$, resizedCarousel$).pipe(operators.tap((function (data) { return _this._defineLazyLoadSlides(data); })));
+                this.lazyLoadSubscription = lazyLoadMerge$.subscribe((function () { }));
             };
         /**
          * @private
@@ -3725,7 +3734,7 @@
                     while (i++ < n) {
                         this._load(clones / 2 + this.carouselService.relative(position));
                         if (clones) {
-                            this.carouselService.clones(this.carouselService.relative(position)).forEach(function (value) { return _this._load(value); });
+                            this.carouselService.clones(this.carouselService.relative(position)).forEach((function (value) { return _this._load(value); }));
                         }
                         position++;
                     }
@@ -3766,7 +3775,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var AnimateService = (function () {
         function AnimateService(carouselService) {
@@ -3808,12 +3817,12 @@
             function () {
                 var _this = this;
                 /** @type {?} */
-                var changeSettings$ = this.carouselService.getChangeState().pipe(operators.tap(function (data) {
+                var changeSettings$ = this.carouselService.getChangeState().pipe(operators.tap((function (data) {
                     if (data.property.name === 'position') {
                         _this.previous = _this.carouselService.current();
                         _this.next = data.property.value;
                     }
-                }));
+                })));
                 /** @type {?} */
                 var dragCarousel$ = this.carouselService.getDragState();
                 /** @type {?} */
@@ -3821,16 +3830,16 @@
                 /** @type {?} */
                 var translatedCarousel$ = this.carouselService.getTranslatedState();
                 /** @type {?} */
-                var dragTranslatedMerge$ = rxjs.merge(dragCarousel$, draggedCarousel$, translatedCarousel$).pipe(operators.tap(function (data) { return _this.swapping = data === 'translated'; }));
+                var dragTranslatedMerge$ = rxjs.merge(dragCarousel$, draggedCarousel$, translatedCarousel$).pipe(operators.tap((function (data) { return _this.swapping = data === 'translated'; })));
                 /** @type {?} */
-                var translateCarousel$ = this.carouselService.getTranslateState().pipe(operators.tap(function (data) {
+                var translateCarousel$ = this.carouselService.getTranslateState().pipe(operators.tap((function (data) {
                     if (_this.swapping && (_this.carouselService._options.animateOut || _this.carouselService._options.animateIn)) {
                         _this._swap();
                     }
-                }));
+                })));
                 /** @type {?} */
                 var animateMerge$ = rxjs.merge(changeSettings$, translateCarousel$, dragTranslatedMerge$).pipe();
-                this.animateSubscription = animateMerge$.subscribe(function () { });
+                this.animateSubscription = animateMerge$.subscribe((function () { }));
             };
         /**
            * Toggles the animation classes whenever an translations starts.
@@ -3869,23 +3878,23 @@
                 }
                 if (outgoing) {
                     left = +this.carouselService.coordinates(this.previous) - +this.carouselService.coordinates(this.next);
-                    this.carouselService.slidesData.forEach(function (slide) {
+                    this.carouselService.slidesData.forEach((function (slide) {
                         if (slide.id === previous.id) {
                             slide.left = left + "px";
                             slide.isAnimated = true;
                             slide.isDefAnimatedOut = true;
                             slide.isCustomAnimatedOut = true;
                         }
-                    });
+                    }));
                 }
                 if (incoming) {
-                    this.carouselService.slidesData.forEach(function (slide) {
+                    this.carouselService.slidesData.forEach((function (slide) {
                         if (slide.id === next.id) {
                             slide.isAnimated = true;
                             slide.isDefAnimatedIn = true;
                             slide.isCustomAnimatedIn = true;
                         }
-                    });
+                    }));
                 }
             };
         /**
@@ -3904,7 +3913,7 @@
          */
             function (id) {
                 var _this = this;
-                this.carouselService.slidesData.forEach(function (slide) {
+                this.carouselService.slidesData.forEach((function (slide) {
                     if (slide.id === id) {
                         slide.left = '';
                         slide.isAnimated = false;
@@ -3914,7 +3923,7 @@
                         slide.isCustomAnimatedIn = false;
                         slide.classes = _this.carouselService.setCurSlideClasses(slide);
                     }
-                });
+                }));
                 this.carouselService.onTransitionEnd();
             };
         AnimateService.decorators = [
@@ -3930,7 +3939,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var AutoHeightService = (function () {
         function AutoHeightService(carouselService) {
@@ -3960,29 +3969,29 @@
             function () {
                 var _this = this;
                 /** @type {?} */
-                var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap(function (data) {
+                var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap((function (data) {
                     if (_this.carouselService.settings.autoHeight) {
                         _this.update();
                     }
                     else {
-                        _this.carouselService.slidesData.forEach(function (slide) { return slide.heightState = 'full'; });
+                        _this.carouselService.slidesData.forEach((function (slide) { return slide.heightState = 'full'; }));
                     }
-                }));
+                })));
                 /** @type {?} */
-                var changedSettings$ = this.carouselService.getChangedState().pipe(operators.tap(function (data) {
+                var changedSettings$ = this.carouselService.getChangedState().pipe(operators.tap((function (data) {
                     if (_this.carouselService.settings.autoHeight && data.property.name === 'position') {
                         _this.update();
                     }
-                }));
+                })));
                 /** @type {?} */
-                var refreshedCarousel$ = this.carouselService.getRefreshedState().pipe(operators.tap(function (data) {
+                var refreshedCarousel$ = this.carouselService.getRefreshedState().pipe(operators.tap((function (data) {
                     if (_this.carouselService.settings.autoHeight) {
                         _this.update();
                     }
-                }));
+                })));
                 /** @type {?} */
                 var autoHeight$ = rxjs.merge(initializedCarousel$, changedSettings$, refreshedCarousel$);
-                this.autoHeightSubscription = autoHeight$.subscribe(function () { });
+                this.autoHeightSubscription = autoHeight$.subscribe((function () { }));
             };
         /**
          * Updates the prop 'heightState' of slides
@@ -4006,9 +4015,9 @@
                     start = items % 2 === 1 ? start - (items - 1) / 2 : start - items / 2;
                     end = items % 2 === 1 ? start + items : start + items + 1;
                 }
-                this.carouselService.slidesData.forEach(function (slide, i) {
+                this.carouselService.slidesData.forEach((function (slide, i) {
                     slide.heightState = (i >= start && i < end) ? 'full' : 'nulled';
-                });
+                }));
             };
         AutoHeightService.decorators = [
             { type: core.Injectable }
@@ -4023,7 +4032,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var HashService = (function () {
         function HashService(carouselService, route, router$$1) {
@@ -4038,7 +4047,7 @@
             }
             if (!this.router) {
                 this.router = (({
-                    navigate: function (commands, extras) { return; }
+                    navigate: (function (commands, extras) { return; })
                 }));
             }
         }
@@ -4065,9 +4074,9 @@
             function () {
                 var _this = this;
                 /** @type {?} */
-                var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap(function () { return _this.listenToRoute(); }));
+                var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap((function () { return _this.listenToRoute(); })));
                 /** @type {?} */
-                var changedSettings$ = this.carouselService.getChangedState().pipe(operators.tap(function (data) {
+                var changedSettings$ = this.carouselService.getChangedState().pipe(operators.tap((function (data) {
                     if (_this.carouselService.settings.URLhashListener && data.property.name === 'position') {
                         /** @type {?} */
                         var newCurSlide = _this.carouselService.current();
@@ -4078,10 +4087,10 @@
                         }
                         _this.router.navigate(['./'], { fragment: newCurFragment, relativeTo: _this.route });
                     }
-                }));
+                })));
                 /** @type {?} */
                 var hashFragment$ = rxjs.merge(initializedCarousel$, changedSettings$);
-                this.hashSubscription = hashFragment$.subscribe(function () { });
+                this.hashSubscription = hashFragment$.subscribe((function () { }));
             };
         /**
          * rewinds carousel to slide which has the same hashFragment as fragment of current url
@@ -4099,7 +4108,7 @@
          */
             function (fragment) {
                 /** @type {?} */
-                var position = this.carouselService.slidesData.findIndex(function (slide) { return slide.hashFragment === fragment && slide.isCloned === false; });
+                var position = this.carouselService.slidesData.findIndex((function (slide) { return slide.hashFragment === fragment && slide.isCloned === false; }));
                 if (position === -1 || position === this.carouselService.current()) {
                     return;
                 }
@@ -4121,10 +4130,10 @@
                 /** @type {?} */
                 var count = this.carouselService.settings.startPosition === 'URLHash' ? 0 : 2;
                 this.route.fragment.pipe(operators.skip(count))
-                    .subscribe(function (fragment) {
+                    .subscribe((function (fragment) {
                     _this.currentHashFragment = fragment;
                     _this.rewind(fragment);
-                });
+                }));
             };
         HashService.decorators = [
             { type: core.Injectable }
@@ -4141,7 +4150,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /** @type {?} */
     var nextId = 0;
@@ -4319,7 +4328,7 @@
                 else {
                     this.logger.log("There are no slides to show. So the carousel won't be rendered");
                 }
-                this._slidesChangesSubscription = this.slides.changes.pipe(operators.tap(function (slides) {
+                this._slidesChangesSubscription = this.slides.changes.pipe(operators.tap((function (slides) {
                     if (slides.toArray().length) {
                         // this.carouselService.setItems(slides.toArray());
                         _this.carouselService.setup(_this.carouselWindowWidth, slides.toArray(), _this.options);
@@ -4329,7 +4338,7 @@
                         _this.carouselLoaded = false;
                         _this.logger.log("There are no slides to show. So the carousel won't be re-rendered");
                     }
-                })).subscribe(function () { });
+                }))).subscribe((function () { }));
             };
         /**
          * @return {?}
@@ -4364,7 +4373,7 @@
          */
             function () {
                 var _this = this;
-                this._viewCurSettings$ = this.carouselService.getViewCurSettings().pipe(operators.tap(function (data) {
+                this._viewCurSettings$ = this.carouselService.getViewCurSettings().pipe(operators.tap((function (data) {
                     _this.owlDOMData = data.owlDOMData;
                     _this.stageData = data.stageData;
                     _this.slidesData = data.slidesData;
@@ -4373,36 +4382,36 @@
                     }
                     _this.navData = data.navData;
                     _this.dotsData = data.dotsData;
-                }));
-                this._initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap(function () {
+                })));
+                this._initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap((function () {
                     _this.gatherTranslatedData();
                     _this.initialized.emit(_this.slidesOutputData);
                     // this.slidesOutputData = {};
-                }));
-                this._translatedCarousel$ = this.carouselService.getTranslatedState().pipe(operators.tap(function () {
+                })));
+                this._translatedCarousel$ = this.carouselService.getTranslatedState().pipe(operators.tap((function () {
                     _this.gatherTranslatedData();
                     _this.translated.emit(_this.slidesOutputData);
                     // this.slidesOutputData = {};
-                }));
-                this._changeCarousel$ = this.carouselService.getChangeState().pipe(operators.tap(function () {
+                })));
+                this._changeCarousel$ = this.carouselService.getChangeState().pipe(operators.tap((function () {
                     _this.gatherTranslatedData();
                     _this.change.emit(_this.slidesOutputData);
                     // this.slidesOutputData = {};
-                }));
-                this._changedCarousel$ = this.carouselService.getChangeState().pipe(operators.switchMap(function (value) {
+                })));
+                this._changedCarousel$ = this.carouselService.getChangeState().pipe(operators.switchMap((function (value) {
                     /** @type {?} */
-                    var changedPosition = rxjs.of(value).pipe(operators.filter(function () { return value.property.name === 'position'; }), operators.switchMap(function () { return rxjs.from(_this.slidesData); }), operators.skip(value.property.value), operators.take(_this.carouselService.settings.items), operators.map(function (slide) {
+                    var changedPosition = rxjs.of(value).pipe(operators.filter((function () { return value.property.name === 'position'; })), operators.switchMap((function () { return rxjs.from(_this.slidesData); })), operators.skip(value.property.value), operators.take(_this.carouselService.settings.items), operators.map((function (slide) {
                         /** @type {?} */
                         var clonedIdPrefix = _this.carouselService.clonedIdPrefix;
                         /** @type {?} */
                         var id = slide.id.indexOf(clonedIdPrefix) >= 0 ? slide.id.slice(clonedIdPrefix.length) : slide.id;
                         return __assign({}, slide, { id: id, isActive: true });
-                    }), operators.toArray(), operators.map(function (slides) {
+                    })), operators.toArray(), operators.map((function (slides) {
                         return {
                             slides: slides,
                             startPosition: _this.carouselService.relative(value.property.value)
                         };
-                    }));
+                    })));
                     // const changedSetting: Observable<SlidesOutputData> = of(value).pipe(
                     //   filter(() => value.property.name === 'settings'),
                     //   map(() => {
@@ -4413,27 +4422,29 @@
                     //   })
                     // )
                     return rxjs.merge(changedPosition);
-                }), operators.tap(function (slidesData) {
+                })), operators.tap((function (slidesData) {
                     _this.gatherTranslatedData();
                     _this.changed.emit(slidesData.slides.length ? slidesData : _this.slidesOutputData);
                     // console.log(this.slidesOutputData);
                     // this.slidesOutputData = {};
-                }));
-                this._draggingCarousel$ = this.carouselService.getDragState().pipe(operators.tap(function () {
+                })));
+                this._draggingCarousel$ = this.carouselService.getDragState().pipe(operators.tap((function () {
                     _this.gatherTranslatedData();
                     _this.dragging.emit({ dragging: true, data: _this.slidesOutputData });
-                }), operators.switchMap(function () { return _this.carouselService.getDraggedState().pipe(operators.map(function () { return !!_this.carouselService.is('animating'); })); }), operators.switchMap(function (anim) {
+                })), operators.switchMap((function () {
+                    return _this.carouselService.getDraggedState().pipe(operators.map((function () { return !!_this.carouselService.is('animating'); })));
+                })), operators.switchMap((function (anim) {
                     if (anim) {
                         return _this.carouselService.getTranslatedState().pipe(operators.first());
                     }
                     else {
                         return rxjs.of('not animating');
                     }
-                }), operators.tap(function () {
+                })), operators.tap((function () {
                     _this.dragging.emit({ dragging: false, data: _this.slidesOutputData });
-                }));
+                })));
                 this._carouselMerge$ = rxjs.merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$, this._changedCarousel$, this._initializedCarousel$);
-                this._allObservSubscription = this._carouselMerge$.subscribe(function () { });
+                this._allObservSubscription = this._carouselMerge$.subscribe((function () { }));
             };
         /**
          * Init subscription to resize event and attaches handler for this event
@@ -4452,11 +4463,11 @@
                 var _this = this;
                 if (Object.keys(this.carouselService._options.responsive).length) {
                     this.resizeSubscription = this.resizeService.onResize$
-                        .pipe(operators.filter(function () { return _this.carouselWindowWidth !== _this.el.nativeElement.querySelector('.owl-carousel').clientWidth; }), operators.delay(this.carouselService.settings.responsiveRefreshRate))
-                        .subscribe(function () {
+                        .pipe(operators.filter((function () { return _this.carouselWindowWidth !== _this.el.nativeElement.querySelector('.owl-carousel').clientWidth; })), operators.delay(this.carouselService.settings.responsiveRefreshRate))
+                        .subscribe((function () {
                         _this.carouselService.onResize(_this.el.nativeElement.querySelector('.owl-carousel').clientWidth);
                         _this.carouselWindowWidth = _this.el.nativeElement.querySelector('.owl-carousel').clientWidth;
-                    });
+                    }));
                 }
             };
         /**
@@ -4561,8 +4572,8 @@
                 var clonedIdPrefix = this.carouselService.clonedIdPrefix;
                 /** @type {?} */
                 var activeSlides = this.slidesData
-                    .filter(function (slide) { return slide.isActive === true; })
-                    .map(function (slide) {
+                    .filter((function (slide) { return slide.isActive === true; }))
+                    .map((function (slide) {
                     /** @type {?} */
                     var id = slide.id.indexOf(clonedIdPrefix) >= 0 ? slide.id.slice(clonedIdPrefix.length) : slide.id;
                     return {
@@ -4572,7 +4583,7 @@
                         marginR: slide.marginR,
                         center: slide.isCentered
                     };
-                });
+                }));
                 startPosition = this.carouselService.relative(this.carouselService.current());
                 this.slidesOutputData = {
                     startPosition: startPosition,
@@ -4667,7 +4678,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var StageComponent = (function () {
         function StageComponent(zone, el, renderer, carouselService, animateService) {
@@ -4699,30 +4710,30 @@
             /**
              * Passes this to _oneMouseTouchMove();
              */
-            this.bindOneMouseTouchMove = function (ev) {
+            this.bindOneMouseTouchMove = (function (ev) {
                 _this._oneMouseTouchMove(ev);
-            };
+            });
             /**
              * Passes this to _onDragMove();
              */
-            this.bindOnDragMove = function (ev) {
+            this.bindOnDragMove = (function (ev) {
                 _this._onDragMove(ev);
-            };
+            });
             /**
              * Passes this to _onDragMove();
              */
-            this.bindOnDragEnd = function (ev) {
+            this.bindOnDragEnd = (function (ev) {
                 // this.zone.run(() => {
                 _this._onDragEnd(ev);
                 // });
-            };
+            });
             /**
              * Attaches handler for 'click' event on any element in .owl-stage in order to prevent dragging when moving of cursor is less than 3px
              */
-            this._oneClickHandler = function () {
-                _this.listenerOneClick = _this.renderer.listen(_this._drag.target, 'click', function () { return false; });
+            this._oneClickHandler = (function () {
+                _this.listenerOneClick = _this.renderer.listen(_this._drag.target, 'click', (function () { return false; }));
                 _this.listenerOneClick();
-            };
+            });
         }
         /**
          * @param {?} event
@@ -4793,9 +4804,9 @@
                 var _this = this;
                 this._oneMoveSubsription = this._oneDragMove$
                     .pipe(operators.first())
-                    .subscribe(function () {
+                    .subscribe((function () {
                     _this._sendChanges();
-                });
+                }));
             };
         /**
          * @return {?}
@@ -4841,10 +4852,10 @@
                 this._drag.pointer = this._pointer(event);
                 this.listenerMouseUp = this.renderer.listen(document, 'mouseup', this.bindOnDragEnd);
                 this.listenerTouchEnd = this.renderer.listen(document, 'touchend', this.bindOnDragEnd);
-                this.zone.runOutsideAngular(function () {
+                this.zone.runOutsideAngular((function () {
                     _this.listenerOneMouseMove = _this.renderer.listen(document, 'mousemove', _this.bindOneMouseTouchMove);
                     _this.listenerOneTouchMove = _this.renderer.listen(document, 'touchmove', _this.bindOneMouseTouchMove);
-                });
+                }));
             };
         /**
          * Attaches listeners to `touchmove` and `mousemove` events; initiates updating carousel after starting dragging
@@ -4908,7 +4919,7 @@
                     target = target.parentElement;
                 }
                 if (target instanceof HTMLAnchorElement) {
-                    this.listenerATag = this.renderer.listen(target, 'click', function () { return false; });
+                    this.listenerATag = this.renderer.listen(target, 'click', (function () { return false; }));
                 }
             };
         /**
@@ -5238,7 +5249,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var OwlRouterLinkDirective = (function () {
         function OwlRouterLinkDirective(router$$1, route, tabIndex, renderer, el) {
@@ -5361,11 +5372,11 @@
             this.locationStrategy = locationStrategy;
             this.stopLink = false;
             this.commands = [];
-            this.subscription = router$$1.events.subscribe(function (s) {
+            this.subscription = router$$1.events.subscribe((function (s) {
                 if (s instanceof router.NavigationEnd) {
                     _this.updateTargetUrlAndHref();
                 }
-            });
+            }));
         }
         Object.defineProperty(OwlRouterLinkWithHrefDirective.prototype, "owlRouterLink", {
             set: /**
@@ -5506,7 +5517,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var CarouselModule = (function () {
         function CarouselModule() {
@@ -5526,17 +5537,17 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
 
     exports.CarouselModule = CarouselModule;

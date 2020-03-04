@@ -4,6 +4,10 @@ export interface BreakpointOptions {
      */
     items?: number;
     /**
+     * Skips the validation of `items` when the number of slides is less than the number of `items`
+     */
+    skip_validateItems?: boolean;
+    /**
      * Infinity loop. Duplicate last and first items to get loop illusion.
      */
     loop?: boolean;
@@ -124,6 +128,10 @@ export interface OwlOptions {
      * The number of items you want to see on the screen.
      */
     items?: number;
+    /**
+     * Skips the validation of `items` when the number of slides is less than the number of `items`
+     */
+    skip_validateItems?: boolean;
     /**
      * Infinity loop. Duplicate last and first items to get loop illusion.
      */
