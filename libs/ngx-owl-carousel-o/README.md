@@ -7,38 +7,8 @@
 ngx-owl-carousel-o      | Angular
 ------------------------|--------
 2.x.x                   | 8.x.x
-1.x.x  (latest `1.1.7`) | 7.x.x
+1.x.x  (latest `1.2.0`) | 7.x.x
 0.x.x  (latest `0.1.2`) | 6.x.x
-
-### Angular 9
-
-Although the latest version of Angular 9 is `9.0.0-rc.6` that is it's in RC mode the latest version of `ngx-owl-carousel-o` `2.0.2` is still built on the Angular 8. It can work in Angular 9 projects too because Angular 9 supports Angular 8.
-
-But there's one small problem. If we use `<ng-container>` inside `<owl-carousel-o>` like in the example below or like this `<ng-container><ng-template carouselSlide>Slide 1</ng-template><ng-container>`, the code doesn't see any slides and the warning "There are no slides to show. So the carousel won't be rendered" emerges.
-
-```html
-<owl-carousel-o [options]="customOptions">
-
-  <ng-container *ngFor="let slide of slidesStore">
-    <ng-template carouselSlide [id]="slide.id">
-      <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
-    </ng-template>
-  </ng-container>
-
-</owl-carousel-o>
-```
-
-The solution is to avoid `<ng-container>`. So this works:
-
-```html
-<owl-carousel-o [options]="customOptions">
-
-  <ng-template carouselSlide *ngFor="let slide of slidesStore" [id]="slide.id">
-    <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
-  </ng-template>
-
-</owl-carousel-o>
-```
 
 [CHANGELOG](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/update-to-v7-of-nrwl-and-angular/CHANGELOG.md)
 
@@ -51,7 +21,7 @@ The solution is to avoid `<ng-container>`. So this works:
 - [Events](#events)
 - [Plugins](#plugins)
 - [Tips](#tips)
-- [Issue with Angular Universal (`ReferenceError: Event is not defined`) and Solution](#issue-with-angular-universal-(referenceError:-event-is-not-defined)-and-solution)
+- [ReferenceError: Event is not defined](#referenceError-event-is-not-defined)
 
 ## Get started
 
@@ -914,7 +884,7 @@ Key points are:
    - `owlCar.next()` shows the next slide.
    - `owlCar.to('slide-3')` moves the carousel to the slide with needed `id`. In this case `slide-3` is the needed slide. **NOTE**: it's needed to supply own ids to slides. The code above has `[id]="item.id"`. This is the way of supplying `ids`.
 
-## Issue with Angular Universal (`ReferenceError: Event is not defined`) and Solution
+## ReferenceError: Event is not defined
 
 The details of the issue are following:
 
