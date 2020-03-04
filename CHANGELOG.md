@@ -1,34 +1,40 @@
 # Versions Changes
 
-* [v2.0.3](#v2.0.3)
-* [v2.0.2](#v2.0.2)
-* [v2.0.1](#v2.0.1)
-* [v2.0.0](#v2.0.0)
-* [v1.1.7](#v1.1.7)
-* [v1.1.6](#v1.1.6)
-* [v1.1.6](#v1.1.6)
-* [v1.1.5](#v1.1.5)
-* [v1.1.4](#v1.1.4)
-* [v1.1.3](#v1.1.3)
-* [v1.1.2](#v1.1.2)
-* [v1.1.1](#v1.1.1)
-* [v1.1.0](#v1.1.0)
-* [v1.0.11](#v1.0.11)
-* [v1.0.10](#v1.0.10)
-* [v1.0.9](#v1.0.9)
-* [v1.0.8](#v1.0.8)
-* [v1.0.7](#v1.0.7)
-* [v1.0.6](#v1.0.6)
-* [v1.0.5](#v1.0.5)
-* [v1.0.4](#v1.0.4)
-* [v1.0.3](#v1.0.3)
-* [v1.0.2](#v1.0.2)
-* [v1.0.1](#v1.0.1)
-* [v1.0.0](#v1.0.0)
-* [v0.1.2](#v0.1.2)
-* [v0.1.1](#v0.1.1)
-* [v0.1.0](#v0.1.0)
-* [v0.0.5](#v0.0.5)
+* [v2.1.0](#v210)
+* [v2.0.3](#v203)
+* [v2.0.2](#v202)
+* [v2.0.1](#v201)
+* [v2.0.0](#v200)
+* [v1.1.7](#v117)
+* [v1.1.6](#v116)
+* [v1.1.6](#v116)
+* [v1.1.5](#v115)
+* [v1.1.4](#v114)
+* [v1.1.3](#v113)
+* [v1.1.2](#v112)
+* [v1.1.1](#v111)
+* [v1.1.0](#v110)
+* [v1.0.11](#v1011)
+* [v1.0.10](#v1010)
+* [v1.0.9](#v109)
+* [v1.0.8](#v108)
+* [v1.0.7](#v107)
+* [v1.0.6](#v106)
+* [v1.0.5](#v105)
+* [v1.0.4](#v104)
+* [v1.0.3](#v103)
+* [v1.0.2](#v102)
+* [v1.0.1](#v101)
+* [v1.0.0](#v100)
+* [v0.1.2](#v012)
+* [v0.1.1](#v011)
+* [v0.1.0](#v010)
+* [v0.0.5](#v005)
+
+## v2.1.0
+
+The version `v2.1.0` changes typings `Event` into `any` in order to avoid the error `ReferenceError: Event is not defined`.
+Also it adds new option `skip_validateItems`.
 
 ## v2.0.3
 
@@ -44,6 +50,11 @@ The version `v2.0.1` solves the issue [`#38`](https://github.com/vitalii-andriio
 
 ## v2.0.0
 The version `v2.0.0` is generated for Angular 8. It's the same as `v1.1.6` but it's compiled by Angular 8.
+
+## v1.2.0
+
+The version `v1.2.0` changes typings `Event` into `any` in order to avoid the error `ReferenceError: Event is not defined`.
+Also it adds new option `skip_validateItems`.
 
 ## v1.1.7
 
