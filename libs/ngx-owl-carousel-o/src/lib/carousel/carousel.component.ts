@@ -261,7 +261,7 @@ export class CarouselComponent
   }
 
   @HostListener('document:visibilitychange', ['$event'])
-  onVisibilityChange(ev: Event) {
+  onVisibilityChange(ev: any) {
     if (!this.carouselService.settings.autoplay) return;
     switch (this.docRef.visibilityState) {
       case 'visible':
