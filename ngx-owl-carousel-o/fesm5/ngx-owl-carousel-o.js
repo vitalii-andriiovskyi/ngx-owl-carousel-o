@@ -52,6 +52,7 @@ var ResizeService = /** @class */ (function () {
 var OwlCarouselOConfig = /** @class */ (function () {
     function OwlCarouselOConfig() {
         this.items = 3;
+        this.skip_validateItems = false;
         this.loop = false;
         this.center = false;
         this.rewind = false;
@@ -107,6 +108,7 @@ var OwlCarouselOConfig = /** @class */ (function () {
 var OwlOptionsMockedTypes = /** @class */ (function () {
     function OwlOptionsMockedTypes() {
         this.items = 'number';
+        this.skip_validateItems = 'boolean';
         this.loop = 'boolean';
         this.center = 'boolean';
         this.rewind = 'boolean';
@@ -675,7 +677,7 @@ var CarouselService = /** @class */ (function () {
                 if (mockedTypes[key] === 'number') {
                     if (this_1._isNumeric(checkedOptions[key])) {
                         checkedOptions[key] = +checkedOptions[key];
-                        checkedOptions[key] = key === 'items' ? this_1._validateItems(checkedOptions[key]) : checkedOptions[key];
+                        checkedOptions[key] = key === 'items' ? this_1._validateItems(checkedOptions[key], checkedOptions.skip_validateItems) : checkedOptions[key];
                     }
                     else {
                         checkedOptions[key] = setRightOption(mockedTypes[key], key);
@@ -716,21 +718,26 @@ var CarouselService = /** @class */ (function () {
         return checkedOptions;
     };
     /**
-     * Checks option items set by user and if it bigger than number of slides then returns number of slides
+     * Checks the option `items` set by user and if it bigger than number of slides, the function returns number of slides
      * @param items option items set by user
+     * @param skip_validateItems option `skip_validateItems` set by user
      * @returns right number of items
      */
-    CarouselService.prototype._validateItems = function (items) {
-        var result;
+    CarouselService.prototype._validateItems = function (items, skip_validateItems) {
+        var result = items;
         if (items > this._items.length) {
-            result = this._items.length;
-            this.logger.log('The option \'items\' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled');
+            if (skip_validateItems) {
+                this.logger.log('The option \'items\' in your options is bigger than the number of slides. The navigation got disabled');
+            }
+            else {
+                result = this._items.length;
+                this.logger.log('The option \'items\' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled');
+            }
         }
         else {
             if (items === this._items.length && (this.settings.dots || this.settings.nav)) {
                 this.logger.log('Option \'items\' in your options is equal to the number of slides. So the navigation got disabled');
             }
-            result = items;
         }
         return result;
     };
@@ -781,7 +788,7 @@ var CarouselService = /** @class */ (function () {
                 }
             }
         }
-        this.settings = __assign({}, this._options, overwrites[match], { items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items) : this._options.items });
+        this.settings = __assign({}, this._options, overwrites[match], { items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items, this._options.skip_validateItems) : this._options.items });
         // if (typeof this.settings.stagePadding === 'function') {
         // 	this.settings.stagePadding = this.settings.stagePadding();
         // }
@@ -2913,7 +2920,7 @@ var CarouselComponent = /** @class */ (function () {
     __decorate([
         HostListener('document:visibilitychange', ['$event']),
         __metadata("design:type", Function),
-        __metadata("design:paramtypes", [Event]),
+        __metadata("design:paramtypes", [Object]),
         __metadata("design:returntype", void 0)
     ], CarouselComponent.prototype, "onVisibilityChange", null);
     CarouselComponent = __decorate([

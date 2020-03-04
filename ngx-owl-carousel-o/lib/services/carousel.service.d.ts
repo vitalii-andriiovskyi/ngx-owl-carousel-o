@@ -269,8 +269,9 @@ export declare class CarouselService {
      */
     private _validateOptions;
     /**
-     * Checks option items set by user and if it bigger than number of slides then returns number of slides
+     * Checks the option `items` set by user and if it bigger than number of slides, the function returns number of slides
      * @param items option items set by user
+     * @param skip_validateItems option `skip_validateItems` set by user
      * @returns right number of items
      */
     private _validateItems;
