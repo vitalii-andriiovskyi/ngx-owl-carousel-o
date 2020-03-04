@@ -302,7 +302,7 @@ There's no need to set to `<img>` attributes `data-src` and  `data-src-retina` b
 
 By default, this option is set to `false`. This option changes the number of visible slides in the case, when the number of slides is less than the value of the option `items`. For example, when the `items=4` and there're just 3 slides, the carousel will reassign the value of `items` to `3`.
 
-When the option `skip_validateItems` is `true`, the carousel won't reassign the `items`. So, in the example above `items` will remain `4`. But there will be 3 slides and one empty place. This for the case when the option `loop=false`. When `loop=true`, the empty place will be populated by the copy of the first slide.
+When the option `skip_validateItems` is `true`, the carousel won't reassign the `items`. So, in the example above `items` will remain `4`. But there will be 3 slides and one empty place. This is in the case when the option `loop=false`. When `loop=true`, the empty place will be populated by the copy of the first slide.
 
 ## owlRouterLink
 
