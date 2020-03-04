@@ -22,7 +22,7 @@ ngx-owl-carousel-o      | Angular
 - [Events](#events)
 - [Plugins](#plugins)
 - [Tips](#tips)
-- [Issue with Angular Universal (`ReferenceError: Event is not defined`) and Solution](#issue-with-angular-universal-(`referenceError:-event-is-not-defined`)-and-solution)
+- [Issue with Angular Universal (`ReferenceError: Event is not defined`) and Solution](#issue-with-angular-universal-(referenceError:-event-is-not-defined)-and-solution)
 
 ## Get started
 
