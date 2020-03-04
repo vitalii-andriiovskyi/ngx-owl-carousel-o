@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate } from "tslib";
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CarouselComponent, CarouselSlideDirective } from './carousel.component';
@@ -15,7 +15,7 @@ var routes = [];
 var CarouselModule = /** @class */ (function () {
     function CarouselModule() {
     }
-    CarouselModule = tslib_1.__decorate([
+    CarouselModule = __decorate([
         NgModule({
             imports: [
                 CommonModule,
