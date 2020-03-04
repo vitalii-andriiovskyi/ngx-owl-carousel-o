@@ -22,7 +22,7 @@ ngx-owl-carousel-o      | Angular
 - [Events](#events)
 - [Plugins](#plugins)
 - [Tips](#tips)
-- [Issue with Angular Universal (`ReferenceError: Event is not defined`) and Solution](#issue-with-angular-universal-(referenceError:-event-is-not-defined)-and-solution)
+- [ReferenceError: Event is not defined](#referenceError-event-is-not-defined)
 
 ## Get started
 
@@ -885,7 +885,7 @@ Key points are:
    - `owlCar.next()` shows the next slide.
    - `owlCar.to('slide-3')` moves the carousel to the slide with needed `id`. In this case `slide-3` is the needed slide. **NOTE**: it's needed to supply own ids to slides. The code above has `[id]="item.id"`. This is the way of supplying `ids`.
 
-## Issue with Angular Universal (`ReferenceError: Event is not defined`) and Solution
+## ReferenceError: Event is not defined
 
 The details of the issue are following:
 
