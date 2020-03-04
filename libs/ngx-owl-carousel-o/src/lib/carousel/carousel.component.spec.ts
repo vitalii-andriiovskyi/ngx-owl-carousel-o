@@ -247,6 +247,41 @@ describe('CarouselComponent', () => {
     });
   }));
 
+  it(`should render carousel with 5 active slides when prop items=10 and there're just 5 slides:
+  and each slide has width of 10th part of <owl-carousel-o> [options]="{items: '10', skip_validateItems: true}"`, fakeAsync(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="{items: '10', skip_validateItems: true, loop: false}">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+
+    fixtureHost.detectChanges();
+    tick();
+
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    carouselComponent = deCarouselComponent.componentInstance;
+    carouselService = fixtureHost.debugElement.injector.get(CarouselService);
+
+    const activeSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(activeSlides.length).toBe(5, '5 active slides');
+
+    deStage = deCarouselComponent.query(By.css('.owl-stage'));
+    const stageWidth = deStage.nativeElement.clientWidth;
+    const slideWidth = activeSlides[0].nativeElement.clientWidth;
+    expect(slideWidth).toEqual(1200/10, 'the width of slide is 120px');
+    expect(stageWidth).toEqual(slideWidth*5, 'slide has width which is 5th part of .owl-stage');
+
+    deDots = deCarouselComponent.queryAll(By.css('.owl-dots'));
+    expect(deDots[0].nativeElement.classList.contains('disabled')).toBeTruthy('has .disabled class');
+  }));
+
   it(`should move the carousel by means of 'next()' and 'prev()', when the option 'nav' is disabled`, fakeAsync(() => {
     discardPeriodicTasks();
     const html = `
