@@ -19,8 +19,8 @@ ngx-owl-carousel-o      | Angular
 - [Tag `<a>` in the slide. Directive `owlRouterLink`](#owlRouterLink)
 - [Events](#events)
 - [Plugins](#plugins)
-- [Tips](#tips)
 - [ReferenceError: Event is not defined](#referenceError:-event-is-not-defined)
+- [Tips](#tips)
 
 ## Get started
 
