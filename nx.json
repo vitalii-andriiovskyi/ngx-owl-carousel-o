@@ -5,7 +5,8 @@
       "tags": []
     },
     "demo-owl-carousel-e2e": {
-      "tags": []
+      "tags": [],
+      "implicitDependencies": ["demo-owl-carousel"]
     },
     "ngx-owl-carousel-o": {
       "tags": []

@@ -17,13 +17,13 @@ export declare class OwlRouterLinkDirective {
     private commands;
     private preserve;
     constructor(router: Router, route: ActivatedRoute, tabIndex: string, renderer: Renderer2, el: ElementRef);
-    owlRouterLink: any[] | string;
+    set owlRouterLink(commands: any[] | string);
     /**
      * @deprecated 4.0.0 use `queryParamsHandling` instead.
      */
-    preserveQueryParams: boolean;
+    set preserveQueryParams(value: boolean);
     onClick(): boolean;
-    readonly urlTree: UrlTree;
+    get urlTree(): UrlTree;
 }
 /**
  * @description
@@ -55,11 +55,11 @@ export declare class OwlRouterLinkWithHrefDirective implements OnChanges, OnDest
     private preserve;
     href: string;
     constructor(router: Router, route: ActivatedRoute, locationStrategy: LocationStrategy);
-    owlRouterLink: any[] | string;
-    preserveQueryParams: boolean;
+    set owlRouterLink(commands: any[] | string);
+    set preserveQueryParams(value: boolean);
     ngOnChanges(changes: {}): any;
     ngOnDestroy(): any;
     onClick(button: number, ctrlKey: boolean, metaKey: boolean, shiftKey: boolean): boolean;
     private updateTargetUrlAndHref;
-    readonly urlTree: UrlTree;
+    get urlTree(): UrlTree;
 }

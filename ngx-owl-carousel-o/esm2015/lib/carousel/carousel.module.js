@@ -1,4 +1,4 @@
-import * as tslib_1 from "tslib";
+import { __decorate } from "tslib";
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CarouselComponent, CarouselSlideDirective } from './carousel.component';
@@ -14,7 +14,7 @@ export { OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective } from './owl-ro
 const routes = [];
 let CarouselModule = class CarouselModule {
 };
-CarouselModule = tslib_1.__decorate([
+CarouselModule = __decorate([
     NgModule({
         imports: [
             CommonModule,

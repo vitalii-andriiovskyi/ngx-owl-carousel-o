@@ -26,7 +26,8 @@ export declare class CarouselSlideDirective {
      * e.g. if _mergeData=2, the slide will twice wider then slides with _mergeData=1
      */
     private _dataMerge;
-    dataMerge: number;
+    set dataMerge(data: number);
+    get dataMerge(): number;
     /**
      * Width of slide
      */
@@ -155,7 +156,7 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
     private _carouselMerge$;
     private docRef;
     constructor(el: ElementRef, resizeService: ResizeService, carouselService: CarouselService, navigationService: NavigationService, autoplayService: AutoplayService, lazyLoadService: LazyLoadService, animateService: AnimateService, autoHeightService: AutoHeightService, hashService: HashService, logger: OwlLogger, changeDetectorRef: ChangeDetectorRef, docRef: any);
-    onVisibilityChange(ev: Event): void;
+    onVisibilityChange(ev: any): void;
     ngOnInit(): void;
     ngAfterContentChecked(): void;
     ngAfterContentInit(): void;
