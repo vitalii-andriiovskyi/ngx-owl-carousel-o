@@ -1,7 +1,4 @@
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
+import { __decorate } from "tslib";
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CarouselComponent, CarouselSlideDirective } from './carousel.component';
@@ -18,7 +15,7 @@ var routes = [];
 var CarouselModule = /** @class */ (function () {
     function CarouselModule() {
     }
-    CarouselModule = tslib_1.__decorate([
+    CarouselModule = __decorate([
         NgModule({
             imports: [
                 CommonModule,

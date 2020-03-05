@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist/apps/demo-owl-carousel",
             "index": "apps/demo-owl-carousel/src/index.html",
             "main": "apps/demo-owl-carousel/src/main.ts",
@@ -32,6 +33,12 @@
           },
           "configurations": {
             "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "apps/demo-owl-carousel/src/environments/environment.ts",
@@ -121,7 +128,7 @@
       "prefix": "owl-carousel-libdemo",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@nrwl/angular:package",
           "options": {
             "tsConfig": "libs/ngx-owl-carousel-o/tsconfig.lib.json",
             "project": "libs/ngx-owl-carousel-o/ng-package.json"

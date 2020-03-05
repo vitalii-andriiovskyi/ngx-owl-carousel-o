@@ -4,6 +4,7 @@ import { OwlOptions } from "../models/owl-options.model";
  */
 export declare class OwlCarouselOConfig implements OwlOptions {
     items: number;
+    skip_validateItems: boolean;
     loop: boolean;
     center: boolean;
     rewind: boolean;
@@ -51,6 +52,7 @@ export declare class OwlCarouselOConfig implements OwlOptions {
  */
 export declare class OwlOptionsMockedTypes {
     items: string;
+    skip_validateItems: string;
     loop: string;
     center: string;
     rewind: string;

@@ -13,7 +13,7 @@
     "paths": {
       "ngx-owl-carousel-o": ["libs/ngx-owl-carousel-o/src/index.ts"]
     },
-    "module": "es2015",
+    "module": "esnext",
     "rootDir": "."
   },
   "exclude": ["node_modules", "tmp"]

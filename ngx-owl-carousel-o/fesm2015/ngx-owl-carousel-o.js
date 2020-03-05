@@ -1,5 +1,5 @@
-import { __decorate, __metadata, __param } from 'tslib';
-import { Injectable, isDevMode, ErrorHandler, InjectionToken, PLATFORM_ID, Inject, Optional, Input, Directive, TemplateRef, EventEmitter, ContentChildren, QueryList, Output, HostListener, Component, ElementRef, ChangeDetectorRef, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
+import { __decorate, __param } from 'tslib';
+import { Injectable, isDevMode, ErrorHandler, InjectionToken, PLATFORM_ID, Inject, Optional, TemplateRef, Input, Directive, EventEmitter, ElementRef, ChangeDetectorRef, ContentChildren, Output, HostListener, Component, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
 import { isPlatformBrowser, LocationStrategy, CommonModule } from '@angular/common';
 import { Subject, merge, of, from } from 'rxjs';
 import { EventManager } from '@angular/platform-browser';
@@ -46,13 +46,13 @@ class ResizeService {
     onLoaded(event) {
         this.windowWidth = event.target;
     }
-}
-ResizeService.decorators = [
-    { type: Injectable }
-];
+};
 ResizeService.ctorParameters = () => [
     { type: EventManager }
 ];
+ResizeService = __decorate([
+    Injectable()
+], ResizeService);
 
 /**
  * @fileoverview added by tsickle
@@ -64,6 +64,7 @@ ResizeService.ctorParameters = () => [
 class OwlCarouselOConfig {
     constructor() {
         this.items = 3;
+        this.skip_validateItems = false;
         this.loop = false;
         this.center = false;
         this.rewind = false;
@@ -118,6 +119,7 @@ class OwlCarouselOConfig {
 class OwlOptionsMockedTypes {
     constructor() {
         this.items = 'number';
+        this.skip_validateItems = 'boolean';
         this.loop = 'boolean';
         this.center = 'boolean';
         this.rewind = 'boolean';
@@ -187,23 +189,29 @@ class OwlLogger {
     warn(value, ...rest) {
         console.warn(value, ...rest);
     }
-}
-OwlLogger.decorators = [
-    { type: Injectable }
-];
+};
 OwlLogger.ctorParameters = () => [
     { type: ErrorHandler }
 ];
+OwlLogger = __decorate([
+    Injectable()
+], OwlLogger);
 
 /**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Current state information and their tags.
+ */
+class States {
+}
+/**
+ * Enumeration for types.
+ * @enum {String}
  */
 var Type;
 (function (Type) {
     Type["Event"] = "event";
     Type["State"] = "state";
 })(Type || (Type = {}));
+;
 /**
  * Enumeration for width.
  * @enum {String}
@@ -214,6 +222,17 @@ var Width;
     Width["Inner"] = "inner";
     Width["Outer"] = "outer";
 })(Width || (Width = {}));
+;
+/**
+ * Model for coords of .owl-stage
+ */
+class Coords {
+}
+/**
+ * Model for all current data of carousel
+ */
+class CarouselCurrentData {
+}
 let CarouselService = class CarouselService {
     constructor(logger) {
         this.logger = logger;
@@ -651,7 +670,7 @@ let CarouselService = class CarouselService {
     setOptions(options) {
         const configOptions = new OwlCarouselOConfig();
         const checkedOptions = this._validateOptions(options, configOptions);
-        this._options = Object.assign({}, configOptions, checkedOptions);
+        this._options = Object.assign(Object.assign({}, configOptions), checkedOptions);
     }
     /**
      * Checks whether user's option are set properly. Cheking is based on typings;
@@ -676,7 +695,7 @@ let CarouselService = class CarouselService {
                 if (mockedTypes[key] === 'number') {
                     if (this._isNumeric(checkedOptions[key])) {
                         checkedOptions[key] = +checkedOptions[key];
-                        checkedOptions[key] = key === 'items' ? this._validateItems(checkedOptions[key]) : checkedOptions[key];
+                        checkedOptions[key] = key === 'items' ? this._validateItems(checkedOptions[key], checkedOptions.skip_validateItems) : checkedOptions[key];
                     }
                     else {
                         checkedOptions[key] = setRightOption(mockedTypes[key], key);
@@ -703,6 +722,7 @@ let CarouselService = class CarouselService {
                         if (!isString) {
                             checkedOptions[key] = setRightOption(mockedTypes[key], key);
                         }
+                        ;
                     }
                     else {
                         checkedOptions[key] = setRightOption(mockedTypes[key], key);
@@ -713,22 +733,26 @@ let CarouselService = class CarouselService {
         return checkedOptions;
     }
     /**
-     * Checks option items set by user and if it bigger than number of slides then returns number of slides
-     * @private
-     * @param {?} items option items set by user
-     * @return {?} right number of items
+     * Checks the option `items` set by user and if it bigger than number of slides, the function returns number of slides
+     * @param items option items set by user
+     * @param skip_validateItems option `skip_validateItems` set by user
+     * @returns right number of items
      */
-    _validateItems(items) {
-        let result;
+    _validateItems(items, skip_validateItems) {
+        let result = items;
         if (items > this._items.length) {
-            result = this._items.length;
-            this.logger.log('The option \'items\' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled');
+            if (skip_validateItems) {
+                this.logger.log('The option \'items\' in your options is bigger than the number of slides. The navigation got disabled');
+            }
+            else {
+                result = this._items.length;
+                this.logger.log('The option \'items\' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled');
+            }
         }
         else {
             if (items === this._items.length && (this.settings.dots || this.settings.nav)) {
                 this.logger.log('Option \'items\' in your options is equal to the number of slides. So the navigation got disabled');
             }
-            result = items;
         }
         return result;
     }
@@ -778,7 +802,7 @@ let CarouselService = class CarouselService {
                 }
             }
         }
-        this.settings = Object.assign({}, this._options, overwrites[match], { items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items) : this._options.items });
+        this.settings = Object.assign(Object.assign(Object.assign({}, this._options), overwrites[match]), { items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items, this._options.skip_validateItems) : this._options.items });
         // if (typeof this.settings.stagePadding === 'function') {
         // 	this.settings.stagePadding = this.settings.stagePadding();
         // }
@@ -1051,6 +1075,7 @@ let CarouselService = class CarouselService {
             if (position !== -1) {
                 break;
             }
+            ;
         }
         // }
         if (!this.settings.loop) {
@@ -1655,13 +1680,13 @@ let CarouselService = class CarouselService {
             y: first.y - second.y
         };
     }
-}
-CarouselService.decorators = [
-    { type: Injectable }
-];
+};
 CarouselService.ctorParameters = () => [
     { type: OwlLogger }
 ];
+CarouselService = __decorate([
+    Injectable()
+], CarouselService);
 
 /**
  * @fileoverview added by tsickle
@@ -1953,13 +1978,13 @@ class NavigationService {
         }
         this.carouselService.to(this.carouselService.relative(position), false);
     }
-}
-NavigationService.decorators = [
-    { type: Injectable }
-];
+};
 NavigationService.ctorParameters = () => [
     { type: CarouselService }
 ];
+NavigationService = __decorate([
+    Injectable()
+], NavigationService);
 
 /**
  * @fileoverview added by tsickle
@@ -1980,7 +2005,7 @@ class WindowRef {
 /**
  * Define class that implements the abstract class and returns the native window object.
  */
-class BrowserWindowRef extends WindowRef {
+let BrowserWindowRef = class BrowserWindowRef extends WindowRef {
     constructor() {
         super();
     }
@@ -1990,7 +2015,10 @@ class BrowserWindowRef extends WindowRef {
     get nativeWindow() {
         return window;
     }
-}
+};
+BrowserWindowRef = __decorate([
+    Injectable()
+], BrowserWindowRef);
 /**
  * Create an factory function that returns the native window object.
  * @param browserWindowRef Native window object
@@ -2046,7 +2074,7 @@ class DocumentRef {
 /**
  * Define class that implements the abstract class and returns the native Document object.
  */
-class BrowserDocumentRef extends DocumentRef {
+let BrowserDocumentRef = class BrowserDocumentRef extends DocumentRef {
     constructor() {
         super();
     }
@@ -2056,7 +2084,10 @@ class BrowserDocumentRef extends DocumentRef {
     get nativeDocument() {
         return document;
     }
-}
+};
+BrowserDocumentRef = __decorate([
+    Injectable()
+], BrowserDocumentRef);
 /**
  * Create an factory function that returns the native Document object.
  * @param browserDocumentRef Native Document object
@@ -2270,15 +2301,17 @@ class AutoplayService {
             this._playAfterTranslated();
         }
     }
-}
-AutoplayService.decorators = [
-    { type: Injectable }
-];
+};
 AutoplayService.ctorParameters = () => [
     { type: CarouselService },
     { type: undefined, decorators: [{ type: Inject, args: [WINDOW,] }] },
     { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
 ];
+AutoplayService = __decorate([
+    Injectable(),
+    __param(1, Inject(WINDOW)),
+    __param(2, Inject(DOCUMENT))
+], AutoplayService);
 
 /**
  * @fileoverview added by tsickle
@@ -2351,13 +2384,13 @@ class LazyLoadService {
         }
         this.carouselService.slidesData[position].load = true;
     }
-}
-LazyLoadService.decorators = [
-    { type: Injectable }
-];
+};
 LazyLoadService.ctorParameters = () => [
     { type: CarouselService }
 ];
+LazyLoadService = __decorate([
+    Injectable()
+], LazyLoadService);
 
 /**
  * @fileoverview added by tsickle
@@ -2467,13 +2500,13 @@ class AnimateService {
         this.carouselService.onTransitionEnd();
     }
     ;
-}
-AnimateService.decorators = [
-    { type: Injectable }
-];
+};
 AnimateService.ctorParameters = () => [
     { type: CarouselService }
 ];
+AnimateService = __decorate([
+    Injectable()
+], AnimateService);
 
 /**
  * @fileoverview added by tsickle
@@ -2529,13 +2562,13 @@ class AutoHeightService {
             slide.heightState = (i >= start && i < end) ? 'full' : 'nulled';
         });
     }
-}
-AutoHeightService.decorators = [
-    { type: Injectable }
-];
+};
 AutoHeightService.ctorParameters = () => [
     { type: CarouselService }
 ];
+AutoHeightService = __decorate([
+    Injectable()
+], AutoHeightService);
 
 /**
  * @fileoverview added by tsickle
@@ -2557,6 +2590,7 @@ class HashService {
                 fragment: of('no route').pipe(take(1))
             };
         }
+        ;
         if (!this.router) {
             this.router = {
                 navigate: (commands, extras) => { return; }
@@ -2606,15 +2640,17 @@ class HashService {
             this.rewind(fragment);
         });
     }
-}
-HashService.decorators = [
-    { type: Injectable }
-];
+};
 HashService.ctorParameters = () => [
     { type: CarouselService },
     { type: ActivatedRoute, decorators: [{ type: Optional }] },
     { type: Router, decorators: [{ type: Optional }] }
 ];
+HashService = __decorate([
+    Injectable(),
+    __param(1, Optional()),
+    __param(2, Optional())
+], HashService);
 
 /**
  * @fileoverview added by tsickle
@@ -2675,36 +2711,33 @@ CarouselSlideDirective.propDecorators = {
     dotContent: [{ type: Input }],
     dataHash: [{ type: Input }]
 };
+CarouselSlideDirective.ctorParameters = () => [
+    { type: TemplateRef }
+];
 __decorate([
-    Input(),
-    __metadata("design:type", Object)
+    Input()
 ], CarouselSlideDirective.prototype, "id", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", Number),
-    __metadata("design:paramtypes", [Number])
+    Input()
 ], CarouselSlideDirective.prototype, "dataMerge", null);
 __decorate([
-    Input(),
-    __metadata("design:type", Object)
+    Input()
 ], CarouselSlideDirective.prototype, "width", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", Object)
+    Input()
 ], CarouselSlideDirective.prototype, "dotContent", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", Object)
+    Input()
 ], CarouselSlideDirective.prototype, "dataHash", void 0);
 CarouselSlideDirective = __decorate([
-    Directive({ selector: 'ng-template[carouselSlide]' }),
-    __metadata("design:paramtypes", [TemplateRef])
+    Directive({ selector: 'ng-template[carouselSlide]' })
 ], CarouselSlideDirective);
 /**
  * Data which will be passed out after ending of transition of carousel
  */
 class SlidesOutputData {
 }
+;
 let CarouselComponent = class CarouselComponent {
     constructor(el, resizeService, carouselService, navigationService, autoplayService, lazyLoadService, animateService, autoHeightService, hashService, logger, changeDetectorRef, docRef) {
         this.el = el;
@@ -2822,7 +2855,7 @@ let CarouselComponent = class CarouselComponent {
             const changedPosition = of(value).pipe(filter(() => value.property.name === 'position'), switchMap(() => from(this.slidesData)), skip(value.property.value), take(this.carouselService.settings.items), map(slide => {
                 const clonedIdPrefix = this.carouselService.clonedIdPrefix;
                 const id = slide.id.indexOf(clonedIdPrefix) >= 0 ? slide.id.slice(clonedIdPrefix.length) : slide.id;
-                return Object.assign({}, slide, { id: id, isActive: true });
+                return Object.assign(Object.assign({}, slide), { id: id, isActive: true });
             }), toArray(), map(slides => {
                 return {
                     slides: slides,
@@ -2959,39 +2992,43 @@ let CarouselComponent = class CarouselComponent {
         this.autoplayService.startPlayingTouchEnd();
     }
 };
+CarouselComponent.ctorParameters = () => [
+    { type: ElementRef },
+    { type: ResizeService },
+    { type: CarouselService },
+    { type: NavigationService },
+    { type: AutoplayService },
+    { type: LazyLoadService },
+    { type: AnimateService },
+    { type: AutoHeightService },
+    { type: HashService },
+    { type: OwlLogger },
+    { type: ChangeDetectorRef },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
+];
 __decorate([
-    ContentChildren(CarouselSlideDirective),
-    __metadata("design:type", QueryList)
+    ContentChildren(CarouselSlideDirective)
 ], CarouselComponent.prototype, "slides", void 0);
 __decorate([
-    Output(),
-    __metadata("design:type", Object)
+    Output()
 ], CarouselComponent.prototype, "translated", void 0);
 __decorate([
-    Output(),
-    __metadata("design:type", Object)
+    Output()
 ], CarouselComponent.prototype, "dragging", void 0);
 __decorate([
-    Output(),
-    __metadata("design:type", Object)
+    Output()
 ], CarouselComponent.prototype, "change", void 0);
 __decorate([
-    Output(),
-    __metadata("design:type", Object)
+    Output()
 ], CarouselComponent.prototype, "changed", void 0);
 __decorate([
-    Output(),
-    __metadata("design:type", Object)
+    Output()
 ], CarouselComponent.prototype, "initialized", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", Object)
+    Input()
 ], CarouselComponent.prototype, "options", void 0);
 __decorate([
-    HostListener('document:visibilitychange', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Event]),
-    __metadata("design:returntype", void 0)
+    HostListener('document:visibilitychange', ['$event'])
 ], CarouselComponent.prototype, "onVisibilityChange", null);
 CarouselComponent = __decorate([
     Component({
@@ -3037,39 +3074,10 @@ CarouselComponent = __decorate([
         ],
         styles: [`.owl-theme { display: block; }`]
     }),
-    __param(11, Inject(DOCUMENT)),
-    __metadata("design:paramtypes", [ElementRef,
-        ResizeService,
-        CarouselService,
-        NavigationService,
-        AutoplayService,
-        LazyLoadService,
-        AnimateService,
-        AutoHeightService,
-        HashService,
-        OwlLogger,
-        ChangeDetectorRef, Object])
+    __param(11, Inject(DOCUMENT))
 ], CarouselComponent);
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class StageData {
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class StageComponent {
-    /**
-     * @param {?} zone
-     * @param {?} el
-     * @param {?} renderer
-     * @param {?} carouselService
-     * @param {?} animateService
-     */
+let StageComponent = class StageComponent {
     constructor(zone, el, renderer, carouselService, animateService) {
         this.zone = zone;
         this.el = el;
@@ -3373,47 +3381,36 @@ class StageComponent {
         this.animateService.clear(id);
     }
 };
+StageComponent.ctorParameters = () => [
+    { type: NgZone },
+    { type: ElementRef },
+    { type: Renderer2 },
+    { type: CarouselService },
+    { type: AnimateService }
+];
 __decorate([
-    Input(),
-    __metadata("design:type", Object)
+    Input()
 ], StageComponent.prototype, "owlDraggable", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", StageData)
+    Input()
 ], StageComponent.prototype, "stageData", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", Array)
+    Input()
 ], StageComponent.prototype, "slidesData", void 0);
 __decorate([
-    HostListener('mousedown', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    HostListener('mousedown', ['$event'])
 ], StageComponent.prototype, "onMouseDown", null);
 __decorate([
-    HostListener('touchstart', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    HostListener('touchstart', ['$event'])
 ], StageComponent.prototype, "onTouchStart", null);
 __decorate([
-    HostListener('touchcancel', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
+    HostListener('touchcancel', ['$event'])
 ], StageComponent.prototype, "onTouchCancel", null);
 __decorate([
-    HostListener('dragstart'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    HostListener('dragstart')
 ], StageComponent.prototype, "onDragStart", null);
 __decorate([
-    HostListener('selectstart'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    HostListener('selectstart')
 ], StageComponent.prototype, "onSelectStart", null);
 StageComponent = __decorate([
     Component({
@@ -3440,39 +3437,22 @@ StageComponent = __decorate([
       </div><!-- /.owl-stage -->
     </div>
   `,
-                animations: [
-                    trigger('autoHeight', [
-                        state('nulled', style({ height: 0 })),
-                        state('full', style({ height: '*' })),
-                        transition('full => nulled', [
-                            // style({height: '*'}),
-                            animate('700ms 350ms')
-                        ]),
-                        transition('nulled => full', [
-                            // style({height: 0}),
-                            animate(350)
-                        ]),
-                    ])
-                ]
-            }] }
-];
-StageComponent.ctorParameters = () => [
-    { type: NgZone },
-    { type: ElementRef },
-    { type: Renderer2 },
-    { type: CarouselService },
-    { type: AnimateService }
-];
-StageComponent.propDecorators = {
-    owlDraggable: [{ type: Input }],
-    stageData: [{ type: Input }],
-    slidesData: [{ type: Input }],
-    onMouseDown: [{ type: HostListener, args: ['mousedown', ['$event'],] }],
-    onTouchStart: [{ type: HostListener, args: ['touchstart', ['$event'],] }],
-    onTouchCancel: [{ type: HostListener, args: ['touchcancel', ['$event'],] }],
-    onDragStart: [{ type: HostListener, args: ['dragstart',] }],
-    onSelectStart: [{ type: HostListener, args: ['selectstart',] }]
-};
+        animations: [
+            trigger('autoHeight', [
+                state('nulled', style({ height: 0 })),
+                state('full', style({ height: '*' })),
+                transition('full => nulled', [
+                    // style({height: '*'}),
+                    animate('700ms 350ms')
+                ]),
+                transition('nulled => full', [
+                    // style({height: 0}),
+                    animate(350)
+                ]),
+            ])
+        ]
+    })
+], StageComponent);
 
 /**
  * @fileoverview added by tsickle
@@ -3556,54 +3536,46 @@ OwlRouterLinkDirective.propDecorators = {
     preserveQueryParams: [{ type: Input }],
     onClick: [{ type: HostListener, args: ['click',] }]
 };
+OwlRouterLinkDirective.ctorParameters = () => [
+    { type: Router },
+    { type: ActivatedRoute },
+    { type: String, decorators: [{ type: Attribute, args: ['tabindex',] }] },
+    { type: Renderer2 },
+    { type: ElementRef }
+];
 __decorate([
-    Input(),
-    __metadata("design:type", Object)
+    Input()
 ], OwlRouterLinkDirective.prototype, "queryParams", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", String)
+    Input()
 ], OwlRouterLinkDirective.prototype, "fragment", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", String)
+    Input()
 ], OwlRouterLinkDirective.prototype, "queryParamsHandling", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", Boolean)
+    Input()
 ], OwlRouterLinkDirective.prototype, "preserveFragment", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", Boolean)
+    Input()
 ], OwlRouterLinkDirective.prototype, "skipLocationChange", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", Boolean)
+    Input()
 ], OwlRouterLinkDirective.prototype, "replaceUrl", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", Object)
+    Input()
 ], OwlRouterLinkDirective.prototype, "stopLink", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
+    Input()
 ], OwlRouterLinkDirective.prototype, "owlRouterLink", null);
 __decorate([
-    Input(),
-    __metadata("design:type", Boolean),
-    __metadata("design:paramtypes", [Boolean])
+    Input()
 ], OwlRouterLinkDirective.prototype, "preserveQueryParams", null);
 __decorate([
-    HostListener('click'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Boolean)
+    HostListener('click')
 ], OwlRouterLinkDirective.prototype, "onClick", null);
 OwlRouterLinkDirective = __decorate([
     Directive({ selector: ':not(a)[owlRouterLink]' }),
-    __param(2, Attribute('tabindex')),
-    __metadata("design:paramtypes", [Router, ActivatedRoute, String, Renderer2, ElementRef])
+    __param(2, Attribute('tabindex'))
 ], OwlRouterLinkDirective);
 /**
  * @description
@@ -3702,100 +3674,71 @@ OwlRouterLinkWithHrefDirective.propDecorators = {
     preserveQueryParams: [{ type: Input }],
     onClick: [{ type: HostListener, args: ['click', ['$event.button', '$event.ctrlKey', '$event.metaKey', '$event.shiftKey'],] }]
 };
+OwlRouterLinkWithHrefDirective.ctorParameters = () => [
+    { type: Router },
+    { type: ActivatedRoute },
+    { type: LocationStrategy }
+];
 __decorate([
-    HostBinding('attr.target'), Input(),
-    __metadata("design:type", String)
+    HostBinding('attr.target'), Input()
 ], OwlRouterLinkWithHrefDirective.prototype, "target", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", Object)
+    Input()
 ], OwlRouterLinkWithHrefDirective.prototype, "queryParams", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", String)
+    Input()
 ], OwlRouterLinkWithHrefDirective.prototype, "fragment", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", String)
+    Input()
 ], OwlRouterLinkWithHrefDirective.prototype, "queryParamsHandling", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", Boolean)
+    Input()
 ], OwlRouterLinkWithHrefDirective.prototype, "preserveFragment", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", Boolean)
+    Input()
 ], OwlRouterLinkWithHrefDirective.prototype, "skipLocationChange", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", Boolean)
+    Input()
 ], OwlRouterLinkWithHrefDirective.prototype, "replaceUrl", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", Object)
+    Input()
 ], OwlRouterLinkWithHrefDirective.prototype, "stopLink", void 0);
 __decorate([
-    HostBinding(),
-    __metadata("design:type", String)
+    HostBinding()
 ], OwlRouterLinkWithHrefDirective.prototype, "href", void 0);
 __decorate([
-    Input(),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
+    Input()
 ], OwlRouterLinkWithHrefDirective.prototype, "owlRouterLink", null);
 __decorate([
-    Input(),
-    __metadata("design:type", Boolean),
-    __metadata("design:paramtypes", [Boolean])
+    Input()
 ], OwlRouterLinkWithHrefDirective.prototype, "preserveQueryParams", null);
 __decorate([
-    HostListener('click', ['$event.button', '$event.ctrlKey', '$event.metaKey', '$event.shiftKey']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, Boolean, Boolean, Boolean]),
-    __metadata("design:returntype", Boolean)
+    HostListener('click', ['$event.button', '$event.ctrlKey', '$event.metaKey', '$event.shiftKey'])
 ], OwlRouterLinkWithHrefDirective.prototype, "onClick", null);
 OwlRouterLinkWithHrefDirective = __decorate([
-    Directive({ selector: 'a[owlRouterLink]' }),
-    __metadata("design:paramtypes", [Router, ActivatedRoute,
-        LocationStrategy])
+    Directive({ selector: 'a[owlRouterLink]' })
 ], OwlRouterLinkWithHrefDirective);
 function attrBoolValue(s) {
     return s === '' || !!s;
 }
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class CarouselModule {
-}
-CarouselModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [
-                    CommonModule,
-                ],
-                declarations: [CarouselComponent, CarouselSlideDirective, StageComponent, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
-                exports: [CarouselComponent, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
-                providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS, OwlLogger]
-            },] }
-];
+const routes = [];
+let CarouselModule = class CarouselModule {
+};
+CarouselModule = __decorate([
+    NgModule({
+        imports: [
+            CommonModule,
+        ],
+        declarations: [CarouselComponent, CarouselSlideDirective, StageComponent, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
+        exports: [CarouselComponent, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
+        providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS, OwlLogger]
+    })
+], CarouselModule);
 
 /**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-export { CarouselModule, CarouselComponent, CarouselSlideDirective, SlidesOutputData, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective, StageComponent as ɵx, AnimateService as ɵt, AutoHeightService as ɵu, AutoplayService as ɵd, CarouselService as ɵb, BrowserDocumentRef as ɵn, DOCUMENT as ɵl, DOCUMENT_PROVIDERS as ɵr, DocumentRef as ɵm, browserDocumentProvider as ɵp, documentFactory as ɵo, documentProvider as ɵq, HashService as ɵv, LazyLoadService as ɵs, OwlLogger as ɵc, NavigationService as ɵa, ResizeService as ɵw, BrowserWindowRef as ɵg, WINDOW as ɵe, WINDOW_PROVIDERS as ɵk, WindowRef as ɵf, browserWindowProvider as ɵi, windowFactory as ɵh, windowProvider as ɵj };
 
 export { CarouselComponent, CarouselModule, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective, SlidesOutputData, NavigationService as ɵa, CarouselService as ɵb, OwlLogger as ɵc, AutoplayService as ɵd, WINDOW as ɵe, WindowRef as ɵf, BrowserWindowRef as ɵg, windowFactory as ɵh, browserWindowProvider as ɵi, windowProvider as ɵj, WINDOW_PROVIDERS as ɵk, DOCUMENT as ɵl, DocumentRef as ɵm, BrowserDocumentRef as ɵn, documentFactory as ɵo, browserDocumentProvider as ɵp, documentProvider as ɵq, DOCUMENT_PROVIDERS as ɵr, LazyLoadService as ɵs, AnimateService as ɵt, AutoHeightService as ɵu, HashService as ɵv, ResizeService as ɵw, StageComponent as ɵx };
 //# sourceMappingURL=ngx-owl-carousel-o.js.map

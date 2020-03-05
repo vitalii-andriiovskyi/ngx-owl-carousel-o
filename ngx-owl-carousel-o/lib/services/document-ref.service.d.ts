@@ -7,7 +7,7 @@ export declare const DOCUMENT: InjectionToken<Document>;
  * Define abstract class for obtaining reference to the global Document object.
  */
 export declare abstract class DocumentRef {
-    readonly nativeDocument: Document | Object;
+    get nativeDocument(): Document | Object;
 }
 /**
  * Define class that implements the abstract class and returns the native Document object.
@@ -17,7 +17,7 @@ export declare class BrowserDocumentRef extends DocumentRef {
     /**
      * @returns Document object
      */
-    readonly nativeDocument: Document | Object;
+    get nativeDocument(): Document | Object;
 }
 /**
  * Create an factory function that returns the native Document object.

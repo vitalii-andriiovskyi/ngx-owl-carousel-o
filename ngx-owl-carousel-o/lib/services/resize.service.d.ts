@@ -10,7 +10,7 @@ export declare class ResizeService {
      * Makes resizeSubject become Observable
      * @returns Observable of resizeSubject
      */
-    readonly onResize$: Observable<Window>;
+    get onResize$(): Observable<Window>;
     /**
      * Subject of 'resize' event
      */

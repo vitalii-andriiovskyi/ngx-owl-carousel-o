@@ -2,12 +2,12 @@ import { ClassProvider, FactoryProvider, InjectionToken } from '@angular/core';
 /**
  * Create a new injection token for injecting the window into a component.
  */
-export declare const WINDOW: InjectionToken<{}>;
+export declare const WINDOW: InjectionToken<unknown>;
 /**
  * Define abstract class for obtaining reference to the global window object.
  */
 export declare abstract class WindowRef {
-    readonly nativeWindow: Window | Object;
+    get nativeWindow(): Window | Object;
 }
 /**
  * Define class that implements the abstract class and returns the native window object.
@@ -17,7 +17,7 @@ export declare class BrowserWindowRef extends WindowRef {
     /**
      * @returns window object
      */
-    readonly nativeWindow: Window | Object;
+    get nativeWindow(): Window | Object;
 }
 /**
  * Create an factory function that returns the native window object.
