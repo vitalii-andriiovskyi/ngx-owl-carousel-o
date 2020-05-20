@@ -1,5 +1,5 @@
 import { EventManager } from '@angular/platform-browser';
-import { __assign, __extends, __spread } from 'tslib';
+import { __extends, __assign, __spread } from 'tslib';
 import { Subject, merge, of, from } from 'rxjs';
 import { tap, filter, switchMap, first, skip, take, delay, map, toArray } from 'rxjs/operators';
 import { trigger, state, style, animate, transition } from '@angular/animations';
