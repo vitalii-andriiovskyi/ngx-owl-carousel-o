@@ -15,11 +15,11 @@ export class HomeComponent implements OnInit {
     { id: 'slide-3', text: 'Slide 3 HM', dataMerge: 3, dotContent: 'text3'},
     { id: 'slide-4', text: 'Slide 4 HM', width: 450, dotContent: 'text4'},
     { id: 'slide-5', text: 'Slide 5 HM', dataMerge: 2, dotContent: 'text5'},
-    // { text: 'Slide 6', dotContent: 'text5'},
-    // { text: 'Slide 7', dotContent: 'text5'},
-    // { text: 'Slide 8', dotContent: 'text5'},
-    // { text: 'Slide 9', dotContent: 'text5'},
-    // { text: 'Slide 10', dotContent: 'text5'},
+    { id: 'slide-6', text: 'Slide 6', dotContent: 'text5'},
+    // { id: 'slide-7', text: 'Slide 7', dotContent: 'text5'},
+    // { id: 'slide-8', text: 'Slide 8', dotContent: 'text5'},
+    // { id: 'slide-9', text: 'Slide 9', dotContent: 'text5'},
+    // { id: 'slide-10', text: 'Slide 10', dotContent: 'text5'},
   ];
 
   customOptions: OwlOptions = {
@@ -112,5 +112,9 @@ export class HomeComponent implements OnInit {
   }
   removeLastSlide() {
     this.carouselData.splice(-1, 1);
+  }
+
+  carouselChanged(evt: SlidesOutputData) {
+    console.log(evt);
   }
 }

@@ -1,11 +1,14 @@
 # Versions Changes
 
+* [v3.0.1](#v301)
 * [v3.0.0](#v300)
+* [v2.1.1](#v211)
 * [v2.1.0](#v210)
 * [v2.0.3](#v203)
 * [v2.0.2](#v202)
 * [v2.0.1](#v201)
 * [v2.0.0](#v200)
+* [v1.2.1](#v121)
 * [v1.2.0](#v120)
 * [v1.1.7](#v117)
 * [v1.1.6](#v116)
@@ -33,9 +36,17 @@
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
 
+## v3.0.1
+
+The version `v3.0.1` fixes the issue [`#86`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/86)
+
 ## v3.0.0
 
 The version `v3.0.0` is generated for Angular 9. It's the same as `v2.1.0` but it's compiled by Angular 9.
+
+## v2.1.1
+
+The version `v2.1.1` fixes the issue [`#86`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/86)
 
 ## v2.1.0
 
@@ -57,6 +68,10 @@ The version `v2.0.1` solves the issue [`#38`](https://github.com/vitalii-andriio
 ## v2.0.0
 
 The version `v2.0.0` is generated for Angular 8. It's the same as `v1.1.6` but it's compiled by Angular 8.
+
+## v1.2.1
+
+The version `v1.2.1` fixes the issue [`#86`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/86)
 
 ## v1.2.0
 
