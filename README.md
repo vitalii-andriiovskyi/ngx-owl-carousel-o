@@ -4,10 +4,10 @@
 
 ngx-owl-carousel-o      | Angular
 ------------------------|--------
-3.x.x                   | 9.x.x
-2.x.x  (latest `2.1.0`) | 8.x.x
-1.x.x  (latest `1.2.0`) | 7.x.x
+2.x.x                   | 8.x.x
+1.x.x  (latest `1.2.1`) | 7.x.x
 0.x.x  (latest `0.1.2`) | 6.x.x
+
 
 [CHANGELOG](./CHANGELOG.md)
 

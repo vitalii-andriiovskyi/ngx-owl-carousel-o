@@ -22,7 +22,7 @@ let OwlLogger = class OwlLogger {
 OwlLogger.ctorParameters = () => [
     { type: ErrorHandler }
 ];
-OwlLogger = __decorate([
+OwlLogger = tslib_1.__decorate([
     Injectable()
 ], OwlLogger);
 export { OwlLogger };

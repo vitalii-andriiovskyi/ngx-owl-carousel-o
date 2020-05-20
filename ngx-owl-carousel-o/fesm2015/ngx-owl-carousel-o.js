@@ -198,8 +198,7 @@ OwlLogger = __decorate([
 ], OwlLogger);
 
 /**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Current state information and their tags.
  */
 class States {
 }
@@ -868,13 +867,11 @@ let CarouselService = class CarouselService {
     }
     /**
      * Checks the option `items` set by user and if it bigger than number of slides, the function returns number of slides
-     * @private
-     * @param {?} items option items set by user
-     * @param {?} skip_validateItems option `skip_validateItems` set by user
-     * @return {?} right number of items
+     * @param items option items set by user
+     * @param skip_validateItems option `skip_validateItems` set by user
+     * @returns right number of items
      */
     _validateItems(items, skip_validateItems) {
-        /** @type {?} */
         let result = items;
         if (items > this._items.length) {
             if (skip_validateItems) {
@@ -3580,23 +3577,7 @@ CarouselComponent = __decorate([
     __param(11, Inject(DOCUMENT))
 ], CarouselComponent);
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class StageComponent {
-    /**
-     * @param {?} zone
-     * @param {?} el
-     * @param {?} renderer
-     * @param {?} carouselService
-     * @param {?} animateService
-     */
+let StageComponent = class StageComponent {
     constructor(zone, el, renderer, carouselService, animateService) {
         this.zone = zone;
         this.el = el;
@@ -4272,36 +4253,22 @@ function attrBoolValue(s) {
     return s === '' || !!s;
 }
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class CarouselModule {
-}
-CarouselModule.decorators = [
-    { type: NgModule, args: [{
-                imports: [
-                    CommonModule,
-                ],
-                declarations: [CarouselComponent, CarouselSlideDirective, StageComponent, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
-                exports: [CarouselComponent, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
-                providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS, OwlLogger]
-            },] }
-];
+const routes = [];
+let CarouselModule = class CarouselModule {
+};
+CarouselModule = __decorate([
+    NgModule({
+        imports: [
+            CommonModule,
+        ],
+        declarations: [CarouselComponent, CarouselSlideDirective, StageComponent, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
+        exports: [CarouselComponent, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],
+        providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS, OwlLogger]
+    })
+], CarouselModule);
 
 /**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { CarouselComponent, CarouselModule, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective, SlidesOutputData, NavigationService as ɵa, CarouselService as ɵb, OwlLogger as ɵc, AutoplayService as ɵd, WINDOW as ɵe, WindowRef as ɵf, BrowserWindowRef as ɵg, windowFactory as ɵh, browserWindowProvider as ɵi, windowProvider as ɵj, WINDOW_PROVIDERS as ɵk, DOCUMENT as ɵl, DocumentRef as ɵm, BrowserDocumentRef as ɵn, documentFactory as ɵo, browserDocumentProvider as ɵp, documentProvider as ɵq, DOCUMENT_PROVIDERS as ɵr, LazyLoadService as ɵs, AnimateService as ɵt, AutoHeightService as ɵu, HashService as ɵv, ResizeService as ɵw, StageComponent as ɵx };

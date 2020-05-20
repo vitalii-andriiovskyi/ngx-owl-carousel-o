@@ -41,7 +41,7 @@ let ResizeService = class ResizeService {
 ResizeService.ctorParameters = () => [
     { type: EventManager }
 ];
-ResizeService = __decorate([
+ResizeService = tslib_1.__decorate([
     Injectable()
 ], ResizeService);
 export { ResizeService };

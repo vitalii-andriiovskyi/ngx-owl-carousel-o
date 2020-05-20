@@ -1,8 +1,5 @@
-import { EventManager } from '@angular/platform-browser';
-import { __extends, __assign, __spread } from 'tslib';
-import { Subject, merge, of, from } from 'rxjs';
-import { tap, filter, switchMap, first, skip, take, delay, map, toArray } from 'rxjs/operators';
-import { trigger, state, style, animate, transition } from '@angular/animations';
+import { __decorate, __spread, __assign, __extends, __param } from 'tslib';
+import { Injectable, isDevMode, ErrorHandler, InjectionToken, PLATFORM_ID, Inject, Optional, TemplateRef, Input, Directive, EventEmitter, ElementRef, ChangeDetectorRef, ContentChildren, Output, HostListener, Component, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
 import { isPlatformBrowser, LocationStrategy, CommonModule } from '@angular/common';
 import { Subject, merge, of, from } from 'rxjs';
 import { EventManager } from '@angular/platform-browser';
@@ -222,8 +219,7 @@ var OwlLogger = /** @class */ (function () {
 }());
 
 /**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Current state information and their tags.
  */
 var States = /** @class */ (function () {
     function States() {
@@ -938,22 +934,7 @@ var CarouselService = /** @class */ (function () {
      * @param skip_validateItems option `skip_validateItems` set by user
      * @returns right number of items
      */
-    /**
-     * Checks the option `items` set by user and if it bigger than number of slides, the function returns number of slides
-     * @private
-     * @param {?} items option items set by user
-     * @param {?} skip_validateItems option `skip_validateItems` set by user
-     * @return {?} right number of items
-     */
-    CarouselService.prototype._validateItems = /**
-     * Checks the option `items` set by user and if it bigger than number of slides, the function returns number of slides
-     * @private
-     * @param {?} items option items set by user
-     * @param {?} skip_validateItems option `skip_validateItems` set by user
-     * @return {?} right number of items
-     */
-    function (items, skip_validateItems) {
-        /** @type {?} */
+    CarouselService.prototype._validateItems = function (items, skip_validateItems) {
         var result = items;
         if (items > this._items.length) {
             if (skip_validateItems) {
@@ -3999,15 +3980,6 @@ var CarouselComponent = /** @class */ (function () {
     return CarouselComponent;
 }());
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 var StageComponent = /** @class */ (function () {
     function StageComponent(zone, el, renderer, carouselService, animateService) {
         var _this = this;
@@ -4800,10 +4772,7 @@ function attrBoolValue(s) {
     return s === '' || !!s;
 }
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
+var routes = [];
 var CarouselModule = /** @class */ (function () {
     function CarouselModule() {
     }
@@ -4821,18 +4790,7 @@ var CarouselModule = /** @class */ (function () {
 }());
 
 /**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * Generated bundle index. Do not edit.
  */
 
 export { CarouselComponent, CarouselModule, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective, SlidesOutputData, NavigationService as ɵa, CarouselService as ɵb, OwlLogger as ɵc, AutoplayService as ɵd, WINDOW as ɵe, WindowRef as ɵf, BrowserWindowRef as ɵg, windowFactory as ɵh, browserWindowProvider as ɵi, windowProvider as ɵj, WINDOW_PROVIDERS as ɵk, DOCUMENT as ɵl, DocumentRef as ɵm, BrowserDocumentRef as ɵn, documentFactory as ɵo, browserDocumentProvider as ɵp, documentProvider as ɵq, DOCUMENT_PROVIDERS as ɵr, LazyLoadService as ɵs, AnimateService as ɵt, AutoHeightService as ɵu, HashService as ɵv, ResizeService as ɵw, StageComponent as ɵx };

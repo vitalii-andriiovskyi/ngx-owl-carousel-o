@@ -155,7 +155,7 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      */
     private _carouselMerge$;
     private docRef;
-    constructor(el: ElementRef, resizeService: ResizeService, carouselService: CarouselService, navigationService: NavigationService, autoplayService: AutoplayService, lazyLoadService: LazyLoadService, animateService: AnimateService, autoHeightService: AutoHeightService, hashService: HashService, logger: OwlLogger, docRef: any);
+    constructor(el: ElementRef, resizeService: ResizeService, carouselService: CarouselService, navigationService: NavigationService, autoplayService: AutoplayService, lazyLoadService: LazyLoadService, animateService: AnimateService, autoHeightService: AutoHeightService, hashService: HashService, logger: OwlLogger, changeDetectorRef: ChangeDetectorRef, docRef: any);
     onVisibilityChange(ev: any): void;
     ngOnInit(): void;
     ngAfterContentChecked(): void;

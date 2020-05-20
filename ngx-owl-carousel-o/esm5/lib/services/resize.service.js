@@ -64,7 +64,7 @@ var ResizeService = /** @class */ (function () {
     ResizeService.ctorParameters = function () { return [
         { type: EventManager }
     ]; };
-    ResizeService = __decorate([
+    ResizeService = tslib_1.__decorate([
         Injectable()
     ], ResizeService);
     return ResizeService;
