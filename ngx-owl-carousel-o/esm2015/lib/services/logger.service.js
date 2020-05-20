@@ -1,4 +1,7 @@
-import { __decorate } from "tslib";
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
 import { ErrorHandler, Injectable, isDevMode } from '@angular/core';
 let OwlLogger = class OwlLogger {
     constructor(errorHandler) {

@@ -1,4 +1,8 @@
-import { __decorate, __extends } from "tslib";
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+import * as tslib_1 from "tslib";
 import { isPlatformBrowser } from '@angular/common';
 import { InjectionToken, PLATFORM_ID, Injectable } from '@angular/core';
 /**

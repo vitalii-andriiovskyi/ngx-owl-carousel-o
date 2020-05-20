@@ -274,7 +274,7 @@ export declare class CarouselService {
      * @param skip_validateItems option `skip_validateItems` set by user
      * @returns right number of items
      */
-    private _validateItems(items);
+    private _validateItems(items, skip_validateItems);
     /**
      * Set current width of carousel
      * @param width width of carousel Window

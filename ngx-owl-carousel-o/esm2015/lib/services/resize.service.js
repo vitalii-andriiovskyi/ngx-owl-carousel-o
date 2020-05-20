@@ -1,4 +1,7 @@
-import { __decorate } from "tslib";
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
 import { EventManager } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { Injectable } from '@angular/core';

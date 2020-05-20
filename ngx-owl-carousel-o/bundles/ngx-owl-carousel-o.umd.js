@@ -5,18 +5,18 @@
 }(this, (function (exports, core, common, rxjs, platformBrowser, operators, router, animations) { 'use strict';
 
     /*! *****************************************************************************
-    Copyright (c) Microsoft Corporation. All rights reserved.
-    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-    this file except in compliance with the License. You may obtain a copy of the
-    License at http://www.apache.org/licenses/LICENSE-2.0
+    Copyright (c) Microsoft Corporation.
 
-    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-    MERCHANTABLITY OR NON-INFRINGEMENT.
+    Permission to use, copy, modify, and/or distribute this software for any
+    purpose with or without fee is hereby granted.
 
-    See the Apache Version 2.0 License for specific language governing permissions
-    and limitations under the License.
+    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+    REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+    INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+    LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+    OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+    PERFORMANCE OF THIS SOFTWARE.
     ***************************************************************************** */
     /* global Reflect, Promise */
 
@@ -148,77 +148,11 @@
         return ar;
     }
 
-    function __spreadArrays() {
-        for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-        for (var r = Array(s), k = 0, i = 0; i < il; i++)
-            for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-                r[k] = a[j];
-        return r;
-    };
-
-    function __await(v) {
-        return this instanceof __await ? (this.v = v, this) : new __await(v);
-    }
-
-    function __asyncGenerator(thisArg, _arguments, generator) {
-        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-        var g = generator.apply(thisArg, _arguments || []), i, q = [];
-        return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
-        function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
-        function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
-        function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
-        function fulfill(value) { resume("next", value); }
-        function reject(value) { resume("throw", value); }
-        function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
-    }
-
-    function __asyncDelegator(o) {
-        var i, p;
-        return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
-        function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; } : f; }
-    }
-
-    function __asyncValues(o) {
-        if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-        var m = o[Symbol.asyncIterator], i;
-        return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
-        function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
-        function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
-    }
-
-    function __makeTemplateObject(cooked, raw) {
-        if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
-        return cooked;
-    };
-
-    function __importStar(mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-        result.default = mod;
-        return result;
-    }
-
-    function __importDefault(mod) {
-        return (mod && mod.__esModule) ? mod : { default: mod };
-    }
-
-    function __classPrivateFieldGet(receiver, privateMap) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to get private field on non-instance");
-        }
-        return privateMap.get(receiver);
-    }
-
-    function __classPrivateFieldSet(receiver, privateMap, value) {
-        if (!privateMap.has(receiver)) {
-            throw new TypeError("attempted to set private field on non-instance");
-        }
-        privateMap.set(receiver, value);
-        return value;
-    }
-
-    var ResizeService = /** @class */ (function () {
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    var ResizeService = (function () {
         function ResizeService(eventManager) {
             this.eventManager = eventManager;
             this.resizeSubject = new rxjs.Subject();
@@ -282,7 +216,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /**
      * Defaults value of options
@@ -397,6 +331,20 @@
         return OwlOptionsMockedTypes;
     }());
 
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    var OwlLogger = (function () {
+        function OwlLogger(errorHandler) {
+            this.errorHandler = errorHandler;
+        }
+        /**
+         * @param {?} value
+         * @param {...?} rest
+         * @return {?}
+         */
+        OwlLogger.prototype.log = /**
          * @param {?} value
          * @param {...?} rest
          * @return {?}
@@ -466,7 +414,8 @@
     }());
 
     /**
-     * Current state information and their tags.
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var States = /** @class */ (function () {
         function States() {
@@ -668,9 +617,9 @@
                 // },
                 {
                     filter: ['width', 'items', 'settings'],
-                    run: function (cache) {
+                    run: (function (cache) {
                         cache.current = _this._items && _this._items[_this.relative(_this._current)].id;
-                    }
+                    })
                 },
                 // {
                 //   filter: ['items', 'settings'],
@@ -680,24 +629,39 @@
                 // },
                 {
                     filter: ['width', 'items', 'settings'],
-                    run: function (cache) {
-                        var margin = _this.settings.margin || '', grid = !_this.settings.autoWidth, rtl = _this.settings.rtl, css = {
+                    run: (function (cache) {
+                        /** @type {?} */
+                        var margin = _this.settings.margin || '';
+                        /** @type {?} */
+                        var grid = !_this.settings.autoWidth;
+                        /** @type {?} */
+                        var rtl = _this.settings.rtl;
+                        /** @type {?} */
+                        var css = {
                             'margin-left': rtl ? margin : '',
                             'margin-right': rtl ? '' : margin
                         };
                         if (!grid) {
-                            _this.slidesData.forEach(function (slide) {
+                            _this.slidesData.forEach((function (slide) {
                                 slide.marginL = css['margin-left'];
                                 slide.marginR = css['margin-right'];
-                            });
+                            }));
                         }
                         cache.css = css;
-                    }
+                    })
                 }, {
                     filter: ['width', 'items', 'settings'],
-                    run: function (cache) {
-                        var width = +(_this.width() / _this.settings.items).toFixed(3) - _this.settings.margin, grid = !_this.settings.autoWidth, widths = [];
-                        var merge = null, iterator = _this._items.length;
+                    run: (function (cache) {
+                        /** @type {?} */
+                        var width = +(_this.width() / _this.settings.items).toFixed(3) - _this.settings.margin;
+                        /** @type {?} */
+                        var grid = !_this.settings.autoWidth;
+                        /** @type {?} */
+                        var widths = [];
+                        /** @type {?} */
+                        var merge = null;
+                        /** @type {?} */
+                        var iterator = _this._items.length;
                         cache.items = {
                             merge: false,
                             width: width
@@ -709,16 +673,23 @@
                             widths[iterator] = !grid ? _this._items[iterator].width ? _this._items[iterator].width : width : width * merge;
                         }
                         _this._widths = widths;
-                        _this.slidesData.forEach(function (slide, i) {
+                        _this.slidesData.forEach((function (slide, i) {
                             slide.width = _this._widths[i];
                             slide.marginR = cache.css['margin-right'];
                             slide.marginL = cache.css['margin-left'];
-                        });
-                    }
+                        }));
+                    })
                 }, {
                     filter: ['items', 'settings'],
-                    run: function () {
-                        var clones = [], items = _this._items, settings = _this.settings, 
+                    run: (function () {
+                        /** @type {?} */
+                        var clones = [];
+                        /** @type {?} */
+                        var items = _this._items;
+                        /** @type {?} */
+                        var settings = _this.settings;
+                        /** @type {?} */
+                        var 
                         // TODO: Should be computed from number of min width items in stage
                         view = Math.max(settings.items * 2, 4), size = Math.ceil(items.length / 2) * 2;
                         var append = [], prepend = [], repeat = settings.loop && items.length ? settings.rewind ? view : Math.max(view, size) : 0;
@@ -731,36 +702,40 @@
                             prepend.unshift(__assign({}, _this.slidesData[clones[clones.length - 1]]));
                         }
                         _this._clones = clones;
-                        append = append.map(function (slide) {
+                        append = append.map((function (slide) {
                             slide.id = "" + _this.clonedIdPrefix + slide.id;
                             slide.isActive = false;
                             slide.isCloned = true;
                             return slide;
-                        });
-                        prepend = prepend.map(function (slide) {
+                        }));
+                        prepend = prepend.map((function (slide) {
                             slide.id = "" + _this.clonedIdPrefix + slide.id;
                             slide.isActive = false;
                             slide.isCloned = true;
                             return slide;
-                        });
+                        }));
                         _this.slidesData = prepend.concat(_this.slidesData).concat(append);
-                    }
+                    })
                 }, {
                     filter: ['width', 'items', 'settings'],
-                    run: function () {
-                        var rtl = _this.settings.rtl ? 1 : -1, size = _this._clones.length + _this._items.length, coordinates = [];
-                        var iterator = -1, previous = 0, current = 0;
+                        var previous = 0;
+                        /** @type {?} */
+                        var current = 0;
                         while (++iterator < size) {
                             previous = coordinates[iterator - 1] || 0;
                             current = _this._widths[_this.relative(iterator)] + _this.settings.margin;
                             coordinates.push(previous + current * rtl);
-                        }
                         _this._coordinates = coordinates;
-                    }
+                    })
                 }, {
                     filter: ['width', 'items', 'settings'],
-                    run: function () {
-                        var padding = _this.settings.stagePadding, coordinates = _this._coordinates, css = {
+                    run: (function () {
+                        /** @type {?} */
+                        var padding = _this.settings.stagePadding;
+                        /** @type {?} */
+                        var coordinates = _this._coordinates;
+                        /** @type {?} */
+                        var css = {
                             'width': Math.ceil(Math.abs(coordinates[coordinates.length - 1])) + padding * 2,
                             'padding-left': padding || '',
                             'padding-right': padding || ''
@@ -768,7 +743,7 @@
                         _this.stageData.width = css.width; // use this property in *ngIf directive for .owl-stage element
                         _this.stageData.paddingL = css['padding-left'];
                         _this.stageData.paddingR = css['padding-right'];
-                    }
+                    })
                 }, {
                     //   filter: [ 'width', 'items', 'settings' ],
                     //   run: cache => {
@@ -793,21 +768,38 @@
                     //   }
                     // }, {
                     filter: ['width', 'items', 'settings'],
-                    run: function (cache) {
-                        var current = cache.current ? _this.slidesData.findIndex(function (slide) { return slide.id === cache.current; }) : 0;
+                    run: (function (cache) {
+                        /** @type {?} */
+                        var current = cache.current ? _this.slidesData.findIndex((function (slide) { return slide.id === cache.current; })) : 0;
                         current = Math.max(_this.minimum(), Math.min(_this.maximum(), current));
                         _this.reset(current);
-                    }
+                    })
                 }, {
                     filter: ['position'],
-                    run: function () {
+                    run: (function () {
                         _this.animate(_this.coordinates(_this._current));
-                    }
+                    })
                 }, {
                     filter: ['width', 'position', 'items', 'settings'],
-                    run: function () {
-                        var rtl = _this.settings.rtl ? 1 : -1, padding = _this.settings.stagePadding * 2, matches = [];
-                        var begin, end, inner, outer, i, n;
+                    run: (function () {
+                        /** @type {?} */
+                        var rtl = _this.settings.rtl ? 1 : -1;
+                        /** @type {?} */
+                        var padding = _this.settings.stagePadding * 2;
+                        /** @type {?} */
+                        var matches = [];
+                        /** @type {?} */
+                        var begin;
+                        /** @type {?} */
+                        var end;
+                        /** @type {?} */
+                        var inner;
+                        /** @type {?} */
+                        var outer;
+                        /** @type {?} */
+                        var i;
+                        /** @type {?} */
+                        var n;
                         begin = _this.coordinates(_this.current());
                         if (typeof begin === 'number') {
                             begin += padding;
@@ -817,9 +809,10 @@
                         }
                         end = begin + _this.width() * rtl;
                         if (rtl === -1 && _this.settings.center) {
-                            var result = _this._coordinates.filter(function (element) {
+                            /** @type {?} */
+                            var result = _this._coordinates.filter((function (element) {
                                 return _this.settings.items % 2 === 1 ? element >= begin : element > begin;
-                            });
+                            }));
                             begin = result.length ? result[result.length - 1] : begin;
                         }
                         for (i = 0, n = _this._coordinates.length; i < n; i++) {
@@ -830,21 +823,21 @@
                                 matches.push(i);
                             }
                         }
-                        _this.slidesData.forEach(function (slide) {
+                        _this.slidesData.forEach((function (slide) {
                             slide.isActive = false;
                             return slide;
-                        });
-                        matches.forEach(function (item) {
+                        }));
+                        matches.forEach((function (item) {
                             _this.slidesData[item].isActive = true;
-                        });
+                        }));
                         if (_this.settings.center) {
-                            _this.slidesData.forEach(function (slide) {
+                            _this.slidesData.forEach((function (slide) {
                                 slide.isCentered = false;
                                 return slide;
-                            });
+                            }));
                             _this.slidesData[_this.current()].isCentered = true;
                         }
-                    }
+                    })
                 }
             ];
         }
@@ -966,45 +959,73 @@
          * Notes:
          * 	- if user set option with wrong type, it'll be written in console
          */
-        CarouselService.prototype._validateOptions = function (options, configOptions) {
-            var _this = this;
-            var checkedOptions = __assign({}, options);
-            var mockedTypes = new OwlOptionsMockedTypes();
-            var setRightOption = function (type, key) {
-                _this.logger.log("options." + key + " must be type of " + type + "; " + key + "=" + options[key] + " skipped to defaults: " + key + "=" + configOptions[key]);
-                return configOptions[key];
-            };
-            var _loop_1 = function (key) {
-                if (checkedOptions.hasOwnProperty(key)) {
-                    // condition could be shortened but it gets harder for understanding
-                    if (mockedTypes[key] === 'number') {
-                        if (this_1._isNumeric(checkedOptions[key])) {
-                            checkedOptions[key] = +checkedOptions[key];
-                            checkedOptions[key] = key === 'items' ? this_1._validateItems(checkedOptions[key], checkedOptions.skip_validateItems) : checkedOptions[key];
+        /**
+         * Checks whether user's option are set properly. Cheking is based on typings;
+         * @private
+         * @param {?} options options set by user
+         * @param {?} configOptions default options
+         * @return {?} checked and modified (if it's needed) user's options
+         *
+         * Notes:
+         * 	- if user set option with wrong type, it'll be written in console
+         */
+        CarouselService.prototype._validateOptions = /**
+         * Checks whether user's option are set properly. Cheking is based on typings;
+         * @private
+         * @param {?} options options set by user
+         * @param {?} configOptions default options
+         * @return {?} checked and modified (if it's needed) user's options
+         *
+         * Notes:
+         * 	- if user set option with wrong type, it'll be written in console
+         */
+            function (options, configOptions) {
+                var _this = this;
+                /** @type {?} */
+                var checkedOptions = __assign({}, options);
+                /** @type {?} */
+                var mockedTypes = new OwlOptionsMockedTypes();
+                /** @type {?} */
+                var setRightOption = (function (type, key) {
+                    _this.logger.log("options." + key + " must be type of " + type + "; " + key + "=" + options[key] + " skipped to defaults: " + key + "=" + configOptions[key]);
+                    return configOptions[key];
+                });
+                var _loop_1 = function (key) {
+                    if (checkedOptions.hasOwnProperty(key)) {
+                        // condition could be shortened but it gets harder for understanding
+                        if (mockedTypes[key] === 'number') {
+                            if (this_1._isNumeric(checkedOptions[key])) {
+                                checkedOptions[key] = +checkedOptions[key];
+                                checkedOptions[key] = key === 'items' ? this_1._validateItems(checkedOptions[key], checkedOptions.skip_validateItems) : checkedOptions[key];
+                            }
+                            else {
+                                checkedOptions[key] = setRightOption(mockedTypes[key], key);
+                            }
+                        }
+                        else if (mockedTypes[key] === 'boolean' && typeof checkedOptions[key] !== 'boolean') {
+                            checkedOptions[key] = setRightOption(mockedTypes[key], key);
+                        }
+                        else if (mockedTypes[key] === 'number|boolean' && !this_1._isNumberOrBoolean(checkedOptions[key])) {
+                            checkedOptions[key] = setRightOption(mockedTypes[key], key);
+                        }
+                        else if (mockedTypes[key] === 'number|string' && !this_1._isNumberOrString(checkedOptions[key])) {
+                            checkedOptions[key] = setRightOption(mockedTypes[key], key);
                         }
                         else {
                             checkedOptions[key] = setRightOption(mockedTypes[key], key);
                         }
-                    }
-                    else if (mockedTypes[key] === 'boolean' && typeof checkedOptions[key] !== 'boolean') {
-                        checkedOptions[key] = setRightOption(mockedTypes[key], key);
-                    }
-                    else if (mockedTypes[key] === 'number|boolean' && !this_1._isNumberOrBoolean(checkedOptions[key])) {
-                        checkedOptions[key] = setRightOption(mockedTypes[key], key);
-                    }
-                    else if (mockedTypes[key] === 'number|string' && !this_1._isNumberOrString(checkedOptions[key])) {
-                        checkedOptions[key] = setRightOption(mockedTypes[key], key);
-                    }
-                    else if (mockedTypes[key] === 'string|boolean' && !this_1._isStringOrBoolean(checkedOptions[key])) {
-                        checkedOptions[key] = setRightOption(mockedTypes[key], key);
-                    }
-                    else if (mockedTypes[key] === 'string[]') {
-                        if (Array.isArray(checkedOptions[key])) {
-                            var isString_1 = false;
-                            checkedOptions[key].forEach(function (element) {
-                                isString_1 = typeof element === 'string' ? true : false;
-                            });
-                            if (!isString_1) {
+                        else if (mockedTypes[key] === 'string[]') {
+                            if (Array.isArray(checkedOptions[key])) {
+                                /** @type {?} */
+                                var isString_1 = false;
+                                checkedOptions[key].forEach((function (element) {
+                                    isString_1 = typeof element === 'string' ? true : false;
+                                }));
+                                if (!isString_1) {
+                                    checkedOptions[key] = setRightOption(mockedTypes[key], key);
+                                }
+                            }
+                            else {
                                 checkedOptions[key] = setRightOption(mockedTypes[key], key);
                             }
                             ;
@@ -1027,20 +1048,36 @@
          * @param skip_validateItems option `skip_validateItems` set by user
          * @returns right number of items
          */
-        CarouselService.prototype._validateItems = function (items, skip_validateItems) {
-            var result = items;
-            if (items > this._items.length) {
-                if (skip_validateItems) {
-                    this.logger.log('The option \'items\' in your options is bigger than the number of slides. The navigation got disabled');
+        /**
+         * Checks the option `items` set by user and if it bigger than number of slides, the function returns number of slides
+         * @private
+         * @param {?} items option items set by user
+         * @param {?} skip_validateItems option `skip_validateItems` set by user
+         * @return {?} right number of items
+         */
+        CarouselService.prototype._validateItems = /**
+         * Checks the option `items` set by user and if it bigger than number of slides, the function returns number of slides
+         * @private
+         * @param {?} items option items set by user
+         * @param {?} skip_validateItems option `skip_validateItems` set by user
+         * @return {?} right number of items
+         */
+            function (items, skip_validateItems) {
+                /** @type {?} */
+                var result = items;
+                if (items > this._items.length) {
+                    if (skip_validateItems) {
+                        this.logger.log('The option \'items\' in your options is bigger than the number of slides. The navigation got disabled');
+                    }
+                    else {
+                        result = this._items.length;
+                        this.logger.log('The option \'items\' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled');
+                    }
                 }
                 else {
-                    result = this._items.length;
-                    this.logger.log('The option \'items\' in your options is bigger than the number of slides. This option is updated to the current number of slides and the navigation got disabled');
-                }
-            }
-            else {
-                if (items === this._items.length && (this.settings.dots || this.settings.nav)) {
-                    this.logger.log('Option \'items\' in your options is equal to the number of slides. So the navigation got disabled');
+                    if (items === this._items.length && (this.settings.dots || this.settings.nav)) {
+                        this.logger.log('Option \'items\' in your options is equal to the number of slides. So the navigation got disabled');
+                    }
                 }
             }
             return result;
@@ -1091,24 +1128,25 @@
                         match = Number(key);
                     }
                 }
-            }
-            this.settings = __assign(__assign(__assign({}, this._options), overwrites[match]), { items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items, this._options.skip_validateItems) : this._options.items });
-            // if (typeof this.settings.stagePadding === 'function') {
-            // 	this.settings.stagePadding = this.settings.stagePadding();
-            // }
-            delete this.settings.responsive;
-            this.owlDOMData.isResponsive = true;
-            this.owlDOMData.isMouseDragable = this.settings.mouseDrag;
-            this.owlDOMData.isTouchDragable = this.settings.touchDrag;
-            var mergers = [];
-            this._items.forEach(function (item) {
-                var mergeN = _this.settings.merge ? item.dataMerge : 1;
-                mergers.push(mergeN);
-            });
-            this._mergers = mergers;
-            this._breakpoint = match;
-            this.invalidate('settings');
-        };
+                this.settings = __assign({}, this._options, overwrites[match], { items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items, this._options.skip_validateItems) : this._options.items });
+                // if (typeof this.settings.stagePadding === 'function') {
+                // 	this.settings.stagePadding = this.settings.stagePadding();
+                // }
+                delete this.settings.responsive;
+                this.owlDOMData.isResponsive = true;
+                this.owlDOMData.isMouseDragable = this.settings.mouseDrag;
+                this.owlDOMData.isTouchDragable = this.settings.touchDrag;
+                /** @type {?} */
+                var mergers = [];
+                this._items.forEach((function (item) {
+                    /** @type {?} */
+                    var mergeN = _this.settings.merge ? item.dataMerge : 1;
+                    mergers.push(mergeN);
+                }));
+                this._mergers = mergers;
+                this._breakpoint = match;
+                this.invalidate('settings');
+            };
         /**
          * Initializes the carousel.
          * @param slides array of CarouselSlideDirective
@@ -1138,6 +1176,47 @@
         };
         ;
         /**
+         * Initializes the carousel.
+         * @param {?} slides array of CarouselSlideDirective
+         * @return {?}
+         */
+        CarouselService.prototype.initialize = /**
+         * Initializes the carousel.
+         * @param {?} slides array of CarouselSlideDirective
+         * @return {?}
+         */
+            function (slides) {
+                var _this = this;
+                this.enter('initializing');
+                // this.trigger('initialize');
+                this.owlDOMData.rtl = this.settings.rtl;
+                if (this._mergers.length) {
+                    this._mergers = [];
+                }
+                slides.forEach((function (item) {
+                    /** @type {?} */
+                    var mergeN = _this.settings.merge ? item.dataMerge : 1;
+                    _this._mergers.push(mergeN);
+                }));
+                this._clones = [];
+                this.reset(this._isNumeric(this.settings.startPosition) ? +this.settings.startPosition : 0);
+                this.invalidate('items');
+                this.refresh();
+                this.owlDOMData.isLoaded = true;
+                this.owlDOMData.isMouseDragable = this.settings.mouseDrag;
+                this.owlDOMData.isTouchDragable = this.settings.touchDrag;
+                this.sendChanges();
+                this.leave('initializing');
+                this._trigger('initialized');
+            };
+        /**
+         * Sends all data needed for View
+         */
+        /**
+         * Sends all data needed for View
+         * @return {?}
+         */
+        CarouselService.prototype.sendChanges = /**
          * Sends all data needed for View
          */
         CarouselService.prototype.sendChanges = function () {
@@ -1184,14 +1263,29 @@
         CarouselService.prototype.update = /**
          * Updates the view
          */
-        CarouselService.prototype.update = function () {
-            var _this = this;
-            var i = 0;
-            var n = this._pipe.length, filter = function (item) { return _this._invalidated[item]; }, cache = {};
-            while (i < n) {
-                var filteredPipe = this._pipe[i].filter.filter(filter);
-                if (this._invalidated.all || filteredPipe.length > 0) {
-                    this._pipe[i].run(cache);
+            function () {
+                var _this = this;
+                /** @type {?} */
+                var i = 0;
+                /** @type {?} */
+                var n = this._pipe.length;
+                /** @type {?} */
+                var filter = (function (item) { return _this._invalidated[item]; });
+                /** @type {?} */
+                var cache = {};
+                while (i < n) {
+                    /** @type {?} */
+                    var filteredPipe = this._pipe[i].filter.filter(filter);
+                    if (this._invalidated.all || filteredPipe.length > 0) {
+                        this._pipe[i].run(cache);
+                    }
+                    i++;
+                }
+                this.slidesData.forEach((function (slide) { return slide.classes = _this.setCurSlideClasses(slide); }));
+                this.sendChanges();
+                this._invalidated = {};
+                if (!this.is('valid')) {
+                    this.enter('valid');
                 }
                 i++;
             }
@@ -1376,12 +1470,12 @@
                 /** @type {?} */
                 var position = -1;
                 if (this.settings.center) {
-                    coordinates = coordinates.map(function (item) {
+                    coordinates = coordinates.map((function (item) {
                         if (item === 0) {
                             item += 0.000001;
                         }
                         return item;
-                    });
+                    }));
                 }
                 // option 'freeDrag' doesn't have realization and using it here creates problem:
                 // variable 'position' stays unchanged (it equals -1 at the begging) and thus method returns -1
@@ -1630,13 +1724,28 @@
            * @param position The relative position of the item.
            * @returns The absolute positions of clones for the item or all if no position was given.
            */
-        CarouselService.prototype.clones = function (position) {
-            var odd = this._clones.length / 2, even = odd + this._items.length, map = function (index) { return index % 2 === 0 ? even + index / 2 : odd - (index + 1) / 2; };
-            if (position === undefined) {
-                return this._clones.map(function (v, i) { return map(i); });
-            }
-            return this._clones.map(function (v, i) { return v === position ? map(i) : null; }).filter(function (item) { return item; });
-        };
+        /**
+         * Gets the absolute positions of clones for an item.
+         * @param {?=} position The relative position of the item.
+         * @return {?} The absolute positions of clones for the item or all if no position was given.
+         */
+        CarouselService.prototype.clones = /**
+         * Gets the absolute positions of clones for an item.
+         * @param {?=} position The relative position of the item.
+         * @return {?} The absolute positions of clones for the item or all if no position was given.
+         */
+            function (position) {
+                /** @type {?} */
+                var odd = this._clones.length / 2;
+                /** @type {?} */
+                var even = odd + this._items.length;
+                /** @type {?} */
+                var map = (function (index) { return index % 2 === 0 ? even + index / 2 : odd - (index + 1) / 2; });
+                if (position === undefined) {
+                    return this._clones.map((function (v, i) { return map(i); }));
+                }
+                return this._clones.map((function (v, i) { return v === position ? map(i) : null; })).filter((function (item) { return item; }));
+            };
         /**
            * Sets the current animation speed.
            * @param speed The animation speed in milliseconds or nothing to leave it unchanged.
@@ -1677,9 +1786,9 @@
                 /** @type {?} */
                 var result;
                 if (position === undefined) {
-                    result = this._coordinates.map(function (item, index) {
+                    result = this._coordinates.map((function (item, index) {
                         return ((_this.coordinates(index)));
-                    });
+                    }));
                     return result;
                 }
                 if (this.settings.center) {
@@ -1753,20 +1862,12 @@
                     this.reset(current);
                     this.sendChanges();
                 }
-            }
-            else if (this.settings.rewind) {
-                maximum += 1;
-                position = (position % maximum + maximum) % maximum;
-            }
-            else {
-                position = Math.max(minimum, Math.min(maximum, position));
-            }
-            setTimeout(function () {
-                _this.speed(_this._duration(current, position, speed));
-                _this.current(position);
-                _this.update();
-            }, delayForLoop);
-        };
+                setTimeout((function () {
+                    _this.speed(_this._duration(current, position, speed));
+                    _this.current(position);
+                    _this.update();
+                }), delayForLoop);
+            };
         /**
            * Slides to the next item.
            * @param speed The time in milliseconds for the transition.
@@ -1858,33 +1959,34 @@
          * @private
          * @return {?}
          */
-        CarouselService.prototype._defineSlidesData = function () {
-            // Maybe creating and using loadMap would be better in LazyLoadService.
-            // Hovewer in that case when 'resize' event fires, prop 'load' of all slides will get 'false' and such state of prop will be seen by View during its updating. Accordingly the code will remove slides's content from DOM even if it was loaded before.
-            // Thus it would be needed to add that content into DOM again.
-            // In order to avoid additional removing/adding loaded slides's content we use loadMap here and set restore state of prop 'load' before the View will get it.
-            var loadMap;
-            if (this.slidesData && this.slidesData.length) {
-                loadMap = new Map();
-                this.slidesData.forEach(function (item) {
-                    if (item.load) {
-                        loadMap.set(item.id, item.load);
-                    }
-                });
-            }
-            this.slidesData = this._items.map(function (slide) {
-                return {
-                    id: "" + slide.id,
-                    isActive: false,
-                    tplRef: slide.tplRef,
-                    dataMerge: slide.dataMerge,
-                    width: 0,
-                    isCloned: false,
-                    load: loadMap ? loadMap.get(slide.id) : false,
-                    hashFragment: slide.dataHash
-                };
-            });
-        };
+            function () {
+                // Maybe creating and using loadMap would be better in LazyLoadService.
+                // Hovewer in that case when 'resize' event fires, prop 'load' of all slides will get 'false' and such state of prop will be seen by View during its updating. Accordingly the code will remove slides's content from DOM even if it was loaded before.
+                // Thus it would be needed to add that content into DOM again.
+                // In order to avoid additional removing/adding loaded slides's content we use loadMap here and set restore state of prop 'load' before the View will get it.
+                /** @type {?} */
+                var loadMap;
+                if (this.slidesData && this.slidesData.length) {
+                    loadMap = new Map();
+                    this.slidesData.forEach((function (item) {
+                        if (item.load) {
+                            loadMap.set(item.id, item.load);
+                        }
+                    }));
+                }
+                this.slidesData = this._items.map((function (slide) {
+                    return {
+                        id: "" + slide.id,
+                        isActive: false,
+                        tplRef: slide.tplRef,
+                        dataMerge: slide.dataMerge,
+                        width: 0,
+                        isCloned: false,
+                        load: loadMap ? loadMap.get(slide.id) : false,
+                        hashFragment: slide.dataHash
+                    };
+                }));
+            };
         /**
          * Sets current classes for slide
          * @param slide Slide of carousel
@@ -2049,40 +2151,71 @@
          */
         /**
          * Enters a state.
-         * @param name - The state name.
+         * @param {?} name - The state name.
+         * @return {?}
          */
-        CarouselService.prototype.enter = function (name) {
-            var _this = this;
-            [name].concat(this._states.tags[name] || []).forEach(function (stateName) {
-                if (_this._states.current[stateName] === undefined) {
-                    _this._states.current[stateName] = 0;
-                }
-                _this._states.current[stateName]++;
-            });
-        };
-        ;
+        CarouselService.prototype.enter = /**
+         * Enters a state.
+         * @param {?} name - The state name.
+         * @return {?}
+         */
+            function (name) {
+                var _this = this;
+                [name].concat(this._states.tags[name] || []).forEach((function (stateName) {
+                    if (_this._states.current[stateName] === undefined) {
+                        _this._states.current[stateName] = 0;
+                    }
+                    _this._states.current[stateName]++;
+                }));
+            };
         /**
            * Leaves a state.
            * @param name - The state name.
            */
-        CarouselService.prototype.leave = function (name) {
-            var _this = this;
-            [name].concat(this._states.tags[name] || []).forEach(function (stateName) {
-                if (_this._states.current[stateName] === 0 || !!_this._states.current[stateName]) {
-                    _this._states.current[stateName]--;
-                }
-            });
-        };
-        ;
+        /**
+         * Leaves a state.
+         * @param {?} name - The state name.
+         * @return {?}
+         */
+        CarouselService.prototype.leave = /**
+         * Leaves a state.
+         * @param {?} name - The state name.
+         * @return {?}
+         */
+            function (name) {
+                var _this = this;
+                [name].concat(this._states.tags[name] || []).forEach((function (stateName) {
+                    if (_this._states.current[stateName] === 0 || !!_this._states.current[stateName]) {
+                        _this._states.current[stateName]--;
+                    }
+                }));
+            };
         /**
            * Registers an event or state.
            * @param object - The event or state to register.
            */
-        CarouselService.prototype.register = function (object) {
-            var _this = this;
-            if (object.type === Type.State) {
-                if (!this._states.tags[object.name]) {
-                    this._states.tags[object.name] = object.tags;
+        /**
+         * Registers an event or state.
+         * @param {?} object - The event or state to register.
+         * @return {?}
+         */
+        CarouselService.prototype.register = /**
+         * Registers an event or state.
+         * @param {?} object - The event or state to register.
+         * @return {?}
+         */
+            function (object) {
+                var _this = this;
+                if (object.type === Type.State) {
+                    if (!this._states.tags[object.name]) {
+                        this._states.tags[object.name] = object.tags;
+                    }
+                    else {
+                        this._states.tags[object.name] = this._states.tags[object.name].concat(object.tags);
+                    }
+                    this._states.tags[object.name] = this._states.tags[object.name].filter((function (tag, i) {
+                        return _this._states.tags[object.name].indexOf(tag) === i;
+                    }));
                 }
                 else {
                     this._states.tags[object.name] = this._states.tags[object.name].concat(object.tags);
@@ -2110,9 +2243,9 @@
          */
             function (events) {
                 var _this = this;
-                events.forEach(function (event) {
+                events.forEach((function (event) {
                     _this._supress[event] = true;
-                });
+                }));
             };
         /**
            * Releases suppressed events.
@@ -2132,9 +2265,9 @@
          */
             function (events) {
                 var _this = this;
-                events.forEach(function (event) {
+                events.forEach((function (event) {
                     delete _this._supress[event];
-                });
+                }));
             };
         /**
            * Gets unified pointer coordinates from event.
@@ -2269,7 +2402,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var NavigationService = (function () {
         function NavigationService(carouselService) {
@@ -2311,35 +2444,39 @@
         /**
          * Defines Observables which service must observe
          */
-        NavigationService.prototype.spyDataStreams = function () {
-            var _this = this;
-            var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap(function (state) {
-                _this.initialize();
-                _this._updateNavPages();
-                _this.draw();
-                _this.update();
-                _this.carouselService.sendChanges();
-            }));
-            // mostly changes in carouselService and carousel at all causes carouselService.to(). It moves stage right-left by its code and calling needed functions
-            // Thus this method by calling carouselService.current(position) notifies about changes
-            var changedSettings$ = this.carouselService.getChangedState().pipe(operators.filter(function (data) { return data.property.name === 'position'; }), operators.tap(function (data) {
-                _this.update();
-                // should be the call of the function written at the end of comment
-                // but the method carouselServive.to() has setTimeout(f, 0) which contains carouselServive.update() which calls sendChanges() method.
-                // carouselService.navData and carouselService.dotsData update earlier than carouselServive.update() gets called
-                // updates of carouselService.navData and carouselService.dotsData are being happening withing carouselService.current(position) method which calls next() of _changedSettingsCarousel$
-                // carouselService.current(position) is being calling earlier than carouselServive.update();
-                // this.carouselService.sendChanges();
-            }));
-            var refreshedCarousel$ = this.carouselService.getRefreshedState().pipe(operators.tap(function () {
-                _this._updateNavPages();
-                _this.draw();
-                _this.update();
-                _this.carouselService.sendChanges();
-            }));
-            var navMerge$ = rxjs.merge(initializedCarousel$, changedSettings$, refreshedCarousel$);
-            this.navSubscription = navMerge$.subscribe(function () { });
-        };
+            function () {
+                var _this = this;
+                /** @type {?} */
+                var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap((function (state) {
+                    _this.initialize();
+                    _this._updateNavPages();
+                    _this.draw();
+                    _this.update();
+                    _this.carouselService.sendChanges();
+                })));
+                // mostly changes in carouselService and carousel at all causes carouselService.to(). It moves stage right-left by its code and calling needed functions
+                // Thus this method by calling carouselService.current(position) notifies about changes
+                /** @type {?} */
+                var changedSettings$ = this.carouselService.getChangedState().pipe(operators.filter((function (data) { return data.property.name === 'position'; })), operators.tap((function (data) {
+                    _this.update();
+                    // should be the call of the function written at the end of comment
+                    // but the method carouselServive.to() has setTimeout(f, 0) which contains carouselServive.update() which calls sendChanges() method.
+                    // carouselService.navData and carouselService.dotsData update earlier than carouselServive.update() gets called
+                    // updates of carouselService.navData and carouselService.dotsData are being happening withing carouselService.current(position) method which calls next() of _changedSettingsCarousel$
+                    // carouselService.current(position) is being calling earlier than carouselServive.update();
+                    // this.carouselService.sendChanges();
+                })));
+                /** @type {?} */
+                var refreshedCarousel$ = this.carouselService.getRefreshedState().pipe(operators.tap((function () {
+                    _this._updateNavPages();
+                    _this.draw();
+                    _this.update();
+                    _this.carouselService.sendChanges();
+                })));
+                /** @type {?} */
+                var navMerge$ = rxjs.merge(initializedCarousel$, changedSettings$, refreshedCarousel$);
+                this.navSubscription = navMerge$.subscribe((function () { }));
+            };
         /**
            * Initializes the layout of the plugin and extends the carousel.
            */
@@ -2410,34 +2547,55 @@
            * Draws the user interface.
            * @todo The option `dotsData` wont work.
            */
-        NavigationService.prototype.draw = function () {
-            var _this = this;
-            var difference;
-            var settings = this.carouselService.settings, items = this.carouselService.items(), disabled = items.length <= settings.items;
-            this._navData.disabled = !settings.nav || disabled;
-            this._dotsData.disabled = !settings.dots || disabled;
-            if (settings.dots) {
-                difference = this._pages.length - this._dotsData.dots.length;
-                if (settings.dotsData && difference !== 0) {
-                    this._dotsData.dots = [];
-                    items.forEach(function (item) {
-                        _this._dotsData.dots.push({
-                            active: false,
-                            id: "dot-" + item.id,
-                            innerContent: item.dotContent,
-                            showInnerContent: true
-                        });
-                    });
-                }
-                else if (difference > 0) {
-                    var startI = this._dotsData.dots.length > 0 ? this._dotsData.dots.length : 0;
-                    for (var i = 0; i < difference; i++) {
-                        this._dotsData.dots.push({
-                            active: false,
-                            id: "dot-" + (i + startI),
-                            innerContent: '',
-                            showInnerContent: false
-                        });
+        /**
+         * Draws the user interface.
+         * \@todo The option `dotsData` wont work.
+         * @return {?}
+         */
+        NavigationService.prototype.draw = /**
+         * Draws the user interface.
+         * \@todo The option `dotsData` wont work.
+         * @return {?}
+         */
+            function () {
+                var _this = this;
+                /** @type {?} */
+                var difference;
+                /** @type {?} */
+                var settings = this.carouselService.settings;
+                /** @type {?} */
+                var items = this.carouselService.items();
+                /** @type {?} */
+                var disabled = items.length <= settings.items;
+                this._navData.disabled = !settings.nav || disabled;
+                this._dotsData.disabled = !settings.dots || disabled;
+                if (settings.dots) {
+                    difference = this._pages.length - this._dotsData.dots.length;
+                    if (settings.dotsData && difference !== 0) {
+                        this._dotsData.dots = [];
+                        items.forEach((function (item) {
+                            _this._dotsData.dots.push({
+                                active: false,
+                                id: "dot-" + item.id,
+                                innerContent: item.dotContent,
+                                showInnerContent: true
+                            });
+                        }));
+                    }
+                    else if (difference > 0) {
+                        /** @type {?} */
+                        var startI = this._dotsData.dots.length > 0 ? this._dotsData.dots.length : 0;
+                        for (var i = 0; i < difference; i++) {
+                            this._dotsData.dots.push({
+                                active: false,
+                                id: "dot-" + (i + startI),
+                                innerContent: '',
+                                showInnerContent: false
+                            });
+                        }
+                    }
+                    else if (difference < 0) {
+                        this._dotsData.dots.splice(difference, Math.abs(difference));
                     }
                 }
                 else if (difference < 0) {
@@ -2505,11 +2663,11 @@
                 if (!this.carouselService.settings.dots) {
                     return;
                 }
-                this._dotsData.dots.forEach(function (item) {
+                this._dotsData.dots.forEach((function (item) {
                     if (item.active === true) {
                         item.active = false;
                     }
-                });
+                }));
                 curActiveDotI = this._current();
                 if (this._dotsData.dots.length) {
                     this._dotsData.dots[curActiveDotI].active = true;
@@ -2525,18 +2683,30 @@
            * Gets the current page position of the carousel.
            * @returns the current page position of the carousel
            */
-        NavigationService.prototype._current = function () {
-            var current = this.carouselService.relative(this.carouselService.current());
-            var finalCurrent;
-            var pages = this._pages.filter(function (page, index) {
-                return page.start <= current && page.end >= current;
-            }).pop();
-            finalCurrent = this._pages.findIndex(function (page) {
-                return page.start === pages.start && page.end === pages.end;
-            });
-            return finalCurrent;
-        };
-        ;
+        /**
+         * Gets the current page position of the carousel.
+         * @private
+         * @return {?} the current page position of the carousel
+         */
+        NavigationService.prototype._current = /**
+         * Gets the current page position of the carousel.
+         * @private
+         * @return {?} the current page position of the carousel
+         */
+            function () {
+                /** @type {?} */
+                var current = this.carouselService.relative(this.carouselService.current());
+                /** @type {?} */
+                var finalCurrent;
+                /** @type {?} */
+                var pages = this._pages.filter((function (page, index) {
+                    return page.start <= current && page.end >= current;
+                })).pop();
+                finalCurrent = this._pages.findIndex((function (page) {
+                    return page.start === pages.start && page.end === pages.end;
+                }));
+                return finalCurrent;
+            };
         /**
            * Gets the current succesor/predecessor position.
          * @param sussessor position of slide
@@ -2595,10 +2765,11 @@
         /**
          * Moves carousel after user's clicking on any dots
          */
-        NavigationService.prototype.moveByDot = function (dotId) {
-            var index = this._dotsData.dots.findIndex(function (dot) { return dotId === dot.id; });
-            this.to(index, this.carouselService.settings.dotsSpeed);
-        };
+            function (dotId) {
+                /** @type {?} */
+                var index = this._dotsData.dots.findIndex((function (dot) { return dotId === dot.id; }));
+                this.to(index, this.carouselService.settings.dotsSpeed);
+            };
         /**
          * rewinds carousel to slide with needed id
          * @param id id of slide
@@ -2615,7 +2786,7 @@
          */
             function (id) {
                 /** @type {?} */
-                var position = this.carouselService.slidesData.findIndex(function (slide) { return slide.id === id && slide.isCloned === false; });
+                var position = this.carouselService.slidesData.findIndex((function (slide) { return slide.id === id && slide.isCloned === false; }));
                 if (position === -1 || position === this.carouselService.current()) {
                     return;
                 }
@@ -2640,7 +2811,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /**
      * Create a new injection token for injecting the window into a component.
@@ -2703,8 +2874,8 @@
             return browserWindowRef.nativeWindow;
         }
         var obj = {
-            setTimeout: function (func, time) { },
-            clearTimeout: function (a) { }
+            setTimeout: (function (func, time) { }),
+            clearTimeout: (function (a) { })
         };
         return obj;
     }
@@ -2730,7 +2901,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /**
      * Create a new injection token for injecting the Document into a component.
@@ -2820,7 +2991,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var AutoplayService = (function () {
         function AutoplayService(carouselService, winRef, docRef) {
@@ -2843,29 +3014,33 @@
         /**
          * Defines Observables which service must observe
          */
-        AutoplayService.prototype.spyDataStreams = function () {
-            var _this = this;
-            var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap(function () {
-                if (_this.carouselService.settings.autoplay) {
-                    _this.play();
-                }
-            }));
-            var changedSettings$ = this.carouselService.getChangedState().pipe(operators.tap(function (data) {
-                _this._handleChangeObservable(data);
-            }));
-            var resized$ = this.carouselService.getResizedState().pipe(operators.tap(function () {
-                if (_this.carouselService.settings.autoplay) {
-                    _this.play();
-                }
-                else {
-                    _this.stop();
-                }
-            }));
-            // original Autoplay Plugin has listeners on play.owl.core and stop.owl.core events.
-            // They are triggered by Video Plugin
-            var autoplayMerge$ = rxjs.merge(initializedCarousel$, changedSettings$, resized$);
-            this.autoplaySubscription = autoplayMerge$.subscribe(function () { });
-        };
+            function () {
+                var _this = this;
+                /** @type {?} */
+                var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap((function () {
+                    if (_this.carouselService.settings.autoplay) {
+                        _this.play();
+                    }
+                })));
+                /** @type {?} */
+                var changedSettings$ = this.carouselService.getChangedState().pipe(operators.tap((function (data) {
+                    _this._handleChangeObservable(data);
+                })));
+                /** @type {?} */
+                var resized$ = this.carouselService.getResizedState().pipe(operators.tap((function () {
+                    if (_this.carouselService.settings.autoplay) {
+                        _this.play();
+                    }
+                    else {
+                        _this.stop();
+                    }
+                })));
+                // original Autoplay Plugin has listeners on play.owl.core and stop.owl.core events.
+                // They are triggered by Video Plugin
+                /** @type {?} */
+                var autoplayMerge$ = rxjs.merge(initializedCarousel$, changedSettings$, resized$);
+                this.autoplaySubscription = autoplayMerge$.subscribe((function () { }));
+            };
         /**
            * Starts the autoplay.
            * @param timeout The interval before the next animation starts.
@@ -2908,10 +3083,14 @@
                 if (this._timeout) {
                     this.winRef.clearTimeout(this._timeout);
                 }
-                _this.carouselService.next(speed || _this.carouselService.settings.autoplaySpeed);
-            }, timeout || this.carouselService.settings.autoplayTimeout);
-        };
-        ;
+                this._isArtificialAutoplayTimeout = timeout ? true : false;
+                return this.winRef.setTimeout((function () {
+                    if (_this._paused || _this.carouselService.is('busy') || _this.carouselService.is('interacting') || _this.docRef.hidden) {
+                        return;
+                    }
+                    _this.carouselService.next(speed || _this.carouselService.settings.autoplaySpeed);
+                }), timeout || this.carouselService.settings.autoplayTimeout);
+            };
         /**
            * Sets autoplay in motion.
            */
@@ -2989,7 +3168,7 @@
          */
             function () {
                 var _this = this;
-                rxjs.of('translated').pipe(operators.switchMap(function (data) { return _this.carouselService.getTranslatedState(); }), operators.first(), operators.filter(function () { return _this._isArtificialAutoplayTimeout; }), operators.tap(function () { return _this._setAutoPlayInterval(); })).subscribe(function () { });
+                rxjs.of('translated').pipe(operators.switchMap((function (data) { return _this.carouselService.getTranslatedState(); })), operators.first(), operators.filter((function () { return _this._isArtificialAutoplayTimeout; })), operators.tap((function () { return _this._setAutoPlayInterval(); }))).subscribe((function () { }));
             };
         /**
          * Starts pausing
@@ -3049,7 +3228,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var LazyLoadService = (function () {
         function LazyLoadService(carouselService) {
@@ -3069,18 +3248,18 @@
             function () {
                 var _this = this;
                 /** @type {?} */
-                var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap(function () {
+                var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap((function () {
                     /** @type {?} */
                     var isLazyLoad = _this.carouselService.settings && !_this.carouselService.settings.lazyLoad;
-                    _this.carouselService.slidesData.forEach(function (item) { return item.load = isLazyLoad ? true : false; });
-                }));
+                    _this.carouselService.slidesData.forEach((function (item) { return item.load = isLazyLoad ? true : false; }));
+                })));
                 /** @type {?} */
                 var changeSettings$ = this.carouselService.getChangeState();
                 /** @type {?} */
                 var resizedCarousel$ = this.carouselService.getResizedState();
                 /** @type {?} */
-                var lazyLoadMerge$ = rxjs.merge(initializedCarousel$, changeSettings$, resizedCarousel$).pipe(operators.tap(function (data) { return _this._defineLazyLoadSlides(data); }));
-                this.lazyLoadSubscription = lazyLoadMerge$.subscribe(function () { });
+                var lazyLoadMerge$ = rxjs.merge(initializedCarousel$, changeSettings$, resizedCarousel$).pipe(operators.tap((function (data) { return _this._defineLazyLoadSlides(data); })));
+                this.lazyLoadSubscription = lazyLoadMerge$.subscribe((function () { }));
             };
         /**
          * @private
@@ -3118,11 +3297,12 @@
                             n++;
                         }
                     }
-                }
-                while (i++ < n) {
-                    this._load(clones / 2 + this.carouselService.relative(position));
-                    if (clones) {
-                        this.carouselService.clones(this.carouselService.relative(position)).forEach(function (value) { return _this._load(value); });
+                    while (i++ < n) {
+                        this._load(clones / 2 + this.carouselService.relative(position));
+                        if (clones) {
+                            this.carouselService.clones(this.carouselService.relative(position)).forEach((function (value) { return _this._load(value); }));
+                        }
+                        position++;
                     }
                     position++;
                 }
@@ -3169,7 +3349,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var AnimateService = (function () {
         function AnimateService(carouselService) {
@@ -3194,65 +3374,89 @@
         /**
          * Defines Observables which service must observe
          */
-        AnimateService.prototype.spyDataStreams = function () {
-            var _this = this;
-            var changeSettings$ = this.carouselService.getChangeState().pipe(operators.tap(function (data) {
-                if (data.property.name === 'position') {
-                    _this.previous = _this.carouselService.current();
-                    _this.next = data.property.value;
-                }
-            }));
-            var dragCarousel$ = this.carouselService.getDragState();
-            var draggedCarousel$ = this.carouselService.getDraggedState();
-            var translatedCarousel$ = this.carouselService.getTranslatedState();
-            var dragTranslatedMerge$ = rxjs.merge(dragCarousel$, draggedCarousel$, translatedCarousel$).pipe(operators.tap(function (data) { return _this.swapping = data === 'translated'; }));
-            var translateCarousel$ = this.carouselService.getTranslateState().pipe(operators.tap(function (data) {
-                if (_this.swapping && (_this.carouselService._options.animateOut || _this.carouselService._options.animateIn)) {
-                    _this._swap();
-                }
-            }));
-            var animateMerge$ = rxjs.merge(changeSettings$, translateCarousel$, dragTranslatedMerge$).pipe();
-            this.animateSubscription = animateMerge$.subscribe(function () { });
-        };
+            function () {
+                var _this = this;
+                /** @type {?} */
+                var changeSettings$ = this.carouselService.getChangeState().pipe(operators.tap((function (data) {
+                    if (data.property.name === 'position') {
+                        _this.previous = _this.carouselService.current();
+                        _this.next = data.property.value;
+                    }
+                })));
+                /** @type {?} */
+                var dragCarousel$ = this.carouselService.getDragState();
+                /** @type {?} */
+                var draggedCarousel$ = this.carouselService.getDraggedState();
+                /** @type {?} */
+                var translatedCarousel$ = this.carouselService.getTranslatedState();
+                /** @type {?} */
+                var dragTranslatedMerge$ = rxjs.merge(dragCarousel$, draggedCarousel$, translatedCarousel$).pipe(operators.tap((function (data) { return _this.swapping = data === 'translated'; })));
+                /** @type {?} */
+                var translateCarousel$ = this.carouselService.getTranslateState().pipe(operators.tap((function (data) {
+                    if (_this.swapping && (_this.carouselService._options.animateOut || _this.carouselService._options.animateIn)) {
+                        _this._swap();
+                    }
+                })));
+                /** @type {?} */
+                var animateMerge$ = rxjs.merge(changeSettings$, translateCarousel$, dragTranslatedMerge$).pipe();
+                this.animateSubscription = animateMerge$.subscribe((function () { }));
+            };
         /**
            * Toggles the animation classes whenever an translations starts.
            * @returns
            */
-        AnimateService.prototype._swap = function () {
-            if (this.carouselService.settings.items !== 1) {
-                return;
-            }
-            // if (!$.support.animation || !$.support.transition) {
-            // 	return;
-            // }
-            this.carouselService.speed(0);
-            var left;
-            var previous = this.carouselService.slidesData[this.previous], next = this.carouselService.slidesData[this.next], incoming = this.carouselService.settings.animateIn, outgoing = this.carouselService.settings.animateOut;
-            if (this.carouselService.current() === this.previous) {
-                return;
-            }
-            if (outgoing) {
-                left = +this.carouselService.coordinates(this.previous) - +this.carouselService.coordinates(this.next);
-                this.carouselService.slidesData.forEach(function (slide) {
-                    if (slide.id === previous.id) {
-                        slide.left = left + "px";
-                        slide.isAnimated = true;
-                        slide.isDefAnimatedOut = true;
-                        slide.isCustomAnimatedOut = true;
-                    }
-                });
-            }
-            if (incoming) {
-                this.carouselService.slidesData.forEach(function (slide) {
-                    if (slide.id === next.id) {
-                        slide.isAnimated = true;
-                        slide.isDefAnimatedIn = true;
-                        slide.isCustomAnimatedIn = true;
-                    }
-                });
-            }
-        };
-        ;
+        /**
+         * Toggles the animation classes whenever an translations starts.
+         * @private
+         * @return {?}
+         */
+        AnimateService.prototype._swap = /**
+         * Toggles the animation classes whenever an translations starts.
+         * @private
+         * @return {?}
+         */
+            function () {
+                if (this.carouselService.settings.items !== 1) {
+                    return;
+                }
+                // if (!$.support.animation || !$.support.transition) {
+                // 	return;
+                // }
+                this.carouselService.speed(0);
+                /** @type {?} */
+                var left;
+                /** @type {?} */
+                var previous = this.carouselService.slidesData[this.previous];
+                /** @type {?} */
+                var next = this.carouselService.slidesData[this.next];
+                /** @type {?} */
+                var incoming = this.carouselService.settings.animateIn;
+                /** @type {?} */
+                var outgoing = this.carouselService.settings.animateOut;
+                if (this.carouselService.current() === this.previous) {
+                    return;
+                }
+                if (outgoing) {
+                    left = +this.carouselService.coordinates(this.previous) - +this.carouselService.coordinates(this.next);
+                    this.carouselService.slidesData.forEach((function (slide) {
+                        if (slide.id === previous.id) {
+                            slide.left = left + "px";
+                            slide.isAnimated = true;
+                            slide.isDefAnimatedOut = true;
+                            slide.isCustomAnimatedOut = true;
+                        }
+                    }));
+                }
+                if (incoming) {
+                    this.carouselService.slidesData.forEach((function (slide) {
+                        if (slide.id === next.id) {
+                            slide.isAnimated = true;
+                            slide.isDefAnimatedIn = true;
+                            slide.isCustomAnimatedIn = true;
+                        }
+                    }));
+                }
+            };
         /**
          * Handles the end of 'animationend' event
          * @param id Id of slides
@@ -3269,7 +3473,7 @@
          */
             function (id) {
                 var _this = this;
-                this.carouselService.slidesData.forEach(function (slide) {
+                this.carouselService.slidesData.forEach((function (slide) {
                     if (slide.id === id) {
                         slide.left = '';
                         slide.isAnimated = false;
@@ -3279,7 +3483,7 @@
                         slide.isCustomAnimatedIn = false;
                         slide.classes = _this.carouselService.setCurSlideClasses(slide);
                     }
-                });
+                }));
                 this.carouselService.onTransitionEnd();
             };
         AnimateService.decorators = [
@@ -3302,16 +3506,60 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var AutoHeightService = (function () {
         function AutoHeightService(carouselService) {
             this.carouselService = carouselService;
             this.spyDataStreams();
         }
-        AutoHeightService.prototype.ngOnDestroy = function () {
-            this.autoHeightSubscription.unsubscribe();
-        };
+        /**
+         * @return {?}
+         */
+        AutoHeightService.prototype.ngOnDestroy = /**
+         * @return {?}
+         */
+            function () {
+                this.autoHeightSubscription.unsubscribe();
+            };
+        /**
+         * Defines Observables which service must observe
+         */
+        /**
+         * Defines Observables which service must observe
+         * @return {?}
+         */
+        AutoHeightService.prototype.spyDataStreams = /**
+         * Defines Observables which service must observe
+         * @return {?}
+         */
+            function () {
+                var _this = this;
+                /** @type {?} */
+                var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap((function (data) {
+                    if (_this.carouselService.settings.autoHeight) {
+                        _this.update();
+                    }
+                    else {
+                        _this.carouselService.slidesData.forEach((function (slide) { return slide.heightState = 'full'; }));
+                    }
+                })));
+                /** @type {?} */
+                var changedSettings$ = this.carouselService.getChangedState().pipe(operators.tap((function (data) {
+                    if (_this.carouselService.settings.autoHeight && data.property.name === 'position') {
+                        _this.update();
+                    }
+                })));
+                /** @type {?} */
+                var refreshedCarousel$ = this.carouselService.getRefreshedState().pipe(operators.tap((function (data) {
+                    if (_this.carouselService.settings.autoHeight) {
+                        _this.update();
+                    }
+                })));
+                /** @type {?} */
+                var autoHeight$ = rxjs.merge(initializedCarousel$, changedSettings$, refreshedCarousel$);
+                this.autoHeightSubscription = autoHeight$.subscribe((function () { }));
+            };
         /**
          * Defines Observables which service must observe
          */
@@ -3352,9 +3600,9 @@
                     start = items % 2 === 1 ? start - (items - 1) / 2 : start - items / 2;
                     end = items % 2 === 1 ? start + items : start + items + 1;
                 }
-                this.carouselService.slidesData.forEach(function (slide, i) {
+                this.carouselService.slidesData.forEach((function (slide, i) {
                     slide.heightState = (i >= start && i < end) ? 'full' : 'nulled';
-                });
+                }));
             };
         AutoHeightService.decorators = [
             { type: core.Injectable }
@@ -3375,7 +3623,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var HashService = (function () {
         function HashService(carouselService, route, router$$1) {
@@ -3391,8 +3639,8 @@
             ;
             if (!this.router) {
                 this.router = (({
-                    navigate: function (commands, extras) { return; }
-                };
+                    navigate: (function (commands, extras) { return; })
+                }));
             }
         }
         HashService.prototype.ngOnDestroy = function () {
@@ -3401,22 +3649,27 @@
         /**
          * Defines Observables which service must observe
          */
-        HashService.prototype.spyDataStreams = function () {
-            var _this = this;
-            var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap(function () { return _this.listenToRoute(); }));
-            var changedSettings$ = this.carouselService.getChangedState().pipe(operators.tap(function (data) {
-                if (_this.carouselService.settings.URLhashListener && data.property.name === 'position') {
-                    var newCurSlide = _this.carouselService.current();
-                    var newCurFragment = _this.carouselService.slidesData[newCurSlide].hashFragment;
-                    if (!newCurFragment || newCurFragment === _this.currentHashFragment) {
-                        return;
+            function () {
+                var _this = this;
+                /** @type {?} */
+                var initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap((function () { return _this.listenToRoute(); })));
+                /** @type {?} */
+                var changedSettings$ = this.carouselService.getChangedState().pipe(operators.tap((function (data) {
+                    if (_this.carouselService.settings.URLhashListener && data.property.name === 'position') {
+                        /** @type {?} */
+                        var newCurSlide = _this.carouselService.current();
+                        /** @type {?} */
+                        var newCurFragment = _this.carouselService.slidesData[newCurSlide].hashFragment;
+                        if (!newCurFragment || newCurFragment === _this.currentHashFragment) {
+                            return;
+                        }
+                        _this.router.navigate(['./'], { fragment: newCurFragment, relativeTo: _this.route });
                     }
-                    _this.router.navigate(['./'], { fragment: newCurFragment, relativeTo: _this.route });
-                }
-            }));
-            var hashFragment$ = rxjs.merge(initializedCarousel$, changedSettings$);
-            this.hashSubscription = hashFragment$.subscribe(function () { });
-        };
+                })));
+                /** @type {?} */
+                var hashFragment$ = rxjs.merge(initializedCarousel$, changedSettings$);
+                this.hashSubscription = hashFragment$.subscribe((function () { }));
+            };
         /**
          * rewinds carousel to slide which has the same hashFragment as fragment of current url
          * @param fragment fragment of url
@@ -3429,6 +3682,31 @@
             this.carouselService.to(this.carouselService.relative(position), false);
         };
         /**
+         * rewinds carousel to slide which has the same hashFragment as fragment of current url
+         * @param {?} fragment fragment of url
+         * @return {?}
+         */
+        HashService.prototype.rewind = /**
+         * rewinds carousel to slide which has the same hashFragment as fragment of current url
+         * @param {?} fragment fragment of url
+         * @return {?}
+         */
+            function (fragment) {
+                /** @type {?} */
+                var position = this.carouselService.slidesData.findIndex((function (slide) { return slide.hashFragment === fragment && slide.isCloned === false; }));
+                if (position === -1 || position === this.carouselService.current()) {
+                    return;
+                }
+                this.carouselService.to(this.carouselService.relative(position), false);
+            };
+        /**
+         * Initiate listening to ActivatedRoute.fragment
+         */
+        /**
+         * Initiate listening to ActivatedRoute.fragment
+         * @return {?}
+         */
+        HashService.prototype.listenToRoute = /**
          * Initiate listening to ActivatedRoute.fragment
          */
             function () {
@@ -3436,10 +3714,10 @@
                 /** @type {?} */
                 var count = this.carouselService.settings.startPosition === 'URLHash' ? 0 : 2;
                 this.route.fragment.pipe(operators.skip(count))
-                    .subscribe(function (fragment) {
+                    .subscribe((function (fragment) {
                     _this.currentHashFragment = fragment;
                     _this.rewind(fragment);
-                });
+                }));
             };
         HashService.decorators = [
             { type: core.Injectable }
@@ -3466,7 +3744,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     /** @type {?} */
     var nextId = 0;
@@ -3642,8 +3920,32 @@
                     _this.carouselService.initialize(slides.toArray());
                 }
                 else {
-                    _this.carouselLoaded = false;
-                    _this.logger.log("There are no slides to show. So the carousel won't be re-rendered");
+                    this.logger.log("There are no slides to show. So the carousel won't be rendered");
+                }
+                this._slidesChangesSubscription = this.slides.changes.pipe(operators.tap((function (slides) {
+                    if (slides.toArray().length) {
+                        // this.carouselService.setItems(slides.toArray());
+                        _this.carouselService.setup(_this.carouselWindowWidth, slides.toArray(), _this.options);
+                        _this.carouselService.initialize(slides.toArray());
+                    }
+                    else {
+                        _this.carouselLoaded = false;
+                        _this.logger.log("There are no slides to show. So the carousel won't be re-rendered");
+                    }
+                }))).subscribe((function () { }));
+            };
+        /**
+         * @return {?}
+         */
+        CarouselComponent.prototype.ngOnDestroy = /**
+         * @return {?}
+         */
+            function () {
+                if (this.resizeSubscription) {
+                    this.resizeSubscription.unsubscribe();
+                }
+                if (this._slidesChangesSubscription) {
+                    this._slidesChangesSubscription.unsubscribe();
                 }
             })).subscribe(function () { });
         };
@@ -3662,47 +3964,80 @@
          * Joins the observable login in one place: sets values to some observables, merges this observables and
          * subcribes to merge func
          */
-        CarouselComponent.prototype.spyDataStreams = function () {
-            var _this = this;
-            this._viewCurSettings$ = this.carouselService.getViewCurSettings().pipe(operators.tap(function (data) {
-                _this.owlDOMData = data.owlDOMData;
-                _this.stageData = data.stageData;
-                _this.slidesData = data.slidesData;
-                if (!_this.carouselLoaded) {
-                    _this.carouselLoaded = true;
-                }
-                _this.navData = data.navData;
-                _this.dotsData = data.dotsData;
-                _this.changeDetectorRef.markForCheck();
-            }));
-            this._initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap(function () {
-                _this.gatherTranslatedData();
-                _this.initialized.emit(_this.slidesOutputData);
-                // this.slidesOutputData = {};
-            }));
-            this._translatedCarousel$ = this.carouselService.getTranslatedState().pipe(operators.tap(function () {
-                _this.gatherTranslatedData();
-                _this.translated.emit(_this.slidesOutputData);
-                // this.slidesOutputData = {};
-            }));
-            this._changeCarousel$ = this.carouselService.getChangeState().pipe(operators.tap(function () {
-                _this.gatherTranslatedData();
-                _this.change.emit(_this.slidesOutputData);
-                // this.slidesOutputData = {};
-            }));
-            this._changedCarousel$ = this.carouselService.getChangeState().pipe(operators.switchMap(function (value) {
-                var changedPosition = rxjs.of(value).pipe(operators.filter(function () { return value.property.name === 'position'; }), operators.switchMap(function () { return rxjs.from(_this.slidesData); }), operators.skip(value.property.value), operators.take(_this.carouselService.settings.items), operators.map(function (slide) {
-                    var clonedIdPrefix = _this.carouselService.clonedIdPrefix;
-                    var id = slide.id.indexOf(clonedIdPrefix) >= 0 ? slide.id.slice(clonedIdPrefix.length) : slide.id;
-                    return __assign(__assign({}, slide), { id: id, isActive: true });
-                }), operators.toArray(), operators.map(function (slides) {
-                    return {
-                        slides: slides,
-                        startPosition: _this.carouselService.relative(value.property.value)
-                    };
-                }));
+            function () {
+                var _this = this;
+                this._viewCurSettings$ = this.carouselService.getViewCurSettings().pipe(operators.tap((function (data) {
+                    _this.owlDOMData = data.owlDOMData;
+                    _this.stageData = data.stageData;
+                    _this.slidesData = data.slidesData;
+                    if (!_this.carouselLoaded) {
+                        _this.carouselLoaded = true;
+                    }
+                    _this.navData = data.navData;
+                    _this.dotsData = data.dotsData;
+                })));
+                this._initializedCarousel$ = this.carouselService.getInitializedState().pipe(operators.tap((function () {
+                    _this.gatherTranslatedData();
+                    _this.initialized.emit(_this.slidesOutputData);
+                    // this.slidesOutputData = {};
+                })));
+                this._translatedCarousel$ = this.carouselService.getTranslatedState().pipe(operators.tap((function () {
+                    _this.gatherTranslatedData();
+                    _this.translated.emit(_this.slidesOutputData);
+                    // this.slidesOutputData = {};
+                })));
+                this._changeCarousel$ = this.carouselService.getChangeState().pipe(operators.tap((function () {
+                    _this.gatherTranslatedData();
+                    _this.change.emit(_this.slidesOutputData);
+                    // this.slidesOutputData = {};
+                })));
+                this._changedCarousel$ = this.carouselService.getChangeState().pipe(operators.switchMap((function (value) {
+                    /** @type {?} */
+                    var changedPosition = rxjs.of(value).pipe(operators.filter((function () { return value.property.name === 'position'; })), operators.switchMap((function () { return rxjs.from(_this.slidesData); })), operators.skip(value.property.value), operators.take(_this.carouselService.settings.items), operators.map((function (slide) {
+                        /** @type {?} */
+                        var clonedIdPrefix = _this.carouselService.clonedIdPrefix;
+                        /** @type {?} */
+                        var id = slide.id.indexOf(clonedIdPrefix) >= 0 ? slide.id.slice(clonedIdPrefix.length) : slide.id;
+                        return __assign({}, slide, { id: id, isActive: true });
+                    })), operators.toArray(), operators.map((function (slides) {
+                        return {
+                            slides: slides,
+                            startPosition: _this.carouselService.relative(value.property.value)
+                        };
+                    })));
+                    // const changedSetting: Observable<SlidesOutputData> = of(value).pipe(
+                    //   filter(() => value.property.name === 'settings'),
+                    //   map(() => {
+                    //     return {
+                    //       slides: [],
+                    //       startPosition: this.carouselService.relative(value.property.value)
+                    //     }
+                    //   })
+                    // )
+                    return rxjs.merge(changedPosition);
+                })), operators.tap((function (slidesData) {
+                    _this.gatherTranslatedData();
+                    _this.changed.emit(slidesData.slides.length ? slidesData : _this.slidesOutputData);
+                    // console.log(this.slidesOutputData);
+                    // this.slidesOutputData = {};
+                })));
+                this._draggingCarousel$ = this.carouselService.getDragState().pipe(operators.tap((function () {
+                    _this.gatherTranslatedData();
+                    _this.dragging.emit({ dragging: true, data: _this.slidesOutputData });
+                })), operators.switchMap((function () {
+                    return _this.carouselService.getDraggedState().pipe(operators.map((function () { return !!_this.carouselService.is('animating'); })));
+                })), operators.switchMap((function (anim) {
+                    if (anim) {
+                        return _this.carouselService.getTranslatedState().pipe(operators.first());
+                    }
+                    else {
+                        return rxjs.of('not animating');
+                    }
+                })), operators.tap((function () {
+                    _this.dragging.emit({ dragging: false, data: _this.slidesOutputData });
+                })));
                 this._carouselMerge$ = rxjs.merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$, this._changedCarousel$, this._initializedCarousel$);
-                this._allObservSubscription = this._carouselMerge$.subscribe(function () { });
+                this._allObservSubscription = this._carouselMerge$.subscribe((function () { }));
             };
         /**
          * Init subscription to resize event and attaches handler for this event
@@ -3721,35 +4056,133 @@
                 var _this = this;
                 if (Object.keys(this.carouselService._options.responsive).length) {
                     this.resizeSubscription = this.resizeService.onResize$
-                        .pipe(operators.filter(function () { return _this.carouselWindowWidth !== _this.el.nativeElement.querySelector('.owl-carousel').clientWidth; }), operators.delay(this.carouselService.settings.responsiveRefreshRate))
-                        .subscribe(function () {
+                        .pipe(operators.filter((function () { return _this.carouselWindowWidth !== _this.el.nativeElement.querySelector('.owl-carousel').clientWidth; })), operators.delay(this.carouselService.settings.responsiveRefreshRate))
+                        .subscribe((function () {
                         _this.carouselService.onResize(_this.el.nativeElement.querySelector('.owl-carousel').clientWidth);
                         _this.carouselWindowWidth = _this.el.nativeElement.querySelector('.owl-carousel').clientWidth;
-                    });
+                    }));
                 }
-                else {
-                    return rxjs.of('not animating');
-                }
-            }), operators.tap(function () {
-                _this.dragging.emit({ dragging: false, data: _this.slidesOutputData });
-            }));
-            this._carouselMerge$ = rxjs.merge(this._viewCurSettings$, this._translatedCarousel$, this._draggingCarousel$, this._changeCarousel$, this._changedCarousel$, this._initializedCarousel$);
-            this._allObservSubscription = this._carouselMerge$.subscribe(function () { });
-        };
+            };
         /**
-         * Init subscription to resize event and attaches handler for this event
+         * Handler for transitioend event
          */
-        CarouselComponent.prototype._winResizeWatcher = function () {
-            var _this = this;
-            if (Object.keys(this.carouselService._options.responsive).length) {
-                this.resizeSubscription = this.resizeService.onResize$
-                    .pipe(operators.filter(function () { return _this.carouselWindowWidth !== _this.el.nativeElement.querySelector('.owl-carousel').clientWidth; }), operators.delay(this.carouselService.settings.responsiveRefreshRate))
-                    .subscribe(function () {
-                    _this.carouselService.onResize(_this.el.nativeElement.querySelector('.owl-carousel').clientWidth);
-                    _this.carouselWindowWidth = _this.el.nativeElement.querySelector('.owl-carousel').clientWidth;
-                });
-            }
-        };
+        /**
+         * Handler for transitioend event
+         * @return {?}
+         */
+        CarouselComponent.prototype.onTransitionEnd = /**
+         * Handler for transitioend event
+         * @return {?}
+         */
+            function () {
+                this.carouselService.onTransitionEnd();
+            };
+        /**
+         * Handler for click event, attached to next button
+         */
+        /**
+         * Handler for click event, attached to next button
+         * @return {?}
+         */
+        CarouselComponent.prototype.next = /**
+         * Handler for click event, attached to next button
+         * @return {?}
+         */
+            function () {
+                if (!this.carouselLoaded)
+                    return;
+                this.navigationService.next(this.carouselService.settings.navSpeed);
+            };
+        /**
+         * Handler for click event, attached to prev button
+         */
+        /**
+         * Handler for click event, attached to prev button
+         * @return {?}
+         */
+        CarouselComponent.prototype.prev = /**
+         * Handler for click event, attached to prev button
+         * @return {?}
+         */
+            function () {
+                if (!this.carouselLoaded)
+                    return;
+                this.navigationService.prev(this.carouselService.settings.navSpeed);
+            };
+        /**
+         * Handler for click event, attached to dots
+         */
+        /**
+         * Handler for click event, attached to dots
+         * @param {?} dotId
+         * @return {?}
+         */
+        CarouselComponent.prototype.moveByDot = /**
+         * Handler for click event, attached to dots
+         * @param {?} dotId
+         * @return {?}
+         */
+            function (dotId) {
+                if (!this.carouselLoaded)
+                    return;
+                this.navigationService.moveByDot(dotId);
+            };
+        /**
+         * rewinds carousel to slide with needed id
+         * @param id fragment of url
+         */
+        /**
+         * rewinds carousel to slide with needed id
+         * @param {?} id fragment of url
+         * @return {?}
+         */
+        CarouselComponent.prototype.to = /**
+         * rewinds carousel to slide with needed id
+         * @param {?} id fragment of url
+         * @return {?}
+         */
+            function (id) {
+                // if (!this.carouselLoaded || ((this.navData && this.navData.disabled) && (this.dotsData && this.dotsData.disabled))) return;
+                if (!this.carouselLoaded)
+                    return;
+                this.navigationService.toSlideById(id);
+            };
+        /**
+         * Gathers and prepares data intended for passing to the user by means of firing event translatedCarousel
+         */
+        /**
+         * Gathers and prepares data intended for passing to the user by means of firing event translatedCarousel
+         * @return {?}
+         */
+        CarouselComponent.prototype.gatherTranslatedData = /**
+         * Gathers and prepares data intended for passing to the user by means of firing event translatedCarousel
+         * @return {?}
+         */
+            function () {
+                /** @type {?} */
+                var startPosition;
+                /** @type {?} */
+                var clonedIdPrefix = this.carouselService.clonedIdPrefix;
+                /** @type {?} */
+                var activeSlides = this.slidesData
+                    .filter((function (slide) { return slide.isActive === true; }))
+                    .map((function (slide) {
+                    /** @type {?} */
+                    var id = slide.id.indexOf(clonedIdPrefix) >= 0 ? slide.id.slice(clonedIdPrefix.length) : slide.id;
+                    return {
+                        id: id,
+                        width: slide.width,
+                        marginL: slide.marginL,
+                        marginR: slide.marginR,
+                        center: slide.isCentered
+                    };
+                }));
+                startPosition = this.carouselService.relative(this.carouselService.current());
+                this.slidesOutputData = {
+                    startPosition: startPosition,
+                    slides: activeSlides
+                };
+            };
         /**
          * Handler for transitioend event
          */
@@ -3931,7 +4364,11 @@
         return CarouselComponent;
     }());
 
-    var StageComponent = /** @class */ (function () {
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    var StageComponent = (function () {
         function StageComponent(zone, el, renderer, carouselService, animateService) {
             var _this = this;
             this.zone = zone;
@@ -3961,65 +4398,113 @@
             /**
              * Passes this to _oneMouseTouchMove();
              */
-            this.bindOneMouseTouchMove = function (ev) {
+            this.bindOneMouseTouchMove = (function (ev) {
                 _this._oneMouseTouchMove(ev);
-            };
+            });
             /**
              * Passes this to _onDragMove();
              */
-            this.bindOnDragMove = function (ev) {
+            this.bindOnDragMove = (function (ev) {
                 _this._onDragMove(ev);
-            };
+            });
             /**
              * Passes this to _onDragMove();
              */
-            this.bindOnDragEnd = function (ev) {
+            this.bindOnDragEnd = (function (ev) {
                 // this.zone.run(() => {
                 _this._onDragEnd(ev);
                 // });
-            };
+            });
             /**
              * Attaches handler for 'click' event on any element in .owl-stage in order to prevent dragging when moving of cursor is less than 3px
              */
-            this._oneClickHandler = function () {
-                _this.listenerOneClick = _this.renderer.listen(_this._drag.target, 'click', function () { return false; });
+            this._oneClickHandler = (function () {
+                _this.listenerOneClick = _this.renderer.listen(_this._drag.target, 'click', (function () { return false; }));
                 _this.listenerOneClick();
-            };
-        }
-        StageComponent.prototype.onMouseDown = function (event) {
-            if (this.owlDraggable.isMouseDragable) {
-                this._onDragStart(event);
-            }
-        };
-        StageComponent.prototype.onTouchStart = function (event) {
-            if (this.owlDraggable.isTouchDragable) {
-                this._onDragStart(event);
-            }
-        };
-        StageComponent.prototype.onTouchCancel = function (event) {
-            this._onDragEnd(event);
-        };
-        StageComponent.prototype.onDragStart = function () {
-            if (this.owlDraggable.isMouseDragable) {
-                return false;
-            }
-        };
-        StageComponent.prototype.onSelectStart = function () {
-            if (this.owlDraggable.isMouseDragable) {
-                return false;
-            }
-        };
-        StageComponent.prototype.ngOnInit = function () {
-            var _this = this;
-            this._oneMoveSubsription = this._oneDragMove$
-                .pipe(operators.first())
-                .subscribe(function () {
-                _this._sendChanges();
             });
-        };
-        StageComponent.prototype.ngOnDestroy = function () {
-            this._oneMoveSubsription.unsubscribe();
-        };
+        }
+        /**
+         * @param {?} event
+         * @return {?}
+         */
+        StageComponent.prototype.onMouseDown = /**
+         * @param {?} event
+         * @return {?}
+         */
+            function (event) {
+                if (this.owlDraggable.isMouseDragable) {
+                    this._onDragStart(event);
+                }
+            };
+        /**
+         * @param {?} event
+         * @return {?}
+         */
+        StageComponent.prototype.onTouchStart = /**
+         * @param {?} event
+         * @return {?}
+         */
+            function (event) {
+                if (this.owlDraggable.isTouchDragable) {
+                    this._onDragStart(event);
+                }
+            };
+        /**
+         * @param {?} event
+         * @return {?}
+         */
+        StageComponent.prototype.onTouchCancel = /**
+         * @param {?} event
+         * @return {?}
+         */
+            function (event) {
+                this._onDragEnd(event);
+            };
+        /**
+         * @return {?}
+         */
+        StageComponent.prototype.onDragStart = /**
+         * @return {?}
+         */
+            function () {
+                if (this.owlDraggable.isMouseDragable) {
+                    return false;
+                }
+            };
+        /**
+         * @return {?}
+         */
+        StageComponent.prototype.onSelectStart = /**
+         * @return {?}
+         */
+            function () {
+                if (this.owlDraggable.isMouseDragable) {
+                    return false;
+                }
+            };
+        /**
+         * @return {?}
+         */
+        StageComponent.prototype.ngOnInit = /**
+         * @return {?}
+         */
+            function () {
+                var _this = this;
+                this._oneMoveSubsription = this._oneDragMove$
+                    .pipe(operators.first())
+                    .subscribe((function () {
+                    _this._sendChanges();
+                }));
+            };
+        /**
+         * @return {?}
+         */
+        StageComponent.prototype.ngOnDestroy = /**
+         * @return {?}
+         */
+            function () {
+                this._oneMoveSubsription.unsubscribe();
+            };
         /**
            * Handles `touchstart` and `mousedown` events.
            * @todo Horizontal swipe threshold as option
@@ -4055,10 +4540,10 @@
                 this._drag.pointer = this._pointer(event);
                 this.listenerMouseUp = this.renderer.listen(document, 'mouseup', this.bindOnDragEnd);
                 this.listenerTouchEnd = this.renderer.listen(document, 'touchend', this.bindOnDragEnd);
-                this.zone.runOutsideAngular(function () {
+                this.zone.runOutsideAngular((function () {
                     _this.listenerOneMouseMove = _this.renderer.listen(document, 'mousemove', _this.bindOneMouseTouchMove);
                     _this.listenerOneTouchMove = _this.renderer.listen(document, 'touchmove', _this.bindOneMouseTouchMove);
-                });
+                }));
             };
         /**
          * Attaches listeners to `touchmove` and `mousemove` events; initiates updating carousel after starting dragging
@@ -4122,7 +4607,7 @@
                     target = target.parentElement;
                 }
                 if (target instanceof HTMLAnchorElement) {
-                    this.listenerATag = this.renderer.listen(target, 'click', function () { return false; });
+                    this.listenerATag = this.renderer.listen(target, 'click', (function () { return false; }));
                 }
             };
         /**
@@ -4495,7 +4980,7 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var OwlRouterLinkDirective = (function () {
         function OwlRouterLinkDirective(router$$1, route, tabIndex, renderer, el) {
@@ -4623,11 +5108,11 @@
             this.locationStrategy = locationStrategy;
             this.stopLink = false;
             this.commands = [];
-            this.subscription = router$1.events.subscribe(function (s) {
+            this.subscription = router$$1.events.subscribe((function (s) {
                 if (s instanceof router.NavigationEnd) {
                     _this.updateTargetUrlAndHref();
                 }
-            });
+            }));
         }
         Object.defineProperty(OwlRouterLinkWithHrefDirective.prototype, "owlRouterLink", {
             set: function (commands) {
@@ -4745,8 +5230,11 @@
         return s === '' || !!s;
     }
 
-    var routes = [];
-    var CarouselModule = /** @class */ (function () {
+    /**
+     * @fileoverview added by tsickle
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     */
+    var CarouselModule = (function () {
         function CarouselModule() {
         }
         CarouselModule = __decorate([
@@ -4764,17 +5252,17 @@
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
 
     /**
      * @fileoverview added by tsickle
-     * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+     * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
 
     exports.CarouselModule = CarouselModule;

@@ -43,6 +43,11 @@ export class SlideModel {
   isCentered?: boolean;
 
   /**
+   * Mark slide to be on center of the carousel (has .center)
+   */
+  center?: boolean;
+
+  /**
    * Cloned slide. It's being used when 'loop'=true
    */
   isCloned?: boolean;
