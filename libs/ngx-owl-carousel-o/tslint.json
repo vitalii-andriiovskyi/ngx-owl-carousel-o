@@ -13,5 +13,8 @@
       "owl-carousel-libdemo",
       "kebab-case"
     ]
+  },
+  "linterOptions": {
+    "exclude": ["!**/*"]
   }
 }
