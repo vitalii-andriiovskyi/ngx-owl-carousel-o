@@ -121,6 +121,12 @@ export interface BreakpointOptions {
    */
   autoplaySpeed?: number | boolean;
 
+  /**
+   * Period of time to start autoplaying or first timeout after firing `mouseleave`. Default is `1`
+   */
+  autoplayMouseleaveTimeout?: number;
+
+
   // ANIMATE ****************************************
   /**
    * You can define the transition for the stage you want to use eg. `linear`.
@@ -290,6 +296,11 @@ export interface OwlOptions {
    * Pause on mouse hover
    */
   autoplayHoverPause?: boolean;
+
+  /**
+   * Period of time to start autoplaying or first timeout after firing `mouseleave`. Default is `1`
+   */
+  autoplayMouseleaveTimeout?: number;
 
   /**
    * Autoplay speed
