@@ -89,7 +89,7 @@ export class AutoplayService implements OnDestroy{
 	play(timeout?: number, speed?: number) {
     if (this._paused) {
 			this._paused = false;
-			this._setAutoPlayInterval(1);
+			this._setAutoPlayInterval(this.carouselService.settings.autoplayMouseleaveTimeout);
     }
 
 		if (this.carouselService.is('rotating')) {
@@ -97,7 +97,7 @@ export class AutoplayService implements OnDestroy{
 		}
 
 		this.carouselService.enter('rotating');
-
+    console.log('rotating');
 		this._setAutoPlayInterval();
   };
 
@@ -200,6 +200,7 @@ export class AutoplayService implements OnDestroy{
     if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
       this.play();
       this._playAfterTranslated();
+      console.log('startPlayingMouseLeave');
     }
   }
 
