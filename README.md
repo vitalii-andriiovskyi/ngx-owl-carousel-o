@@ -53,6 +53,7 @@ ngx-owl-carousel-o      | Angular
 6. Add to needed component `customOptions` or named in different way object with options for the carousel:
     ```typescript
     import { OwlOptions } from 'ngx-owl-carousel-o';
+    import { Component } from "@angular/core";
     @Component({
       selector: '....',
       templateUrl: 'carousel-holder.component.html'
