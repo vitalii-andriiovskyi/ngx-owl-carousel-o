@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v3.1.0](#v310)
 * [v3.0.1](#v301)
 * [v3.0.0](#v300)
 * [v2.1.1](#v211)
@@ -35,6 +36,10 @@
 * [v0.1.1](#v011)
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
+
+## v3.1.0
+
+The version `v3.1.0` adds feature `autoplayMouseleaveTimeout` to set custom first timeout when the event `mouseleave` fires. It solves the issue [`#88`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/88)
 
 ## v3.0.1
 

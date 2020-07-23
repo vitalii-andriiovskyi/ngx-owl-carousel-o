@@ -111,6 +111,7 @@ var OwlCarouselOConfig = /** @class */ (function () {
         this.autoplayTimeout = 5000;
         this.autoplayHoverPause = false;
         this.autoplaySpeed = false;
+        this.autoplayMouseleaveTimeout = 1;
         // defaults to LazyLoading
         this.lazyLoad = false;
         this.lazyLoadEager = 0;
@@ -167,6 +168,7 @@ var OwlOptionsMockedTypes = /** @class */ (function () {
         this.autoplayTimeout = 'number';
         this.autoplayHoverPause = 'boolean';
         this.autoplaySpeed = 'number|boolean';
+        this.autoplayMouseleaveTimeout = 'number';
         // defaults to LazyLoading
         this.lazyLoad = 'boolean';
         this.lazyLoadEager = 'number';
@@ -2827,7 +2829,7 @@ var AutoplayService = /** @class */ (function () {
     AutoplayService.prototype.play = function (timeout, speed) {
         if (this._paused) {
             this._paused = false;
-            this._setAutoPlayInterval(1);
+            this._setAutoPlayInterval(this.carouselService.settings.autoplayMouseleaveTimeout);
         }
         if (this.carouselService.is('rotating')) {
             return;
