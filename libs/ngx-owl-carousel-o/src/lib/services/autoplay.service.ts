@@ -97,7 +97,6 @@ export class AutoplayService implements OnDestroy{
 		}
 
 		this.carouselService.enter('rotating');
-    console.log('rotating');
 		this._setAutoPlayInterval();
   };
 
@@ -200,7 +199,6 @@ export class AutoplayService implements OnDestroy{
     if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
       this.play();
       this._playAfterTranslated();
-      console.log('startPlayingMouseLeave');
     }
   }
 
