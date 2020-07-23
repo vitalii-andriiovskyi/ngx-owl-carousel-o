@@ -2414,7 +2414,6 @@
                 return;
             }
             this.carouselService.enter('rotating');
-            console.log('rotating');
             this._setAutoPlayInterval();
         };
         ;
@@ -2509,7 +2508,6 @@
             if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
                 this.play();
                 this._playAfterTranslated();
-                console.log('startPlayingMouseLeave');
             }
         };
         /**

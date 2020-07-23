@@ -2203,7 +2203,6 @@ var AutoplayService = /** @class */ (function () {
             return;
         }
         this.carouselService.enter('rotating');
-        console.log('rotating');
         this._setAutoPlayInterval();
     };
     ;
@@ -2298,7 +2297,6 @@ var AutoplayService = /** @class */ (function () {
         if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
             this.play();
             this._playAfterTranslated();
-            console.log('startPlayingMouseLeave');
         }
     };
     /**

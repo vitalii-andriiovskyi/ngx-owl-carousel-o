@@ -2121,7 +2121,6 @@ let AutoplayService = class AutoplayService {
             return;
         }
         this.carouselService.enter('rotating');
-        console.log('rotating');
         this._setAutoPlayInterval();
     }
     ;
@@ -2214,7 +2213,6 @@ let AutoplayService = class AutoplayService {
         if (this.carouselService.settings.autoplayHoverPause && this.carouselService.is('rotating')) {
             this.play();
             this._playAfterTranslated();
-            console.log('startPlayingMouseLeave');
         }
     }
     /**
