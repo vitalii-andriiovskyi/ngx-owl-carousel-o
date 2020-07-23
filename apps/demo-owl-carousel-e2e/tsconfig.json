@@ -1,6 +1,13 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "types": ["jasmine", "jasminewd2", "node"]
-  }
+  },
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.e2e.json"
+    }
+  ]
 }

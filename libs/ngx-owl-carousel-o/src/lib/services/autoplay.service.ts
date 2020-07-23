@@ -96,7 +96,8 @@ export class AutoplayService implements OnDestroy{
 			return;
 		}
 
-		this.carouselService.enter('rotating');
+    this.carouselService.enter('rotating');
+
 		this._setAutoPlayInterval();
   };
 

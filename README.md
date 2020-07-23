@@ -4,7 +4,8 @@
 
 ngx-owl-carousel-o      | Angular
 ------------------------|--------
-3.x.x                   | 9.x.x
+4.x.x                   | 10.x.x
+3.x.x  (latest `3.1.1`) | 9.x.x
 2.x.x  (latest `2.1.1`) | 8.x.x
 1.x.x  (latest `1.2.1`) | 7.x.x
 0.x.x  (latest `0.1.2`) | 6.x.x
