@@ -4,7 +4,8 @@
 
 ngx-owl-carousel-o      | Angular
 ------------------------|--------
-3.x.x                   | 9.x.x
+4.x.x                   | 10.x.x
+3.x.x  (latest `3.1.1`) | 9.x.x
 2.x.x  (latest `2.1.1`) | 8.x.x
 1.x.x  (latest `1.2.1`) | 7.x.x
 0.x.x  (latest `0.1.2`) | 6.x.x
@@ -26,7 +27,9 @@ ngx-owl-carousel-o      | Angular
 
 1. Run `yarn add ngx-owl-carousel-o` or `npm install ngx-owl-carousel-o`.
 2. Add styles (one of these variants).
+
     -  `angular.json`:
+
         ```json
         "styles": [
             "node_modules/ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css",
@@ -34,14 +37,18 @@ ngx-owl-carousel-o      | Angular
             "src/styles.sass" or "src/styles.css"
           ],
         ```
+
     - `src/styles.sass` or `src/styles.scss`:
+
         ```sass
         @import '~ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
         @import '~ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
         ```
+
 3. Import `RoutingModule` and `Routes` into `AppModule` unless they are imported.
 4. Import `BrowserAnimationsModule` into `AppModule`  unless it is imported.
 5. Import `CarouselModule` into a module which declares a component intended to have a carousel.
+
     ```typescript
     import { CarouselModule } from 'ngx-owl-carousel-o';
     @NgModule({
@@ -50,7 +57,9 @@ ngx-owl-carousel-o      | Angular
     })
     export class SomeModule { }
     ```
+
 6. Add to needed component `customOptions` or named in different way object with options for the carousel:
+
     ```typescript
     import { OwlOptions } from 'ngx-owl-carousel-o';
     import { Component } from "@angular/core";
@@ -85,21 +94,24 @@ ngx-owl-carousel-o      | Angular
       }
     }
     ```
+
 7. Add html-markup to the template of the component (in this case, add it to `carousel-holder.component.html`):
+
     ```html
       <div>Some tags before</div>
-    	<owl-carousel-o [options]="customOptions">
+      <owl-carousel-o [options]="customOptions">
         <ng-template carouselSlide>Slide 1</ng-template>  
         <ng-template carouselSlide>Slide 2</ng-template>  
         <ng-template carouselSlide>Slide 3</ng-template>  
       </owl-carousel-o>
       <div>Some tags after</div>
     ```
+
     or
 
     ```html
       <div>Some tags before</div>
-    	<owl-carousel-o [options]="customOptions">
+      <owl-carousel-o [options]="customOptions">
 
         <ng-container *ngFor="let slide of slidesStore">
           <ng-template carouselSlide [id]="slide.id">
@@ -109,15 +121,17 @@ ngx-owl-carousel-o      | Angular
 
       </owl-carousel-o>
       <div>Some tags after</div>
-    ```      
+    ```
 
-**NOTE**: Each slide has an `id`. If it isn't supplied like in the first example given to p. 7, the code generates it automatically and expose one when the event `translated` fires. Info about this event is below. Follow the link [event `translated`](#translated). 
+**NOTE**: Each slide has an `id`. If it isn't supplied like in the first example given to p. 7, the code generates it automatically and expose one when the event `translated` fires. Info about this event is below. Follow the link [event `translated`](#translated).
 
 **NOTE**: Custom `id` must have the type `string`.
 
 **NOTE**: Using **ngx-owl-carousel-o** with options `animateOut` and `animateIn` requires adding `animate.css`. Steps are the following:
+
 1. `yarn add animate.css` or `npm install animate.css`.
 2. Add styles to `angular.json`:
+
     ```json
     "styles": [
         "node_modules/animate.css/animate.min.css"
@@ -125,13 +139,14 @@ ngx-owl-carousel-o      | Angular
     ```
 
 ## Setting custom slides ids
-It's possible to set own id to every slide. 
 
-> Every `id` must have the type `string`. Otherwise, slides won't get ids what will cause one problem, which appears when the developer uses the option `responsive`.  Slides won't be shown when the width of the screen changes and the carousel has to apply new settings according to the defined breakpoint. This is because the code uses ids of slides in order to assign new data to slides. So if you change the width of the screen and slides disappear, there could be the problem with setting `id`. 
+It's possible to set own id to every slide.
 
+> Every `id` must have the type `string`. Otherwise, slides won't get ids what will cause one problem, which appears when the developer uses the option `responsive`.  Slides won't be shown when the width of the screen changes and the carousel has to apply new settings according to the defined breakpoint. This is because the code uses ids of slides in order to assign new data to slides. So if you change the width of the screen and slides disappear, there could be the problem with setting `id`.  
 > If `id`s aren't set explicitly, they will be created automatically.
 
-The example of setting ids: 
+The example of setting ids:
+
 ```html
   <div>Some tags before</div>
   <owl-carousel-o [options]="customOptions">
@@ -146,7 +161,6 @@ The example of setting ids:
   <div>Some tags after</div>
 ```
 
-
 ## Options
 
 **ngx-owl-carousel-o** uses the same options as Owl Carousel. Explanations of meanings and the usage of options are in [Owl Carousel Documentation](https://owlcarousel2.github.io/OwlCarousel2/docs/api-options.html).
@@ -154,62 +168,72 @@ The example of setting ids:
 **NOTE**: **ngx-owl-carousel-o** has the different usage of some of them. Mostly this is about options which require setting `data-` attributes to DOM-elements and which set names of classes and tags in the HTML-markup. The usage of these options is explained below.
 
 Options which require setting `data-` attributes are:
-* [merge](#merge)
-* [dotsData](#dotsdata)
-* [URLhashListener](#urlhashlistener)
-* [lazyLoad](#lazyload)
 
+- [merge](#merge).
+- [dotsData](#dotsdata).
+- [URLhashListener](#urlhashlistener).
+- [lazyLoad](#lazyload).
 
 ### merge
+
 The original Owl Carousel requires setting `data-merge` to each slide besides setting `merge=true`. In this lib `data-merge` is changed to `dataMerge` , which is the `@Input` property of the `<ng-template[carouselSlide]>` directive. The way of setting it is:
+
 ```html
 <ng-template carouselSlide [dataMerge]="number">Slide text or HTML markup</ng-template>
 ```
+
   the `number` must be 1, 2, 3 or any other integer numbers. If `dataMerge` isn't provided, its value will be 1 (this is the default value).
 
+### autoWidth
 
-### autoWidth  
 The option `autoWidth=true` is working if user sets the `@Input` prop `width` to `<ng-template[carouselSlide]>` directive. The example:
+
 ```html
 <ng-template carouselSlide [width]="number">Slide text or html markup</ng-template>
 ```
+
 When the `width` isn't provided for a certain slide and is provided for other slides, firstly it will be 0 (this is the default value). At the end it will be calculated as (width of carousel)/(items) (e.g. `carouselWidth=1200` and `items=4`, the width of the slide will be `1200/4=300`).
 
 In other words, the width of the slide with unprovided `width` will be set according to how much space in visible carousel window the slide must take. E.g. if there must be 2 visible slides, the width of the item will be half of the carousel window.
 
 ### responsiveBaseElement
+
 The option `responsiveBaseElement` doesn't work. In the original Owl Carousel, all responsive breakpoints are corresponding to window width. Here they are corresponding to the width of the element `<div class="owl-carousel">` which takes 100% of its parent element width.
 
 ### fallbackEasing
+
 The option `fallbackEasing` doesn't work because it's being used by `$.animate()` in  Owl Carousel created by means of jQuery. There's no such function in Angular.
 
 ### info
+
 Option `info` doesn't work.
 
 ### navElement, navContainer, navContainerClass, navClass, dotContainer, dotClass and dotsClass
+
 These options don't work.
 
 | Option                                | Explanation                                                                              |
 | -------------------------------       | -----------------------------------------------------------------------------------------|
 | navElement: 'div'                     | this tag is set explicitly in the View of CarouselComponent                                  |
-| navContainer: false   	              | is removed                                                                               |
+| navContainer: false                   | is removed                                                                               |
 | navContainerClass: 'owl-nav'          | this css-class is set explicitly in the View of CarouselComponent                            |
 | navClass: [ 'owl-prev', 'owl-next' ]  | this css-class is set explicitly in the View of CarouselComponent                            |
 | dotClass: 'owl-dot'                   | this css-class is set explicitly in the View of CarouselComponent                            |
 | dotsClass: 'owl-dots'                 | this css-class is set explicitly in the View of CarouselComponent                            |
-| dotsContainer: false  	              | is removed                                                                               |
-
+| dotsContainer: false                  | is removed                                                                               |
 
 ### nestedItemSelector
+
 The option `nestedItemSelector` doesn't work.
 
 ### itemElement, itemClass, stageElement, stageOuterClass, stageClass, refreshClass, loadedClass, loadingClass, rtlClass, responsiveClass, dragClass and grabClass
+
 These options don't work.
 
 | Option                            | Explanation                                                                                  |
 | -------------------------------   | ---------------------------------------------------------------------------------------------|
 | itemElement: 'div'                | this tag is set explicitly in the View                                                           |
-| itemClass: 'owl-item' 	          | this css-class is set explicitly in the View                                                     |
+| itemClass: 'owl-item'             | this css-class is set explicitly in the View                                                     |
 | stageElement: 'div'               | this tag is set explicitly in the View                                                           |
 | stageClass: 'owl-stage'           | this css-class is set explicitly in the View                                                     |
 | stageOuterClass: 'owl-stage-outer'| this css-class is set explicitly in the View                                                     |
@@ -222,76 +246,93 @@ These options don't work.
 | dragClass: 'owl-drag'             | this css-class is set explicitly in the View and reflected by OwlDOMData.isDragable              |
 | grabClass: 'owl-grab'             | this css-class is set explicitly in the View and reflected by OwlDOMData.isGrab                  |
 
-
 ### navText
+
 **NOTE**: Setting options in the HTML-template in the way like
+
 ```html
 <owl-carousel-o [options]="{navText: [ '<i class="fa-chevron-left"></i>', '<i class="fa-chevron-right></i>"' ]}">
   <ng-template carouselSlide>Slide</ng-template>
 </owl-carousel-o>
 ```
-will cause the template parse error because of the double quote put around classes's names _fa-chevron-left_ and _fa-chevron-right_. The creation of the property e.g. `customOptions` in `component.ts` and writing `[options]="customOptions"` will eliminate this problem. 
+
+will cause the template parse error because of the double quote put around classes's names _fa-chevron-left_ and _fa-chevron-right_. The creation of the property e.g. `customOptions` in `component.ts` and writing `[options]="customOptions"` will eliminate this problem.
 
 ```typescript
 customOptions: OwlOptions = {
  navText: [ '<i class="fa-chevron-left"></i>', '<i class="fa-chevron-right></i>"' ]
 }
 ```
+
 and
+
 ```html
 <owl-carousel-o [options]="customOptions">
   <ng-template carouselSlide>Slide</ng-template>
 </owl-carousel-o>
 ```
 
-
 ### dotsData
+
 It's needed to set it to `true` and to set the content in the dot for every slide using the `@Input` property `dotContent`:
+
 ```html
 <ng-template carouselSlide [dotContent]="content">Slide 1</ng-template>
 ```
+
 - in the case when `content` is the prop of a component.
 
 ```html
 <ng-template carouselSlide dotContent="content">Slide 1</ng-template>
 ```
-- in the case when `content` is simple text.
 
+- in the case when `content` is simple text.
 
 The ontent can be simple text or the HTML-markup. Dots with this option work as tabs. The option `items` should be set to 1, otherwise, scrolling of slides will be done by pages (1 page equals the number of visible slides).
 If the `dotContent` isn't provided in `<ng-template [carouselSlide]>`, its values will be '' (this is the default value).
 
 ### slideBy
-When there's the option `slideBy='page'`, disabled __prev__ or __next__ buttons will rewind the carousel to the start or the end accordingly. 
-When the number of pages (dots) is 2 and there's the option  `loop=false`, changing pages could cause thoughts  something is wrong (when the carousel is on the first page, click on the __prev__ button makes the carousel show the second page which is the ending of the carousel at the same time; in this case the __next__ and __prev__ button do the same job). To avoid this behavior, the number of pages must be 3 and more or it's needed to set `loop=true`. 
+
+When there's the option `slideBy='page'`, disabled __prev__ or __next__ buttons will rewind the carousel to the start or the end accordingly.
+When the number of pages (dots) is 2 and there's the option  `loop=false`, changing pages could cause thoughts  something is wrong (when the carousel is on the first page, click on the __prev__ button makes the carousel show the second page which is the ending of the carousel at the same time; in this case the __next__ and __prev__ button do the same job). To avoid this behavior, the number of pages must be 3 and more or it's needed to set `loop=true`.
 
 The number of pages depends on the number of all slides and the option `items` (e.g. if the quantity of slides is `10` and `items=3`, the number of pages will be `4` (10/3=3.3; 3.3 is rounded to 4)).
 
-
 ### rewind
+
 The documentation of Owl Carousel says the default value of this option is set to `true`, but the code defines it as `false`. In **ngx-owl-carousel-o**, its default value is set to `false`.  
 
 **WARNING**: options `rewind` and `loop` shouldn't be enabled in one carousel. They do a similar job in different ways.
 
 ### freeDrag
+
 The option `freeDrag` doesn't have the realization. Thus setting it to `true` will give nothing. This option doesn't work even in Owl Carousel written by means of jQuery.
 
 ### autoplayTimeout and autoplaySpeed
+
 The option `autoplayTimeout` must always be bigger than the option `autoplaySpeed`. Otherwise, the autoplay won't work.
 
+### autoplayMouseleaveTimeout
+
+This options works just in the case `autoplayHoverPause` is enabled. `autoplayMouseleaveTimeout` sets the value of just the first timeout after firing the event `mouseleave`. Default meaning is `1`. Then the value of `autoplayTimeout` is applied.
+
 ### URLhashListener
-When the option  `URLhashListener=true`, it's required to define the `@Input` prop `dataHash` in `<ng-template carouselSlide>`: 
+
+When the option  `URLhashListener=true`, it's required to define the `@Input` prop `dataHash` in `<ng-template carouselSlide>`:
+
 ```html
 <ng-template carouselSlide id="owl-slide-1" dataHash="one"><div>Slide 1</div></ng-template>
 <ng-template carouselSlide id="owl-slide-2" dataHash="two"><div>Slide 2</div></ng-template>
 ```
+
 &nbsp;or
 
 ```html
 <ng-template carouselSlide id="owl-slide-1" [dataHash]="hashObj.one"><div>Slide 1</div></ng-template>
 <ng-template carouselSlide id="owl-slide-2" [dataHash]="hashObj.two"><div>Slide 2</div></ng-template>
 ```
-where `hashObj` is the object with hashes (fragments) of url. `hashObj` could be an array. Defining the kind of data store is up to the developer. 
+
+where `hashObj` is the object with hashes (fragments) of url. `hashObj` could be an array. Defining the kind of data store is up to the developer.
 
 **NOTE**: `HashService` uses services `ActivatedRoute` and `Router` for making it possible to navigate by hashes (fragments). And if `RouterModule.forRoot(routes)` isn't imported in the main module of an application, the problem will appear. `HashService` **won't work**. Therefore it's needed to import `RouterModule.forRoot(routes)` in the main module of an application even in case the of creating the simple app for testing the work of the library.
 
@@ -307,16 +348,17 @@ When the option `skip_validateItems` is `true`, the carousel won't reassign the 
 
 ## owlRouterLink
 
-The directive `owlRouterLink` is introduced for making impossible the navigating between components while the carousel is dragging. 
+The directive `owlRouterLink` is introduced for making impossible the navigating between components while the carousel is dragging.
 
-This directive has the same features as the native `routerLink` directive. One exception is the property `stopLink`. It prevents the navigating to another component. 
+This directive has the same features as the native `routerLink` directive. One exception is the property `stopLink`. It prevents the navigating to another component.
 
 This directive is included into `CarouselModule`, which must be imported into a needed module before using the `ngx-owl-carousel-o`. So, to use this directive, you just need to write it inside the needed slide.
 
 Example of usage this directive:
+
 ```html
   <owl-carousel-o [options]="customOptions" (dragging)="isDragging = $event.dragging">
-        
+  
     <ng-container *ngFor="let item of carouselData">
       <ng-template carouselSlide>
         <div class="slider">
@@ -324,64 +366,73 @@ Example of usage this directive:
           <a class="outer-link" href="https://www.google.com">
             <span>{{item.text}}</span>
           </a>
-            
+
         </div>
       </ng-template>
     </ng-container>
-    
+
   </owl-carousel-o>
 ```
 
-`<a [owlRouterLink]="['/present']" [stopLink]="isDragging">{{item.text}}</a>` contains `owlRouterLink` directive and its _*@Input*_ property `stopLink`. 
+`<a [owlRouterLink]="['/present']" [stopLink]="isDragging">{{item.text}}</a>` contains `owlRouterLink` directive and its _*@Input*_ property `stopLink`.
 
-`<a owlRouterLink="'/present'" [stopLink]="isDragging">{{item.text}}</a>` is also possible way of using this directive. 
+`<a owlRouterLink="'/present'" [stopLink]="isDragging">{{item.text}}</a>` is also possible way of using this directive.
 
 In the example above, we see the usage of `dragging` event, `owlRouterLink`, and `stopLink`.
 When the dragging of the carousel starts, the  `dragging` event notifies about it by passing object
+
 ``` typescript
 {
   dragging: true,
   data: {}
 }
 ```
-The value of the prop `dragging` is assigned to the `isDraggable` property. Then this property is passed into  `owlRouterLink` through `stopLink`. Directive gets aware of dragging the carousel and prevents any navigations. 
 
-When the dragging of the carousel is finished, `dragging` passes object 
+The value of the prop `dragging` is assigned to the `isDraggable` property. Then this property is passed into  `owlRouterLink` through `stopLink`. Directive gets aware of dragging the carousel and prevents any navigations.
+
+When the dragging of the carousel is finished, `dragging` passes object
+
 ``` typescript
 {
   dragging: false,
   data: {}
 }
 ```
- `isDraggable` gets updated, which causes the change of `stopLink`. Now its value is `false`. This enables navigating during the next simple click on `<a>` locating in the slide unless new dragging starts. 
+
+ `isDraggable` gets updated, which causes the change of `stopLink`. Now its value is `false`. This enables navigating during the next simple click on `<a>` locating in the slide unless new dragging starts.
 
 So, to use `<a>` in any slide, it's recommended to:
+
 - use `dragging` event and property `isDragging` (or named differently);
 - use `owlRouterLink` directive;
-- use `stopLink` property of `owlRouterLink`. It's needed to pass to this prop `isDragging`. Using of `stopLink` is required. 
+- use `stopLink` property of `owlRouterLink`. It's needed to pass to this prop `isDragging`. Using of `stopLink` is required.
 
 The real example is [here](./apps/demo-owl-carousel/src/app/link/link.component.html).
 
-The `<a href="someUrl">` has the automatic preventing navigation during dragging. 
+The `<a href="someUrl">` has the automatic preventing navigation during dragging.
 
 ## Events
 
-* [translated](#translated).
-* [dragging](#dragging).
-* [change](#change).
-* [initialized](#initialized).
+- [translated](#translated).
+- [dragging](#dragging).
+- [change](#change).
+- [initialized](#initialized).
 
 ### translated
+
 It fires after the carousel finishes translating and exposes the object of the type `SlidesOutputData`.
+
 ```typecript
 class SlidesOutputData {
   startPosition?: number;
   slides?: SlideModel[];
 };
 ```
+
 `startPosition` is the position of the first slide with the class `.active`
 
 `slides` is the array with data of each active slide. Data of each active slide are:
+
 ```typescript
 {
   id: string; // id of slide
@@ -389,12 +440,13 @@ class SlidesOutputData {
   marginL: number; // margin-left of slide
   marginR: number; // margin-right of slide
   center: boolean; // whether slide is centered (has .center)
-} 
+}
 ```
 
 The code for subscribing to this event is the following:
 
 `CarouselHolderComponent`
+
 ```typescript
 import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
 @Component({
@@ -448,6 +500,7 @@ import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
       }
     }
 ```
+
 `(translated)="getPassedData($event)"` is the subscription or attaching to the event;
 
 `getPassedData(data: SlidesOutputData)` is the method which takes data about active slides.
@@ -455,7 +508,9 @@ import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
 `activeSlides` is the property of `CarouselHolderComponent`, which stores data about active slides
 
 ### dragging
+
 The event `dragging` fires after that the user starts dragging the carousel. It exposes the object
+
 ``` typescript
 {
   dragging: boolean,
@@ -467,7 +522,9 @@ class SlidesOutputData {
   slides?: SlideModel[];
 };
 ```
-When the dragging of the carousel is started its paylod is: 
+
+When the dragging of the carousel is started its paylod is:
+
 ``` typescript
 {
   dragging: true,
@@ -477,9 +534,11 @@ When the dragging of the carousel is started its paylod is:
   }
 }
 ```
-The prop `data` shows the situation which was at the moment of starting dragging. In other words, if before dragging the carousel the prop `startPosition` was `0`, the event `dragging` will emit this prop with the same value. 
 
-When the dragging of the carousel is finished and the event `translated` is fired `dragging` fires again but its payload has value 
+The prop `data` shows the situation which was at the moment of starting dragging. In other words, if before dragging the carousel the prop `startPosition` was `0`, the event `dragging` will emit this prop with the same value.
+
+When the dragging of the carousel is finished and the event `translated` is fired `dragging` fires again but its payload has value
+
 ``` typescript
 {
   dragging: false,
@@ -489,14 +548,16 @@ When the dragging of the carousel is finished and the event `translated` is fire
   }
 }
 ```
+
 This time, the prop `data` shows current `startPosition` and current active  `slides`.
 
 This event is needed for the cases when slide should contain the tag `<a>` with the `routerLink` directive.
 
 Example of using this event:
+
 ```html
   <owl-carousel-o [options]="customOptions" (dragging)="isDragging = $event.dragging">
-        
+
     <ng-container *ngFor="let item of carouselData">
       <ng-template carouselSlide>
 
@@ -505,29 +566,34 @@ Example of using this event:
           <a class="outer-link" href="https://www.google.com">
             <span>{{item.text}}</span>
           </a>
-            
+
         </div>
       </ng-template>
     </ng-container>
-    
+
   </owl-carousel-o>
 ```
+
 `(dragging)="isDragging = $event.dragging"` This expression uses the `dragging` event and has the property `isDragging` which should be created in the component hosting the `<ngx-owl-carousel-o>`.
 
 `$event` is the payload of the event. Its prop `dragging` can be `true` or `false`.
     The real example is [here](./apps/demo-owl-carousel/src/app/link/link.component.html).
 
 ### initialized
+
 It fires after the carousel gets initialized and exposes the object of the type `SlidesOutputData`.
+
 ```typecript
 class SlidesOutputData {
   startPosition?: number;
   slides?: SlideModel[];
 };
 ```
+
 `startPosition` is the position of the first slide with the class `.active`
 
 `slides` is the array with data of each active slide. Data of each active slide are:
+
 ```typescript
 {
   id: string; // id of slide
@@ -535,12 +601,13 @@ class SlidesOutputData {
   marginL: number; // margin-left of slide
   marginR: number; // margin-right of slide
   center: boolean; // whether slide is centered (has .center)
-} 
+}
 ```
 
 The code for subscribing to this event is the following:
 
 `CarouselHolderComponent`
+
 ```typescript
 import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
 @Component({
@@ -594,6 +661,7 @@ import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
       }
     }
 ```
+
 `(initialized)="getData($event)"` is the subscription or attaching to the event;
 
 `getData(data: SlidesOutputData)` is the method which takes data about active slides.
@@ -602,17 +670,20 @@ import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
 
 ### change
 
-It fires after each change in the carousel (click on dots, nav buttons). However, while the user drags the carousel this event fires after dropping the carousel or after stopping dragging. 
+It fires after each change in the carousel (click on dots, nav buttons). However, while the user drags the carousel this event fires after dropping the carousel or after stopping dragging.
 This event exposes the object of the type `SlidesOutputData`. It's populated by data defined before firing the event. This event just notifies about changes. New data (active slides, startPosition) gets available after the end of moving the carousel (event `translated`).
+
 ```typecript
 class SlidesOutputData {
   startPosition?: number;
   slides?: SlideModel[];
 };
 ```
+
 `startPosition` is the position of the first slide with the class `.active`
 
 `slides` is the array with data of each active slide. Data of each active slide are:
+
 ```typescript
 {
   id: string; // id of slide
@@ -620,12 +691,13 @@ class SlidesOutputData {
   marginL: number; // margin-left of slide
   marginR: number; // margin-right of slide
   center: boolean; // whether slide is centered (has .center)
-} 
+}
 ```
 
 The code for subscribing to this event is the following:
 
 `CarouselHolderComponent`
+
 ```typescript
 import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
 @Component({
@@ -679,24 +751,29 @@ import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
       }
     }
 ```
+
 `(change)="getData($event)"` is the subscription or attaching to the event;
 
 `getData(data: SlidesOutputData)` is the method which takes data about active slides.
 
 `activeSlides` is the property of `CarouselHolderComponent`, which stores data about active slides
+
 ### changed
 
-It fires when user clicks dots or nav buttons and new data about active slides becomes known. This event fires before the event `translated` gets fired. However, while the user drags the carousel this event fires after dropping the carousel or after stopping dragging. 
+It fires when user clicks dots or nav buttons and new data about active slides becomes known. This event fires before the event `translated` gets fired. However, while the user drags the carousel this event fires after dropping the carousel or after stopping dragging.
 This event exposes the object of the type `SlidesOutputData`:
+
 ```typecript
 class SlidesOutputData {
   startPosition?: number;
   slides?: SlideModel[];
 };
 ```
+
 `startPosition` is the position of the first slide with the class `.active`
 
 `slides` is the array with data of each active slide. Data of each active slide are:
+
 ```typescript
 {
   id: string; // id of slide
@@ -704,12 +781,13 @@ class SlidesOutputData {
   marginL: number; // margin-left of slide
   marginR: number; // margin-right of slide
   center: boolean; // whether slide is centered (has .center)
-} 
+}
 ```
 
 The code for subscribing to this event is the following:
 
 `CarouselHolderComponent`
+
 ```typescript
 import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
 @Component({
@@ -763,50 +841,60 @@ import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
       }
     }
 ```
+
 `(changed)="getData($event)"` is the subscription or attaching to the event;
 
 `getData(data: SlidesOutputData)` is the method which takes data about active slides.
 
 `activeSlides` is the property of `CarouselHolderComponent`, which stores data about active slides
+
 ## Plugins
-**ngx-owl-carousel-o** has almost all plugins written on the page [Owl Carousel Plugin API](https://owlcarousel2.github.io/OwlCarousel2/docs/dev-plugin-api.html) except the **VideoPlugin**. 
+
+**ngx-owl-carousel-o** has almost all plugins written on the page [Owl Carousel Plugin API](https://owlcarousel2.github.io/OwlCarousel2/docs/dev-plugin-api.html) except the **VideoPlugin**.
 
 ### VideoPlugin
+
 This plugin isn't realized. In order to play the video, use special packages (e.g. [`ngx-embed-video`](https://www.npmjs.com/package/ngx-embed-video); [`ngx-youtube-player`](https://www.npmjs.com/package/ngx-youtube-player) and so on).
 
 It's better to create special component with the video and put it in `<ng-template carouselSlide>....</ng-template>`
 The example:
+
 ```html
 <ng-template carouselSlide [dotContent]="content">
     <custom-video [id]="videoId" [url]="someURL" (someEvent)="handlerOfSomeEvent"></custom-video>
 </ng-template>
 ```
+
 `id` and `url` are data-binding properties, defined in the component which contains `<owl-carousel-o>`.
 
 ## Tips
 
 ### Real examples to help
+
 Some examples of using this lib are displayed in the app **demo-owl-carousel**:
+
 - The carousel with `autoWidth=true`. [Typescript part](./apps/demo-owl-carousel/src/app/home/home.component.ts) and [HTML part](./apps/demo-owl-carousel/src/app/home/home.component.html)
 - The carousel with `autoHeight=true`, `URLhashListener=true` and `startPosition='URLHash'`. [Typescript part](./apps/demo-owl-carousel/src/app/home/subhome/subhome.component.ts) and [HTML part](./apps/demo-owl-carousel/src/app/home/subhome/subhome.component.html)
 - The carousel with `autoplay=true`. [Typescript part](./apps/demo-owl-carousel/src/app/present/present.component.ts) and [HTML part](./apps/demo-owl-carousel/src/app/present/present.component.html)
 
 **NOTE**:  **demo-owl-carousel** could be downloaded and started on own PC. Steps for achieving that are:
+
 - `git clone https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o.git`;
 - `yarn` or `npm install`;
 - `ng serve` or `ng serve --project=demo-owl-carousel`.
 
-
 ### Tests to help
+
 Also, lots of variants of using carousel are in files [carousel.component.spec.ts](./libs/ngx-owl-carousel-o/src/lib/carousel/carousel.component.spec.ts) and [stage.component.spec.ts](./libs/ngx-owl-carousel-o/src/lib/carousel/stage/stage.component.spec.ts).
 
-They contain tests of the library. These tests include many functions `it()`. The example: 
+They contain tests of the library. These tests include many functions `it()`. The example:
+
 ```typescript
 it('should change height of carousel [options]="{nav: true, autoHeight: true}"', fakeAsync(() => {
     discardPeriodicTasks();
     const html = `
       <div style="width: 920px; margin: auto">
-      
+
         <owl-carousel-o [options]="{nav: true, autoHeight: true}">
 
           <ng-template carouselSlide id="owl-slide-1">
@@ -844,21 +932,22 @@ it('should change height of carousel [options]="{nav: true, autoHeight: true}"',
 
 The first argument of `it()` explains how the carousel should work with options written in `const html=...`. In this example the height of the carousel should change automatically: `should change height of carousel [options]="{nav: true, autoHeight: true}"`.
 
-Variable `html` contains the HTML-markup of the carousel for `[options]="{nav: true, autoHeight: true}"`. 
+Variable `html` contains the HTML-markup of the carousel for `[options]="{nav: true, autoHeight: true}"`.
 
 However, most of the HTML-markups set to `html` are simplified. There's no property `customOptions`, directive `*ngFor` and `<ng-container>` as it is in examples above.
 
 ### Managing the carousel from outside its markup
+
 It's possible to move the carousel left/right and to needed slide from different places of the html-page. The real example is provided in [home.component.html](./apps/demo-owl-carousel/src/app/home/home.component.html)
 
 ```html
 <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" #owlCar>
-        
+
   <ng-container *ngFor="let item of carouselData">
     <ng-template carouselSlide [id]="item.id" [width]="item.width">
       <div class="slider">
         <p>{{item.text}}</p>
-          
+
       </div><!-- /.carousel-item team-member -->
     </ng-template>
   </ng-container>
@@ -873,6 +962,7 @@ It's possible to move the carousel left/right and to needed slide from different
 ```
 
 Key points are:
+
 1. Defining in `<owl-carousel-o>` template reference variable `#owlCar`
 2. Using it in handlers for events. In the code above, we see `(click)="owlCar.prev()"`, `(click)="owlCar.next()"` and `(click)="owlCar.to('slide-3')"`. `#owlCar` could be passed as an argument of the hanlder: `(click)="handler(owlCar)`.
    - `owlCar.prev()` shows the previous slide.
