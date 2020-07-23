@@ -3621,14 +3621,21 @@ describe('CarouselComponent', () => {
       // can't imitate passage of time (tick(2000) doesn't wait). Thus next checking won't work
       // deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
       // expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 4', 'Slide 4');
-      // autoplayService.stop();
+      autoplayService.stop();
     }));
 
     it('should stop autoplaying carousel by \'mouseover\' and \'touchstart\'[options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 100, autoplayHoverPause: true}"', fakeAsync(() => {
       discardPeriodicTasks();
       const html = `
         <div style="width: 1200px; margin: auto">
-          <owl-carousel-o [options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 100, autoplayHoverPause: true}" (translated)="getPassedData($event)">
+          <owl-carousel-o [options]="{
+                                      nav: true,
+                                      loop: true,
+                                      autoplay: true,
+                                      autoplayTimeout: 1000,
+                                      autoplaySpeed: 500,
+                                      autoplayHoverPause: true
+                                    }" (translated)="getPassedData($event)">
             <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
             <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
             <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
@@ -3641,9 +3648,9 @@ describe('CarouselComponent', () => {
       deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
       carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
       autoplayService = deCarouselComponent.injector.get(AutoplayService);
-      spyOn(autoplayService, 'startPausing');
-      spyOn(autoplayService, 'startPlayingMouseLeave');
-      spyOn(autoplayService, 'startPlayingTouchEnd');
+      spyOn(autoplayService, 'startPausing').and.callThrough();
+      spyOn(autoplayService, 'startPlayingMouseLeave').and.callThrough();
+      spyOn(autoplayService, 'startPlayingTouchEnd').and.callThrough();
 
       tick();
       fixtureHost.detectChanges();
@@ -3681,6 +3688,72 @@ describe('CarouselComponent', () => {
       expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
       triggerTouchEvent(carouselHTML, 'touchend', {});
       expect(autoplayService.startPlayingTouchEnd).toHaveBeenCalled();
+      autoplayService.stop();
+    }));
+
+    it('should start autoplaying carousel after 80 ms when \'mouseover\' and \'mouseleave\' [options]="{nav: true, loop: true, autoplay: true, autoplayTimeout: 100, autoplayHoverPause: true, autoplayMouseleaveTimeout: 80}"', fakeAsync(() => {
+      discardPeriodicTasks();
+      const html = `
+        <div style="width: 1200px; margin: auto">
+          <owl-carousel-o [options]="{
+                                       nav: true,
+                                       loop: true,
+                                       autoplay: true,
+                                       autoplayTimeout: 100,
+                                       autoplaySpeed: 50,
+                                       autoplayHoverPause: true,
+                                       autoplayMouseleaveTimeout: 80
+                                      }" (translated)="getPassedData($event)">
+            <ng-template carouselSlide id="owl-slide-1">Slide 1</ng-template>
+            <ng-template carouselSlide id="owl-slide-2">Slide 2</ng-template>
+            <ng-template carouselSlide id="owl-slide-3">Slide 3</ng-template>
+            <ng-template carouselSlide id="owl-slide-4">Slide 4</ng-template>
+            <ng-template carouselSlide id="owl-slide-5">Slide 5</ng-template>
+          </owl-carousel-o>
+        </div>
+      `;
+      fixtureHost = createTestComponent(html);
+      deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+      carouselHTML = deCarouselComponent.query(By.css('.owl-carousel')).nativeElement;
+      autoplayService = deCarouselComponent.injector.get(AutoplayService);
+      spyOn(autoplayService, 'startPausing').and.callThrough();
+      spyOn(autoplayService, 'startPlayingMouseLeave').and.callThrough();
+
+      tick();
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
+
+      tick(160);
+      fixtureHost.detectChanges();
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+
+      triggerMouseEvent(carouselHTML, 'mouseover', {});
+      expect(autoplayService.startPausing).toHaveBeenCalled();
+
+      tick();
+      fixtureHost.detectChanges();
+
+      triggerMouseEvent(carouselHTML, 'mouseleave', {});
+      expect(autoplayService.startPlayingMouseLeave).toHaveBeenCalled();
+console.log('mouseleave');
+      tick(10);
+      fixtureHost.detectChanges();
+
+      deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 2', 'Slide 2');
+
+      fixtureHost.detectChanges();
+      tick(150);
+      fixtureHost.detectChanges();
+
+      // can't imitate passage of time (tick(130) doesn't wait). Thus next checking won't work
+      // deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+      // expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+
+      tick(200);
       autoplayService.stop();
     }));
 
@@ -3788,7 +3861,7 @@ describe('CarouselComponent', () => {
       // can't imitate passage of time (tick(200) doesn't wait). Thus next checking won't work
       // deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
       // expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
-      // autoplayService.stop();
+      autoplayService.stop();
     }));
   });
 
