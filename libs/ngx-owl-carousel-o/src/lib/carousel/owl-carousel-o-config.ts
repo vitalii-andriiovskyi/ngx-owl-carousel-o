@@ -47,6 +47,7 @@ export class OwlCarouselOConfig implements OwlOptions {
   autoplayTimeout = 5000;
   autoplayHoverPause = false;
   autoplaySpeed = false;
+  autoplayMouseleaveTimeout = 1;
 
   // defaults to LazyLoading
   lazyLoad = false;
@@ -114,6 +115,7 @@ export class OwlOptionsMockedTypes {
   autoplayTimeout = 'number';
   autoplayHoverPause = 'boolean';
   autoplaySpeed = 'number|boolean';
+  autoplayMouseleaveTimeout = 'number';
 
   // defaults to LazyLoading
   lazyLoad = 'boolean';
