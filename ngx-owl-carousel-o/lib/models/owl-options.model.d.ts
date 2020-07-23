@@ -257,6 +257,10 @@ export interface OwlOptions {
      */
     autoplayHoverPause?: boolean;
     /**
+     * Period of time to start autoplaying after firing `mouseleave`. Default is `1`
+     */
+    autoplayMouseleaveTimeout?: number;
+    /**
      * Autoplay speed
      */
     autoplaySpeed?: number | boolean;
