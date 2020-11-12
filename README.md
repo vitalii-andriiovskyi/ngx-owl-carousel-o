@@ -45,7 +45,7 @@ ngx-owl-carousel-o      | Angular
         @import '~ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
         ```
 
-3. Import `RoutingModule` and `Routes` into `AppModule` unless they are imported.
+3. Import `RouterModule` and `Routes` into `AppModule` unless they are imported.
 4. Import `BrowserAnimationsModule` into `AppModule`  unless it is imported.
 5. Import `CarouselModule` into a module which declares a component intended to have a carousel.
 
