@@ -69,13 +69,12 @@ export class OwlRouterLinkDirective {
 
   get urlTree(): UrlTree {
     return this.router.createUrlTree(this.commands, {
-      relativeTo: this.route,
-      queryParams: this.queryParams,
-      fragment: this.fragment,
-      preserveQueryParams: attrBoolValue(this.preserve),
-      queryParamsHandling: this.queryParamsHandling,
-      preserveFragment: attrBoolValue(this.preserveFragment),
-    });
+    relativeTo: this.route,
+    queryParams: this.queryParams,
+    fragment: this.fragment,
+    queryParamsHandling: this.queryParamsHandling,
+    preserveFragment: attrBoolValue(this.preserveFragment)
+});
   }
 }
 
@@ -175,13 +174,12 @@ export class OwlRouterLinkWithHrefDirective implements OnChanges, OnDestroy {
 
   get urlTree(): UrlTree {
     return this.router.createUrlTree(this.commands, {
-      relativeTo: this.route,
-      queryParams: this.queryParams,
-      fragment: this.fragment,
-      preserveQueryParams: attrBoolValue(this.preserve),
-      queryParamsHandling: this.queryParamsHandling,
-      preserveFragment: attrBoolValue(this.preserveFragment),
-    });
+    relativeTo: this.route,
+    queryParams: this.queryParams,
+    fragment: this.fragment,
+    queryParamsHandling: this.queryParamsHandling,
+    preserveFragment: attrBoolValue(this.preserveFragment)
+});
   }
 }
 

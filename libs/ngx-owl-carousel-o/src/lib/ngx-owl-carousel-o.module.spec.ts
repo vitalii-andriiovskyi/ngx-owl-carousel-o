@@ -1,9 +1,9 @@
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { NgxOwlCarouselOModule } from './ngx-owl-carousel-o.module';
 
 describe('NgxOwlCarouselOModule', () => {
   beforeEach(
-    async(() => {
+    waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [NgxOwlCarouselOModule]
       }).compileComponents();

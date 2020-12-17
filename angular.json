@@ -48,14 +48,16 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
             }
-          }
+          },
+          "outputs": [
+            "{options.outputPath}"
+          ]
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -81,13 +83,18 @@
             "polyfills": "apps/demo-owl-carousel/src/polyfills.ts",
             "tsConfig": "apps/demo-owl-carousel/tsconfig.spec.json",
             "karmaConfig": "apps/demo-owl-carousel/karma.conf.js",
-            "styles": ["apps/demo-owl-carousel/src/styles.css"],
+            "styles": [
+              "apps/demo-owl-carousel/src/styles.css"
+            ],
             "scripts": [],
             "assets": [
               "apps/demo-owl-carousel/src/favicon.ico",
               "apps/demo-owl-carousel/src/assets"
             ]
-          }
+          },
+          "outputs": [
+            "coverage/apps/demo-owl-carousel/"
+          ]
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
@@ -96,7 +103,9 @@
               "apps/demo-owl-carousel/tsconfig.app.json",
               "apps/demo-owl-carousel/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
@@ -116,7 +125,9 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "apps/demo-owl-carousel-e2e/tsconfig.e2e.json",
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
@@ -146,7 +157,10 @@
             "main": "libs/ngx-owl-carousel-o/src/test.ts",
             "tsConfig": "libs/ngx-owl-carousel-o/tsconfig.spec.json",
             "karmaConfig": "libs/ngx-owl-carousel-o/karma.conf.js"
-          }
+          },
+          "outputs": [
+            "coverage/libs/ngx-owl-carousel-o"
+          ]
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
@@ -155,7 +169,9 @@
               "libs/ngx-owl-carousel-o/tsconfig.lib.json",
               "libs/ngx-owl-carousel-o/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
