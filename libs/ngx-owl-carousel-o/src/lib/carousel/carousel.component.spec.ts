@@ -3953,6 +3953,7 @@ console.log('mouseleave');
     document.dispatchEvent(new Event('visibilitychange'));
 
     expect(autoplayService.play).toHaveBeenCalled();
+    tick(1000);
   }));
 
   it('should load content for 3 slides [options]="{nav: true, lazyLoad: true}"', fakeAsync(() => {
