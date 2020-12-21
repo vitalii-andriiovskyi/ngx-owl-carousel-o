@@ -1,4 +1,4 @@
-import { async, ComponentFixture, discardPeriodicTasks, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import {Location} from "@angular/common";
@@ -55,7 +55,7 @@ describe('CarouselComponent', () => {
   let router: Router;
 
   beforeEach(
-    async(() => {
+    waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [
           NoopAnimationsModule,
@@ -82,7 +82,7 @@ describe('CarouselComponent', () => {
     })
   );
 
-  it('should render carousel with slides keeping default values', async(() => {
+  it('should render carousel with slides keeping default values', waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o>
@@ -172,7 +172,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render carousel with 4 active slides [options]="{items: '4'}"`, async(() => {
+  it(`should render carousel with 4 active slides [options]="{items: '4'}"`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{items: '4'}">
@@ -196,7 +196,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render carousel with 3 active slides when prop items isn't number: [options]="{items: 'four'}"`, async(() => {
+  it(`should render carousel with 3 active slides when prop items isn't number: [options]="{items: 'four'}"`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{items: 'four'}">
@@ -220,7 +220,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render carousel with 5 active slides when prop items=10 and there're just 5 slides: [options]="{items: '10'}"`, async(() => {
+  it(`should render carousel with 5 active slides when prop items=10 and there're just 5 slides: [options]="{items: '10'}"`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{items: '10'}">
@@ -330,7 +330,7 @@ describe('CarouselComponent', () => {
   }));
 
 
-  it(`should render carousel with 2 active slides and 6 cloned slide (total slides 11) [options]="{items: 2, loop: true}`, async(() => {
+  it(`should render carousel with 2 active slides and 6 cloned slide (total slides 11) [options]="{items: 2, loop: true}`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{items: 2, loop: true, rewind: true}">
@@ -363,7 +363,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render carousel with 2 active slides and 6 cloned slide (total slides 11) [options]="{items: 2, loop: true, rewind: false}`, async(() => {
+  it(`should render carousel with 2 active slides and 6 cloned slide (total slides 11) [options]="{items: 2, loop: true, rewind: false}`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{items: 2, loop: true, rewind: false}">
@@ -397,7 +397,7 @@ describe('CarouselComponent', () => {
   }));
 
   it(`should render carousel with 5th active slide and 1 cloned active slide (total slides 11)
-       [options]="{items: 2, loop: true, startPosition: 4} (startPosition: 4 is array-like index)`, async(() => {
+       [options]="{items: 2, loop: true, startPosition: 4} (startPosition: 4 is array-like index)`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{items: 2, loop: true, startPosition: 4}">
@@ -425,7 +425,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render carousel with 2th active slide [options]="{items: 2, startPosition: 1}`, async(() => {
+  it(`should render carousel with 2th active slide [options]="{items: 2, startPosition: 1}`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{items: 2, startPosition: 1}">
@@ -453,7 +453,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render carousel with 4th active slide not 5th[options]="{items: 2, startPosition: 4}`, async(() => {
+  it(`should render carousel with 4th active slide not 5th[options]="{items: 2, startPosition: 4}`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{items: 2, startPosition: 4}">
@@ -481,7 +481,7 @@ describe('CarouselComponent', () => {
   }));
 
 
-  it(`should render carousel which has 1th slide with class .center [options]="{items: 2, center: true}`, async(() => {
+  it(`should render carousel which has 1th slide with class .center [options]="{items: 2, center: true}`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{items: 2, center: true}">
@@ -506,7 +506,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render carousel which has 3th slide with class .center [options]="{items: 2, center: true, startPosition: 2}`, async(() => {
+  it(`should render carousel which has 3th slide with class .center [options]="{items: 2, center: true, startPosition: 2}`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{items: 2, center: true, startPosition: 2}">
@@ -604,7 +604,7 @@ describe('CarouselComponent', () => {
     expect(deActiveSlides[1].nativeElement.classList.contains('center')).toBeTruthy('2th slide has css-class \'.center\'');
   }));
 
-  it(`should render carousel which doesn\'t have class .owl-drag [options]="{items: 1, mouseDrag: false}`, async(() => {
+  it(`should render carousel which doesn\'t have class .owl-drag [options]="{items: 1, mouseDrag: false}`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{items: 1, mouseDrag: false}">
@@ -628,7 +628,7 @@ describe('CarouselComponent', () => {
   }));
 
   // rewind prop is used when carousel moves, so should be tested when moving will be done;
-  it(`should render carousel with slides having 'margin-right=10px' [options]="{items: 2, margin: 10}`, async(() => {
+  it(`should render carousel with slides having 'margin-right=10px' [options]="{items: 2, margin: 10}`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{items: 2, margin: 10}">
@@ -653,7 +653,7 @@ describe('CarouselComponent', () => {
   }));
 
 
-  it(`should render carousel with .owl-rtl [options]="{items: 2, rtl: true}`, async(() => {
+  it(`should render carousel with .owl-rtl [options]="{items: 2, rtl: true}`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{items: 2, rtl: true}">
@@ -680,7 +680,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render carousel with slides having 'margin-left=10px' [options]="{items: 2, margin: 10, rtl: true}`, async(() => {
+  it(`should render carousel with slides having 'margin-left=10px' [options]="{items: 2, margin: 10, rtl: true}`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{items: 2, margin: 10, rtl: true}">
@@ -704,7 +704,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render carousel with class .owl-rtl and active slides starting from 2 position [options]="{items: 2, startPosition: 2, rtl: true}`, async(() => {
+  it(`should render carousel with class .owl-rtl and active slides starting from 2 position [options]="{items: 2, startPosition: 2, rtl: true}`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{items: 2, startPosition: 2, rtl: true}">
@@ -727,7 +727,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render carousel with class .owl-rtl, active slides starting from 2nd position and first of active slide should have .center  [options]="{items: 3, startPosition: 2, rtl: true}`, async(() => {
+  it(`should render carousel with class .owl-rtl, active slides starting from 2nd position and first of active slide should have .center  [options]="{items: 3, startPosition: 2, rtl: true}`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{items: 3, startPosition: 2, rtl: true, center: true}">
@@ -1034,7 +1034,7 @@ describe('CarouselComponent', () => {
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
   }));
 
-  it(`should set paddings to .owl-stage  [options]="{items: 3, loop: true, stagePadding: 40}`, async(() => {
+  it(`should set paddings to .owl-stage  [options]="{items: 3, loop: true, stagePadding: 40}`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{items: 3, loop: true, stagePadding: 40}">
@@ -1057,7 +1057,7 @@ describe('CarouselComponent', () => {
   }));
 
   describe(`THE OPTION 'MERGE'`, () => {
-    it(`should render carousel with option merge (in fact this option does almost nothing; we should use data-binding to directive carouselSlide: [dataMerge]="2") [options]="{merge: true}`, async(() => {
+    it(`should render carousel with option merge (in fact this option does almost nothing; we should use data-binding to directive carouselSlide: [dataMerge]="2") [options]="{merge: true}`, waitForAsync(() => {
       const html = `
         <div style="width: 1200px; margin: auto">
           <owl-carousel-o [options]="{merge: true}">
@@ -1081,7 +1081,7 @@ describe('CarouselComponent', () => {
       });
     }));
 
-    it(`should limit width of slide with [dataMerge]="4" by 2 widths of common slide [options]="{items: 2, merge: true}`, async(() => {
+    it(`should limit width of slide with [dataMerge]="4" by 2 widths of common slide [options]="{items: 2, merge: true}`, waitForAsync(() => {
       const html = `
         <div style="width: 1200px; margin: auto">
           <owl-carousel-o [options]="{items: 2, merge: true}">
@@ -1105,7 +1105,7 @@ describe('CarouselComponent', () => {
       });
     }));
 
-    it(`shouldn\'t limit width of slide with [dataMerge]="4" by 2 widths of common slide [options]="{mergeFit: false, items: 2, merge: true}`, async(() => {
+    it(`shouldn\'t limit width of slide with [dataMerge]="4" by 2 widths of common slide [options]="{mergeFit: false, items: 2, merge: true}`, waitForAsync(() => {
       const html = `
         <div style="width: 1200px; margin: auto">
           <owl-carousel-o [options]="{mergeFit: false, items: 2, merge: true}">
@@ -1259,7 +1259,7 @@ describe('CarouselComponent', () => {
   });
 
   describe(`THE OPTION 'AUTOWIDTH'`, () => {
-    it(`should set custom width of slides [options]="{autoWidth: true}`, async(() => {
+    it(`should set custom width of slides [options]="{autoWidth: true}`, waitForAsync(() => {
       const html = `
         <div style="width: 1200px; margin: auto">
           <owl-carousel-o [options]="{autoWidth: true}">
@@ -1283,7 +1283,7 @@ describe('CarouselComponent', () => {
       });
     }));
 
-    it(`shouldn\'t set custom width of slides if autoWidth=false [options]="{autoWidth: false}`, async(() => {
+    it(`shouldn\'t set custom width of slides if autoWidth=false [options]="{autoWidth: false}`, waitForAsync(() => {
       const html = `
         <div style="width: 1200px; margin: auto">
           <owl-carousel-o [options]="{autoWidth: false}">
@@ -1374,7 +1374,7 @@ describe('CarouselComponent', () => {
   });
 
 
-  it(`should add navigation buttons  [options]="{nav: true}`, async(() => {
+  it(`should add navigation buttons  [options]="{nav: true}`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{nav: true}">
@@ -1403,7 +1403,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should set custom content on navigation buttons [options]="{nav: true, navText: [ '<i class=fa-chevron-left></i>', '<i class=fa-chevron-right></i>' ]}"`, async(() => {
+  it(`should set custom content on navigation buttons [options]="{nav: true, navText: [ '<i class=fa-chevron-left></i>', '<i class=fa-chevron-right></i>' ]}"`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{ navText: [ '<i class=fa-chevron-left></i>', '<i class=fa-chevron-right></i>'], nav: true }">
@@ -1429,7 +1429,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render carousel without dots [options]="{dots: false}"`, async(() => {
+  it(`should render carousel without dots [options]="{dots: false}"`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{ dots: false}">
@@ -1453,7 +1453,7 @@ describe('CarouselComponent', () => {
   }));
 
 
-  it(`should render dot for every x or additional slide (if items=3 and number of all slides is 5, there are 2 additional slides) [options]="{dotsEach: true}"`, async(() => {
+  it(`should render dot for every x or additional slide (if items=3 and number of all slides is 5, there are 2 additional slides) [options]="{dotsEach: true}"`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{ dotsEach: true}">
@@ -1476,7 +1476,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render carousel with 3 dots [options]="{dotsEach: 4}"`, async(() => {
+  it(`should render carousel with 3 dots [options]="{dotsEach: 4}"`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{ dotsEach: 4}">
@@ -1504,7 +1504,7 @@ describe('CarouselComponent', () => {
   }));
 
 
-  it(`should render carousel with dots with text [options]="{dotsData: true}"`, async(() => {
+  it(`should render carousel with dots with text [options]="{dotsData: true}"`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{ dotsData: true}">
@@ -1531,7 +1531,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render carousel with dots with html in [options]="{dotsData: true}"`, async(() => {
+  it(`should render carousel with dots with html in [options]="{dotsData: true}"`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{ dotsData: true}">
@@ -1556,7 +1556,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render carousel with dots with empty string in [options]="{dotsData: true}"`, async(() => {
+  it(`should render carousel with dots with empty string in [options]="{dotsData: true}"`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{ dotsData: true}">
@@ -1580,7 +1580,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should prev button be enabled when loop=true in [options]="{loop: true}"`, async(() => {
+  it(`should prev button be enabled when loop=true in [options]="{loop: true}"`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{ loop: true}">
@@ -1650,7 +1650,7 @@ describe('CarouselComponent', () => {
     expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 1', 'Slide 1');
   }));
 
-  it(`should render 2 dots with [options]="{loop: true, merge: true}" and without defined [dataMerge]`, async(() => {
+  it(`should render 2 dots with [options]="{loop: true, merge: true}" and without defined [dataMerge]`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
         <owl-carousel-o [options]="{ loop: true, merge: true}">
@@ -1801,7 +1801,7 @@ describe('CarouselComponent', () => {
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy('1th dot is active');
   }));
 
-  it(`should render 4 dots with [options]="{autoWidth: true}" and undefined [width]`, async(() => {
+  it(`should render 4 dots with [options]="{autoWidth: true}" and undefined [width]`, waitForAsync(() => {
     const html = `
       <div style="width: 920px; margin: auto">
         <owl-carousel-o [options]="{ autoWidth: true}">
@@ -1917,7 +1917,7 @@ describe('CarouselComponent', () => {
     expect(deActiveSlides[1].nativeElement.classList.contains('cloned')).toBeTruthy('Slide 1 is cloned');
   }));
 
-  it(`should render 2 dots and make next nav button disabled; [options]="{startPosition: 4, nav: true}"`, async(() => {
+  it(`should render 2 dots and make next nav button disabled; [options]="{startPosition: 4, nav: true}"`, waitForAsync(() => {
     const html = `
       <div style="width: 920px; margin: auto">
         <owl-carousel-o [options]="{ startPosition: 4, nav: true}">
@@ -1944,7 +1944,7 @@ describe('CarouselComponent', () => {
     });
   }));
 
-  it(`should render 2 dots and shouldn't make next nav button disabled; [options]="{startPosition: 4, nav: true, rewind: true}"`, async(() => {
+  it(`should render 2 dots and shouldn't make next nav button disabled; [options]="{startPosition: 4, nav: true, rewind: true}"`, waitForAsync(() => {
     const html = `
       <div style="width: 920px; margin: auto">
         <owl-carousel-o [options]="{ startPosition: 4, nav: true, rewind: true}">
@@ -3953,6 +3953,7 @@ console.log('mouseleave');
     document.dispatchEvent(new Event('visibilitychange'));
 
     expect(autoplayService.play).toHaveBeenCalled();
+    tick(1000);
   }));
 
   it('should load content for 3 slides [options]="{nav: true, lazyLoad: true}"', fakeAsync(() => {
