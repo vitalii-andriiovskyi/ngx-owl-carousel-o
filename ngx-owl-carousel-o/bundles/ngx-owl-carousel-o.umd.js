@@ -4944,9 +4944,8 @@
                     relativeTo: this.route,
                     queryParams: this.queryParams,
                     fragment: this.fragment,
-                    preserveQueryParams: attrBoolValue(this.preserve),
                     queryParamsHandling: this.queryParamsHandling,
-                    preserveFragment: attrBoolValue(this.preserveFragment),
+                    preserveFragment: attrBoolValue(this.preserveFragment)
                 });
             },
             enumerable: false,
@@ -5059,9 +5058,8 @@
                     relativeTo: this.route,
                     queryParams: this.queryParams,
                     fragment: this.fragment,
-                    preserveQueryParams: attrBoolValue(this.preserve),
                     queryParamsHandling: this.queryParamsHandling,
-                    preserveFragment: attrBoolValue(this.preserveFragment),
+                    preserveFragment: attrBoolValue(this.preserveFragment)
                 });
             },
             enumerable: false,

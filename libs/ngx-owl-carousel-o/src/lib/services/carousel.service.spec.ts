@@ -1,4 +1,4 @@
-import { TestBed, inject, ComponentFixture, fakeAsync, async, tick } from '@angular/core/testing';
+import { TestBed, inject, ComponentFixture, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 
 import { CarouselService } from './carousel.service';
 import { Component, DebugElement } from '@angular/core';
@@ -74,7 +74,7 @@ describe('CarouselService in context of TestComponent', () => {
   let deCarouselComponent: DebugElement;
 
   beforeEach(
-    async(() => {
+    waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [
           NoopAnimationsModule,

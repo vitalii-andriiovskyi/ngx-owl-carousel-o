@@ -1,5 +1,5 @@
 import { StageComponent } from './stage.component';
-import { async, ComponentFixture, discardPeriodicTasks, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { Component, DebugElement, OnInit } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
@@ -44,7 +44,7 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
   let coords: { x: number, y: number};
 
   beforeEach(
-    async(() => {
+    waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [
           NoopAnimationsModule,

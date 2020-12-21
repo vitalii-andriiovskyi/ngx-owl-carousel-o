@@ -42,7 +42,7 @@ const appRoutes: Routes = [
     // PresentModule,
     BrowserAnimationsModule,
     CarouselModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' }),
     LinkModule
   ],
   providers: [],
