@@ -30,7 +30,7 @@ import {
                                             'left': slide.left}"
                                 (animationend)="clear(slide.id)"
                                 [@autoHeight]="slide.heightState">
-            <ng-template *ngIf="slide.load" [ngTemplateOutlet]="slide.tplRef"></ng-template>
+            <ng-template *ngIf="slide.load" [ngTemplateOutlet]="slide.tplRef" [ngTemplateOutletContext]="{ $implicit: preparePublicSlide(slide), index: i }"></ng-template>
           </div><!-- /.owl-item -->
         </ng-container>
       </div><!-- /.owl-stage -->
@@ -129,6 +129,12 @@ export class StageComponent implements OnInit, OnDestroy {
    */
   private _oneMoveSubsription: Subscription;
 
+  preparePublicSlide = (slide: SlideModel): SlideModel => {
+    const newSlide = { ...slide };
+    delete newSlide.tplRef;
+    return newSlide;
+  }
+
   constructor(private zone: NgZone,
               private el: ElementRef,
               private renderer: Renderer2,
@@ -142,6 +148,9 @@ export class StageComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('touchstart', ['$event']) onTouchStart(event) {
+    if (event.targetTouches.length >= 2) {
+      return false;
+    }
     if (this.owlDraggable.isTouchDragable) {
       this._onDragStart(event);
     }
