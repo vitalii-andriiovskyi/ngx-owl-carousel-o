@@ -3,8 +3,10 @@
 
 <owl-carousel-o [options]="customOptions" #owlCat>
   <ng-container *ngFor="let image of imagesData">
-    <ng-template carouselSlide>
+    <ng-template carouselSlide let-owlItem>
       <div class="slide">
+        {{owlItem.isActive}}
+        {{owlItem.id}}
         <img [src]="image.src" [alt]="image.alt" [title]="image.title">
       </div>
     </ng-template>
