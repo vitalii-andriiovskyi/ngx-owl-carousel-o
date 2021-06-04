@@ -10,3 +10,5 @@ export {
 export {
   OwlOptions, ResponsiveSettings, BreakpointOptions
 } from './lib/models/owl-options.model';
+
+export { SlideModel } from './lib/models/slide.model';
