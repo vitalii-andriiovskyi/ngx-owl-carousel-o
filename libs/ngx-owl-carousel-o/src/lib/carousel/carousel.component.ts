@@ -267,11 +267,11 @@ export class CarouselComponent
     if (!this.carouselService.settings.autoplay) return;
     switch (this.docRef.visibilityState) {
       case 'visible':
-        this.autoplayService.play();
+        !this.autoplayService.isAutoplayStopped && this.autoplayService.play();
         break;
 
       case 'hidden':
-        this.autoplayService.stop();
+        this.autoplayService.pause();
         break;
 
       default:
@@ -553,6 +553,16 @@ export class CarouselComponent
    */
   startPlayTE() {
     this.autoplayService.startPlayingTouchEnd();
+  }
+
+  stopAutoplay() {
+    this.autoplayService.isAutoplayStopped = true;
+    this.autoplayService.stop();
+  }
+
+  startAutoplay() {
+    this.autoplayService.isAutoplayStopped = false;
+    this.autoplayService.play();
   }
 
 }

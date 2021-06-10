@@ -1,12 +1,15 @@
 <h1 class="text-center my-4">Cities gallery</h1>
 
-
-<owl-carousel-o [options]="customOptions" #owlCat>
-  <ng-container *ngFor="let image of imagesData">
-    <ng-template carouselSlide>
-      <div class="slide">
-        <img [src]="image.src" [alt]="image.alt" [title]="image.title">
-      </div>
-    </ng-template>
-  </ng-container>
-</owl-carousel-o>
+<div class="wrapper">
+  <owl-carousel-o [options]="customOptions" #owlCat>
+    <ng-container *ngFor="let image of imagesData">
+      <ng-template carouselSlide let-owlItem>
+        <div class="slide" [@activeSlide]="owlItem.isCentered ? 'active' : 'inActive'">
+          <!-- {{owlItem.center}}
+          {{owlItem.id}} -->
+          <img [src]="image.src" [alt]="image.alt" [title]="image.title">
+        </div>
+      </ng-template>
+    </ng-container>
+  </owl-carousel-o>
+</div>
