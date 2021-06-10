@@ -1730,6 +1730,12 @@ export class CarouselService {
 	 * @returns The difference.
 	 */
   difference(first: Coords, second: Coords): Coords {
+		if (null === first || null === second) {
+      return {
+        x: 0,
+        y: 0,
+      };
+    }
 		return {
 			x: first.x - second.x,
 			y: first.y - second.y

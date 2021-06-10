@@ -28,6 +28,18 @@ export class AutoplayService implements OnDestroy{
    */
   private _isArtificialAutoplayTimeout: boolean;
 
+  /**
+   * Shows whether the autoplay is paused for unlimited time by the developer.
+   * Use to prevent autoplaying in case of firing `mouseleave` by adding layers to `<body>` like `mat-menu` does
+   */
+   private _isAutoplayStopped = false;
+   get isAutoplayStopped() {
+     return this._isAutoplayStopped;
+   }
+   set isAutoplayStopped(value) {
+     this._isAutoplayStopped = value;
+   }
+
   private winRef: Window;
   private docRef: Document;
 

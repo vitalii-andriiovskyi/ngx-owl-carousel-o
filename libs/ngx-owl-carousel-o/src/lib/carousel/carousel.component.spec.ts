@@ -3882,7 +3882,7 @@ console.log('mouseleave');
     fixtureHost = createTestComponent(html);
     deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
     autoplayService = deCarouselComponent.injector.get(AutoplayService);
-    spyOn(autoplayService, 'stop');
+    spyOn(autoplayService, 'pause');
 
     tick();
     fixtureHost.detectChanges();
@@ -3899,7 +3899,7 @@ console.log('mouseleave');
     Object.defineProperty(document, 'hidden', {value: true, writable: true});
     document.dispatchEvent(new Event('visibilitychange'));
 
-    expect(autoplayService.stop).toHaveBeenCalled();
+    expect(autoplayService.pause).toHaveBeenCalled();
 
     // restore document.visibilityState to 'visible' and document.hidden to 'false'
     tick();
@@ -3925,7 +3925,7 @@ console.log('mouseleave');
     fixtureHost = createTestComponent(html);
     deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
     autoplayService = deCarouselComponent.injector.get(AutoplayService);
-    spyOn(autoplayService, 'stop');
+    spyOn(autoplayService, 'pause');
     spyOn(autoplayService, 'play');
 
     tick();
@@ -3943,7 +3943,7 @@ console.log('mouseleave');
     Object.defineProperty(document, 'hidden', {value: true, writable: true});
     document.dispatchEvent(new Event('visibilitychange'));
 
-    expect(autoplayService.stop).toHaveBeenCalled();
+    expect(autoplayService.pause).toHaveBeenCalled();
 
     tick();
     fixtureHost.detectChanges();
