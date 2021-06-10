@@ -1,6 +1,8 @@
 # Versions Changes
 
+* [v5.1.0](#v510)
 * [v5.0.0](#v500)
+* [v4.1.0](#v410)
 * [v4.0.0](#v400)
 * [v3.1.0](#v310)
 * [v3.0.1](#v301)
@@ -39,9 +41,17 @@
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
 
+## v5.1.0
+
+The version `v5.1.0` includes fixes for #151 and #138. Also it exposes SlideModel data in `carouselSlide` through  `let-anyVariable`.
+
 ## v5.0.0
 
 The version `v5.0.0` is generated for Angular 11.
+
+## v4.1.0
+
+The version `v4.1.0` includes fixes for #151 and #138. Also it exposes SlideModel data in `carouselSlide` through  `let-anyVariable`.
 
 ## v4.0.0
 

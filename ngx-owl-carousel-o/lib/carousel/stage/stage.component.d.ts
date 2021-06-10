@@ -65,9 +65,10 @@ export declare class StageComponent implements OnInit, OnDestroy {
      * Subsctiption to _oneDragMove$ Subject
      */
     private _oneMoveSubsription;
+    preparePublicSlide: (slide: SlideModel) => SlideModel;
     constructor(zone: NgZone, el: ElementRef, renderer: Renderer2, carouselService: CarouselService, animateService: AnimateService);
     onMouseDown(event: any): void;
-    onTouchStart(event: any): void;
+    onTouchStart(event: any): boolean;
     onTouchCancel(event: any): void;
     onDragStart(): boolean;
     onSelectStart(): boolean;
@@ -144,7 +145,7 @@ export declare class StageComponent implements OnInit, OnDestroy {
     /**
        * Gets the difference of two vectors.
        * @param first The first vector.
-       * @param second- The second vector.
+       * @param second The second vector.
        * @returns The difference.
        */
     private _difference;

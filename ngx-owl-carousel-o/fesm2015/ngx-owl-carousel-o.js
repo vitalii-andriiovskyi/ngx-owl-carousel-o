@@ -1634,10 +1634,16 @@ class CarouselService {
        * Gets the difference of two vectors.
        * @todo #261
        * @param first The first vector.
-       * @param second- The second vector.
+       * @param second The second vector.
        * @returns The difference.
        */
     difference(first, second) {
+        if (null === first || null === second) {
+            return {
+                x: 0,
+                y: 0,
+            };
+        }
         return {
             x: first.x - second.x,
             y: first.y - second.y
@@ -2078,9 +2084,20 @@ class AutoplayService {
          * Indicates whenever the autoplay is paused.
          */
         this._paused = false;
+        /**
+         * Shows whether the autoplay is paused for unlimited time by the developer.
+         * Use to prevent autoplaying in case of firing `mouseleave` by adding layers to `<body>` like `mat-menu` does
+         */
+        this._isAutoplayStopped = false;
         this.winRef = winRef;
         this.docRef = docRef;
         this.spyDataStreams();
+    }
+    get isAutoplayStopped() {
+        return this._isAutoplayStopped;
+    }
+    set isAutoplayStopped(value) {
+        this._isAutoplayStopped = value;
     }
     ngOnDestroy() {
         this.autoplaySubscription.unsubscribe();
@@ -2629,10 +2646,10 @@ class CarouselComponent {
             return;
         switch (this.docRef.visibilityState) {
             case 'visible':
-                this.autoplayService.play();
+                !this.autoplayService.isAutoplayStopped && this.autoplayService.play();
                 break;
             case 'hidden':
-                this.autoplayService.stop();
+                this.autoplayService.pause();
                 break;
             default:
                 break;
@@ -2847,6 +2864,14 @@ class CarouselComponent {
     startPlayTE() {
         this.autoplayService.startPlayingTouchEnd();
     }
+    stopAutoplay() {
+        this.autoplayService.isAutoplayStopped = true;
+        this.autoplayService.stop();
+    }
+    startAutoplay() {
+        this.autoplayService.isAutoplayStopped = false;
+        this.autoplayService.play();
+    }
 }
 CarouselComponent.decorators = [
     { type: Component, args: [{
@@ -2944,6 +2969,11 @@ class StageComponent {
          * Subject for notification when the carousel's rebuilding caused by resize event starts
          */
         this._oneDragMove$ = new Subject();
+        this.preparePublicSlide = (slide) => {
+            const newSlide = Object.assign({}, slide);
+            delete newSlide.tplRef;
+            return newSlide;
+        };
         /**
          * Passes this to _oneMouseTouchMove();
          */
@@ -2978,6 +3008,9 @@ class StageComponent {
         }
     }
     onTouchStart(event) {
+        if (event.targetTouches.length >= 2) {
+            return false;
+        }
         if (this.owlDraggable.isTouchDragable) {
             this._onDragStart(event);
         }
@@ -3153,7 +3186,7 @@ class StageComponent {
     /**
        * Gets the difference of two vectors.
        * @param first The first vector.
-       * @param second- The second vector.
+       * @param second The second vector.
        * @returns The difference.
        */
     _difference(firstC, second) {
@@ -3219,7 +3252,7 @@ StageComponent.decorators = [
                                             'left': slide.left}"
                                 (animationend)="clear(slide.id)"
                                 [@autoHeight]="slide.heightState">
-            <ng-template *ngIf="slide.load" [ngTemplateOutlet]="slide.tplRef"></ng-template>
+            <ng-template *ngIf="slide.load" [ngTemplateOutlet]="slide.tplRef" [ngTemplateOutletContext]="{ $implicit: preparePublicSlide(slide), index: i }"></ng-template>
           </div><!-- /.owl-item -->
         </ng-container>
       </div><!-- /.owl-stage -->
@@ -3439,9 +3472,12 @@ CarouselModule.decorators = [
             },] }
 ];
 
+class SlideModel {
+}
+
 /**
  * Generated bundle index. Do not edit.
  */
 
-export { CarouselComponent, CarouselModule, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective, SlidesOutputData, NavigationService as ɵa, CarouselService as ɵb, OwlLogger as ɵc, AutoplayService as ɵd, WINDOW as ɵe, WindowRef as ɵf, BrowserWindowRef as ɵg, windowFactory as ɵh, browserWindowProvider as ɵi, windowProvider as ɵj, WINDOW_PROVIDERS as ɵk, DOCUMENT as ɵl, DocumentRef as ɵm, BrowserDocumentRef as ɵn, documentFactory as ɵo, browserDocumentProvider as ɵp, documentProvider as ɵq, DOCUMENT_PROVIDERS as ɵr, LazyLoadService as ɵs, AnimateService as ɵt, AutoHeightService as ɵu, HashService as ɵv, ResizeService as ɵw, StageComponent as ɵx };
+export { CarouselComponent, CarouselModule, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective, SlideModel, SlidesOutputData, NavigationService as ɵa, CarouselService as ɵb, OwlLogger as ɵc, AutoplayService as ɵd, WINDOW as ɵe, WindowRef as ɵf, BrowserWindowRef as ɵg, windowFactory as ɵh, browserWindowProvider as ɵi, windowProvider as ɵj, WINDOW_PROVIDERS as ɵk, DOCUMENT as ɵl, DocumentRef as ɵm, BrowserDocumentRef as ɵn, documentFactory as ɵo, browserDocumentProvider as ɵp, documentProvider as ɵq, DOCUMENT_PROVIDERS as ɵr, LazyLoadService as ɵs, AnimateService as ɵt, AutoHeightService as ɵu, HashService as ɵv, ResizeService as ɵw, StageComponent as ɵx };
 //# sourceMappingURL=ngx-owl-carousel-o.js.map
