@@ -19,6 +19,13 @@ export declare class AutoplayService implements OnDestroy {
      * Shows whether the code (the plugin) changed the option 'AutoplayTimeout' for own needs
      */
     private _isArtificialAutoplayTimeout;
+    /**
+     * Shows whether the autoplay is paused for unlimited time by the developer.
+     * Use to prevent autoplaying in case of firing `mouseleave` by adding layers to `<body>` like `mat-menu` does
+     */
+    private _isAutoplayStopped;
+    get isAutoplayStopped(): boolean;
+    set isAutoplayStopped(value: boolean);
     private winRef;
     private docRef;
     constructor(carouselService: CarouselService, winRef: any, docRef: any);

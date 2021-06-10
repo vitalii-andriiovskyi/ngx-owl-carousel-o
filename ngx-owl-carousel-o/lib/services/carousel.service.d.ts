@@ -576,7 +576,7 @@ export declare class CarouselService {
        * Gets the difference of two vectors.
        * @todo #261
        * @param first The first vector.
-       * @param second- The second vector.
+       * @param second The second vector.
        * @returns The difference.
        */
     difference(first: Coords, second: Coords): Coords;

@@ -207,4 +207,6 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      * Starts playing after touch ends
      */
     startPlayTE(): void;
+    stopAutoplay(): void;
+    startAutoplay(): void;
 }
