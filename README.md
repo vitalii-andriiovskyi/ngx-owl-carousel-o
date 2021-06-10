@@ -24,7 +24,7 @@ ngx-owl-carousel-o      | Angular
 - [Tips](#tips)
 - [ReferenceError: Event is not defined](#referenceError-event-is-not-defined)
 - [Using `ngx-owl-carousel-o` slide data in custom code](#using-internal-slide-data)
-- [Issue: `autoplay` doesn't stay paused when user opens `mat-menu`](#issue-autoplay-doesn't-stay-paused-when-user-opens-mat-menu)
+- [Issue: `autoplay` doesn't stay paused when user opens `mat-menu`](#issue-autoplay-doesnt-stay-paused-when-user-opens-mat-menu)
 
 ## Get started
 
