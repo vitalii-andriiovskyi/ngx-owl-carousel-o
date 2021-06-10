@@ -49,6 +49,9 @@
 		-webkit-backface-visibility: hidden;
 		-webkit-tap-highlight-color: transparent;
 		-webkit-touch-callout: none;
+		&.center {
+			z-index: 5;
+		}
 	}
 	.owl-item img {
 		display: block;

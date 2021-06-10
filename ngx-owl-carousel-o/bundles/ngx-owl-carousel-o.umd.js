@@ -1974,6 +1974,12 @@
            * @returns The difference.
            */
         CarouselService.prototype.difference = function (first, second) {
+            if (null === first || null === second) {
+                return {
+                    x: 0,
+                    y: 0,
+                };
+            }
             return {
                 x: first.x - second.x,
                 y: first.y - second.y
@@ -2443,10 +2449,25 @@
              * Indicates whenever the autoplay is paused.
              */
             this._paused = false;
+            /**
+             * Shows whether the autoplay is paused for unlimited time by the developer.
+             * Use to prevent autoplaying in case of firing `mouseleave` by adding layers to `<body>` like `mat-menu` does
+             */
+            this._isAutoplayStopped = false;
             this.winRef = winRef;
             this.docRef = docRef;
             this.spyDataStreams();
         }
+        Object.defineProperty(AutoplayService.prototype, "isAutoplayStopped", {
+            get: function () {
+                return this._isAutoplayStopped;
+            },
+            set: function (value) {
+                this._isAutoplayStopped = value;
+            },
+            enumerable: false,
+            configurable: true
+        });
         AutoplayService.prototype.ngOnDestroy = function () {
             this.autoplaySubscription.unsubscribe();
         };
@@ -3017,10 +3038,10 @@
                 return;
             switch (this.docRef.visibilityState) {
                 case 'visible':
-                    this.autoplayService.play();
+                    !this.autoplayService.isAutoplayStopped && this.autoplayService.play();
                     break;
                 case 'hidden':
-                    this.autoplayService.stop();
+                    this.autoplayService.pause();
                     break;
                 default:
                     break;
@@ -3238,6 +3259,14 @@
         CarouselComponent.prototype.startPlayTE = function () {
             this.autoplayService.startPlayingTouchEnd();
         };
+        CarouselComponent.prototype.stopAutoplay = function () {
+            this.autoplayService.isAutoplayStopped = true;
+            this.autoplayService.stop();
+        };
+        CarouselComponent.prototype.startAutoplay = function () {
+            this.autoplayService.isAutoplayStopped = false;
+            this.autoplayService.play();
+        };
         return CarouselComponent;
     }());
     CarouselComponent.decorators = [
@@ -3308,6 +3337,11 @@
              * Subject for notification when the carousel's rebuilding caused by resize event starts
              */
             this._oneDragMove$ = new rxjs.Subject();
+            this.preparePublicSlide = function (slide) {
+                var newSlide = Object.assign({}, slide);
+                delete newSlide.tplRef;
+                return newSlide;
+            };
             /**
              * Passes this to _oneMouseTouchMove();
              */
@@ -3342,6 +3376,9 @@
             }
         };
         StageComponent.prototype.onTouchStart = function (event) {
+            if (event.targetTouches.length >= 2) {
+                return false;
+            }
             if (this.owlDraggable.isTouchDragable) {
                 this._onDragStart(event);
             }
@@ -3519,7 +3556,7 @@
         /**
            * Gets the difference of two vectors.
            * @param first The first vector.
-           * @param second- The second vector.
+           * @param second The second vector.
            * @returns The difference.
            */
         StageComponent.prototype._difference = function (firstC, second) {
@@ -3570,7 +3607,7 @@
     StageComponent.decorators = [
         { type: core.Component, args: [{
                     selector: 'owl-stage',
-                    template: "\n    <div>\n      <div class=\"owl-stage\" [ngStyle]=\"{'width': stageData.width + 'px',\n                                        'transform': stageData.transform,\n                                        'transition': stageData.transition,\n                                        'padding-left': stageData.paddingL ? stageData.paddingL + 'px' : '',\n                                        'padding-right': stageData.paddingR ? stageData.paddingR + 'px' : '' }\"\n          (transitionend)=\"onTransitionEnd()\">\n        <ng-container *ngFor=\"let slide of slidesData; let i = index\">\n          <div class=\"owl-item\" [ngClass]=\"slide.classes\"\n                                [ngStyle]=\"{'width': slide.width + 'px',\n                                            'margin-left': slide.marginL ? slide.marginL + 'px' : '',\n                                            'margin-right': slide.marginR ? slide.marginR + 'px' : '',\n                                            'left': slide.left}\"\n                                (animationend)=\"clear(slide.id)\"\n                                [@autoHeight]=\"slide.heightState\">\n            <ng-template *ngIf=\"slide.load\" [ngTemplateOutlet]=\"slide.tplRef\"></ng-template>\n          </div><!-- /.owl-item -->\n        </ng-container>\n      </div><!-- /.owl-stage -->\n    </div>\n  ",
+                    template: "\n    <div>\n      <div class=\"owl-stage\" [ngStyle]=\"{'width': stageData.width + 'px',\n                                        'transform': stageData.transform,\n                                        'transition': stageData.transition,\n                                        'padding-left': stageData.paddingL ? stageData.paddingL + 'px' : '',\n                                        'padding-right': stageData.paddingR ? stageData.paddingR + 'px' : '' }\"\n          (transitionend)=\"onTransitionEnd()\">\n        <ng-container *ngFor=\"let slide of slidesData; let i = index\">\n          <div class=\"owl-item\" [ngClass]=\"slide.classes\"\n                                [ngStyle]=\"{'width': slide.width + 'px',\n                                            'margin-left': slide.marginL ? slide.marginL + 'px' : '',\n                                            'margin-right': slide.marginR ? slide.marginR + 'px' : '',\n                                            'left': slide.left}\"\n                                (animationend)=\"clear(slide.id)\"\n                                [@autoHeight]=\"slide.heightState\">\n            <ng-template *ngIf=\"slide.load\" [ngTemplateOutlet]=\"slide.tplRef\" [ngTemplateOutletContext]=\"{ $implicit: preparePublicSlide(slide), index: i }\"></ng-template>\n          </div><!-- /.owl-item -->\n        </ng-container>\n      </div><!-- /.owl-stage -->\n    </div>\n  ",
                     animations: [
                         animations.trigger('autoHeight', [
                             animations.state('nulled', animations.style({ height: 0 })),
@@ -3817,6 +3854,12 @@
                 },] }
     ];
 
+    var SlideModel = /** @class */ (function () {
+        function SlideModel() {
+        }
+        return SlideModel;
+    }());
+
     /**
      * Generated bundle index. Do not edit.
      */
@@ -3826,6 +3869,7 @@
     exports.CarouselSlideDirective = CarouselSlideDirective;
     exports.OwlRouterLinkDirective = OwlRouterLinkDirective;
     exports.OwlRouterLinkWithHrefDirective = OwlRouterLinkWithHrefDirective;
+    exports.SlideModel = SlideModel;
     exports.SlidesOutputData = SlidesOutputData;
     exports.ɵa = NavigationService;
     exports.ɵb = CarouselService;

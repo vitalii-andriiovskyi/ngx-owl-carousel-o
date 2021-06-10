@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v4.0.1](#v401)
 * [v4.0.0](#v400)
 * [v3.1.0](#v310)
 * [v3.0.1](#v301)
@@ -37,6 +38,10 @@
 * [v0.1.1](#v011)
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
+
+## v4.0.1
+
+The version `v4.0.1` includes fixes for #151 and #138. Also it exposes SlideModel data in `carouselSlide` through  `let-anyVariable`. 
 
 ## v4.0.0
 
