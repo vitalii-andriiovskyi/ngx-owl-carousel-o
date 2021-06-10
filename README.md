@@ -5,7 +5,7 @@
 ngx-owl-carousel-o      | Angular
 ------------------------|--------
 5.x.x                   | 11.x.x
-4.x.x  (latest `4.0.0`) | 10.x.x
+4.x.x  (latest `4.1.0`) | 10.x.x
 3.x.x  (latest `3.1.1`) | 9.x.x
 2.x.x  (latest `2.1.1`) | 8.x.x
 1.x.x  (latest `1.2.1`) | 7.x.x
@@ -24,6 +24,7 @@ ngx-owl-carousel-o      | Angular
 - [Tips](#tips)
 - [ReferenceError: Event is not defined](#referenceError-event-is-not-defined)
 - [Using `ngx-owl-carousel-o` slide data in custom code](#using-internal-slide-data)
+- [Issue: `autoplay` doesn't stay paused when user opens `mat-menu`](#issue-autoplay-doesn't-stay-paused-when-user-opens-mat-menu)
 
 ## Get started
 
@@ -1240,6 +1241,42 @@ An internal slide data could be very helpful to add cool Angular animations. Use
         </ng-container>
       </owl-carousel-o>
     ```
+
+## Issue: `autoplay` doesn't stay paused when user opens `mat-menu`
+
+This issue appears even in the case when the option `autoplayHoverPause` is set to `true`. This is because the carousel listens to the events `mouseover` and `mouseleave`. When a user opens `mat-menu`, the code adds `overlay`, what triggers `mouseleave`. `ngx-owl-carousel-o` renews autoplaying after this event is fired.
+
+The solution for this case is to manage autoplaying manually. You can do that using two methods of `CarouselComponent`: `stopAutoplay` and `startAutoplay`.
+
+Example of usage in a template with `mat-menu`:
+
+```html
+  <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" #owlCar>
+          
+    <ng-container *ngFor="let item of carouselData; let i=index">
+      <ng-template carouselSlide [width]="item.width">
+        <div class="slider">
+          <p>{{item.text}}</p>
+          <div *ngIf="i == 2">
+            <button mat-raised-button color="accent" [matMenuTriggerFor]="menu" (menuOpened)="owlCar.stopAutoplay()">Menu</button>
+            <mat-menu #menu="matMenu" (closed)="owlCar.startAutoplay()">
+              <button mat-menu-item>Item 1</button>
+              <button mat-menu-item>Item 2</button>
+              <button mat-menu-item>Item 3</button>
+              <button mat-menu-item>Item 4</button>
+              <button mat-menu-item>Item 5</button>
+            </mat-menu>
+          </div>
+            
+        </div><!-- /.carousel-item team-member -->
+      </ng-template>
+    </ng-container>
+    
+  </owl-carousel-o>
+```
+
+When menu is opened, you call `stopAutoplay`: `(menuOpened)="owlCar.stopAutoplay()"`  
+When menu is closed, you call `startAutoplay`: `(closed)="owlCar.startAutoplay()"`
 
 ## License
 
