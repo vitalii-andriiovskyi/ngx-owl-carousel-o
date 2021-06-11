@@ -1,7 +1,13 @@
+import 'zone.js/dist/zone-testing';
+// import 'zone.js/dist/zone-patch-rxjs-fake-async';
 import { ComponentFixture, discardPeriodicTasks, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import {Location} from "@angular/common";
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from "@angular/router/testing";
+import { cold, getTestScheduler, hot } from 'jasmine-marbles';
 
 import {
   CarouselComponent,
@@ -12,16 +18,11 @@ import { ResizeService } from '../services/resize.service';
 import { WINDOW_PROVIDERS } from '../services/window-ref.service';
 import { CarouselService } from '../services/carousel.service';
 import { createGenericTestComponent } from './test/common';
-import { cold, getTestScheduler, hot } from 'jasmine-marbles';
 import { NavigationService } from '../services/navigation.service';
 import { AutoplayService } from '../services/autoplay.service';
 import { DOCUMENT_PROVIDERS } from '../services/document-ref.service';
-import 'zone.js/dist/zone-patch-rxjs-fake-async';
 import { StageComponent } from './stage/stage.component';
 import { LazyLoadService } from '../services/lazyload.service';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from "@angular/router/testing";
 import { OwlLogger } from '../services/logger.service';
 
 // import 'zone.js/lib/rxjs/rxjs-fake-async';
