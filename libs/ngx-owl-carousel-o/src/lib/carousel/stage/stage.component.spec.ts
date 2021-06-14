@@ -1,8 +1,13 @@
-import { StageComponent } from './stage.component';
+import 'zone.js/dist/zone-testing';
+// import 'zone.js/dist/zone-patch-rxjs-fake-async';
 import { ComponentFixture, discardPeriodicTasks, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { Component, DebugElement, OnInit } from '@angular/core';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from "@angular/router/testing";
+import { Location } from '@angular/common';
 
+import { StageComponent } from './stage.component';
 import {
   CarouselComponent,
   CarouselSlideDirective,
@@ -15,11 +20,7 @@ import { createGenericTestComponent } from '../test/common';
 import { NavigationService } from '../../services/navigation.service';
 import { AutoplayService } from '../../services/autoplay.service';
 import { DOCUMENT_PROVIDERS } from '../../services/document-ref.service';
-import 'zone.js/dist/zone-patch-rxjs-fake-async';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from "@angular/router/testing";
 import { OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective } from '../owl-router-link.directive';
-import { Location } from '@angular/common';
 import { OwlLogger } from '../../services/logger.service';
 
 const createTestComponent = (html: string) =>
