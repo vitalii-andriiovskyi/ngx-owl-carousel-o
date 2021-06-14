@@ -24,14 +24,16 @@
   </div> <!-- row -->
   
 </div> <!-- /.container -->
-<p>
-  <a class="btn btn-success" (click)="owlCar.prev()">prev</a> <==>
-  <a class="btn btn-success" (click)="owlCar.next()">next</a>
-</p>
-<p><a class="btn btn-success" (click)="owlCar.to('slide-3')">move to 3th slide</a></p>
-<br>
-<div class="d-flex justify-content-center mt-3 mb-5">
-  <a [routerLink]="['/home', 'subhome']" fragment="two" class="btn btn-success">Go to SubHomeComponent with carousel with url navigation</a>
+<div class="container-fluid">
+  <p>
+    <a class="btn btn-success" (click)="owlCar.prev()">prev</a> <==>
+    <a class="btn btn-success" (click)="owlCar.next()">next</a>
+  </p>
+  <p><a class="btn btn-success" (click)="owlCar.to('slide-3')">move to 3th slide</a></p>
+  <br>
+  <div class="d-flex justify-content-center mt-3 mb-5">
+    <a [routerLink]="['/home', 'subhome']" fragment="two" class="btn btn-success">Go to SubHomeComponent with carousel with url navigation</a>
+  </div>
+  
+  <router-outlet></router-outlet>
 </div>
-
-<router-outlet></router-outlet>
