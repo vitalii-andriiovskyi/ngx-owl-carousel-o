@@ -391,8 +391,15 @@ export class StageComponent implements OnInit, OnDestroy {
 	 * @param second The second vector.
 	 * @returns The difference.
 	 */
-  private _difference(firstC: Coords, second: Coords): any {
-    return this.carouselService.difference(firstC, second);
+  private _difference(first: Coords | null, second: Coords | null): any {
+    if (null === first || null === second) {
+      return {
+        x: 0,
+        y: 0,
+      };
+    }
+
+    return this.carouselService.difference(first, second);
   }
 
   /**
