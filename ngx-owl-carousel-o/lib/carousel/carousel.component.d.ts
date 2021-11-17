@@ -1,4 +1,4 @@
-import { OnInit, AfterContentChecked, OnDestroy, QueryList, TemplateRef, ElementRef, AfterContentInit, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { OnInit, OnDestroy, QueryList, TemplateRef, ElementRef, AfterContentInit, EventEmitter, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ResizeService } from '../services/resize.service';
 import { CarouselService } from '../services/carousel.service';
@@ -55,7 +55,7 @@ export declare class SlidesOutputData {
     startPosition?: number;
     slides?: SlideModel[];
 }
-export declare class CarouselComponent implements OnInit, AfterContentChecked, AfterContentInit, OnDestroy {
+export declare class CarouselComponent implements OnInit, AfterContentInit, OnDestroy, OnChanges {
     private el;
     private resizeService;
     private carouselService;
@@ -126,6 +126,7 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      * User's options
      */
     options: OwlOptions;
+    prevOptions: OwlOptions;
     /**
      * Observable for getting current View Settings
      */
@@ -158,7 +159,7 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
     constructor(el: ElementRef, resizeService: ResizeService, carouselService: CarouselService, navigationService: NavigationService, autoplayService: AutoplayService, lazyLoadService: LazyLoadService, animateService: AnimateService, autoHeightService: AutoHeightService, hashService: HashService, logger: OwlLogger, changeDetectorRef: ChangeDetectorRef, docRef: any);
     onVisibilityChange(ev: any): void;
     ngOnInit(): void;
-    ngAfterContentChecked(): void;
+    ngOnChanges(): void;
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
     /**

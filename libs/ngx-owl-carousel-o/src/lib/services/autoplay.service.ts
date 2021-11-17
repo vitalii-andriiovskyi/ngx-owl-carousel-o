@@ -77,7 +77,7 @@ export class AutoplayService implements OnDestroy{
 
     const resized$: Observable<any> = this.carouselService.getResizedState().pipe(
       tap(() => {
-        if (this.carouselService.settings.autoplay) {
+        if (this.carouselService.settings.autoplay && !this._isAutoplayStopped) {
           this.play();
 				} else {
           this.stop();
