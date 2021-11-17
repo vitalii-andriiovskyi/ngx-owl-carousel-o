@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  AfterContentChecked,
   OnDestroy,
   Input,
   Output,
@@ -14,7 +13,9 @@ import {
   EventEmitter,
   HostListener,
   Inject,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  OnChanges
 } from '@angular/core';
 
 import { Subscription, Observable, merge, of, from } from 'rxjs';
@@ -133,10 +134,11 @@ export class SlidesOutputData {
     AnimateService,
     AutoHeightService,
     HashService
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CarouselComponent
-  implements OnInit, AfterContentChecked, AfterContentInit, OnDestroy {
+  implements OnInit, AfterContentInit, OnDestroy, OnChanges {
   @ContentChildren(CarouselSlideDirective)
   slides: QueryList<CarouselSlideDirective>;
 
@@ -207,6 +209,8 @@ export class CarouselComponent
    * User's options
    */
   @Input() options: OwlOptions;
+
+  prevOptions: OwlOptions;
 
   /**
    * Observable for getting current View Settings
@@ -288,9 +292,18 @@ export class CarouselComponent
     ).clientWidth;
   }
 
-  ngAfterContentChecked() {
+  ngOnChanges() {
+    if (this.prevOptions !== this.options) {
+      if (this.prevOptions && this.slides?.toArray().length) {
+        this.carouselService.setup(this.carouselWindowWidth, this.slides.toArray(), this.options);
+        this.carouselService.initialize(this.slides.toArray());
+      } else {
+        this.carouselLoaded = false;
+        this.logger.log(`There are no slides to show. So the carousel won't be re-rendered`);
+      }
+      this.prevOptions = this.options;
+    }
   }
-  // ngAfterContentChecked() END
 
   ngAfterContentInit() {
     if (this.slides.toArray().length) {
