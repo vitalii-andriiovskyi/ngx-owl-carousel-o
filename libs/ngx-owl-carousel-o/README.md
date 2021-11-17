@@ -19,6 +19,7 @@ ngx-owl-carousel-o      | Angular
 - [Get started](#get-started)
 - [Setting custom slides ids](#setting-custom-slides-ids)
 - [Options](#options)
+- [How to refresh the carousel if options change](#refreshing-the-carousel-if-options-change)
 - [Tag `<a>` in the slide. Directive `owlRouterLink`](#owlRouterLink)
 - [Events](#events)
 - [Plugins](#plugins)
@@ -348,6 +349,40 @@ There's no need to set to `<img>` attributes `data-src` and  `data-src-retina` b
 By default, this option is set to `false`. This option changes the number of visible slides in the case, when the number of slides is less than the value of the option `items`. For example, when the `items=4` and there're just 3 slides, the carousel will reassign the value of `items` to `3`.
 
 When the option `skip_validateItems` is `true`, the carousel won't reassign the `items`. So, in the example above `items` will remain `4`. But there will be 3 slides and one empty place. This for the case when the option `loop=false`. When `loop=true`, the empty place will be populated by the copy of the first slide.
+
+## Refreshing the carousel if options change
+
+The code can detect different options and rerender the carousel. But the comparison of previous options and new options is shallow: `prevOptions === newOptions`. 
+
+It means that mutating options object won't trigger the carousel refreshing:
+
+```typescript
+  // ...
+  customOptions: OwlOptions = {
+    autoWidth: true,
+    loop: true,
+    // ....
+  }
+
+  changeOptions() {
+    this.customOptions.loop = false; // this won't refresh the carousel 
+  }
+```
+
+It's needed to create a new options object. The object destructuring is helpful here: 
+
+```typescript
+  // ...
+  customOptions: OwlOptions = {
+    autoWidth: true,
+    loop: true,
+    // ....
+  }
+
+  changeOptions() {
+    this.customOptions = { ...this.customOptions, loop: false } // this will make the carousel refresh
+  }
+```
 
 ## owlRouterLink
 
