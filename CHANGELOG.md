@@ -1,6 +1,7 @@
 # Versions Changes
 
-* [v4.0.1](#v401)
+* [v4.1.1](#v411)
+* [v4.1.0](#v410)
 * [v4.0.0](#v400)
 * [v3.1.0](#v310)
 * [v3.0.1](#v301)
@@ -39,9 +40,13 @@
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
 
-## v4.0.1
+## v4.1.1
 
-The version `v4.0.1` includes fixes for #151 and #138. Also it exposes SlideModel data in `carouselSlide` through  `let-anyVariable`. 
+The version `v4.1.1` includes fixes for [`#170`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/170) and adds logic to detect changes in options object to rerender the carousel.
+
+## v4.1.0
+
+The version `v4.1.0` includes fixes for [`#151`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/151) and [`#138`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/138). Also it exposes SlideModel data in `carouselSlide` through  `let-anyVariable`. 
 
 ## v4.0.0
 
