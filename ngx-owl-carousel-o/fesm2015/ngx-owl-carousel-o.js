@@ -1,4 +1,4 @@
-import { Injectable, isDevMode, ErrorHandler, InjectionToken, PLATFORM_ID, Inject, Optional, Directive, TemplateRef, Input, EventEmitter, Component, ElementRef, ChangeDetectorRef, ContentChildren, Output, HostListener, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
+import { Injectable, isDevMode, ErrorHandler, InjectionToken, PLATFORM_ID, Inject, Optional, Directive, TemplateRef, Input, EventEmitter, Component, ChangeDetectionStrategy, ElementRef, ChangeDetectorRef, ContentChildren, Output, HostListener, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
 import { isPlatformBrowser, LocationStrategy, CommonModule } from '@angular/common';
 import { Subject, merge, of, from } from 'rxjs';
 import { EventManager } from '@angular/platform-browser';
@@ -2115,7 +2115,7 @@ class AutoplayService {
             this._handleChangeObservable(data);
         }));
         const resized$ = this.carouselService.getResizedState().pipe(tap(() => {
-            if (this.carouselService.settings.autoplay) {
+            if (this.carouselService.settings.autoplay && !this._isAutoplayStopped) {
                 this.play();
             }
             else {
@@ -2660,9 +2660,20 @@ class CarouselComponent {
         this.spyDataStreams();
         this.carouselWindowWidth = this.el.nativeElement.querySelector('.owl-carousel').clientWidth;
     }
-    ngAfterContentChecked() {
+    ngOnChanges() {
+        var _a;
+        if (this.prevOptions !== this.options) {
+            if (this.prevOptions && ((_a = this.slides) === null || _a === void 0 ? void 0 : _a.toArray().length)) {
+                this.carouselService.setup(this.carouselWindowWidth, this.slides.toArray(), this.options);
+                this.carouselService.initialize(this.slides.toArray());
+            }
+            else {
+                this.carouselLoaded = false;
+                this.logger.log(`There are no slides to show. So the carousel won't be re-rendered`);
+            }
+            this.prevOptions = this.options;
+        }
     }
-    // ngAfterContentChecked() END
     ngAfterContentInit() {
         if (this.slides.toArray().length) {
             this.carouselService.setup(this.carouselWindowWidth, this.slides.toArray(), this.options);
@@ -2915,6 +2926,7 @@ CarouselComponent.decorators = [
                     AutoHeightService,
                     HashService
                 ],
+                changeDetection: ChangeDetectionStrategy.OnPush,
                 styles: [`.owl-theme { display: block; }`]
             },] }
 ];
