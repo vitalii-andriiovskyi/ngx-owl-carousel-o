@@ -2485,7 +2485,7 @@
                 _this._handleChangeObservable(data);
             }));
             var resized$ = this.carouselService.getResizedState().pipe(operators.tap(function () {
-                if (_this.carouselService.settings.autoplay) {
+                if (_this.carouselService.settings.autoplay && !_this._isAutoplayStopped) {
                     _this.play();
                 }
                 else {
@@ -3052,9 +3052,20 @@
             this.spyDataStreams();
             this.carouselWindowWidth = this.el.nativeElement.querySelector('.owl-carousel').clientWidth;
         };
-        CarouselComponent.prototype.ngAfterContentChecked = function () {
+        CarouselComponent.prototype.ngOnChanges = function () {
+            var _a;
+            if (this.prevOptions !== this.options) {
+                if (this.prevOptions && ((_a = this.slides) === null || _a === void 0 ? void 0 : _a.toArray().length)) {
+                    this.carouselService.setup(this.carouselWindowWidth, this.slides.toArray(), this.options);
+                    this.carouselService.initialize(this.slides.toArray());
+                }
+                else {
+                    this.carouselLoaded = false;
+                    this.logger.log("There are no slides to show. So the carousel won't be re-rendered");
+                }
+                this.prevOptions = this.options;
+            }
         };
-        // ngAfterContentChecked() END
         CarouselComponent.prototype.ngAfterContentInit = function () {
             var _this = this;
             if (this.slides.toArray().length) {
@@ -3282,6 +3293,7 @@
                         AutoHeightService,
                         HashService
                     ],
+                    changeDetection: core.ChangeDetectionStrategy.OnPush,
                     styles: [".owl-theme { display: block; }"]
                 },] }
     ];
