@@ -1,13 +1,12 @@
+import { Injectable } from '@angular/core';
+import { Subject, Observable } from 'rxjs';
 
 import { StageData } from '../models/stage-data.model';
-
 import { OwlDOMData } from '../models/owlDOM-data.model';
-
-import { Injectable } from '@angular/core';
-
-import { CarouselSlideDirective } from '../carousel/carousel.module';
 import { SlideModel } from '../models/slide.model';
-import { Subject, Observable } from 'rxjs';
+
+
+import { CarouselSlideDirective } from '../carousel/carousel-slide.directive';
 import { OwlCarouselOConfig, OwlOptionsMockedTypes } from '../carousel/owl-carousel-o-config';
 import { OwlOptions } from '../models/owl-options.model';
 
