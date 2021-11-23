@@ -1,4 +1,5 @@
 import { ClassProvider, FactoryProvider, InjectionToken } from '@angular/core';
+import * as i0 from "@angular/core";
 /**
  * Create a new injection token for injecting the Document into a component.
  */
@@ -18,6 +19,8 @@ export declare class BrowserDocumentRef extends DocumentRef {
      * @returns Document object
      */
     get nativeDocument(): Document | Object;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BrowserDocumentRef, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<BrowserDocumentRef>;
 }
 /**
  * Create an factory function that returns the native Document object.

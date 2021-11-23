@@ -2,6 +2,7 @@ import { OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CarouselService } from './carousel.service';
+import * as i0 from "@angular/core";
 export declare class HashService implements OnDestroy {
     private carouselService;
     private route;
@@ -29,4 +30,6 @@ export declare class HashService implements OnDestroy {
      * Initiate listening to ActivatedRoute.fragment
      */
     listenToRoute(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<HashService, [null, { optional: true; }, { optional: true; }]>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<HashService>;
 }

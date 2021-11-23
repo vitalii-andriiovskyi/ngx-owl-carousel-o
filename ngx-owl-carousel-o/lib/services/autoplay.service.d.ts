@@ -1,6 +1,7 @@
 import { OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CarouselService } from './carousel.service';
+import * as i0 from "@angular/core";
 export declare class AutoplayService implements OnDestroy {
     private carouselService;
     /**
@@ -80,4 +81,6 @@ export declare class AutoplayService implements OnDestroy {
      * Starts playing after touch ends
      */
     startPlayingTouchEnd(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<AutoplayService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<AutoplayService>;
 }
