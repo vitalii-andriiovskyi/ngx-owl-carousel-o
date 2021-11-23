@@ -3,6 +3,7 @@ import { CarouselService } from '../../services/carousel.service';
 import { StageData } from '../../models/stage-data.model';
 import { SlideModel } from '../../models/slide.model';
 import { AnimateService } from '../../services/animate.service';
+import * as i0 from "@angular/core";
 export declare class StageComponent implements OnInit, OnDestroy {
     private zone;
     private el;
@@ -177,4 +178,6 @@ export declare class StageComponent implements OnInit, OnDestroy {
      * @param id Id of slides
      */
     clear(id: any): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<StageComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<StageComponent, "owl-stage", never, { "owlDraggable": "owlDraggable"; "stageData": "stageData"; "slidesData": "slidesData"; }, {}, never, never>;
 }

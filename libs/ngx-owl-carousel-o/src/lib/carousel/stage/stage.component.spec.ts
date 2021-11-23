@@ -9,10 +9,9 @@ import { Location } from '@angular/common';
 
 import { StageComponent } from './stage.component';
 import {
-  CarouselComponent,
-  CarouselSlideDirective,
-  SlidesOutputData
-} from '../carousel.component';
+  CarouselComponent} from '../carousel.component';
+import { SlidesOutputData } from "../../models/SlidesOutputData";
+import { CarouselSlideDirective } from "../carousel-slide.directive";
 import { ResizeService } from '../../services/resize.service';
 import { WINDOW_PROVIDERS } from '../../services/window-ref.service';
 import { CarouselService } from '../../services/carousel.service';

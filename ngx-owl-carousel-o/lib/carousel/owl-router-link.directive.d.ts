@@ -1,6 +1,7 @@
 import { LocationStrategy } from '@angular/common';
 import { ElementRef, OnChanges, OnDestroy, Renderer2 } from '@angular/core';
 import { Router, ActivatedRoute, UrlTree } from '@angular/router';
+import * as i0 from "@angular/core";
 export declare type QueryParamsHandling = 'merge' | 'preserve' | '';
 export declare class OwlRouterLinkDirective {
     private router;
@@ -24,6 +25,8 @@ export declare class OwlRouterLinkDirective {
     set preserveQueryParams(value: boolean);
     onClick(): boolean;
     get urlTree(): UrlTree;
+    static ɵfac: i0.ɵɵFactoryDeclaration<OwlRouterLinkDirective, [null, null, { attribute: "tabindex"; }, null, null]>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<OwlRouterLinkDirective, ":not(a)[owlRouterLink]", never, { "queryParams": "queryParams"; "fragment": "fragment"; "queryParamsHandling": "queryParamsHandling"; "preserveFragment": "preserveFragment"; "skipLocationChange": "skipLocationChange"; "replaceUrl": "replaceUrl"; "stopLink": "stopLink"; "owlRouterLink": "owlRouterLink"; "preserveQueryParams": "preserveQueryParams"; }, {}, never>;
 }
 /**
  * @description
@@ -62,4 +65,6 @@ export declare class OwlRouterLinkWithHrefDirective implements OnChanges, OnDest
     onClick(button: number, ctrlKey: boolean, metaKey: boolean, shiftKey: boolean): boolean;
     private updateTargetUrlAndHref;
     get urlTree(): UrlTree;
+    static ɵfac: i0.ɵɵFactoryDeclaration<OwlRouterLinkWithHrefDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<OwlRouterLinkWithHrefDirective, "a[owlRouterLink]", never, { "target": "target"; "queryParams": "queryParams"; "fragment": "fragment"; "queryParamsHandling": "queryParamsHandling"; "preserveFragment": "preserveFragment"; "skipLocationChange": "skipLocationChange"; "replaceUrl": "replaceUrl"; "stopLink": "stopLink"; "owlRouterLink": "owlRouterLink"; "preserveQueryParams": "preserveQueryParams"; }, {}, never>;
 }

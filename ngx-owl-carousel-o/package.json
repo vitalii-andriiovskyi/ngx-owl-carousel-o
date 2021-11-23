@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/ng-packagr/package.schema.json",
   "name": "ngx-owl-carousel-o",
-  "version": "6.0.1",
+  "version": "7.0.0",
   "description": "Angular powered owl-carousel",
   "keywords": [
     "angular",
@@ -24,19 +24,31 @@
     "url": "https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues"
   },
   "peerDependencies": {
-    "@angular/common": " ^12.0.0-rc.0 || ^12.0.0",
-    "@angular/core": "^12.0.0-rc.0 || ^12.0.0",
-    "rxjs": "^6.0.1"
+    "@angular/common": " ^13.0.0-rc.0 || ^13.0.0",
+    "@angular/core": "^13.0.0-rc.0 || ^13.0.0",
+    "rxjs": "^6.0.1 || ^7.0.0"
   },
-  "main": "bundles/ngx-owl-carousel-o.umd.js",
-  "module": "fesm2015/ngx-owl-carousel-o.js",
-  "es2015": "fesm2015/ngx-owl-carousel-o.js",
-  "esm2015": "esm2015/ngx-owl-carousel-o.js",
-  "fesm2015": "fesm2015/ngx-owl-carousel-o.js",
+  "module": "fesm2015/ngx-owl-carousel-o.mjs",
+  "es2020": "fesm2020/ngx-owl-carousel-o.mjs",
+  "esm2020": "esm2020/ngx-owl-carousel-o.mjs",
+  "fesm2020": "fesm2020/ngx-owl-carousel-o.mjs",
+  "fesm2015": "fesm2015/ngx-owl-carousel-o.mjs",
   "typings": "ngx-owl-carousel-o.d.ts",
-  "metadata": "ngx-owl-carousel-o.metadata.json",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./ngx-owl-carousel-o.d.ts",
+      "esm2020": "./esm2020/ngx-owl-carousel-o.mjs",
+      "es2020": "./fesm2020/ngx-owl-carousel-o.mjs",
+      "es2015": "./fesm2015/ngx-owl-carousel-o.mjs",
+      "node": "./fesm2015/ngx-owl-carousel-o.mjs",
+      "default": "./fesm2020/ngx-owl-carousel-o.mjs"
+    }
+  },
   "sideEffects": false,
   "dependencies": {
-    "tslib": "^2.1.0"
+    "tslib": "^2.3.0"
   }
 }

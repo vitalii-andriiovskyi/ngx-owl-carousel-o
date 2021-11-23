@@ -2,6 +2,7 @@ import { OnDestroy } from '@angular/core';
 import { NavData, DotsData } from '../models/navigation-data.models';
 import { CarouselService } from './carousel.service';
 import { Subscription } from 'rxjs';
+import * as i0 from "@angular/core";
 export declare class NavigationService implements OnDestroy {
     private carouselService;
     /**
@@ -92,4 +93,6 @@ export declare class NavigationService implements OnDestroy {
      * @param id id of slide
      */
     toSlideById(id: string): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<NavigationService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<NavigationService>;
 }

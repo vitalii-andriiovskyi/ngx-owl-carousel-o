@@ -55,7 +55,9 @@
               "buildOptimizer": true
             }
           },
-          "outputs": ["{options.outputPath}"]
+          "outputs": [
+            "{options.outputPath}"
+          ]
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -91,19 +93,12 @@
               "apps/demo-owl-carousel/src/assets"
             ]
           },
-          "outputs": ["coverage/apps/demo-owl-carousel/"]
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "apps/demo-owl-carousel/tsconfig.app.json",
-              "apps/demo-owl-carousel/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**"]
-          }
+          "outputs": [
+            "coverage/apps/demo-owl-carousel/"
+          ]
         }
-      }
+      },
+      "tags": []
     },
     "demo-owl-carousel-e2e": {
       "root": "apps/demo-owl-carousel-e2e/",
@@ -115,15 +110,12 @@
             "protractorConfig": "apps/demo-owl-carousel-e2e/protractor.conf.js",
             "devServerTarget": "demo-owl-carousel:serve"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "apps/demo-owl-carousel-e2e/tsconfig.e2e.json",
-            "exclude": ["**/node_modules/**"]
-          }
         }
-      }
+      },
+      "tags": [],
+      "implicitDependencies": [
+        "demo-owl-carousel"
+      ]
     },
     "ngx-owl-carousel-o": {
       "root": "libs/ngx-owl-carousel-o",
@@ -151,40 +143,12 @@
             "tsConfig": "libs/ngx-owl-carousel-o/tsconfig.spec.json",
             "karmaConfig": "libs/ngx-owl-carousel-o/karma.conf.js"
           },
-          "outputs": ["coverage/libs/ngx-owl-carousel-o"]
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/ngx-owl-carousel-o/tsconfig.lib.json",
-              "libs/ngx-owl-carousel-o/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**"]
-          }
+          "outputs": [
+            "coverage/libs/ngx-owl-carousel-o"
+          ]
         }
-      }
-    }
-  },
-  "cli": {
-    "warnings": {
-      "typescriptMismatch": false,
-      "versionMismatch": false
-    },
-    "defaultCollection": "@nrwl/angular"
-  },
-  "defaultProject": "demo-owl-carousel",
-  "schematics": {
-    "@nrwl/schematics:library": {
-      "unitTestRunner": "karma",
-      "framework": "angular"
-    },
-    "@nrwl/schematics:application": {
-      "unitTestRunner": "karma",
-      "e2eTestRunner": "protractor"
-    },
-    "@nrwl/schematics:node-application": {
-      "framework": "express"
+      },
+      "tags": []
     }
   }
 }

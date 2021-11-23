@@ -1,17 +1,5 @@
 {
   "npmScope": "owl-carousel-libdemo",
-  "projects": {
-    "demo-owl-carousel": {
-      "tags": []
-    },
-    "demo-owl-carousel-e2e": {
-      "tags": [],
-      "implicitDependencies": ["demo-owl-carousel"]
-    },
-    "ngx-owl-carousel-o": {
-      "tags": []
-    }
-  },
   "implicitDependencies": {
     "angular.json": "*",
     "package.json": "*",
@@ -23,11 +11,46 @@
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ],
+        "parallel": 1
       }
     }
   },
   "affected": {
     "defaultBase": "master"
+  },
+  "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
+  },
+  "cli": {
+    "warnings": {
+      "typescriptMismatch": false,
+      "versionMismatch": false
+    },
+    "defaultCollection": "@nrwl/angular"
+  },
+  "defaultProject": "demo-owl-carousel",
+  "generators": {
+    "@nrwl/schematics:library": {
+      "unitTestRunner": "karma",
+      "framework": "angular"
+    },
+    "@nrwl/schematics:application": {
+      "unitTestRunner": "karma",
+      "e2eTestRunner": "protractor"
+    },
+    "@nrwl/schematics:node-application": {
+      "framework": "express"
+    }
   }
 }

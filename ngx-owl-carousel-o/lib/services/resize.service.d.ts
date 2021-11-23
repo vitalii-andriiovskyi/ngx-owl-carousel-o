@@ -1,5 +1,6 @@
 import { EventManager } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
+import * as i0 from "@angular/core";
 export declare class ResizeService {
     private eventManager;
     /**
@@ -26,4 +27,6 @@ export declare class ResizeService {
      * @param event Event Object of 'onload' event
      */
     private onLoaded;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ResizeService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ResizeService>;
 }
