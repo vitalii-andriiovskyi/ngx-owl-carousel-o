@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { NavData, DotsData } from '../models/navigation-data.models';
-import { CarouselSlideDirective } from '../carousel/carousel.module';
+import { CarouselSlideDirective } from '../carousel/carousel-slide.directive';
 import { CarouselService } from './carousel.service';
 import { Subscription, Observable, merge } from 'rxjs';
 import { tap, filter } from 'rxjs/operators';

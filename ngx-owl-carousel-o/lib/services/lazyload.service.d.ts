@@ -1,6 +1,7 @@
 import { OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CarouselService } from './carousel.service';
+import * as i0 from "@angular/core";
 export declare class LazyLoadService implements OnDestroy {
     private carouselService;
     /**
@@ -18,5 +19,7 @@ export declare class LazyLoadService implements OnDestroy {
        * Loads all resources of an item at the specified position.
        * @param position - The absolute position of the item.
        */
-    private _load(position);
+    private _load;
+    static ɵfac: i0.ɵɵFactoryDeclaration<LazyLoadService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<LazyLoadService>;
 }

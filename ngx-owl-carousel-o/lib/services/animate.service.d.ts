@@ -1,6 +1,7 @@
 import { OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CarouselService } from './carousel.service';
+import * as i0 from "@angular/core";
 export declare class AnimateService implements OnDestroy {
     private carouselService;
     /**
@@ -35,4 +36,6 @@ export declare class AnimateService implements OnDestroy {
      * @param id Id of slides
      */
     clear(id: any): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<AnimateService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<AnimateService>;
 }

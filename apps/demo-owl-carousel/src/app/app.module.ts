@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { NxModule } from '@nrwl/angular';
+// import { NxModule } from '@nrwl/angular';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { HomeModule } from './home/home.module';
 // import { PresentModule } from './present/present.module';
@@ -37,7 +37,7 @@ const appRoutes: Routes = [
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    NxModule.forRoot(),
+    // NxModule.forRoot(),
     HomeModule,
     // PresentModule,
     BrowserAnimationsModule,

@@ -4,8 +4,10 @@
 
 ngx-owl-carousel-o      | Angular
 ------------------------|--------
-5.x.x                   | 11.x.x
-4.x.x  (latest `4.0.0`) | 10.x.x
+7.x.x                   | 13.x.x
+6.x.x  (latest `6.0.1`) | 12.x.x
+5.x.x  (latest `5.1.1`) | 11.x.x
+4.x.x  (latest `4.1.1`) | 10.x.x
 3.x.x  (latest `3.1.1`) | 9.x.x
 2.x.x  (latest `2.1.1`) | 8.x.x
 1.x.x  (latest `1.2.1`) | 7.x.x
@@ -19,11 +21,14 @@ ngx-owl-carousel-o      | Angular
 - [Get started](#get-started)
 - [Setting custom slides ids](#setting-custom-slides-ids)
 - [Options](#options)
+- [How to refresh the carousel if options change](#refreshing-the-carousel-if-options-change)
 - [Tag `<a>` in the slide. Directive `owlRouterLink`](#owlRouterLink)
 - [Events](#events)
 - [Plugins](#plugins)
 - [Tips](#tips)
 - [ReferenceError: Event is not defined](#referenceError-event-is-not-defined)
+- [Using `ngx-owl-carousel-o` slide data in custom code](#using-internal-slide-data)
+- [Issue: `autoplay` doesn't stay paused when user opens `mat-menu`](#issue-autoplay-doesnt-stay-paused-when-user-opens-mat-menu)
 
 ## Get started
 
@@ -347,6 +352,40 @@ There's no need to set to `<img>` attributes `data-src` and  `data-src-retina` b
 By default, this option is set to `false`. This option changes the number of visible slides in the case, when the number of slides is less than the value of the option `items`. For example, when the `items=4` and there're just 3 slides, the carousel will reassign the value of `items` to `3`.
 
 When the option `skip_validateItems` is `true`, the carousel won't reassign the `items`. So, in the example above `items` will remain `4`. But there will be 3 slides and one empty place. This is in the case when the option `loop=false`. When `loop=true`, the empty place will be populated by the copy of the first slide.
+
+## Refreshing the carousel if options change
+
+The code can detect different options and rerender the carousel. But the comparison of previous options and new options is shallow: `prevOptions === newOptions`. 
+
+It means that mutating options object won't trigger the carousel refreshing:
+
+```typescript
+  // ...
+  customOptions: OwlOptions = {
+    autoWidth: true,
+    loop: true,
+    // ....
+  }
+
+  changeOptions() {
+    this.customOptions.loop = false; // this won't refresh the carousel 
+  }
+```
+
+It's needed to create a new options object. The object destructuring is helpful here: 
+
+```typescript
+  // ...
+  customOptions: OwlOptions = {
+    autoWidth: true,
+    loop: true,
+    // ....
+  }
+
+  changeOptions() {
+    this.customOptions = { ...this.customOptions, loop: false } // this will make the carousel refresh
+  }
+```
 
 ## owlRouterLink
 
@@ -1056,6 +1095,226 @@ const BROWSER_DIR = join(process.cwd(), 'dist/browser');
 applyDomino(global, join(BROWSER_DIR, 'index.html'));
 global['Event'] = global['window']['Event'];           //  define the global property `Event`
 ```
+
+## Using Internal Slide Data
+
+It's possible to use internal slide data for own purposes. But this data is exposed in version  `5.1.0` and higher.
+
+The slide data structure:
+
+```typescript
+class SlideModel {
+
+  /**
+   * Id of slide
+   */
+  id: string;
+
+  /**
+   * Active state of slide. If true slide gets css-class .active
+   */
+  isActive?: boolean;
+
+  /**
+   * Number of grid parts to be used
+   */
+  dataMerge?: number;
+
+  /**
+   * Width of slide
+   */
+  width?: number | string;
+
+  /**
+   * Css-rule 'margin-left'
+   */
+  marginL?: number | string;
+
+  /**
+   * Css-rule 'margin-right'
+   */
+  marginR?: number | string;
+
+  /**
+   * Make slide to be on center of the carousel
+   */
+  isCentered?: boolean;
+
+  /**
+   * Mark slide to be on center of the carousel (has .center)
+   */
+  center?: boolean;
+
+  /**
+   * Cloned slide. It's being used when 'loop'=true
+   */
+  isCloned?: boolean;
+
+  /**
+   * Indicates whether slide should be lazy loaded
+   */
+  load?: boolean;
+
+  /**
+   * Css-rule 'left'
+   */
+  left?: number | string;
+
+  /**
+   * Changeable classes of slide
+   */
+  classes?: {[key:string]: boolean};
+
+  /**
+   * Shows whether slide could be animated and could have css-class '.animated'
+   */
+  isAnimated?: boolean;
+
+  /**
+   * Shows whether slide could be animated-in and could have css-class '.owl-animated-in'
+   */
+  isDefAnimatedIn?: boolean;
+  /**
+   * Shows whether slide could be animated-out and could have css-class '.owl-animated-out'
+   */
+  isDefAnimatedOut?: boolean;
+  /**
+   * Shows whether slide could be animated-in and could have animation css-class defined by user
+   */
+  isCustomAnimatedIn?: boolean;
+  /**
+   * Shows whether slide could be animated-out and could have animation css-class defined by user
+   */
+  isCustomAnimatedOut?: boolean;
+
+  /**
+   * State for defining the height of slide.It's values could be 'full' and 'nulled'. 'Full' sets css-height to 'auto', 'nulled' sets height to '0'.
+   */
+  heightState?: string;
+
+  /**
+   * Hash (fragment) of url which corresponds to slide
+   */
+  hashFragment?: string;
+}
+
+```
+
+To get this data, define the variable `let-owlItem` or `let-slideData` in your template (the name of a variable could be any):
+
+```html
+  <ng-template carouselSlide let-owlItem>
+    <div class="slide">
+      {{owlItem.isActive}}
+      {{owlItem.isCentered}}
+      <img [src]="image.src" [alt]="image.alt" [title]="image.title">
+    </div>
+  </ng-template>
+```
+
+An internal slide data could be very helpful to add cool Angular animations. Use properties `isActive` and `isCentered` to switch the state of animation. An example is below.
+
+1. Define animation in `your.component.ts`:
+
+    ```typescript
+    @Component({
+      selector: 'app-test',
+      templateUrl: './test.component.html',
+
+      // .....
+      animations: [
+        trigger('activeSlide', [
+          state('active', style({
+            transform: 'scale(1.4)',
+            opacity: 1,
+          })),
+          state('inActive', style({
+            transform: 'scale(0.7)',
+            opacity: 0.8,
+          })),
+          transition('active => inActive', [
+            animate('0.5s')
+          ]),
+          transition('inActive => active', [
+            animate('0.5s')
+          ])
+        ])
+      ]
+    })
+    export class TestComponent implements OnInit {
+    // .....
+
+      customOptions: OwlOptions = {
+        loop: true,
+        dots: false,
+        navSpeed: 700,
+        navText: ['<<', '>>'],
+        center: true, // most important for this example
+        responsive: {
+          0: {
+            items: 1
+          },
+          740: {
+            items: 3
+          }
+        },
+        nav: true
+      }
+    }
+    ```
+
+2. Use internal slide data in the template. This example uses `let-owlItem` and prop `isCentered` (`owlItem.isCentered`) to toggle animation state:
+
+    `test.component.html`
+
+    ```html
+      <owl-carousel-o [options]="customOptions" #owlCat>
+        <ng-container *ngFor="let image of imagesData">
+          <ng-template carouselSlide let-owlItem> 
+            <!--                                 \/          -->
+            <div class="slide" [@activeSlide]="owlItem.isCentered ? 'active' : 'inActive'">
+              <img [src]="image.src" [alt]="image.alt" [title]="image.title">
+            </div>
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+    ```
+
+## Issue: `autoplay` doesn't stay paused when user opens `mat-menu`
+
+This issue appears even in the case when the option `autoplayHoverPause` is set to `true`. This is because the carousel listens to the events `mouseover` and `mouseleave`. When a user opens `mat-menu`, the code adds `overlay`, what triggers `mouseleave`. `ngx-owl-carousel-o` renews autoplaying after this event is fired.
+
+The solution for this case is to manage autoplaying manually. You can do that using two methods of `CarouselComponent`: `stopAutoplay` and `startAutoplay`.
+
+Example of usage in a template with `mat-menu`:
+
+```html
+  <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" #owlCar>
+          
+    <ng-container *ngFor="let item of carouselData; let i=index">
+      <ng-template carouselSlide [width]="item.width">
+        <div class="slider">
+          <p>{{item.text}}</p>
+          <div *ngIf="i == 2">
+            <button mat-raised-button color="accent" [matMenuTriggerFor]="menu" (menuOpened)="owlCar.stopAutoplay()">Menu</button>
+            <mat-menu #menu="matMenu" (closed)="owlCar.startAutoplay()">
+              <button mat-menu-item>Item 1</button>
+              <button mat-menu-item>Item 2</button>
+              <button mat-menu-item>Item 3</button>
+              <button mat-menu-item>Item 4</button>
+              <button mat-menu-item>Item 5</button>
+            </mat-menu>
+          </div>
+            
+        </div><!-- /.carousel-item team-member -->
+      </ng-template>
+    </ng-container>
+    
+  </owl-carousel-o>
+```
+
+When menu is opened, you call `stopAutoplay`: `(menuOpened)="owlCar.stopAutoplay()"`  
+When menu is closed, you call `startAutoplay`: `(closed)="owlCar.startAutoplay()"`
 
 ## License
 

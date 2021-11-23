@@ -1,20 +1,19 @@
 import {
   Component,
   OnInit,
-  AfterContentChecked,
   OnDestroy,
   Input,
   Output,
-  Directive,
   QueryList,
   ContentChildren,
-  TemplateRef,
   ElementRef,
   AfterContentInit,
   EventEmitter,
   HostListener,
   Inject,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  OnChanges
 } from '@angular/core';
 
 import { Subscription, Observable, merge, of, from } from 'rxjs';
@@ -35,62 +34,8 @@ import { AutoHeightService } from '../services/autoheight.service';
 import { HashService } from '../services/hash.service';
 import { OwlLogger } from '../services/logger.service';
 import { DOCUMENT } from '../services/document-ref.service';
-
-let nextId = 0;
-
-@Directive({ selector: 'ng-template[carouselSlide]' })
-export class CarouselSlideDirective {
-  /**
-   * Unique slide identifier. Must be unique for the entire document for proper accessibility support.
-   * Will be auto-generated if not provided.
-   */
-  @Input() id = `owl-slide-${nextId++}`;
-
-  /**
-   * Defines how much widths of common slide will current slide have
-   * e.g. if _mergeData=2, the slide will twice wider then slides with _mergeData=1
-   */
-  private _dataMerge = 1;
-  @Input()
-  set dataMerge(data: number) {
-    this._dataMerge = this.isNumeric(data) ? data : 1;
-  };
-  get dataMerge(): number { return this._dataMerge }
-
-  /**
-   * Width of slide
-   */
-  @Input() width = 0;
-
-  /**
-   * Inner content of dot for certain slide; can be html-markup
-   */
-  @Input() dotContent = '';
-
-  /**
-   * Hash (fragment) of url which corresponds to certain slide
-   */
-  @Input() dataHash = '';
-
-  constructor(public tplRef: TemplateRef<any>) {}
-
-  /**
-	 * Determines if the input is a Number or something that can be coerced to a Number
-	 * @param - The input to be tested
-	 * @returns - An indication if the input is a Number or can be coerced to a Number
-	 */
-  isNumeric(number: any): boolean {
-		return !isNaN(parseFloat(number));
-	}
-}
-
-/**
- * Data which will be passed out after ending of transition of carousel
- */
-export class SlidesOutputData {
-  startPosition?: number;
-  slides?: SlideModel[];
-};
+import { CarouselSlideDirective } from './carousel-slide.directive';
+import { SlidesOutputData } from '../models/SlidesOutputData';
 
 @Component({
   selector: 'owl-carousel-o',
@@ -133,10 +78,11 @@ export class SlidesOutputData {
     AnimateService,
     AutoHeightService,
     HashService
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CarouselComponent
-  implements OnInit, AfterContentChecked, AfterContentInit, OnDestroy {
+  implements OnInit, AfterContentInit, OnDestroy, OnChanges {
   @ContentChildren(CarouselSlideDirective)
   slides: QueryList<CarouselSlideDirective>;
 
@@ -208,6 +154,8 @@ export class CarouselComponent
    */
   @Input() options: OwlOptions;
 
+  prevOptions: OwlOptions;
+
   /**
    * Observable for getting current View Settings
    */
@@ -267,11 +215,11 @@ export class CarouselComponent
     if (!this.carouselService.settings.autoplay) return;
     switch (this.docRef.visibilityState) {
       case 'visible':
-        this.autoplayService.play();
+        !this.autoplayService.isAutoplayStopped && this.autoplayService.play();
         break;
 
       case 'hidden':
-        this.autoplayService.stop();
+        this.autoplayService.pause();
         break;
 
       default:
@@ -288,9 +236,18 @@ export class CarouselComponent
     ).clientWidth;
   }
 
-  ngAfterContentChecked() {
+  ngOnChanges() {
+    if (this.prevOptions !== this.options) {
+      if (this.prevOptions && this.slides?.toArray().length) {
+        this.carouselService.setup(this.carouselWindowWidth, this.slides.toArray(), this.options);
+        this.carouselService.initialize(this.slides.toArray());
+      } else {
+        this.carouselLoaded = false;
+        this.logger.log(`There are no slides to show. So the carousel won't be re-rendered`);
+      }
+      this.prevOptions = this.options;
+    }
   }
-  // ngAfterContentChecked() END
 
   ngAfterContentInit() {
     if (this.slides.toArray().length) {
@@ -553,6 +510,16 @@ export class CarouselComponent
    */
   startPlayTE() {
     this.autoplayService.startPlayingTouchEnd();
+  }
+
+  stopAutoplay() {
+    this.autoplayService.isAutoplayStopped = true;
+    this.autoplayService.stop();
+  }
+
+  startAutoplay() {
+    this.autoplayService.isAutoplayStopped = false;
+    this.autoplayService.play();
   }
 
 }

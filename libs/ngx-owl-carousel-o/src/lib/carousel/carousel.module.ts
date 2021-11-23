@@ -1,19 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  CarouselComponent,
-  CarouselSlideDirective
-} from './carousel.component';
+  CarouselComponent} from './carousel.component';
+import { CarouselSlideDirective } from './carousel-slide.directive';
 import { WINDOW_PROVIDERS } from '../services/window-ref.service';
 import { ResizeService } from '../services/resize.service';
 import { DOCUMENT_PROVIDERS } from '../services/document-ref.service';
 import { StageComponent } from './stage/stage.component';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-export {
-  CarouselComponent,
-  CarouselSlideDirective,
-  SlidesOutputData
-} from './carousel.component';
+
+export { CarouselComponent } from './carousel.component';
+export { CarouselSlideDirective } from './carousel-slide.directive';
+export { SlidesOutputData } from '../models/SlidesOutputData';
 
 import { RouterModule, Routes } from '@angular/router';
 import { OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective } from './owl-router-link.directive';

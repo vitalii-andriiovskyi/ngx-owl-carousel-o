@@ -1,11 +1,12 @@
-<nav class="navbar navbar-light bg-light navbar-expand-lg justify-content-start">
+<nav class="navbar navbar-light bg-light navbar-expand-lg">
+  <div class="container-fluid justify-content-start">
     <div class="col-lg-2">
       <a class="navbar-brand" [routerLink]="''"><b>Owl Carousel</b></a>
     </div>
     <div class="col-lg-8">
       <ul class="navbar-nav justify-content-center">
         <li class="nav-item" routerLinkActive="active">
-          <a class="nav-link" [routerLink]="'/home'" >Home <span class="sr-only">(current)</span></a>
+          <a class="nav-link" [routerLink]="'/home'" >Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" [routerLink]="'/present'">Present</a>
@@ -21,8 +22,8 @@
         </li>
         
       </ul>
-
     </div>
+  </div>
 </nav>
 
 <!-- <owl-carousel-libdemo-present></owl-carousel-libdemo-present> -->

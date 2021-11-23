@@ -1,4 +1,5 @@
 import { ClassProvider, FactoryProvider, InjectionToken } from '@angular/core';
+import * as i0 from "@angular/core";
 /**
  * Create a new injection token for injecting the window into a component.
  */
@@ -18,6 +19,8 @@ export declare class BrowserWindowRef extends WindowRef {
      * @returns window object
      */
     get nativeWindow(): Window | Object;
+    static ɵfac: i0.ɵɵFactoryDeclaration<BrowserWindowRef, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<BrowserWindowRef>;
 }
 /**
  * Create an factory function that returns the native window object.

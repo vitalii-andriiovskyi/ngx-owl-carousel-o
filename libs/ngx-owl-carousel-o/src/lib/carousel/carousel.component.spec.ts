@@ -1,27 +1,27 @@
+import 'zone.js/dist/zone-testing';
+// import 'zone.js/dist/zone-patch-rxjs-fake-async';
 import { ComponentFixture, discardPeriodicTasks, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import {Location} from "@angular/common";
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from "@angular/router/testing";
+import { cold, getTestScheduler, hot } from 'jasmine-marbles';
 
 import {
-  CarouselComponent,
-  CarouselSlideDirective,
-  SlidesOutputData
-} from './carousel.component';
+  CarouselComponent} from './carousel.component';
+import { SlidesOutputData } from "../models/SlidesOutputData";
+import { CarouselSlideDirective } from "./carousel-slide.directive";
 import { ResizeService } from '../services/resize.service';
 import { WINDOW_PROVIDERS } from '../services/window-ref.service';
 import { CarouselService } from '../services/carousel.service';
 import { createGenericTestComponent } from './test/common';
-import { cold, getTestScheduler, hot } from 'jasmine-marbles';
 import { NavigationService } from '../services/navigation.service';
 import { AutoplayService } from '../services/autoplay.service';
 import { DOCUMENT_PROVIDERS } from '../services/document-ref.service';
-import 'zone.js/dist/zone-patch-rxjs-fake-async';
 import { StageComponent } from './stage/stage.component';
 import { LazyLoadService } from '../services/lazyload.service';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from "@angular/router/testing";
 import { OwlLogger } from '../services/logger.service';
 
 // import 'zone.js/lib/rxjs/rxjs-fake-async';
@@ -3882,7 +3882,7 @@ console.log('mouseleave');
     fixtureHost = createTestComponent(html);
     deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
     autoplayService = deCarouselComponent.injector.get(AutoplayService);
-    spyOn(autoplayService, 'stop');
+    spyOn(autoplayService, 'pause');
 
     tick();
     fixtureHost.detectChanges();
@@ -3899,7 +3899,7 @@ console.log('mouseleave');
     Object.defineProperty(document, 'hidden', {value: true, writable: true});
     document.dispatchEvent(new Event('visibilitychange'));
 
-    expect(autoplayService.stop).toHaveBeenCalled();
+    expect(autoplayService.pause).toHaveBeenCalled();
 
     // restore document.visibilityState to 'visible' and document.hidden to 'false'
     tick();
@@ -3926,6 +3926,7 @@ console.log('mouseleave');
     deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
     autoplayService = deCarouselComponent.injector.get(AutoplayService);
     spyOn(autoplayService, 'stop');
+    spyOn(autoplayService, 'pause');
     spyOn(autoplayService, 'play');
 
     tick();
@@ -3943,7 +3944,7 @@ console.log('mouseleave');
     Object.defineProperty(document, 'hidden', {value: true, writable: true});
     document.dispatchEvent(new Event('visibilitychange'));
 
-    expect(autoplayService.stop).toHaveBeenCalled();
+    expect(autoplayService.pause).toHaveBeenCalled();
 
     tick();
     fixtureHost.detectChanges();
@@ -4968,6 +4969,37 @@ console.log('mouseleave');
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
     expect(deActiveSlides[0].nativeElement.innerHTML).toContain('Slide 3', 'Slide 3');
+  }));
+
+  it(`should rerender the carousel if options change: default options -> [options]="{items: '2'}"`, fakeAsync(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+        <owl-carousel-o [options]="options">
+          <ng-template carouselSlide>Slide 1</ng-template>
+          <ng-template carouselSlide>Slide 2</ng-template>
+          <ng-template carouselSlide>Slide 3</ng-template>
+          <ng-template carouselSlide>Slide 4</ng-template>
+          <ng-template carouselSlide>Slide 5</ng-template>
+        </owl-carousel-o>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    testComponent = fixtureHost.componentInstance;
+    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    tick();
+    fixtureHost.detectChanges();
+
+    const activeSlides: DebugElement[] = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(activeSlides.length).toBe(3, '3 active slides');
+
+    const options = { items: 2 };
+    testComponent.options = options;
+    fixtureHost.detectChanges();
+    tick(100);
+    fixtureHost.detectChanges();
+    
+    deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
+    expect(deActiveSlides.length).toBe(2, '2 active slides');
   }));
 
 

@@ -1,4 +1,4 @@
-import { OnInit, AfterContentChecked, OnDestroy, QueryList, TemplateRef, ElementRef, AfterContentInit, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { OnInit, OnDestroy, QueryList, ElementRef, AfterContentInit, EventEmitter, ChangeDetectorRef, OnChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ResizeService } from '../services/resize.service';
 import { CarouselService } from '../services/carousel.service';
@@ -14,48 +14,10 @@ import { AnimateService } from '../services/animate.service';
 import { AutoHeightService } from '../services/autoheight.service';
 import { HashService } from '../services/hash.service';
 import { OwlLogger } from '../services/logger.service';
-export declare class CarouselSlideDirective {
-    tplRef: TemplateRef<any>;
-    /**
-     * Unique slide identifier. Must be unique for the entire document for proper accessibility support.
-     * Will be auto-generated if not provided.
-     */
-    id: string;
-    /**
-     * Defines how much widths of common slide will current slide have
-     * e.g. if _mergeData=2, the slide will twice wider then slides with _mergeData=1
-     */
-    private _dataMerge;
-    set dataMerge(data: number);
-    get dataMerge(): number;
-    /**
-     * Width of slide
-     */
-    width: number;
-    /**
-     * Inner content of dot for certain slide; can be html-markup
-     */
-    dotContent: string;
-    /**
-     * Hash (fragment) of url which corresponds to certain slide
-     */
-    dataHash: string;
-    constructor(tplRef: TemplateRef<any>);
-    /**
-       * Determines if the input is a Number or something that can be coerced to a Number
-       * @param - The input to be tested
-       * @returns - An indication if the input is a Number or can be coerced to a Number
-       */
-    isNumeric(number: any): boolean;
-}
-/**
- * Data which will be passed out after ending of transition of carousel
- */
-export declare class SlidesOutputData {
-    startPosition?: number;
-    slides?: SlideModel[];
-}
-export declare class CarouselComponent implements OnInit, AfterContentChecked, AfterContentInit, OnDestroy {
+import { CarouselSlideDirective } from './carousel-slide.directive';
+import { SlidesOutputData } from '../models/SlidesOutputData';
+import * as i0 from "@angular/core";
+export declare class CarouselComponent implements OnInit, AfterContentInit, OnDestroy, OnChanges {
     private el;
     private resizeService;
     private carouselService;
@@ -126,6 +88,7 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      * User's options
      */
     options: OwlOptions;
+    prevOptions: OwlOptions;
     /**
      * Observable for getting current View Settings
      */
@@ -158,7 +121,7 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
     constructor(el: ElementRef, resizeService: ResizeService, carouselService: CarouselService, navigationService: NavigationService, autoplayService: AutoplayService, lazyLoadService: LazyLoadService, animateService: AnimateService, autoHeightService: AutoHeightService, hashService: HashService, logger: OwlLogger, changeDetectorRef: ChangeDetectorRef, docRef: any);
     onVisibilityChange(ev: any): void;
     ngOnInit(): void;
-    ngAfterContentChecked(): void;
+    ngOnChanges(): void;
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
     /**
@@ -207,4 +170,8 @@ export declare class CarouselComponent implements OnInit, AfterContentChecked, A
      * Starts playing after touch ends
      */
     startPlayTE(): void;
+    stopAutoplay(): void;
+    startAutoplay(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<CarouselComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<CarouselComponent, "owl-carousel-o", never, { "options": "options"; }, { "translated": "translated"; "dragging": "dragging"; "change": "change"; "changed": "changed"; "initialized": "initialized"; }, ["slides"], never>;
 }

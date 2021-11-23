@@ -1,14 +1,17 @@
+import 'zone.js/dist/zone-testing';
+// import 'zone.js/dist/zone-patch-rxjs-fake-async';
 import { TestBed, inject, ComponentFixture, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 
 import { CarouselService } from './carousel.service';
 import { Component, DebugElement } from '@angular/core';
-import { SlidesOutputData, CarouselComponent, CarouselSlideDirective } from '../carousel/carousel.component';
+import { CarouselComponent } from '../carousel/carousel.component';
+import { SlidesOutputData } from "../models/SlidesOutputData";
+import { CarouselSlideDirective } from "../carousel/carousel-slide.directive";
 import { createGenericTestComponent } from '../carousel/test/common';
 import { ResizeService } from './resize.service';
 import { WINDOW_PROVIDERS } from './window-ref.service';
 import { NavigationService } from './navigation.service';
 
-import 'zone.js/dist/zone-patch-rxjs-fake-async';
 import { By } from '@angular/platform-browser';
 import { DOCUMENT_PROVIDERS } from './document-ref.service';
 import { StageComponent } from '../carousel/stage/stage.component';

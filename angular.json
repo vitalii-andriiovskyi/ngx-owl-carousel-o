@@ -27,7 +27,7 @@
               "node_modules/animate.css/animate.min.css",
               "libs/ngx-owl-carousel-o/src/lib/styles/prebuilt-themes/owl.carousel.min.css",
               "libs/ngx-owl-carousel-o/src/lib/styles/prebuilt-themes/owl.theme.default.min.css",
-              "apps/demo-owl-carousel/src/styles.css"
+              "apps/demo-owl-carousel/src/styles.scss"
             ],
             "scripts": []
           },
@@ -84,6 +84,7 @@
             "tsConfig": "apps/demo-owl-carousel/tsconfig.spec.json",
             "karmaConfig": "apps/demo-owl-carousel/karma.conf.js",
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "apps/demo-owl-carousel/src/styles.css"
             ],
             "scripts": [],
@@ -95,20 +96,9 @@
           "outputs": [
             "coverage/apps/demo-owl-carousel/"
           ]
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "apps/demo-owl-carousel/tsconfig.app.json",
-              "apps/demo-owl-carousel/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
-      }
+      },
+      "tags": []
     },
     "demo-owl-carousel-e2e": {
       "root": "apps/demo-owl-carousel-e2e/",
@@ -120,17 +110,12 @@
             "protractorConfig": "apps/demo-owl-carousel-e2e/protractor.conf.js",
             "devServerTarget": "demo-owl-carousel:serve"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "apps/demo-owl-carousel-e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
-      }
+      },
+      "tags": [],
+      "implicitDependencies": [
+        "demo-owl-carousel"
+      ]
     },
     "ngx-owl-carousel-o": {
       "root": "libs/ngx-owl-carousel-o",
@@ -161,41 +146,9 @@
           "outputs": [
             "coverage/libs/ngx-owl-carousel-o"
           ]
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/ngx-owl-carousel-o/tsconfig.lib.json",
-              "libs/ngx-owl-carousel-o/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
-      }
-    }
-  },
-  "cli": {
-    "warnings": {
-      "typescriptMismatch": false,
-      "versionMismatch": false
-    },
-    "defaultCollection": "@nrwl/angular"
-  },
-  "defaultProject": "demo-owl-carousel",
-  "schematics": {
-    "@nrwl/schematics:library": {
-      "unitTestRunner": "karma",
-      "framework": "angular"
-    },
-    "@nrwl/schematics:application": {
-      "unitTestRunner": "karma",
-      "e2eTestRunner": "protractor"
-    },
-    "@nrwl/schematics:node-application": {
-      "framework": "express"
+      },
+      "tags": []
     }
   }
 }

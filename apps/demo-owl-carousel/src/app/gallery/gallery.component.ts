@@ -1,3 +1,4 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 
@@ -10,7 +11,25 @@ interface Image {
 @Component({
   selector: 'owl-carousel-libdemo-gallery',
   templateUrl: './gallery.component.html',
-  styleUrls: ['./gallery.component.sass']
+  styleUrls: ['./gallery.component.sass'],
+  animations: [
+    trigger('activeSlide', [
+      state('active', style({
+        transform: 'scale(1.4)',
+        opacity: 1,
+      })),
+      state('inActive', style({
+        transform: 'scale(0.7)',
+        opacity: 0.8,
+      })),
+      transition('active => inActive', [
+        animate('0.5s')
+      ]),
+      transition('inActive => active', [
+        animate('0.5s')
+      ])
+    ])
+  ]
 })
 export class GalleryComponent implements OnInit {
 
@@ -69,7 +88,8 @@ export class GalleryComponent implements OnInit {
     pullDrag: false,
     dots: false,
     navSpeed: 700,
-    navText: ['', ''],
+    navText: ['<<', '>>'],
+    center: true,
     responsive: {
       0: {
         items: 1

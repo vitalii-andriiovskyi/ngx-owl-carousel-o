@@ -40,12 +40,16 @@
     -moz-transform: translate3d(0, 0, 0);
     -ms-transform: translate3d(0, 0, 0); }
   .owl-carousel .owl-item {
+  
     position: relative;
     min-height: 1px;
     float: left;
     -webkit-backface-visibility: hidden;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none; }
+    .owl-carousel .owl-item.center {
+      z-index: 5;
+    }
   .owl-carousel .owl-item img {
     display: block;
     width: 100%; }

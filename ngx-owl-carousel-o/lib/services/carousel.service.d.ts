@@ -1,11 +1,12 @@
+import { Observable } from 'rxjs';
 import { StageData } from '../models/stage-data.model';
 import { OwlDOMData } from '../models/owlDOM-data.model';
-import { CarouselSlideDirective } from '../carousel/carousel.module';
 import { SlideModel } from '../models/slide.model';
-import { Observable } from 'rxjs';
+import { CarouselSlideDirective } from '../carousel/carousel-slide.directive';
 import { OwlOptions } from '../models/owl-options.model';
 import { NavData, DotsData } from '../models/navigation-data.models';
 import { OwlLogger } from './logger.service';
+import * as i0 from "@angular/core";
 /**
  * Current state information and their tags.
  */
@@ -576,8 +577,10 @@ export declare class CarouselService {
        * Gets the difference of two vectors.
        * @todo #261
        * @param first The first vector.
-       * @param second- The second vector.
+       * @param second The second vector.
        * @returns The difference.
        */
     difference(first: Coords, second: Coords): Coords;
+    static ɵfac: i0.ɵɵFactoryDeclaration<CarouselService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<CarouselService>;
 }
