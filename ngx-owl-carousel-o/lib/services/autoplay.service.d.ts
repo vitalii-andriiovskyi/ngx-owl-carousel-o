@@ -1,8 +1,9 @@
-import { OnDestroy } from '@angular/core';
+import { OnDestroy, NgZone } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CarouselService } from './carousel.service';
 export declare class AutoplayService implements OnDestroy {
     private carouselService;
+    private ngZone;
     /**
      * Subscrioption to merge Observables from CarouselService
      */
@@ -28,7 +29,7 @@ export declare class AutoplayService implements OnDestroy {
     set isAutoplayStopped(value: boolean);
     private winRef;
     private docRef;
-    constructor(carouselService: CarouselService, winRef: any, docRef: any);
+    constructor(carouselService: CarouselService, winRef: any, docRef: any, ngZone: NgZone);
     ngOnDestroy(): void;
     /**
      * Defines Observables which service must observe

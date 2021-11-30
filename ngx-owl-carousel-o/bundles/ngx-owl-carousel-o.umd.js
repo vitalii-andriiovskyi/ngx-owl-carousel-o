@@ -2464,8 +2464,9 @@
     var DOCUMENT_PROVIDERS = [browserDocumentProvider, documentProvider];
 
     var AutoplayService = /** @class */ (function () {
-        function AutoplayService(carouselService, winRef, docRef) {
+        function AutoplayService(carouselService, winRef, docRef, ngZone) {
             this.carouselService = carouselService;
+            this.ngZone = ngZone;
             /**
              * The autoplay timeout.
              */
@@ -2551,12 +2552,16 @@
                 this.winRef.clearTimeout(this._timeout);
             }
             this._isArtificialAutoplayTimeout = timeout ? true : false;
-            return this.winRef.setTimeout(function () {
-                if (_this._paused || _this.carouselService.is('busy') || _this.carouselService.is('interacting') || _this.docRef.hidden) {
-                    return;
-                }
-                _this.carouselService.next(speed || _this.carouselService.settings.autoplaySpeed);
-            }, timeout || this.carouselService.settings.autoplayTimeout);
+            return this.ngZone.runOutsideAngular(function () {
+                return _this.winRef.setTimeout(function () {
+                    _this.ngZone.run(function () {
+                        if (_this._paused || _this.carouselService.is('busy') || _this.carouselService.is('interacting') || _this.docRef.hidden) {
+                            return;
+                        }
+                        _this.carouselService.next(speed || _this.carouselService.settings.autoplaySpeed);
+                    });
+                }, timeout || _this.carouselService.settings.autoplayTimeout);
+            });
         };
         ;
         /**
@@ -2649,7 +2654,8 @@
     AutoplayService.ctorParameters = function () { return [
         { type: CarouselService },
         { type: undefined, decorators: [{ type: core.Inject, args: [WINDOW,] }] },
-        { type: undefined, decorators: [{ type: core.Inject, args: [DOCUMENT,] }] }
+        { type: undefined, decorators: [{ type: core.Inject, args: [DOCUMENT,] }] },
+        { type: core.NgZone }
     ]; };
 
     var LazyLoadService = /** @class */ (function () {

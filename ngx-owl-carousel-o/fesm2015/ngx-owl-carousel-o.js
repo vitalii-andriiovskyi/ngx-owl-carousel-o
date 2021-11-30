@@ -1,4 +1,4 @@
-import { Injectable, isDevMode, ErrorHandler, InjectionToken, PLATFORM_ID, Inject, Optional, Directive, TemplateRef, Input, EventEmitter, Component, ChangeDetectionStrategy, ElementRef, ChangeDetectorRef, ContentChildren, Output, HostListener, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
+import { Injectable, isDevMode, ErrorHandler, InjectionToken, PLATFORM_ID, Inject, NgZone, Optional, Directive, TemplateRef, Input, EventEmitter, Component, ChangeDetectionStrategy, ElementRef, ChangeDetectorRef, ContentChildren, Output, HostListener, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
 import { isPlatformBrowser, LocationStrategy, CommonModule } from '@angular/common';
 import { Subject, merge, of, from } from 'rxjs';
 import { EventManager } from '@angular/platform-browser';
@@ -2074,8 +2074,9 @@ const documentProvider = {
 const DOCUMENT_PROVIDERS = [browserDocumentProvider, documentProvider];
 
 class AutoplayService {
-    constructor(carouselService, winRef, docRef) {
+    constructor(carouselService, winRef, docRef, ngZone) {
         this.carouselService = carouselService;
+        this.ngZone = ngZone;
         /**
          * The autoplay timeout.
          */
@@ -2155,12 +2156,16 @@ class AutoplayService {
             this.winRef.clearTimeout(this._timeout);
         }
         this._isArtificialAutoplayTimeout = timeout ? true : false;
-        return this.winRef.setTimeout(() => {
-            if (this._paused || this.carouselService.is('busy') || this.carouselService.is('interacting') || this.docRef.hidden) {
-                return;
-            }
-            this.carouselService.next(speed || this.carouselService.settings.autoplaySpeed);
-        }, timeout || this.carouselService.settings.autoplayTimeout);
+        return this.ngZone.runOutsideAngular(() => {
+            return this.winRef.setTimeout(() => {
+                this.ngZone.run(() => {
+                    if (this._paused || this.carouselService.is('busy') || this.carouselService.is('interacting') || this.docRef.hidden) {
+                        return;
+                    }
+                    this.carouselService.next(speed || this.carouselService.settings.autoplaySpeed);
+                });
+            }, timeout || this.carouselService.settings.autoplayTimeout);
+        });
     }
     ;
     /**
@@ -2251,7 +2256,8 @@ AutoplayService.decorators = [
 AutoplayService.ctorParameters = () => [
     { type: CarouselService },
     { type: undefined, decorators: [{ type: Inject, args: [WINDOW,] }] },
-    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] },
+    { type: NgZone }
 ];
 
 class LazyLoadService {
