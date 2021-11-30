@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v6.0.2](#v602)
 * [v6.0.1](#v601)
 * [v6.0.0](#v600)
 * [v5.1.1](#v511)
@@ -44,6 +45,10 @@
 * [v0.1.1](#v011)
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
+
+## v6.0.2
+
+The version `v6.0.2` includes fixes for [`#187`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/187) and adds logic to detect changes in options object to rerender the carousel.
 
 ## v6.0.1
 
