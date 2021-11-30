@@ -1,4 +1,4 @@
-import { Injectable, Inject, OnDestroy } from '@angular/core';
+import { Injectable, Inject, OnDestroy, NgZone } from '@angular/core';
 import { Subscription, Observable, merge, of } from 'rxjs';
 import { tap, switchMap, first, filter } from 'rxjs/operators';
 
@@ -47,6 +47,7 @@ export class AutoplayService implements OnDestroy{
   constructor(private carouselService: CarouselService,
               @Inject(WINDOW) winRef: any,
               @Inject(DOCUMENT) docRef: any,
+              private ngZone: NgZone
   ) {
     this.winRef = winRef as Window;
     this.docRef = docRef as Document;
@@ -127,12 +128,17 @@ export class AutoplayService implements OnDestroy{
 
     this._isArtificialAutoplayTimeout = timeout ? true : false;
 
-		return this.winRef.setTimeout(() =>{
-      if (this._paused || this.carouselService.is('busy') || this.carouselService.is('interacting') || this.docRef.hidden) {
-				return;
-			}
-			this.carouselService.next(speed || this.carouselService.settings.autoplaySpeed);
-    }, timeout || this.carouselService.settings.autoplayTimeout);
+		return this.ngZone.runOutsideAngular(() => {
+      return this.winRef.setTimeout(() =>{
+        this.ngZone.run(() => {
+          if (this._paused || this.carouselService.is('busy') || this.carouselService.is('interacting') || this.docRef.hidden) {
+            return;
+          }
+          this.carouselService.next(speed || this.carouselService.settings.autoplaySpeed);
+        });
+      }, timeout || this.carouselService.settings.autoplayTimeout);
+    });
+
   };
 
   /**
