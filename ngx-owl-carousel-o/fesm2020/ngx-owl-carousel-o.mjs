@@ -2038,8 +2038,9 @@ const documentProvider = {
 const DOCUMENT_PROVIDERS = [browserDocumentProvider, documentProvider];
 
 class AutoplayService {
-    constructor(carouselService, winRef, docRef) {
+    constructor(carouselService, winRef, docRef, ngZone) {
         this.carouselService = carouselService;
+        this.ngZone = ngZone;
         /**
          * The autoplay timeout.
          */
@@ -2119,12 +2120,16 @@ class AutoplayService {
             this.winRef.clearTimeout(this._timeout);
         }
         this._isArtificialAutoplayTimeout = timeout ? true : false;
-        return this.winRef.setTimeout(() => {
-            if (this._paused || this.carouselService.is('busy') || this.carouselService.is('interacting') || this.docRef.hidden) {
-                return;
-            }
-            this.carouselService.next(speed || this.carouselService.settings.autoplaySpeed);
-        }, timeout || this.carouselService.settings.autoplayTimeout);
+        return this.ngZone.runOutsideAngular(() => {
+            return this.winRef.setTimeout(() => {
+                this.ngZone.run(() => {
+                    if (this._paused || this.carouselService.is('busy') || this.carouselService.is('interacting') || this.docRef.hidden) {
+                        return;
+                    }
+                    this.carouselService.next(speed || this.carouselService.settings.autoplaySpeed);
+                });
+            }, timeout || this.carouselService.settings.autoplayTimeout);
+        });
     }
     ;
     /**
@@ -2209,7 +2214,7 @@ class AutoplayService {
         }
     }
 }
-AutoplayService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: AutoplayService, deps: [{ token: CarouselService }, { token: WINDOW }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
+AutoplayService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: AutoplayService, deps: [{ token: CarouselService }, { token: WINDOW }, { token: DOCUMENT }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Injectable });
 AutoplayService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: AutoplayService });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: AutoplayService, decorators: [{
             type: Injectable
@@ -2219,7 +2224,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImpor
                 }] }, { type: undefined, decorators: [{
                     type: Inject,
                     args: [DOCUMENT]
-                }] }]; } });
+                }] }, { type: i0.NgZone }]; } });
 
 class LazyLoadService {
     constructor(carouselService) {

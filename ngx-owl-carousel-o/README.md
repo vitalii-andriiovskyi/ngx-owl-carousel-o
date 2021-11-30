@@ -7,7 +7,7 @@
 ngx-owl-carousel-o      | Angular
 ------------------------|--------
 7.x.x                   | 13.x.x
-6.x.x  (latest `6.0.1`) | 12.x.x
+6.x.x  (latest `6.0.2`) | 12.x.x
 5.x.x  (latest `5.1.1`) | 11.x.x
 4.x.x  (latest `4.1.1`) | 10.x.x
 3.x.x  (latest `3.1.1`) | 9.x.x
@@ -15,7 +15,7 @@ ngx-owl-carousel-o      | Angular
 1.x.x  (latest `1.2.1`) | 7.x.x
 0.x.x  (latest `0.1.2`) | 6.x.x
 
-[CHANGELOG](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/update-to-v7-of-nrwl-and-angular/CHANGELOG.md)
+[CHANGELOG](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/blob/develop/CHANGELOG.md)
 
 ## Table of Contents
 
