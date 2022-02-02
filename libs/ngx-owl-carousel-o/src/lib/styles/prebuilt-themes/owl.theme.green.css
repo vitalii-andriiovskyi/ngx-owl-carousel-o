@@ -36,7 +36,7 @@
   .owl-theme .owl-dots .owl-dot {
     display: inline-block;
     zoom: 1;
-    *display: inline; }
+    display: inline; }
     .owl-theme .owl-dots .owl-dot span {
       width: 10px;
       height: 10px;
