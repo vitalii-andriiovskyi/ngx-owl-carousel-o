@@ -1,6 +1,9 @@
 # Versions Changes
 
+* [v7.0.2](#v702)
+* [v7.0.1](#v701)
 * [v7.0.0](#v700)
+* [v6.0.2](#v602)
 * [v6.0.1](#v601)
 * [v6.0.0](#v600)
 * [v5.1.1](#v511)
@@ -46,9 +49,21 @@
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
 
+## v7.0.2
+
+The version `v7.0.2` includes fixes for [`#201`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/201).
+
+## v7.0.1
+
+The version `v7.0.1` includes fixes for [`#187`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/187) and adds logic to detect changes in options object to rerender the carousel.
+
 ## v7.0.0
 
 The version `v7.0.0` is generated for Angular 13.
+
+## v6.0.2 
+
+The version `v6.0.2` includes fixes for [`#187`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/187) and adds logic to detect changes in options object to rerender the carousel.
 
 ## v6.0.1
 
