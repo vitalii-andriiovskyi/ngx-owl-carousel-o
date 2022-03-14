@@ -3618,4 +3618,3 @@ class SlideModel {
  */
 
 export { CarouselComponent, CarouselModule, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective, SlideModel, SlidesOutputData };
-//# sourceMappingURL=ngx-owl-carousel-o.mjs.map
