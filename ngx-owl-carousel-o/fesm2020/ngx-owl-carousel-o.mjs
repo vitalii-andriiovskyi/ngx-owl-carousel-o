@@ -370,7 +370,7 @@ class CarouselService {
                         merge: false,
                         width: width
                     };
-                    while (iterator--) {
+                    while (iterator-- > 0) {
                         merge = this._mergers[iterator];
                         merge = this.settings.mergeFit && Math.min(merge, this.settings.items) || merge;
                         cache.items.merge = merge > 1 || cache.items.merge;
@@ -391,7 +391,7 @@ class CarouselService {
                     view = Math.max(settings.items * 2, 4), size = Math.ceil(items.length / 2) * 2;
                     let append = [], prepend = [], repeat = settings.loop && items.length ? settings.rewind ? view : Math.max(view, size) : 0;
                     repeat /= 2;
-                    while (repeat--) {
+                    while (repeat-- > 0) {
                         // Switch to only using appended clones
                         clones.push(this.normalize(clones.length / 2, true));
                         append.push({ ...this.slidesData[clones[clones.length - 1]] });
@@ -1152,7 +1152,7 @@ class CarouselService {
             iterator = this._items.length;
             reciprocalItemsWidth = this.slidesData[--iterator].width;
             elementWidth = this._width;
-            while (iterator--) {
+            while (iterator-- > 0) {
                 // it could be use this._items instead of this.slidesData;
                 reciprocalItemsWidth += +this.slidesData[iterator].width + this.settings.margin;
                 if (reciprocalItemsWidth > elementWidth) {
@@ -1706,7 +1706,7 @@ class NavigationService {
         let i, j, k;
         const lower = this.carouselService.clones().length / 2, upper = lower + this.carouselService.items().length, maximum = this.carouselService.maximum(true), pages = [], settings = this.carouselService.settings;
         let size = settings.center || settings.autoWidth || settings.dotsData
-            ? 1 : settings.dotsEach || settings.items;
+            ? 1 : Math.floor(Number(settings.dotsEach)) || Math.floor(settings.items);
         size = +size;
         if (settings.slideBy !== 'page') {
             settings.slideBy = Math.min(+settings.slideBy, settings.items);
