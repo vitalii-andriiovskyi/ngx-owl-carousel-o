@@ -311,7 +311,7 @@ export class CarouselService {
           width: width
         };
 
-        while (iterator--) {
+        while (iterator-- > 0) {
           merge = this._mergers[iterator];
           merge = this.settings.mergeFit && Math.min(merge, this.settings.items) || merge;
           cache.items.merge = merge > 1 || cache.items.merge;
@@ -342,7 +342,7 @@ export class CarouselService {
 
         repeat /= 2;
 
-        while (repeat--) {
+        while (repeat-- > 0) {
           // Switch to only using appended clones
           clones.push(this.normalize(clones.length / 2, true));
           append.push({ ...this.slidesData[clones[clones.length - 1]]});
@@ -1221,7 +1221,7 @@ export class CarouselService {
 			iterator = this._items.length;
 			reciprocalItemsWidth = this.slidesData[--iterator].width;
 			elementWidth = this._width;
-			while (iterator--) {
+			while (iterator-- > 0) {
 				// it could be use this._items instead of this.slidesData;
 				reciprocalItemsWidth += +this.slidesData[iterator].width + this.settings.margin;
 				if (reciprocalItemsWidth > elementWidth) {
