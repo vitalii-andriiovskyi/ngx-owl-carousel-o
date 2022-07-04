@@ -3738,7 +3738,6 @@ describe('CarouselComponent', () => {
 
       triggerMouseEvent(carouselHTML, 'mouseleave', {});
       expect(autoplayService.startPlayingMouseLeave).toHaveBeenCalled();
-console.log('mouseleave');
       tick(10);
       fixtureHost.detectChanges();
 
