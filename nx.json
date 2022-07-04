@@ -9,7 +9,7 @@
   },
   "tasksRunnerOptions": {
     "default": {
-      "runner": "@nrwl/workspace/tasks-runners/default",
+      "runner": "nx/tasks-runners/default",
       "options": {
         "cacheableOperations": [
           "build",
@@ -24,20 +24,11 @@
   "affected": {
     "defaultBase": "master"
   },
-  "targetDependencies": {
-    "build": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      }
-    ]
-  },
   "cli": {
     "warnings": {
       "typescriptMismatch": false,
       "versionMismatch": false
-    },
-    "defaultCollection": "@nrwl/angular"
+    }
   },
   "defaultProject": "demo-owl-carousel",
   "generators": {
@@ -51,6 +42,14 @@
     },
     "@nrwl/schematics:node-application": {
       "framework": "express"
+    }
+  },
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "targetDefaults": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ]
     }
   }
 }

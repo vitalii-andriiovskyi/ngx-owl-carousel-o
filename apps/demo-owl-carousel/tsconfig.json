@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "types": ["jasmine", "node"]
+    "types": ["jasmine", "node"],
+    "target": "es2020"
   },
   "files": [],
   "include": [],
