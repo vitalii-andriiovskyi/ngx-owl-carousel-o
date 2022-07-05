@@ -136,9 +136,9 @@ class OwlLogger {
         console.warn(value, ...rest);
     }
 }
-OwlLogger.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: OwlLogger, deps: [{ token: i0.ErrorHandler }], target: i0.ɵɵFactoryTarget.Injectable });
-OwlLogger.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: OwlLogger });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: OwlLogger, decorators: [{
+OwlLogger.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: OwlLogger, deps: [{ token: i0.ErrorHandler }], target: i0.ɵɵFactoryTarget.Injectable });
+OwlLogger.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: OwlLogger });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: OwlLogger, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: i0.ErrorHandler }]; } });
 
@@ -370,7 +370,7 @@ class CarouselService {
                         merge: false,
                         width: width
                     };
-                    while (iterator--) {
+                    while (iterator-- > 0) {
                         merge = this._mergers[iterator];
                         merge = this.settings.mergeFit && Math.min(merge, this.settings.items) || merge;
                         cache.items.merge = merge > 1 || cache.items.merge;
@@ -391,7 +391,7 @@ class CarouselService {
                     view = Math.max(settings.items * 2, 4), size = Math.ceil(items.length / 2) * 2;
                     let append = [], prepend = [], repeat = settings.loop && items.length ? settings.rewind ? view : Math.max(view, size) : 0;
                     repeat /= 2;
-                    while (repeat--) {
+                    while (repeat-- > 0) {
                         // Switch to only using appended clones
                         clones.push(this.normalize(clones.length / 2, true));
                         append.push({ ...this.slidesData[clones[clones.length - 1]] });
@@ -1152,7 +1152,7 @@ class CarouselService {
             iterator = this._items.length;
             reciprocalItemsWidth = this.slidesData[--iterator].width;
             elementWidth = this._width;
-            while (iterator--) {
+            while (iterator-- > 0) {
                 // it could be use this._items instead of this.slidesData;
                 reciprocalItemsWidth += +this.slidesData[iterator].width + this.settings.margin;
                 if (reciprocalItemsWidth > elementWidth) {
@@ -1614,9 +1614,9 @@ class CarouselService {
         };
     }
 }
-CarouselService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: CarouselService, deps: [{ token: OwlLogger }], target: i0.ɵɵFactoryTarget.Injectable });
-CarouselService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: CarouselService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: CarouselService, decorators: [{
+CarouselService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: CarouselService, deps: [{ token: OwlLogger }], target: i0.ɵɵFactoryTarget.Injectable });
+CarouselService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: CarouselService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: CarouselService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: OwlLogger }]; } });
 
@@ -1706,7 +1706,7 @@ class NavigationService {
         let i, j, k;
         const lower = this.carouselService.clones().length / 2, upper = lower + this.carouselService.items().length, maximum = this.carouselService.maximum(true), pages = [], settings = this.carouselService.settings;
         let size = settings.center || settings.autoWidth || settings.dotsData
-            ? 1 : settings.dotsEach || settings.items;
+            ? 1 : Math.floor(Number(settings.dotsEach)) || Math.floor(settings.items);
         size = +size;
         if (settings.slideBy !== 'page') {
             settings.slideBy = Math.min(+settings.slideBy, settings.items);
@@ -1896,9 +1896,9 @@ class NavigationService {
         this.carouselService.to(this.carouselService.relative(position), false);
     }
 }
-NavigationService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: NavigationService, deps: [{ token: CarouselService }], target: i0.ɵɵFactoryTarget.Injectable });
-NavigationService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: NavigationService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: NavigationService, decorators: [{
+NavigationService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: NavigationService, deps: [{ token: CarouselService }], target: i0.ɵɵFactoryTarget.Injectable });
+NavigationService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: NavigationService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: NavigationService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: CarouselService }]; } });
 
@@ -1929,9 +1929,9 @@ class BrowserWindowRef extends WindowRef {
         return window;
     }
 }
-BrowserWindowRef.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: BrowserWindowRef, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-BrowserWindowRef.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: BrowserWindowRef });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: BrowserWindowRef, decorators: [{
+BrowserWindowRef.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: BrowserWindowRef, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+BrowserWindowRef.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: BrowserWindowRef });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: BrowserWindowRef, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return []; } });
 /**
@@ -1996,9 +1996,9 @@ class BrowserDocumentRef extends DocumentRef {
         return document;
     }
 }
-BrowserDocumentRef.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: BrowserDocumentRef, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-BrowserDocumentRef.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: BrowserDocumentRef });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: BrowserDocumentRef, decorators: [{
+BrowserDocumentRef.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: BrowserDocumentRef, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+BrowserDocumentRef.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: BrowserDocumentRef });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: BrowserDocumentRef, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return []; } });
 /**
@@ -2038,8 +2038,9 @@ const documentProvider = {
 const DOCUMENT_PROVIDERS = [browserDocumentProvider, documentProvider];
 
 class AutoplayService {
-    constructor(carouselService, winRef, docRef) {
+    constructor(carouselService, winRef, docRef, ngZone) {
         this.carouselService = carouselService;
+        this.ngZone = ngZone;
         /**
          * The autoplay timeout.
          */
@@ -2119,12 +2120,16 @@ class AutoplayService {
             this.winRef.clearTimeout(this._timeout);
         }
         this._isArtificialAutoplayTimeout = timeout ? true : false;
-        return this.winRef.setTimeout(() => {
-            if (this._paused || this.carouselService.is('busy') || this.carouselService.is('interacting') || this.docRef.hidden) {
-                return;
-            }
-            this.carouselService.next(speed || this.carouselService.settings.autoplaySpeed);
-        }, timeout || this.carouselService.settings.autoplayTimeout);
+        return this.ngZone.runOutsideAngular(() => {
+            return this.winRef.setTimeout(() => {
+                this.ngZone.run(() => {
+                    if (this._paused || this.carouselService.is('busy') || this.carouselService.is('interacting') || this.docRef.hidden) {
+                        return;
+                    }
+                    this.carouselService.next(speed || this.carouselService.settings.autoplaySpeed);
+                });
+            }, timeout || this.carouselService.settings.autoplayTimeout);
+        });
     }
     ;
     /**
@@ -2209,9 +2214,9 @@ class AutoplayService {
         }
     }
 }
-AutoplayService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: AutoplayService, deps: [{ token: CarouselService }, { token: WINDOW }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
-AutoplayService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: AutoplayService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: AutoplayService, decorators: [{
+AutoplayService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: AutoplayService, deps: [{ token: CarouselService }, { token: WINDOW }, { token: DOCUMENT }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Injectable });
+AutoplayService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: AutoplayService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: AutoplayService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: CarouselService }, { type: undefined, decorators: [{
                     type: Inject,
@@ -2219,7 +2224,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImpor
                 }] }, { type: undefined, decorators: [{
                     type: Inject,
                     args: [DOCUMENT]
-                }] }]; } });
+                }] }, { type: i0.NgZone }]; } });
 
 class LazyLoadService {
     constructor(carouselService) {
@@ -2279,9 +2284,9 @@ class LazyLoadService {
         this.carouselService.slidesData[position].load = true;
     }
 }
-LazyLoadService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: LazyLoadService, deps: [{ token: CarouselService }], target: i0.ɵɵFactoryTarget.Injectable });
-LazyLoadService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: LazyLoadService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: LazyLoadService, decorators: [{
+LazyLoadService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: LazyLoadService, deps: [{ token: CarouselService }], target: i0.ɵɵFactoryTarget.Injectable });
+LazyLoadService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: LazyLoadService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: LazyLoadService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: CarouselService }]; } });
 
@@ -2386,9 +2391,9 @@ class AnimateService {
     }
     ;
 }
-AnimateService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: AnimateService, deps: [{ token: CarouselService }], target: i0.ɵɵFactoryTarget.Injectable });
-AnimateService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: AnimateService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: AnimateService, decorators: [{
+AnimateService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: AnimateService, deps: [{ token: CarouselService }], target: i0.ɵɵFactoryTarget.Injectable });
+AnimateService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: AnimateService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: AnimateService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: CarouselService }]; } });
 
@@ -2440,9 +2445,9 @@ class AutoHeightService {
         });
     }
 }
-AutoHeightService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: AutoHeightService, deps: [{ token: CarouselService }], target: i0.ɵɵFactoryTarget.Injectable });
-AutoHeightService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: AutoHeightService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: AutoHeightService, decorators: [{
+AutoHeightService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: AutoHeightService, deps: [{ token: CarouselService }], target: i0.ɵɵFactoryTarget.Injectable });
+AutoHeightService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: AutoHeightService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: AutoHeightService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: CarouselService }]; } });
 
@@ -2508,9 +2513,9 @@ class HashService {
         });
     }
 }
-HashService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: HashService, deps: [{ token: CarouselService }, { token: i1.ActivatedRoute, optional: true }, { token: i1.Router, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
-HashService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: HashService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: HashService, decorators: [{
+HashService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: HashService, deps: [{ token: CarouselService }, { token: i1.ActivatedRoute, optional: true }, { token: i1.Router, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
+HashService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: HashService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: HashService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: CarouselService }, { type: i1.ActivatedRoute, decorators: [{
                     type: Optional
@@ -2559,9 +2564,9 @@ class CarouselSlideDirective {
         return !isNaN(parseFloat(number));
     }
 }
-CarouselSlideDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: CarouselSlideDirective, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
-CarouselSlideDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.2", type: CarouselSlideDirective, selector: "ng-template[carouselSlide]", inputs: { id: "id", dataMerge: "dataMerge", width: "width", dotContent: "dotContent", dataHash: "dataHash" }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: CarouselSlideDirective, decorators: [{
+CarouselSlideDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: CarouselSlideDirective, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
+CarouselSlideDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "14.0.4", type: CarouselSlideDirective, selector: "ng-template[carouselSlide]", inputs: { id: "id", dataMerge: "dataMerge", width: "width", dotContent: "dotContent", dataHash: "dataHash" }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: CarouselSlideDirective, decorators: [{
             type: Directive,
             args: [{ selector: 'ng-template[carouselSlide]' }]
         }], ctorParameters: function () { return [{ type: i0.TemplateRef }]; }, propDecorators: { id: [{
@@ -2605,9 +2610,9 @@ class ResizeService {
         this.windowWidth = event.target;
     }
 }
-ResizeService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: ResizeService, deps: [{ token: i1$1.EventManager }], target: i0.ɵɵFactoryTarget.Injectable });
-ResizeService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: ResizeService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: ResizeService, decorators: [{
+ResizeService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: ResizeService, deps: [{ token: i1$1.EventManager }], target: i0.ɵɵFactoryTarget.Injectable });
+ResizeService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: ResizeService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: ResizeService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: i1$1.EventManager }]; } });
 
@@ -2901,8 +2906,8 @@ class StageComponent {
         this.animateService.clear(id);
     }
 }
-StageComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: StageComponent, deps: [{ token: i0.NgZone }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: CarouselService }, { token: AnimateService }], target: i0.ɵɵFactoryTarget.Component });
-StageComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "12.0.0", version: "13.0.2", type: StageComponent, selector: "owl-stage", inputs: { owlDraggable: "owlDraggable", stageData: "stageData", slidesData: "slidesData" }, host: { listeners: { "mousedown": "onMouseDown($event)", "touchstart": "onTouchStart($event)", "touchcancel": "onTouchCancel($event)", "dragstart": "onDragStart()", "selectstart": "onSelectStart()" } }, ngImport: i0, template: `
+StageComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: StageComponent, deps: [{ token: i0.NgZone }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: CarouselService }, { token: AnimateService }], target: i0.ɵɵFactoryTarget.Component });
+StageComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.0.4", type: StageComponent, selector: "owl-stage", inputs: { owlDraggable: "owlDraggable", stageData: "stageData", slidesData: "slidesData" }, host: { listeners: { "mousedown": "onMouseDown($event)", "touchstart": "onTouchStart($event)", "touchcancel": "onTouchCancel($event)", "dragstart": "onDragStart()", "selectstart": "onSelectStart()" } }, ngImport: i0, template: `
     <div>
       <div class="owl-stage" [ngStyle]="{'width': stageData.width + 'px',
                                         'transform': stageData.transform,
@@ -2923,7 +2928,7 @@ StageComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "12.0.0", version
         </ng-container>
       </div><!-- /.owl-stage -->
     </div>
-  `, isInline: true, directives: [{ type: i3.NgStyle, selector: "[ngStyle]", inputs: ["ngStyle"] }, { type: i3.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { type: i3.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { type: i3.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { type: i3.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet"] }], animations: [
+  `, isInline: true, dependencies: [{ kind: "directive", type: i3.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i3.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: i3.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "directive", type: i3.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i3.NgStyle, selector: "[ngStyle]", inputs: ["ngStyle"] }], animations: [
         trigger('autoHeight', [
             state('nulled', style({ height: 0 })),
             state('full', style({ height: '*' })),
@@ -2937,7 +2942,7 @@ StageComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "12.0.0", version
             ]),
         ])
     ] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: StageComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: StageComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'owl-stage',
@@ -3271,8 +3276,8 @@ class CarouselComponent {
         this.autoplayService.play();
     }
 }
-CarouselComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: CarouselComponent, deps: [{ token: i0.ElementRef }, { token: ResizeService }, { token: CarouselService }, { token: NavigationService }, { token: AutoplayService }, { token: LazyLoadService }, { token: AnimateService }, { token: AutoHeightService }, { token: HashService }, { token: OwlLogger }, { token: i0.ChangeDetectorRef }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component });
-CarouselComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "12.0.0", version: "13.0.2", type: CarouselComponent, selector: "owl-carousel-o", inputs: { options: "options" }, outputs: { translated: "translated", dragging: "dragging", change: "change", changed: "changed", initialized: "initialized" }, host: { listeners: { "document:visibilitychange": "onVisibilityChange($event)" } }, providers: [
+CarouselComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: CarouselComponent, deps: [{ token: i0.ElementRef }, { token: ResizeService }, { token: CarouselService }, { token: NavigationService }, { token: AutoplayService }, { token: LazyLoadService }, { token: AnimateService }, { token: AutoHeightService }, { token: HashService }, { token: OwlLogger }, { token: i0.ChangeDetectorRef }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component });
+CarouselComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.0.4", type: CarouselComponent, selector: "owl-carousel-o", inputs: { options: "options" }, outputs: { translated: "translated", dragging: "dragging", change: "change", changed: "changed", initialized: "initialized" }, host: { listeners: { "document:visibilitychange": "onVisibilityChange($event)" } }, providers: [
         NavigationService,
         AutoplayService,
         CarouselService,
@@ -3309,12 +3314,10 @@ CarouselComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "12.0.0", vers
         </div> <!-- /.owl-dots -->
       </ng-container>
     </div> <!-- /.owl-carousel owl-loaded -->
-  `, isInline: true, styles: [".owl-theme{display:block}\n"], components: [{ type: StageComponent, selector: "owl-stage", inputs: ["owlDraggable", "stageData", "slidesData"] }], directives: [{ type: i3.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { type: i3.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { type: i3.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: CarouselComponent, decorators: [{
+  `, isInline: true, styles: [".owl-theme{display:block}\n"], dependencies: [{ kind: "directive", type: i3.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i3.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: i3.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "component", type: StageComponent, selector: "owl-stage", inputs: ["owlDraggable", "stageData", "slidesData"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: CarouselComponent, decorators: [{
             type: Component,
-            args: [{
-                    selector: 'owl-carousel-o',
-                    template: `
+            args: [{ selector: 'owl-carousel-o', template: `
     <div class="owl-carousel owl-theme" #owlCarousel
       [ngClass]="{'owl-rtl': owlDOMData?.rtl,
                   'owl-loaded': owlDOMData?.isLoaded,
@@ -3343,9 +3346,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImpor
         </div> <!-- /.owl-dots -->
       </ng-container>
     </div> <!-- /.owl-carousel owl-loaded -->
-  `,
-                    styles: [`.owl-theme { display: block; }`],
-                    providers: [
+  `, providers: [
                         NavigationService,
                         AutoplayService,
                         CarouselService,
@@ -3353,9 +3354,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImpor
                         AnimateService,
                         AutoHeightService,
                         HashService
-                    ],
-                    changeDetection: ChangeDetectionStrategy.OnPush
-                }]
+                    ], changeDetection: ChangeDetectionStrategy.OnPush, styles: [".owl-theme{display:block}\n"] }]
         }], ctorParameters: function () { return [{ type: i0.ElementRef }, { type: ResizeService }, { type: CarouselService }, { type: NavigationService }, { type: AutoplayService }, { type: LazyLoadService }, { type: AnimateService }, { type: AutoHeightService }, { type: HashService }, { type: OwlLogger }, { type: i0.ChangeDetectorRef }, { type: undefined, decorators: [{
                     type: Inject,
                     args: [DOCUMENT]
@@ -3427,9 +3426,9 @@ class OwlRouterLinkDirective {
         });
     }
 }
-OwlRouterLinkDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: OwlRouterLinkDirective, deps: [{ token: i1.Router }, { token: i1.ActivatedRoute }, { token: 'tabindex', attribute: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-OwlRouterLinkDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.2", type: OwlRouterLinkDirective, selector: ":not(a)[owlRouterLink]", inputs: { queryParams: "queryParams", fragment: "fragment", queryParamsHandling: "queryParamsHandling", preserveFragment: "preserveFragment", skipLocationChange: "skipLocationChange", replaceUrl: "replaceUrl", stopLink: "stopLink", owlRouterLink: "owlRouterLink", preserveQueryParams: "preserveQueryParams" }, host: { listeners: { "click": "onClick()" } }, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: OwlRouterLinkDirective, decorators: [{
+OwlRouterLinkDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: OwlRouterLinkDirective, deps: [{ token: i1.Router }, { token: i1.ActivatedRoute }, { token: 'tabindex', attribute: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+OwlRouterLinkDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "14.0.4", type: OwlRouterLinkDirective, selector: ":not(a)[owlRouterLink]", inputs: { queryParams: "queryParams", fragment: "fragment", queryParamsHandling: "queryParamsHandling", preserveFragment: "preserveFragment", skipLocationChange: "skipLocationChange", replaceUrl: "replaceUrl", stopLink: "stopLink", owlRouterLink: "owlRouterLink", preserveQueryParams: "preserveQueryParams" }, host: { listeners: { "click": "onClick()" } }, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: OwlRouterLinkDirective, decorators: [{
             type: Directive,
             args: [{ selector: ':not(a)[owlRouterLink]' }]
         }], ctorParameters: function () { return [{ type: i1.Router }, { type: i1.ActivatedRoute }, { type: undefined, decorators: [{
@@ -3527,9 +3526,9 @@ class OwlRouterLinkWithHrefDirective {
         });
     }
 }
-OwlRouterLinkWithHrefDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: OwlRouterLinkWithHrefDirective, deps: [{ token: i1.Router }, { token: i1.ActivatedRoute }, { token: i3.LocationStrategy }], target: i0.ɵɵFactoryTarget.Directive });
-OwlRouterLinkWithHrefDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "12.0.0", version: "13.0.2", type: OwlRouterLinkWithHrefDirective, selector: "a[owlRouterLink]", inputs: { target: "target", queryParams: "queryParams", fragment: "fragment", queryParamsHandling: "queryParamsHandling", preserveFragment: "preserveFragment", skipLocationChange: "skipLocationChange", replaceUrl: "replaceUrl", stopLink: "stopLink", owlRouterLink: "owlRouterLink", preserveQueryParams: "preserveQueryParams" }, host: { listeners: { "click": "onClick($event.button,$event.ctrlKey,$event.metaKey,$event.shiftKey)" }, properties: { "attr.target": "this.target", "href": "this.href" } }, usesOnChanges: true, ngImport: i0 });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: OwlRouterLinkWithHrefDirective, decorators: [{
+OwlRouterLinkWithHrefDirective.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: OwlRouterLinkWithHrefDirective, deps: [{ token: i1.Router }, { token: i1.ActivatedRoute }, { token: i3.LocationStrategy }], target: i0.ɵɵFactoryTarget.Directive });
+OwlRouterLinkWithHrefDirective.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "14.0.4", type: OwlRouterLinkWithHrefDirective, selector: "a[owlRouterLink]", inputs: { target: "target", queryParams: "queryParams", fragment: "fragment", queryParamsHandling: "queryParamsHandling", preserveFragment: "preserveFragment", skipLocationChange: "skipLocationChange", replaceUrl: "replaceUrl", stopLink: "stopLink", owlRouterLink: "owlRouterLink", preserveQueryParams: "preserveQueryParams" }, host: { listeners: { "click": "onClick($event.button,$event.ctrlKey,$event.metaKey,$event.shiftKey)" }, properties: { "attr.target": "this.target", "href": "this.href" } }, usesOnChanges: true, ngImport: i0 });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: OwlRouterLinkWithHrefDirective, decorators: [{
             type: Directive,
             args: [{ selector: 'a[owlRouterLink]' }]
         }], ctorParameters: function () { return [{ type: i1.Router }, { type: i1.ActivatedRoute }, { type: i3.LocationStrategy }]; }, propDecorators: { target: [{
@@ -3575,14 +3574,10 @@ class SlidesOutputData {
 const routes = [];
 class CarouselModule {
 }
-CarouselModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: CarouselModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-CarouselModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: CarouselModule, declarations: [CarouselComponent, CarouselSlideDirective, StageComponent, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective], imports: [CommonModule], exports: [CarouselComponent, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective] });
-CarouselModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: CarouselModule, providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS, OwlLogger], imports: [[
-            CommonModule,
-            // BrowserAnimationsModule, // there's an issue with this import while using lazy loading of module consuming this library. I don't remove it because it could be needed during future enhancement of this lib.
-            // RouterModule.forChild(routes)
-        ]] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: CarouselModule, decorators: [{
+CarouselModule.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: CarouselModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+CarouselModule.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "14.0.4", ngImport: i0, type: CarouselModule, declarations: [CarouselComponent, CarouselSlideDirective, StageComponent, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective], imports: [CommonModule], exports: [CarouselComponent, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective] });
+CarouselModule.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: CarouselModule, providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS, OwlLogger], imports: [CommonModule] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: CarouselModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MapOperator } from 'rxjs/internal/operators/map';
 
 // import { ResizeService, WINDOW } from 'ngx-owl-carousel-o';
 

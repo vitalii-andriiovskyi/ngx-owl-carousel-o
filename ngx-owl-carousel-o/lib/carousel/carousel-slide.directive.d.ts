@@ -34,5 +34,5 @@ export declare class CarouselSlideDirective {
        */
     isNumeric(number: any): boolean;
     static ɵfac: i0.ɵɵFactoryDeclaration<CarouselSlideDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<CarouselSlideDirective, "ng-template[carouselSlide]", never, { "id": "id"; "dataMerge": "dataMerge"; "width": "width"; "dotContent": "dotContent"; "dataHash": "dataHash"; }, {}, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<CarouselSlideDirective, "ng-template[carouselSlide]", never, { "id": "id"; "dataMerge": "dataMerge"; "width": "width"; "dotContent": "dotContent"; "dataHash": "dataHash"; }, {}, never, never, false>;
 }

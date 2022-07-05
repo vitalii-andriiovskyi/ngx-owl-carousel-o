@@ -179,5 +179,5 @@ export declare class StageComponent implements OnInit, OnDestroy {
      */
     clear(id: any): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<StageComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<StageComponent, "owl-stage", never, { "owlDraggable": "owlDraggable"; "stageData": "stageData"; "slidesData": "slidesData"; }, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<StageComponent, "owl-stage", never, { "owlDraggable": "owlDraggable"; "stageData": "stageData"; "slidesData": "slidesData"; }, {}, never, never, false>;
 }

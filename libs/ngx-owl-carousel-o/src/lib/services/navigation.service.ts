@@ -123,7 +123,7 @@ export class NavigationService implements OnDestroy {
       pages: any[] = [],
       settings: OwlOptions = this.carouselService.settings;
      let size = settings.center || settings.autoWidth || settings.dotsData
-        ? 1 : settings.dotsEach || settings.items;
+        ? 1 : Math.floor(Number(settings.dotsEach)) || Math.floor(settings.items);
       size = +size;
 		if (settings.slideBy !== 'page') {
 			settings.slideBy = Math.min(+settings.slideBy, settings.items);
