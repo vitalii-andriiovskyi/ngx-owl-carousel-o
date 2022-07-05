@@ -173,5 +173,5 @@ export declare class CarouselComponent implements OnInit, AfterContentInit, OnDe
     stopAutoplay(): void;
     startAutoplay(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<CarouselComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<CarouselComponent, "owl-carousel-o", never, { "options": "options"; }, { "translated": "translated"; "dragging": "dragging"; "change": "change"; "changed": "changed"; "initialized": "initialized"; }, ["slides"], never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<CarouselComponent, "owl-carousel-o", never, { "options": "options"; }, { "translated": "translated"; "dragging": "dragging"; "change": "change"; "changed": "changed"; "initialized": "initialized"; }, ["slides"], never, false>;
 }
