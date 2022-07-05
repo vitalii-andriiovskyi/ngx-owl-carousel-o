@@ -22,7 +22,7 @@
     "update:check": "ng update",
     "dep-graph": "./node_modules/.bin/nx dep-graph",
     "help": "./node_modules/.bin/nx help",
-    "build:lib": "ng-packagr -p libs/ngx-owl-carousel-o/package.json",
+    "build:lib": "ng-packagr -p libs/ngx-owl-carousel-o/ng-package.json",
     "affected": "./node_modules/.bin/nx affected",
     "postinstall": "ngcc --properties es2020 browser module main && node ./decorate-angular-cli.js",
     "nx": "nx",
