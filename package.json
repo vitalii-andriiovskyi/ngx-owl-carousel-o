@@ -48,9 +48,9 @@
     "animate.css": "^3.7.0",
     "bootstrap": "^5.0.1",
     "core-js": "3.19.0",
-    "rxjs": "6.6.3",
+    "rxjs": "^7.4.0",
     "rxjs-compat": "6.0.0",
-    "tslib": "2.2.0",
+    "tslib": "^2.4.0",
     "zone.js": "0.11.6"
   },
   "devDependencies": {
@@ -77,7 +77,7 @@
     "karma-jasmine-html-reporter": "1.7.0",
     "ng-packagr": "14.0.2",
     "nx": "14.4.0",
-    "postcss": "^8.3.9",
+    "postcss": "^8.4.14",
     "postcss-import": "14.1.0",
     "postcss-preset-env": "7.5.0",
     "postcss-url": "10.1.3",
