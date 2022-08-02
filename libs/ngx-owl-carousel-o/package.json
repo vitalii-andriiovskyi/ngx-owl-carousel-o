@@ -32,6 +32,23 @@
     "lib": {
       "entryFile": "./src/index.ts"
     },
-    "dest": "../../ngx-owl-carousel-o"
+    "dest": "../../ngx-owl-carousel-o",
+    "assets": [
+      "./lib/styles/**/*.scss",
+      "./lib/styles/**/*.css",
+      "./lib/styles/**/*.gif",
+      "./lib/styles/**/*.png"
+    ]
+  },
+  "exports": {
+    "./lib/styles/scss/owl.carousel": {
+      "sass": "./lib/styles/scss/owl.carousel.scss"
+    },
+    "./lib/styles/scss/owl.theme.default": {
+      "sass": "./lib/styles/scss/owl.theme.default.scss"
+    },
+    "./lib/styles/scss/owl.theme.green": {
+      "sass": "./lib/styles/scss/owl.theme.green.scss"
+    }
   }
 }
