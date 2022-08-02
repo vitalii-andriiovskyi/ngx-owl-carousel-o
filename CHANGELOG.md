@@ -1,6 +1,8 @@
 # Versions Changes
 
+* [v14.0.1](#v1401)
 * [v14.0.0](#v1400)
+* [v7.0.4](#v704)
 * [v7.0.3](#v703)
 * [v7.0.2](#v702)
 * [v7.0.1](#v701)
@@ -51,9 +53,17 @@
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
 
+## v14.0.1
+
+The version `v14.0.1` includes fixes for [`#93`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/93).
+
 ## v14.0.0
 
 The version `v14.0.0` is generated for Angular 14.
+
+## v7.0.4
+
+The version `v7.0.4` includes fixes for [`#93`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/93).
 
 ## v7.0.3
 

@@ -3058,15 +3058,18 @@ class CarouselComponent {
         this.carouselWindowWidth = this.el.nativeElement.querySelector('.owl-carousel').clientWidth;
     }
     ngOnChanges() {
-        var _a;
+        var _a, _b;
         if (this.prevOptions !== this.options) {
             if (this.prevOptions && ((_a = this.slides) === null || _a === void 0 ? void 0 : _a.toArray().length)) {
                 this.carouselService.setup(this.carouselWindowWidth, this.slides.toArray(), this.options);
                 this.carouselService.initialize(this.slides.toArray());
             }
-            else {
+            else if (this.prevOptions && !((_b = this.slides) === null || _b === void 0 ? void 0 : _b.toArray().length)) {
                 this.carouselLoaded = false;
                 this.logger.log(`There are no slides to show. So the carousel won't be re-rendered`);
+            }
+            else {
+                this.carouselLoaded = false;
             }
             this.prevOptions = this.options;
         }
