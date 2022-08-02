@@ -3059,9 +3059,12 @@ class CarouselComponent {
                 this.carouselService.setup(this.carouselWindowWidth, this.slides.toArray(), this.options);
                 this.carouselService.initialize(this.slides.toArray());
             }
-            else {
+            else if (this.prevOptions && !this.slides?.toArray().length) {
                 this.carouselLoaded = false;
                 this.logger.log(`There are no slides to show. So the carousel won't be re-rendered`);
+            }
+            else {
+                this.carouselLoaded = false;
             }
             this.prevOptions = this.options;
         }
