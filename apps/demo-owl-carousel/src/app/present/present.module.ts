@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { PresentComponent } from './present.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { RouterModule, Routes } from '@angular/router';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatButtonModule } from '@angular/material/button';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 
 const appRoutes: Routes = [
   { path: '', component: PresentComponent }

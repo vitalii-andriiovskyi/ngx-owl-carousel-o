@@ -295,8 +295,8 @@ export class CarouselComponent {
         this.autoplayService.play();
     }
 }
-CarouselComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: CarouselComponent, deps: [{ token: i0.ElementRef }, { token: i1.ResizeService }, { token: i2.CarouselService }, { token: i3.NavigationService }, { token: i4.AutoplayService }, { token: i5.LazyLoadService }, { token: i6.AnimateService }, { token: i7.AutoHeightService }, { token: i8.HashService }, { token: i9.OwlLogger }, { token: i0.ChangeDetectorRef }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component });
-CarouselComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.0.4", type: CarouselComponent, selector: "owl-carousel-o", inputs: { options: "options" }, outputs: { translated: "translated", dragging: "dragging", change: "change", changed: "changed", initialized: "initialized" }, host: { listeners: { "document:visibilitychange": "onVisibilityChange($event)" } }, providers: [
+CarouselComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.0.2", ngImport: i0, type: CarouselComponent, deps: [{ token: i0.ElementRef }, { token: i1.ResizeService }, { token: i2.CarouselService }, { token: i3.NavigationService }, { token: i4.AutoplayService }, { token: i5.LazyLoadService }, { token: i6.AnimateService }, { token: i7.AutoHeightService }, { token: i8.HashService }, { token: i9.OwlLogger }, { token: i0.ChangeDetectorRef }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component });
+CarouselComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "15.0.2", type: CarouselComponent, selector: "owl-carousel-o", inputs: { options: "options" }, outputs: { translated: "translated", dragging: "dragging", change: "change", changed: "changed", initialized: "initialized" }, host: { listeners: { "document:visibilitychange": "onVisibilityChange($event)" } }, providers: [
         NavigationService,
         AutoplayService,
         CarouselService,
@@ -334,7 +334,7 @@ CarouselComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", vers
       </ng-container>
     </div> <!-- /.owl-carousel owl-loaded -->
   `, isInline: true, styles: [".owl-theme{display:block}\n"], dependencies: [{ kind: "directive", type: i10.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i10.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { kind: "directive", type: i10.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { kind: "component", type: i11.StageComponent, selector: "owl-stage", inputs: ["owlDraggable", "stageData", "slidesData"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: CarouselComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.0.2", ngImport: i0, type: CarouselComponent, decorators: [{
             type: Component,
             args: [{ selector: 'owl-carousel-o', template: `
     <div class="owl-carousel owl-theme" #owlCarousel

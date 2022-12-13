@@ -4,7 +4,8 @@
 
 ngx-owl-carousel-o      | Angular
 ------------------------|--------
-14.x.x                  | 14.x.x
+15.x.x                  | 15.x.x
+14.x.x (latest `14.0.1`)| 14.x.x
 7.x.x  (latest `7.0.4`) | 13.x.x
 6.x.x  (latest `6.0.2`) | 12.x.x
 5.x.x  (latest `5.1.1`) | 11.x.x
@@ -48,8 +49,8 @@ ngx-owl-carousel-o      | Angular
     - `src/styles.sass` or `src/styles.scss`:
 
         ```sass
-        @import '~ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
-        @import '~ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
+        @import 'ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+        @import 'ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
         ```
 
 3. Import `RouterModule` and `Routes` into `AppModule` unless they are imported.
