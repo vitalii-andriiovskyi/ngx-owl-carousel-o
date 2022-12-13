@@ -94,7 +94,7 @@
             ]
           },
           "outputs": [
-            "coverage/apps/demo-owl-carousel/"
+            "{workspaceRoot}/coverage/apps/demo-owl-carousel/"
           ]
         }
       },
@@ -146,7 +146,7 @@
             "karmaConfig": "libs/ngx-owl-carousel-o/karma.conf.js"
           },
           "outputs": [
-            "coverage/libs/ngx-owl-carousel-o"
+            "{workspaceRoot}/coverage/libs/ngx-owl-carousel-o"
           ]
         }
       },
