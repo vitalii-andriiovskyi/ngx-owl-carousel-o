@@ -182,9 +182,9 @@ export class AutoplayService {
         }
     }
 }
-AutoplayService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: AutoplayService, deps: [{ token: i1.CarouselService }, { token: WINDOW }, { token: DOCUMENT }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Injectable });
-AutoplayService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: AutoplayService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: AutoplayService, decorators: [{
+AutoplayService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.0.2", ngImport: i0, type: AutoplayService, deps: [{ token: i1.CarouselService }, { token: WINDOW }, { token: DOCUMENT }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Injectable });
+AutoplayService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.0.2", ngImport: i0, type: AutoplayService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.0.2", ngImport: i0, type: AutoplayService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: i1.CarouselService }, { type: undefined, decorators: [{
                     type: Inject,

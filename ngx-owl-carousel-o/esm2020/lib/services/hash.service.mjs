@@ -66,9 +66,9 @@ export class HashService {
         });
     }
 }
-HashService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: HashService, deps: [{ token: i1.CarouselService }, { token: i2.ActivatedRoute, optional: true }, { token: i2.Router, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
-HashService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: HashService });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: HashService, decorators: [{
+HashService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "15.0.2", ngImport: i0, type: HashService, deps: [{ token: i1.CarouselService }, { token: i2.ActivatedRoute, optional: true }, { token: i2.Router, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
+HashService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "15.0.2", ngImport: i0, type: HashService });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "15.0.2", ngImport: i0, type: HashService, decorators: [{
             type: Injectable
         }], ctorParameters: function () { return [{ type: i1.CarouselService }, { type: i2.ActivatedRoute, decorators: [{
                     type: Optional
