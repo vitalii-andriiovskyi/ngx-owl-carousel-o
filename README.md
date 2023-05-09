@@ -36,7 +36,7 @@ ngx-owl-carousel-o      | Angular
 1. Run `yarn add ngx-owl-carousel-o` or `npm install ngx-owl-carousel-o`.
 2. Add styles (one of these variants).
 
-    -  `angular.json`:
+    - `angular.json`:
 
         ```json
         "styles": [
