@@ -17,10 +17,10 @@ import { OwlLogger } from './logger.service';
  * Current state information and their tags.
  */
 export class States {
-  current: {};
-  tags: {
-    [key: string]: string[];
-  };
+	current: {};
+	tags: {
+		[key: string]: string[];
+	};
 }
 
 /**
@@ -64,66 +64,66 @@ export class CarouselCurrentData {
 @Injectable()
 export class CarouselService {
 	/**
-   * Subject for passing data needed for managing View
-   */
+	 * Subject for passing data needed for managing View
+	 */
 	private _viewSettingsShipper$ = new Subject<CarouselCurrentData>();
 	/**
-   * Subject for notification when the carousel got initializes
-   */
+	 * Subject for notification when the carousel got initializes
+	 */
 	private _initializedCarousel$ = new Subject<string>();
 
 	/**
-   * Subject for notification when the carousel's settings start changinf
-   */
+	 * Subject for notification when the carousel's settings start changinf
+	 */
 	private _changeSettingsCarousel$ = new Subject<any>();
 
 	/**
-   * Subject for notification when the carousel's settings have changed
-   */
+	 * Subject for notification when the carousel's settings have changed
+	 */
 	private _changedSettingsCarousel$ = new Subject<any>();
 	/**
-   * Subject for notification when the carousel starts translating or moving
-   */
+	 * Subject for notification when the carousel starts translating or moving
+	 */
 	private _translateCarousel$ = new Subject<string>();
 	/**
-   * Subject for notification when the carousel stopped translating or moving
-   */
+	 * Subject for notification when the carousel stopped translating or moving
+	 */
 	private _translatedCarousel$ = new Subject<string>();
 	/**
-   * Subject for notification when the carousel's rebuilding caused by 'resize' event starts
-   */
+	 * Subject for notification when the carousel's rebuilding caused by 'resize' event starts
+	 */
 	private _resizeCarousel$ = new Subject<string>();
 	/**
-   * Subject for notification  when the carousel's rebuilding caused by 'resize' event is ended
-   */
+	 * Subject for notification  when the carousel's rebuilding caused by 'resize' event is ended
+	 */
 	private _resizedCarousel$ = new Subject<string>();
 	/**
-   * Subject for notification when the refresh of carousel starts
-   */
+	 * Subject for notification when the refresh of carousel starts
+	 */
 	private _refreshCarousel$ = new Subject<string>();
 	/**
-   * Subject for notification when the refresh of carousel is ended
-   */
+	 * Subject for notification when the refresh of carousel is ended
+	 */
 	private _refreshedCarousel$ = new Subject<string>();
 	/**
-   * Subject for notification when the dragging of carousel starts
-   */
+	 * Subject for notification when the dragging of carousel starts
+	 */
 	private _dragCarousel$ = new Subject<string>();
 	/**
-   * Subject for notification when the dragging of carousel is ended
-   */
+	 * Subject for notification when the dragging of carousel is ended
+	 */
 	private _draggedCarousel$ = new Subject<string>();
 
-  /**
-   * Current settings for the carousel.
-   */
-  settings: OwlOptions = {
+	/**
+	 * Current settings for the carousel.
+	 */
+	settings: OwlOptions = {
 		items: 0
 	};
 
 	/**
-   * Initial data for setting classes to element .owl-carousel
-   */
+	 * Initial data for setting classes to element .owl-carousel
+	 */
 	owlDOMData: OwlDOMData = {
 		rtl: false,
 		isResponsive: false,
@@ -136,8 +136,8 @@ export class CarouselService {
 	};
 
 	/**
-   * Initial data of .owl-stage
-   */
+	 * Initial data of .owl-stage
+	 */
 	stageData: StageData = {
 		transform: 'translate3d(0px,0px,0px)',
 		transition: '0s',
@@ -172,51 +172,51 @@ export class CarouselService {
 	private _items: CarouselSlideDirective[] = []; // is equal to this.slides
 
 	/**
-   * Array with width of every slide.
-   */
-  private _widths: any[] = [];
+	 * Array with width of every slide.
+	 */
+	private _widths: any[] = [];
 
 	/**
-   * Currently suppressed events to prevent them from beeing retriggered.
-   */
+	 * Currently suppressed events to prevent them from beeing retriggered.
+	 */
 	private _supress: any = {};
 
-  /**
-   * References to the running plugins of this carousel.
-   */
+	/**
+	 * References to the running plugins of this carousel.
+	 */
 	private _plugins: any = {};
 
 	/**
-   * Absolute current position.
-   */
+	 * Absolute current position.
+	 */
 	private _current: number | null = null;
 
 	/**
-   * All cloned items.
-   */
+	 * All cloned items.
+	 */
 	private _clones: any[] = [];
 
-  /**
-   * Merge values of all items.
-   * @todo Maybe this could be part of a plugin.
-   */
+	/**
+	 * Merge values of all items.
+	 * @todo Maybe this could be part of a plugin.
+	 */
 	private _mergers: any[] = [];
 
 	/**
-   * Animation speed in milliseconds.
-   */
+	 * Animation speed in milliseconds.
+	 */
 	private _speed: number | null = null;
 
 	/**
-   * Coordinates of all items in pixel.
-   * @todo The name of this member is missleading.
-   */
+	 * Coordinates of all items in pixel.
+	 * @todo The name of this member is missleading.
+	 */
 	private _coordinates: number[] = [];
 
 	/**
-   * Current breakpoint.
-   * @todo Real media queries would be nice.
-   */
+	 * Current breakpoint.
+	 * @todo Real media queries would be nice.
+	 */
 	private _breakpoint: any = null;
 
 	/**
@@ -229,95 +229,95 @@ export class CarouselService {
 	 */
 	_options: OwlOptions = {};
 
-  /**
-   * Invalidated parts within the update process.
-   */
-  private _invalidated: any = {};
+	/**
+	 * Invalidated parts within the update process.
+	 */
+	private _invalidated: any = {};
 
-  // Is needed for tests
-  get invalidated() {
-    return this._invalidated;
-  }
-  /**
-   * Current state information and their tags.
-   */
-  private _states: States = {
-    current: {},
-    tags: {
-      initializing: ['busy'],
-      animating: ['busy'],
-      dragging: ['interacting']
-    }
-  };
+	// Is needed for tests
+	get invalidated() {
+		return this._invalidated;
+	}
+	/**
+	 * Current state information and their tags.
+	 */
+	private _states: States = {
+		current: {},
+		tags: {
+			initializing: ['busy'],
+			animating: ['busy'],
+			dragging: ['interacting']
+		}
+	};
 
-  // is needed for tests
-  get states() {
-    return this._states;
+	// is needed for tests
+	get states() {
+		return this._states;
 	}
 
 	/**
- 	 * Ordered list of workers for the update process.
-   */
-  private _pipe: any[] = [
-    // {
-    //   filter: ['width', 'settings'],
-    //   run: () => {
-    //     this._width = this.carouselWindowWidth;
-    //   }
-    // },
-    {
-      filter: ['width', 'items', 'settings'],
-      run: cache => {
-        cache.current = this._items && this._items[this.relative(this._current)].id;
-      }
-    },
-    // {
-    //   filter: ['items', 'settings'],
-    //   run: function() {
-    //     // this.$stage.children('.cloned').remove();
-    //   }
+		 * Ordered list of workers for the update process.
+	 */
+	private _pipe: any[] = [
+		// {
+		//   filter: ['width', 'settings'],
+		//   run: () => {
+		//     this._width = this.carouselWindowWidth;
+		//   }
 		// },
-		 {
-      filter: [ 'width', 'items', 'settings' ],
-      run: (cache) => {
-        const margin = this.settings.margin || '',
-          grid = !this.settings.autoWidth,
-          rtl = this.settings.rtl,
-          css = {
-            'margin-left': rtl ? margin : '',
-            'margin-right': rtl ? '' : margin
-          };
+		{
+			filter: ['width', 'items', 'settings'],
+			run: cache => {
+				cache.current = this._items && this._items[this.relative(this._current)]?.id;
+			}
+		},
+		// {
+		//   filter: ['items', 'settings'],
+		//   run: function() {
+		//     // this.$stage.children('.cloned').remove();
+		//   }
+		// },
+		{
+			filter: ['width', 'items', 'settings'],
+			run: (cache) => {
+				const margin = this.settings.margin || '',
+					grid = !this.settings.autoWidth,
+					rtl = this.settings.rtl,
+					css = {
+						'margin-left': rtl ? margin : '',
+						'margin-right': rtl ? '' : margin
+					};
 
-        if(!grid) {
+				if (!grid) {
 					this.slidesData.forEach(slide => {
 						slide.marginL = css['margin-left'];
 						slide.marginR = css['margin-right'];
 					});
 				}
 
-        cache.css = css;
-      }
-    }, {
-      filter: [ 'width', 'items', 'settings' ],
-      run: (cache) => {
-        const width: any = +(this.width() / this.settings.items).toFixed(3) - this.settings.margin,
-          grid = !this.settings.autoWidth,
-          widths = [];
+				cache.css = css;
+			}
+		}, {
+			filter: ['width', 'items', 'settings'],
+			run: (cache) => {
+				const width: any = +(this.width() / this.settings.items).toFixed(3) - this.settings.margin,
+					grid = !this.settings.autoWidth,
+					widths = [];
 				let merge = null,
-						iterator = this._items.length;
+					iterator = this._items.length;
 
-        cache.items = {
-          merge: false,
-          width: width
-        };
+				cache.items = {
+					merge: false,
+					width: width
+				};
 
-        while (iterator-- > 0) {
-          merge = this._mergers[iterator];
-          merge = this.settings.mergeFit && Math.min(merge, this.settings.items) || merge;
-          cache.items.merge = merge > 1 || cache.items.merge;
+				while (iterator-- > 0) {
+					merge = this._mergers[iterator];
+					merge = this.settings.mergeFit && Math.min(merge, this.settings.items) || merge;
+					cache.items.merge = merge > 1 || cache.items.merge;
 
-          widths[iterator] = !grid ? this._items[iterator].width ? this._items[iterator].width : width : width * merge;
-        }
+					widths[iterator] = !grid ? this._items[iterator].width ? this._items[iterator].width : width : width * merge;
+				}
 
 				this._widths = widths;
 
@@ -326,29 +326,29 @@ export class CarouselService {
 					slide.marginR = cache.css['margin-right'];
 					slide.marginL = cache.css['margin-left'];
 				});
-      }
-    }, {
-      filter: [ 'items', 'settings' ],
-      run: () => {
-        const clones: any[] = [],
-          items: CarouselSlideDirective[] = this._items,
-          settings: any = this.settings,
-          // TODO: Should be computed from number of min width items in stage
-          view = Math.max(settings.items * 2, 4),
-          size = Math.ceil(items.length / 2) * 2;
-				let  append: any[] = [],
-          prepend: any[] = [],
+			}
+		}, {
+			filter: ['items', 'settings'],
+			run: () => {
+				const clones: any[] = [],
+					items: CarouselSlideDirective[] = this._items,
+					settings: any = this.settings,
+					// TODO: Should be computed from number of min width items in stage
+					view = Math.max(settings.items * 2, 4),
+					size = Math.ceil(items.length / 2) * 2;
+				let append: any[] = [],
+					prepend: any[] = [],
 					repeat = settings.loop && items.length ? settings.rewind ? view : Math.max(view, size) : 0;
 
-        repeat /= 2;
+				repeat /= 2;
 
-        while (repeat-- > 0) {
-          // Switch to only using appended clones
-          clones.push(this.normalize(clones.length / 2, true));
-          append.push({ ...this.slidesData[clones[clones.length - 1]]});
+				while (repeat-- > 0) {
+					// Switch to only using appended clones
+					clones.push(this.normalize(clones.length / 2, true));
+					append.push({ ...this.slidesData[clones[clones.length - 1]] });
 					clones.push(this.normalize(items.length - 1 - (clones.length - 1) / 2, true));
-					prepend.unshift({ ...this.slidesData[clones[clones.length - 1]]});
-        }
+					prepend.unshift({ ...this.slidesData[clones[clones.length - 1]] });
+				}
 
 				this._clones = clones;
 
@@ -367,85 +367,85 @@ export class CarouselService {
 				});
 
 				this.slidesData = prepend.concat(this.slidesData).concat(append);
-      }
-    }, {
-      filter: [ 'width', 'items', 'settings' ],
-      run: () => {
-        const rtl = this.settings.rtl ? 1 : -1,
-          size = this._clones.length + this._items.length,
-          coordinates = [];
-        let iterator = -1,
-          previous = 0,
-          current = 0;
+			}
+		}, {
+			filter: ['width', 'items', 'settings'],
+			run: () => {
+				const rtl = this.settings.rtl ? 1 : -1,
+					size = this._clones.length + this._items.length,
+					coordinates = [];
+				let iterator = -1,
+					previous = 0,
+					current = 0;
 
-        while (++iterator < size) {
-          previous = coordinates[iterator - 1] || 0;
-          current = this._widths[this.relative(iterator)] + this.settings.margin;
-          coordinates.push(previous + current * rtl);
-        }
+				while (++iterator < size) {
+					previous = coordinates[iterator - 1] || 0;
+					current = this._widths[this.relative(iterator)] + this.settings.margin;
+					coordinates.push(previous + current * rtl);
+				}
 
-        this._coordinates = coordinates;
-      }
-    }, {
-      filter: [ 'width', 'items', 'settings' ],
-      run: () => {
-        const padding = this.settings.stagePadding,
-          coordinates = this._coordinates,
-          css = {
-            'width': Math.ceil(Math.abs(coordinates[coordinates.length - 1])) + padding * 2,
-            'padding-left': padding || '',
-            'padding-right': padding || ''
+				this._coordinates = coordinates;
+			}
+		}, {
+			filter: ['width', 'items', 'settings'],
+			run: () => {
+				const padding = this.settings.stagePadding,
+					coordinates = this._coordinates,
+					css = {
+						'width': Math.ceil(Math.abs(coordinates[coordinates.length - 1])) + padding * 2,
+						'padding-left': padding || '',
+						'padding-right': padding || ''
 					};
 
 				this.stageData.width = css.width; // use this property in *ngIf directive for .owl-stage element
 				this.stageData.paddingL = css['padding-left'];
 				this.stageData.paddingR = css['padding-right'];
-      }
-    }, {
-    //   filter: [ 'width', 'items', 'settings' ],
-    //   run: cache => {
-		// 		// this method sets the width for every slide, but I set it in different way earlier
-		// 		const grid = !this.settings.autoWidth,
-		// 		items = this.$stage.children(); // use this.slidesData
-    //     let iterator = this._coordinates.length;
+			}
+		}, {
+			//   filter: [ 'width', 'items', 'settings' ],
+			//   run: cache => {
+			// 		// this method sets the width for every slide, but I set it in different way earlier
+			// 		const grid = !this.settings.autoWidth,
+			// 		items = this.$stage.children(); // use this.slidesData
+			//     let iterator = this._coordinates.length;
 
-    //     if (grid && cache.items.merge) {
-    //       while (iterator--) {
-    //         cache.css.width = this._widths[this.relative(iterator)];
-    //         items.eq(iterator).css(cache.css);
-    //       }
-    //     } else if (grid) {
-    //       cache.css.width = cache.items.width;
-    //       items.css(cache.css);
-    //     }
-    //   }
-    // }, {
-    //   filter: [ 'items' ],
-    //   run: function() {
-    //     this._coordinates.length < 1 && this.$stage.removeAttr('style');
-    //   }
-    // }, {
-      filter: [ 'width', 'items', 'settings' ],
-      run: cache => {
-        let current = cache.current ? this.slidesData.findIndex(slide => slide.id === cache.current) : 0;
-       	current = Math.max(this.minimum(), Math.min(this.maximum(), current));
-        this.reset(current);
-      }
-    }, {
-      filter: [ 'position' ],
-      run: () => {
-        this.animate(this.coordinates(this._current));
-      }
-    }, {
-      filter: [ 'width', 'position', 'items', 'settings' ],
-      run: () => {
-        const rtl = this.settings.rtl ? 1 : -1,
+			//     if (grid && cache.items.merge) {
+			//       while (iterator--) {
+			//         cache.css.width = this._widths[this.relative(iterator)];
+			//         items.eq(iterator).css(cache.css);
+			//       }
+			//     } else if (grid) {
+			//       cache.css.width = cache.items.width;
+			//       items.css(cache.css);
+			//     }
+			//   }
+			// }, {
+			//   filter: [ 'items' ],
+			//   run: function() {
+			//     this._coordinates.length < 1 && this.$stage.removeAttr('style');
+			//   }
+			// }, {
+			filter: ['width', 'items', 'settings'],
+			run: cache => {
+				let current = cache.current ? this.slidesData.findIndex(slide => slide.id === cache.current) : 0;
+				current = Math.max(this.minimum(), Math.min(this.maximum(), current));
+				this.reset(current);
+			}
+		}, {
+			filter: ['position'],
+			run: () => {
+				this.animate(this.coordinates(this._current));
+			}
+		}, {
+			filter: ['width', 'position', 'items', 'settings'],
+			run: () => {
+				const rtl = this.settings.rtl ? 1 : -1,
 					padding = this.settings.stagePadding * 2,
 					matches = [];
 				let begin, end, inner, outer, i, n;
 
 				begin = this.coordinates(this.current());
-				if (typeof begin === 'number' ) {
+				if (typeof begin === 'number') {
 					begin += padding;
 				} else {
 					begin = 0;
@@ -454,20 +454,20 @@ export class CarouselService {
 				end = begin + this.width() * rtl;
 
 				if (rtl === -1 && this.settings.center) {
-					const result =	this._coordinates.filter(element => {
+					const result = this._coordinates.filter(element => {
 						return this.settings.items % 2 === 1 ? element >= begin : element > begin;
 					});
 					begin = result.length ? result[result.length - 1] : begin;
 				}
 
-        for (i = 0, n = this._coordinates.length; i < n; i++) {
-          inner = Math.ceil(this._coordinates[i - 1] || 0);
+				for (i = 0, n = this._coordinates.length; i < n; i++) {
+					inner = Math.ceil(this._coordinates[i - 1] || 0);
 					outer = Math.ceil(Math.abs(this._coordinates[i]) + padding * rtl);
 
-          if ((this._op(inner, '<=', begin) && (this._op(inner, '>', end)))
-            || (this._op(outer, '<', begin) && this._op(outer, '>', end))) {
-            matches.push(i);
-          }
+					if ((this._op(inner, '<=', begin) && (this._op(inner, '>', end)))
+						|| (this._op(outer, '<', begin) && this._op(outer, '>', end))) {
+						matches.push(i);
+					}
 				}
 
 				this.slidesData.forEach(slide => {
@@ -478,16 +478,16 @@ export class CarouselService {
 					this.slidesData[item].isActive = true;
 				});
 
-        if (this.settings.center) {
+				if (this.settings.center) {
 					this.slidesData.forEach(slide => {
 						slide.isCentered = false;
 						return slide;
 					});
 					this.slidesData[this.current()].isCentered = true;
-        }
-      }
-    }
-  ];
+				}
+			}
+		}
+	];
 
 	constructor(private logger: OwlLogger) { }
 
@@ -594,7 +594,7 @@ export class CarouselService {
 	setOptions(options: OwlOptions) {
 		const configOptions: OwlOptions = new OwlCarouselOConfig();
 		const checkedOptions: OwlOptions = this._validateOptions(options, configOptions);
-		this._options = { ...configOptions, ...checkedOptions};
+		this._options = { ...configOptions, ...checkedOptions };
 	}
 
 	/**
@@ -607,7 +607,7 @@ export class CarouselService {
 	 * 	- if user set option with wrong type, it'll be written in console
 	 */
 	private _validateOptions(options: OwlOptions, configOptions: OwlOptions): OwlOptions {
-		const checkedOptions: OwlOptions = { ...options};
+		const checkedOptions: OwlOptions = { ...options };
 		const mockedTypes = new OwlOptionsMockedTypes();
 
 		const setRightOption = (type: string, key: any): OwlOptions => {
@@ -682,7 +682,7 @@ export class CarouselService {
 		this._width = width;
 	}
 
-  /**
+	/**
 	 * Setups the current settings.
 	 * @todo Remove responsive classes. Why should adaptive designs be brought into IE8?
 	 * @todo Support for media queries by using `matchMedia` would be nice.
@@ -690,13 +690,13 @@ export class CarouselService {
 	 * @param slides array of slides
 	 * @param options options set by user
 	 */
-  setup(carouselWidth: number, slides: CarouselSlideDirective[], options: OwlOptions) {
+	setup(carouselWidth: number, slides: CarouselSlideDirective[], options: OwlOptions) {
 		this.setCarouselWidth(carouselWidth);
 		this.setItems(slides);
 		this._defineSlidesData();
 		this.setOptions(options);
 
-		this.settings = { ...this._options};
+		this.settings = { ...this._options };
 
 		this.setOptionsForViewport();
 
@@ -711,7 +711,7 @@ export class CarouselService {
 	setOptionsForViewport() {
 		const viewport = this._width,
 			overwrites = this._options.responsive;
-		let	match = -1;
+		let match = -1;
 
 		if (!Object.keys(overwrites).length) {
 			return;
@@ -730,7 +730,7 @@ export class CarouselService {
 			}
 		}
 
-		this.settings = { ...this._options, ...overwrites[match], items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items, this._options.skip_validateItems) : this._options.items};
+		this.settings = { ...this._options, ...overwrites[match], items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items, this._options.skip_validateItems) : this._options.items };
 		// if (typeof this.settings.stagePadding === 'function') {
 		// 	this.settings.stagePadding = this.settings.stagePadding();
 		// }
@@ -755,7 +755,7 @@ export class CarouselService {
 	 * Initializes the carousel.
 	 * @param slides array of CarouselSlideDirective
 	 */
-  initialize(slides: CarouselSlideDirective[]) {
+	initialize(slides: CarouselSlideDirective[]) {
 		this.enter('initializing');
 		// this.trigger('initialize');
 
@@ -800,48 +800,48 @@ export class CarouselService {
 	}
 
 
-  /**
+	/**
 	 * Updates option logic if necessery
 	 */
-  private _optionsLogic() {
+	private _optionsLogic() {
 		if (this.settings.autoWidth) {
 			this.settings.stagePadding = 0;
 			this.settings.merge = false;
 		}
 	}
 
-  /**
-   * Updates the view
-   */
-  update() {
-    let i = 0;
-    const n = this._pipe.length,
-      filter = item => this._invalidated[item],
+	/**
+	 * Updates the view
+	 */
+	update() {
+		let i = 0;
+		const n = this._pipe.length,
+			filter = item => this._invalidated[item],
 			cache = {};
 
-    while (i < n) {
-      const filteredPipe = this._pipe[i].filter.filter(filter);
-      if (this._invalidated.all || filteredPipe.length > 0) {
+		while (i < n) {
+			const filteredPipe = this._pipe[i].filter.filter(filter);
+			if (this._invalidated.all || filteredPipe.length > 0) {
 				this._pipe[i].run(cache);
-      }
-      i++;
+			}
+			i++;
 		}
 		this.slidesData.forEach(slide => slide.classes = this.setCurSlideClasses(slide));
 		this.sendChanges();
 
-    this._invalidated = {};
+		this._invalidated = {};
 
-    if (!this.is('valid')) {
-      this.enter('valid');
-    }
-  }
+		if (!this.is('valid')) {
+			this.enter('valid');
+		}
+	}
 
-  /**
+	/**
 	 * Gets the width of the view.
 	 * @param [dimension=Width.Default] The dimension to return
 	 * @returns The width of the view in pixel.
 	 */
-  width(dimension?: Width): number {
+	width(dimension?: Width): number {
 		dimension = dimension || Width.Default;
 		switch (dimension) {
 			case Width.Inner:
@@ -852,10 +852,10 @@ export class CarouselService {
 		}
 	}
 
-  /**
+	/**
 	 * Refreshes the carousel primarily for adaptive purposes.
 	 */
-  refresh() {
+	refresh() {
 		this.enter('refreshing');
 		this._trigger('refresh');
 		this._defineSlidesData();
@@ -871,13 +871,13 @@ export class CarouselService {
 
 		this.leave('refreshing');
 		this._trigger('refreshed');
-	 }
+	}
 
-  /**
+	/**
 	 * Checks window `resize` event.
 	 * @param curWidth width of .owl-carousel
 	 */
-  onResize(curWidth: number) {
+	onResize(curWidth: number) {
 		if (!this._items.length) {
 			return false;
 		}
@@ -899,37 +899,37 @@ export class CarouselService {
 		this._trigger('resized');
 	}
 
-  /**
+	/**
 	 * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
 	 * @todo Horizontal swipe threshold as option
 	 * @todo #261
 	 * @param event - The event arguments.
 	 * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
 	 */
-  prepareDragging(event: any): Coords {
+	prepareDragging(event: any): Coords {
 		let stage: Coords = null,
-				transformArr: string[];
+			transformArr: string[];
 
 		// could be 5 commented lines below; However there's stage transform in stageData and in updates after each move of stage
-    // stage = getComputedStyle(this.el.nativeElement).transform.replace(/.*\(|\)| /g, '').split(',');
-    // stage = {
-    //   x: stage[stage.length === 16 ? 12 : 4],
-    //   y: stage[stage.length === 16 ? 13 : 5]
+		// stage = getComputedStyle(this.el.nativeElement).transform.replace(/.*\(|\)| /g, '').split(',');
+		// stage = {
+		//   x: stage[stage.length === 16 ? 12 : 4],
+		//   y: stage[stage.length === 16 ? 13 : 5]
 		// };
 
 		transformArr = this.stageData.transform.replace(/.*\(|\)| |[^,-\d]\w|\)/g, '').split(',');
-    stage = {
-      x: +transformArr[0],
-      y: +transformArr[1]
-    };
+		stage = {
+			x: +transformArr[0],
+			y: +transformArr[1]
+		};
 
 		if (this.is('animating')) {
 			this.invalidate('position');
-    }
+		}
 
-    if (event.type === 'mousedown') {
-      this.owlDOMData.isGrab = true;
-    }
+		if (event.type === 'mousedown') {
+			this.owlDOMData.isGrab = true;
+		}
 
 		this.speed(0);
 		return stage;
@@ -940,21 +940,21 @@ export class CarouselService {
 	 */
 	enterDragging() {
 		this.enter('dragging');
-    this._trigger('drag');
+		this._trigger('drag');
 	}
 
-  /**
+	/**
 	 * Defines new coords for .owl-stage while dragging it
 	 * @todo #261
 	 * @param event the event arguments.
 	 * @param dragData initial data got after starting dragging
 	 * @returns coords or false
 	 */
-  defineNewCoordsDrag(event: any, dragData: any): boolean | Coords {
+	defineNewCoordsDrag(event: any, dragData: any): boolean | Coords {
 		let minimum = null,
-		maximum = null,
-		pull = null;
-		const	delta = this.difference(dragData.pointer, this.pointer(event)),
+			maximum = null,
+			pull = null;
+		const delta = this.difference(dragData.pointer, this.pointer(event)),
 			stage = this.difference(dragData.stage.start, delta);
 
 		if (!this.is('dragging')) {
@@ -975,7 +975,7 @@ export class CarouselService {
 		return stage;
 	}
 
-  /**
+	/**
 	 * Finishes dragging of carousel when `touchend` and `mouseup` events fire.
 	 * @todo #261
 	 * @todo Threshold for click event
@@ -983,49 +983,49 @@ export class CarouselService {
 	 * @param dragObj the object with dragging settings and states
 	 * @param clickAttacher function which attaches click handler to slide or its children elements in order to prevent event bubling
 	 */
-  finishDragging(event: any, dragObj: any, clickAttacher: () => void) {
+	finishDragging(event: any, dragObj: any, clickAttacher: () => void) {
 		const directions = ['right', 'left'],
-				delta = this.difference(dragObj.pointer, this.pointer(event)),
-        stage = dragObj.stage.current,
-				direction = directions[+(this.settings.rtl ? delta.x < +this.settings.rtl : delta.x > +this.settings.rtl)];
+			delta = this.difference(dragObj.pointer, this.pointer(event)),
+			stage = dragObj.stage.current,
+			direction = directions[+(this.settings.rtl ? delta.x < +this.settings.rtl : delta.x > +this.settings.rtl)];
 		let currentSlideI: number, current: number, newCurrent: number;
 
 		if (delta.x !== 0 && this.is('dragging') || !this.is('valid')) {
-        this.speed(+this.settings.dragEndSpeed || this.settings.smartSpeed);
-				currentSlideI = this.closest(stage.x, delta.x !== 0 ? direction : dragObj.direction);
-				current = this.current();
-        newCurrent = this.current(currentSlideI === -1 ? undefined : currentSlideI);
+			this.speed(+this.settings.dragEndSpeed || this.settings.smartSpeed);
+			currentSlideI = this.closest(stage.x, delta.x !== 0 ? direction : dragObj.direction);
+			current = this.current();
+			newCurrent = this.current(currentSlideI === -1 ? undefined : currentSlideI);
 
-				if (current !== newCurrent) {
-					this.invalidate('position');
-					this.update();
-				}
+			if (current !== newCurrent) {
+				this.invalidate('position');
+				this.update();
+			}
 
-        dragObj.direction = direction;
+			dragObj.direction = direction;
 
-        if (Math.abs(delta.x) > 3 || new Date().getTime() - dragObj.time > 300) {
-					clickAttacher();
-        }
-      }
-      if (!this.is('dragging')) {
-        return;
-      }
-			this.leave('dragging');
-			this._trigger('dragged')
-	 }
+			if (Math.abs(delta.x) > 3 || new Date().getTime() - dragObj.time > 300) {
+				clickAttacher();
+			}
+		}
+		if (!this.is('dragging')) {
+			return;
+		}
+		this.leave('dragging');
+		this._trigger('dragged')
+	}
 
-  /**
+	/**
 	 * Gets absolute position of the closest item for a coordinate.
 	 * @todo Setting `freeDrag` makes `closest` not reusable. See #165.
 	 * @param coordinate The coordinate in pixel.
 	 * @param direction The direction to check for the closest item. Ether `left` or `right`.
 	 * @returns The absolute position of the closest item.
 	 */
-  closest(coordinate: number, direction: string): number {
+	closest(coordinate: number, direction: string): number {
 		const pull = 30,
 			width = this.width();
-		let	coordinates: number[] = this.coordinates() as number[],
-		 position = -1;
+		let coordinates: number[] = this.coordinates() as number[],
+			position = -1;
 
 		if (this.settings.center) {
 			coordinates = coordinates.map(item => {
@@ -1042,24 +1042,24 @@ export class CarouselService {
 		// In case of having 5 slides ans 'loop=false; calling 'current(-1)' sets props '_current' as 4. Just last slide remains visible instead of 3 last slides.
 
 		// if (!this.settings.freeDrag) {
-			// check closest item
-			for (let i = 0; i < coordinates.length; i++) {
+		// check closest item
+		for (let i = 0; i < coordinates.length; i++) {
 
-				if (direction === 'left' && coordinate > coordinates[i] - pull && coordinate < coordinates[i] + pull) {
-					position = i;
+			if (direction === 'left' && coordinate > coordinates[i] - pull && coordinate < coordinates[i] + pull) {
+				position = i;
 				// on a right pull, check on previous index
 				// to do so, subtract width from value and set position = index + 1
-				} else if (direction === 'right' && coordinate > coordinates[i] - width - pull && coordinate < coordinates[i] - width + pull) {
-					position = i + 1;
-				} else if (this._op(coordinate, '<', coordinates[i])
-					&& this._op(coordinate, '>', coordinates[i + 1] || coordinates[i] - width)) {
-					position = direction === 'left' ? i + 1 : i;
-				} else if (direction === null && coordinate > coordinates[i] - pull && coordinate < coordinates[i] + pull) {
-					position = i;
-				}
-
-				if (position !== -1) { break };
+			} else if (direction === 'right' && coordinate > coordinates[i] - width - pull && coordinate < coordinates[i] - width + pull) {
+				position = i + 1;
+			} else if (this._op(coordinate, '<', coordinates[i])
+				&& this._op(coordinate, '>', coordinates[i + 1] || coordinates[i] - width)) {
+				position = direction === 'left' ? i + 1 : i;
+			} else if (direction === null && coordinate > coordinates[i] - pull && coordinate < coordinates[i] + pull) {
+				position = i;
 			}
+
+			if (position !== -1) { break };
+		}
 		// }
 
 		if (!this.settings.loop) {
@@ -1072,14 +1072,14 @@ export class CarouselService {
 		}
 
 		return position;
-	 }
+	}
 
-  /**
+	/**
 	 * Animates the stage.
 	 * @todo #270
 	 * @param coordinate The coordinate in pixels.
 	 */
-  animate(coordinate: number | number[]) {
+	animate(coordinate: number | number[]) {
 		const animate = this.speed() > 0;
 
 		if (this.is('animating')) {
@@ -1097,23 +1097,23 @@ export class CarouselService {
 		);
 
 		// also there was transition by means of JQuery.animate or css-changing property left
-	 }
+	}
 
-  /**
+	/**
 	 * Checks whether the carousel is in a specific state or not.
 	 * @param state The state to check.
 	 * @returns The flag which indicates if the carousel is busy.
 	 */
-  is(state: string): boolean {
+	is(state: string): boolean {
 		return this._states.current[state] && this._states.current[state] > 0;
-  };
+	};
 
-  /**
+	/**
 	 * Sets the absolute position of the current item.
 	 * @param position The new absolute position or nothing to leave it unchanged.
 	 * @returns The absolute position of the current item.
 	 */
-  current(position?: number): number {
+	current(position?: number): number {
 		if (position === undefined) {
 			return this._current;
 		}
@@ -1138,26 +1138,26 @@ export class CarouselService {
 		}
 
 		return this._current;
-	 }
+	}
 
-  /**
+	/**
 	 * Invalidates the given part of the update routine.
 	 * @param part The part to invalidate.
 	 * @returns The invalidated parts.
 	 */
-  invalidate(part: string): string[] {
+	invalidate(part: string): string[] {
 		if (typeof part === 'string') {
 			this._invalidated[part] = true;
-			if(this.is('valid')) { this.leave('valid'); }
+			if (this.is('valid')) { this.leave('valid'); }
 		}
 		return Object.keys(this._invalidated);
-  };
+	};
 
 	/**
 	 * Resets the absolute position of the current item.
 	 * @param position the absolute position of the new item.
 	 */
-  reset(position: number) {
+	reset(position: number) {
 		position = this.normalize(position);
 
 		if (position === undefined) {
@@ -1167,22 +1167,22 @@ export class CarouselService {
 		this._speed = 0;
 		this._current = position;
 
-		this._suppress([ 'translate', 'translated' ]);
+		this._suppress(['translate', 'translated']);
 
 		this.animate(this.coordinates(position));
 
-		this._release([ 'translate', 'translated' ]);
+		this._release(['translate', 'translated']);
 	}
 
-  /**
+	/**
 	 * Normalizes an absolute or a relative position of an item.
 	 * @param position The absolute or relative position to normalize.
 	 * @param relative Whether the given position is relative or not.
 	 * @returns The normalized position.
 	 */
-  normalize(position: number, relative?: boolean): number {
+	normalize(position: number, relative?: boolean): number {
 		const n = this._items.length,
-					m = relative ? 0 : this._clones.length;
+			m = relative ? 0 : this._clones.length;
 
 		if (!this._isNumeric(position) || n < 1) {
 			position = undefined;
@@ -1191,26 +1191,26 @@ export class CarouselService {
 		}
 
 		return position;
-	 }
+	}
 
-  /**
+	/**
 	 * Converts an absolute position of an item into a relative one.
 	 * @param position The absolute position to convert.
 	 * @returns The converted position.
 	 */
-  relative(position: number): number {
+	relative(position: number): number {
 		position -= this._clones.length / 2;
 		return this.normalize(position, true);
 	}
 
-  /**
+	/**
 	 * Gets the maximum position for the current item.
 	 * @param relative Whether to return an absolute position or a relative position.
 	 * @returns number of maximum position
 	 */
-  maximum(relative: boolean = false): number {
+	maximum(relative: boolean = false): number {
 		const settings = this.settings;
-		let	maximum = this._coordinates.length,
+		let maximum = this._coordinates.length,
 			iterator,
 			reciprocalItemsWidth,
 			elementWidth;
@@ -1240,51 +1240,51 @@ export class CarouselService {
 		}
 
 		return Math.max(maximum, 0);
-	 }
+	}
 
-  /**
+	/**
 	 * Gets the minimum position for the current item.
 	 * @param relative Whether to return an absolute position or a relative position.
 	 * @returns number of minimum position
 	 */
-  minimum(relative: boolean = false): number {
+	minimum(relative: boolean = false): number {
 		return relative ? 0 : this._clones.length / 2;
 	}
 
-  /**
+	/**
 	 * Gets an item at the specified relative position.
 	 * @param position The relative position of the item.
 	 * @returns The item at the given position or all items if no position was given.
 	 */
-  items(position?: number): CarouselSlideDirective[] {
+	items(position?: number): CarouselSlideDirective[] {
 		if (position === undefined) {
 			return this._items.slice();
 		}
 
 		position = this.normalize(position, true);
 		return [this._items[position]];
-	 }
+	}
 
-  /**
+	/**
 	 * Gets an item at the specified relative position.
 	 * @param position The relative position of the item.
 	 * @returns The item at the given position or all items if no position was given.
 	 */
-  mergers(position: number): number | number[] {
+	mergers(position: number): number | number[] {
 		if (position === undefined) {
 			return this._mergers.slice();
 		}
 
 		position = this.normalize(position, true);
 		return this._mergers[position];
-	 }
+	}
 
-  /**
+	/**
 	 * Gets the absolute positions of clones for an item.
 	 * @param position The relative position of the item.
 	 * @returns The absolute positions of clones for the item or all if no position was given.
 	 */
-  clones(position?: number): number[] {
+	clones(position?: number): number[] {
 		const odd = this._clones.length / 2,
 			even = odd + this._items.length,
 			map = index => index % 2 === 0 ? even + index / 2 : odd - (index + 1) / 2;
@@ -1296,12 +1296,12 @@ export class CarouselService {
 		return this._clones.map((v, i) => v === position ? map(i) : null).filter(item => item);
 	}
 
-  /**
+	/**
 	 * Sets the current animation speed.
 	 * @param speed The animation speed in milliseconds or nothing to leave it unchanged.
 	 * @returns The current animation speed in milliseconds.
 	 */
-  speed(speed?: number): number {
+	speed(speed?: number): number {
 		if (speed !== undefined) {
 			this._speed = speed;
 		}
@@ -1309,13 +1309,13 @@ export class CarouselService {
 		return this._speed;
 	}
 
-  /**
+	/**
 	 * Gets the coordinate of an item.
 	 * @todo The name of this method is missleanding.
 	 * @param position The absolute position of the item within `minimum()` and `maximum()`.
 	 * @returns The coordinate of the item in pixel or all coordinates.
 	 */
-  coordinates(position?: number): number | number[] {
+	coordinates(position?: number): number | number[] {
 		let multiplier = 1,
 			newPosition = position - 1,
 			coordinate,
@@ -1343,16 +1343,16 @@ export class CarouselService {
 		coordinate = Math.ceil(coordinate);
 
 		return coordinate;
-	 }
+	}
 
-  /**
+	/**
 	 * Calculates the speed for a translation.
 	 * @param from The absolute position of the start item.
 	 * @param to The absolute position of the target item.
 	 * @param factor [factor=undefined] - The time factor in milliseconds.
 	 * @returns The time in milliseconds for the translation.
 	 */
-  private _duration(from: number, to: number, factor?: number | boolean): number {
+	private _duration(from: number, to: number, factor?: number | boolean): number {
 		if (factor === 0) {
 			return 0;
 		}
@@ -1360,18 +1360,18 @@ export class CarouselService {
 		return Math.min(Math.max(Math.abs(to - from), 1), 6) * Math.abs((+factor || this.settings.smartSpeed));
 	}
 
-  /**
+	/**
 	 * Slides to the specified item.
 	 * @param position The position of the item.
 	 * @param speed The time in milliseconds for the transition.
 	 */
-  to(position: number, speed: number | boolean) {
+	to(position: number, speed: number | boolean) {
 		let current = this.current(),
 			revert = null,
 			distance = position - this.relative(current),
 			maximum = this.maximum(),
 			delayForLoop = 0;
-		const	direction = +(distance > 0) - +(distance < 0),
+		const direction = +(distance > 0) - +(distance < 0),
 			items = this._items.length,
 			minimum = this.minimum();
 
@@ -1406,29 +1406,29 @@ export class CarouselService {
 
 	}
 
-  /**
+	/**
 	 * Slides to the next item.
 	 * @param speed The time in milliseconds for the transition.
 	 */
-  next(speed: number | boolean) {
+	next(speed: number | boolean) {
 		speed = speed || false;
 		this.to(this.relative(this.current()) + 1, speed);
 	}
 
-  /**
+	/**
 	 * Slides to the previous item.
 	 * @param speed The time in milliseconds for the transition.
 	 */
-  prev(speed: number | boolean) {
+	prev(speed: number | boolean) {
 		speed = speed || false;
 		this.to(this.relative(this.current()) - 1, speed);
 	}
 
-  /**
+	/**
 	 * Handles the end of an animation.
 	 * @param event - The event arguments.
 	 */
-  onTransitionEnd(event?: any) {
+	onTransitionEnd(event?: any) {
 		// if css2 animation then event object is undefined
 		if (event !== undefined) {
 			// event.stopPropagation();
@@ -1443,11 +1443,11 @@ export class CarouselService {
 		this._trigger('translated');
 	}
 
-  /**
+	/**
 	 * Gets viewport width.
 	 * @returns - The width in pixel.
 	 */
-  private _viewport(): number {
+	private _viewport(): number {
 		let width;
 		if (this._width) {
 			width = this._width;
@@ -1457,11 +1457,11 @@ export class CarouselService {
 		return width;
 	}
 
-  /**
+	/**
 	 * Sets _items
 	 * @param content The list of slides put into CarouselSlideDirectives.
 	 */
-  setItems(content: CarouselSlideDirective[]) {
+	setItems(content: CarouselSlideDirective[]) {
 		this._items = content;
 	}
 
@@ -1503,9 +1503,9 @@ export class CarouselService {
 	 * @param slide Slide of carousel
 	 * @returns object with names of css-classes which are keys and true/false values
 	 */
-	setCurSlideClasses(slide: SlideModel): {[key: string]: boolean} {
+	setCurSlideClasses(slide: SlideModel): { [key: string]: boolean } {
 		// CSS classes: added/removed per current state of component properties
-		const currentClasses: {[key: string]: boolean} =  {
+		const currentClasses: { [key: string]: boolean } = {
 			'active': slide.isActive,
 			'center': slide.isCentered,
 			'cloned': slide.isCloned,
@@ -1522,14 +1522,14 @@ export class CarouselService {
 		return currentClasses;
 	}
 
-  /**
+	/**
 	 * Operators to calculate right-to-left and left-to-right.
 	 * @param a - The left side operand.
 	 * @param o - The operator.
 	 * @param b - The right side operand.
 	 * @returns true/false meaning right-to-left or left-to-right
 	 */
-  private _op(a: number, o: string, b: number): boolean {
+	private _op(a: number, o: string, b: number): boolean {
 		const rtl = this.settings.rtl;
 		switch (o) {
 			case '<':
@@ -1545,7 +1545,7 @@ export class CarouselService {
 		}
 	}
 
-  /**
+	/**
 	 * Triggers a public event.
 	 * @todo Remove `status`, `relatedTarget` should be used instead.
 	 * @param name The event name.
@@ -1554,7 +1554,7 @@ export class CarouselService {
 	 * @param state The state which is associated with the event.
 	 * @param enter Indicates if the call enters the specified state or not.
 	 */
-  private _trigger(name: string, data?: any, namespace?: string, state?: string, enter?: boolean) {
+	private _trigger(name: string, data?: any, namespace?: string, state?: string, enter?: boolean) {
 		switch (name) {
 			case 'initialized':
 				this._initializedCarousel$.next(name);
@@ -1599,33 +1599,33 @@ export class CarouselService {
 	 * Enters a state.
 	 * @param name - The state name.
 	 */
-  enter(name: string) {
-    [ name ].concat(this._states.tags[name] || []).forEach((stateName) => {
-      if (this._states.current[stateName] === undefined) {
+	enter(name: string) {
+		[name].concat(this._states.tags[name] || []).forEach((stateName) => {
+			if (this._states.current[stateName] === undefined) {
 				this._states.current[stateName] = 0;
 			}
 
 			this._states.current[stateName]++;
-    });
-  };
+		});
+	};
 
-  /**
+	/**
 	 * Leaves a state.
 	 * @param name - The state name.
 	 */
 	leave(name: string) {
-    [ name ].concat(this._states.tags[name] || []).forEach((stateName) => {
-      if (this._states.current[stateName] === 0 || !!this._states.current[stateName]) {
-        this._states.current[stateName]--;
-      }
-    })
-  };
+		[name].concat(this._states.tags[name] || []).forEach((stateName) => {
+			if (this._states.current[stateName] === 0 || !!this._states.current[stateName]) {
+				this._states.current[stateName]--;
+			}
+		})
+	};
 
-  /**
+	/**
 	 * Registers an event or state.
 	 * @param object - The event or state to register.
 	 */
-  register(object: any) {
+	register(object: any) {
 		if (object.type === Type.State) {
 			if (!this._states.tags[object.name]) {
 				this._states.tags[object.name] = object.tags;
@@ -1639,27 +1639,27 @@ export class CarouselService {
 		}
 	}
 
-  /**
+	/**
 	 * Suppresses events.
 	 * @param events The events to suppress.
 	 */
-  private _suppress(events: string[]) {
+	private _suppress(events: string[]) {
 		events.forEach(event => {
 			this._supress[event] = true;
 		});
 	}
 
-  /**
+	/**
 	 * Releases suppressed events.
 	 * @param events The events to release.
 	 */
-  private _release(events: string[]) {
+	private _release(events: string[]) {
 		events.forEach(event => {
 			delete this._supress[event];
 		});
-	 }
+	}
 
-  /**
+	/**
 	 * Gets unified pointer coordinates from event.
 	 * @todo #261
 	 * @param event The `mousedown` or `touchstart` event.
@@ -1683,14 +1683,14 @@ export class CarouselService {
 		}
 
 		return result;
-	 }
+	}
 
-  /**
+	/**
 	 * Determines if the input is a Number or something that can be coerced to a Number
 	 * @param number The input to be tested
 	 * @returns An indication if the input is a Number or can be coerced to a Number
 	 */
-  private _isNumeric(number: any): boolean {
+	private _isNumeric(number: any): boolean {
 		return !isNaN(parseFloat(number));
 	}
 
@@ -1721,20 +1721,20 @@ export class CarouselService {
 		return typeof value === 'string' || typeof value === 'boolean';
 	}
 
-  /**
+	/**
 	 * Gets the difference of two vectors.
 	 * @todo #261
 	 * @param first The first vector.
 	 * @param second The second vector.
 	 * @returns The difference.
 	 */
-  difference(first: Coords, second: Coords): Coords {
+	difference(first: Coords, second: Coords): Coords {
 		if (null === first || null === second) {
-      return {
-        x: 0,
-        y: 0,
-      };
-    }
+			return {
+				x: 0,
+				y: 0,
+			};
+		}
 		return {
 			x: first.x - second.x,
 			y: first.y - second.y
