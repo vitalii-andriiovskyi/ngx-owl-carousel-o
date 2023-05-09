@@ -6,7 +6,7 @@
   "prefix": "owl-carousel-libdemo",
   "targets": {
     "build": {
-      "executor": "@nrwl/angular:package",
+      "executor": "@nx/angular:package",
       "options": {
         "tsConfig": "libs/ngx-owl-carousel-o/tsconfig.lib.json",
         "project": "libs/ngx-owl-carousel-o/ng-package.json",
