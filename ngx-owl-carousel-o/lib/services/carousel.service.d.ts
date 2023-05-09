@@ -53,64 +53,64 @@ export declare class CarouselCurrentData {
 export declare class CarouselService {
     private logger;
     /**
-   * Subject for passing data needed for managing View
-   */
+     * Subject for passing data needed for managing View
+     */
     private _viewSettingsShipper$;
     /**
-   * Subject for notification when the carousel got initializes
-   */
+     * Subject for notification when the carousel got initializes
+     */
     private _initializedCarousel$;
     /**
-   * Subject for notification when the carousel's settings start changinf
-   */
+     * Subject for notification when the carousel's settings start changinf
+     */
     private _changeSettingsCarousel$;
     /**
-   * Subject for notification when the carousel's settings have changed
-   */
+     * Subject for notification when the carousel's settings have changed
+     */
     private _changedSettingsCarousel$;
     /**
-   * Subject for notification when the carousel starts translating or moving
-   */
+     * Subject for notification when the carousel starts translating or moving
+     */
     private _translateCarousel$;
     /**
-   * Subject for notification when the carousel stopped translating or moving
-   */
+     * Subject for notification when the carousel stopped translating or moving
+     */
     private _translatedCarousel$;
     /**
-   * Subject for notification when the carousel's rebuilding caused by 'resize' event starts
-   */
+     * Subject for notification when the carousel's rebuilding caused by 'resize' event starts
+     */
     private _resizeCarousel$;
     /**
-   * Subject for notification  when the carousel's rebuilding caused by 'resize' event is ended
-   */
+     * Subject for notification  when the carousel's rebuilding caused by 'resize' event is ended
+     */
     private _resizedCarousel$;
     /**
-   * Subject for notification when the refresh of carousel starts
-   */
+     * Subject for notification when the refresh of carousel starts
+     */
     private _refreshCarousel$;
     /**
-   * Subject for notification when the refresh of carousel is ended
-   */
+     * Subject for notification when the refresh of carousel is ended
+     */
     private _refreshedCarousel$;
     /**
-   * Subject for notification when the dragging of carousel starts
-   */
+     * Subject for notification when the dragging of carousel starts
+     */
     private _dragCarousel$;
     /**
-   * Subject for notification when the dragging of carousel is ended
-   */
+     * Subject for notification when the dragging of carousel is ended
+     */
     private _draggedCarousel$;
     /**
      * Current settings for the carousel.
      */
     settings: OwlOptions;
     /**
-   * Initial data for setting classes to element .owl-carousel
-   */
+     * Initial data for setting classes to element .owl-carousel
+     */
     owlDOMData: OwlDOMData;
     /**
-   * Initial data of .owl-stage
-   */
+     * Initial data of .owl-stage
+     */
     stageData: StageData;
     /**
      *  Data of every slide
@@ -133,24 +133,24 @@ export declare class CarouselService {
      */
     private _items;
     /**
-   * Array with width of every slide.
-   */
+     * Array with width of every slide.
+     */
     private _widths;
     /**
-   * Currently suppressed events to prevent them from beeing retriggered.
-   */
+     * Currently suppressed events to prevent them from beeing retriggered.
+     */
     private _supress;
     /**
      * References to the running plugins of this carousel.
      */
     private _plugins;
     /**
-   * Absolute current position.
-   */
+     * Absolute current position.
+     */
     private _current;
     /**
-   * All cloned items.
-   */
+     * All cloned items.
+     */
     private _clones;
     /**
      * Merge values of all items.
@@ -158,18 +158,18 @@ export declare class CarouselService {
      */
     private _mergers;
     /**
-   * Animation speed in milliseconds.
-   */
+     * Animation speed in milliseconds.
+     */
     private _speed;
     /**
-   * Coordinates of all items in pixel.
-   * @todo The name of this member is missleading.
-   */
+     * Coordinates of all items in pixel.
+     * @todo The name of this member is missleading.
+     */
     private _coordinates;
     /**
-   * Current breakpoint.
-   * @todo Real media queries would be nice.
-   */
+     * Current breakpoint.
+     * @todo Real media queries would be nice.
+     */
     private _breakpoint;
     /**
      * Prefix for id of cloned slides
@@ -190,8 +190,8 @@ export declare class CarouselService {
     private _states;
     get states(): States;
     /**
-     * Ordered list of workers for the update process.
-   */
+         * Ordered list of workers for the update process.
+     */
     private _pipe;
     constructor(logger: OwlLogger);
     /**
@@ -282,13 +282,13 @@ export declare class CarouselService {
      */
     setCarouselWidth(width: number): void;
     /**
-       * Setups the current settings.
-       * @todo Remove responsive classes. Why should adaptive designs be brought into IE8?
-       * @todo Support for media queries by using `matchMedia` would be nice.
-       * @param carouselWidth width of carousel
-       * @param slides array of slides
-       * @param options options set by user
-       */
+     * Setups the current settings.
+     * @todo Remove responsive classes. Why should adaptive designs be brought into IE8?
+     * @todo Support for media queries by using `matchMedia` would be nice.
+     * @param carouselWidth width of carousel
+     * @param slides array of slides
+     * @param options options set by user
+     */
     setup(carouselWidth: number, slides: CarouselSlideDirective[], options: OwlOptions): void;
     /**
      * Set options for current viewport
@@ -304,88 +304,88 @@ export declare class CarouselService {
      */
     sendChanges(): void;
     /**
-       * Updates option logic if necessery
-       */
+     * Updates option logic if necessery
+     */
     private _optionsLogic;
     /**
      * Updates the view
      */
     update(): void;
     /**
-       * Gets the width of the view.
-       * @param [dimension=Width.Default] The dimension to return
-       * @returns The width of the view in pixel.
-       */
+     * Gets the width of the view.
+     * @param [dimension=Width.Default] The dimension to return
+     * @returns The width of the view in pixel.
+     */
     width(dimension?: Width): number;
     /**
-       * Refreshes the carousel primarily for adaptive purposes.
-       */
+     * Refreshes the carousel primarily for adaptive purposes.
+     */
     refresh(): void;
     /**
-       * Checks window `resize` event.
-       * @param curWidth width of .owl-carousel
-       */
+     * Checks window `resize` event.
+     * @param curWidth width of .owl-carousel
+     */
     onResize(curWidth: number): boolean;
     /**
-       * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
-       * @todo Horizontal swipe threshold as option
-       * @todo #261
-       * @param event - The event arguments.
-       * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
-       */
+     * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
+     * @todo Horizontal swipe threshold as option
+     * @todo #261
+     * @param event - The event arguments.
+     * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
+     */
     prepareDragging(event: any): Coords;
     /**
      * Enters into a 'dragging' state
      */
     enterDragging(): void;
     /**
-       * Defines new coords for .owl-stage while dragging it
-       * @todo #261
-       * @param event the event arguments.
-       * @param dragData initial data got after starting dragging
-       * @returns coords or false
-       */
+     * Defines new coords for .owl-stage while dragging it
+     * @todo #261
+     * @param event the event arguments.
+     * @param dragData initial data got after starting dragging
+     * @returns coords or false
+     */
     defineNewCoordsDrag(event: any, dragData: any): boolean | Coords;
     /**
-       * Finishes dragging of carousel when `touchend` and `mouseup` events fire.
-       * @todo #261
-       * @todo Threshold for click event
-       * @param event the event arguments.
-       * @param dragObj the object with dragging settings and states
-       * @param clickAttacher function which attaches click handler to slide or its children elements in order to prevent event bubling
-       */
+     * Finishes dragging of carousel when `touchend` and `mouseup` events fire.
+     * @todo #261
+     * @todo Threshold for click event
+     * @param event the event arguments.
+     * @param dragObj the object with dragging settings and states
+     * @param clickAttacher function which attaches click handler to slide or its children elements in order to prevent event bubling
+     */
     finishDragging(event: any, dragObj: any, clickAttacher: () => void): void;
     /**
-       * Gets absolute position of the closest item for a coordinate.
-       * @todo Setting `freeDrag` makes `closest` not reusable. See #165.
-       * @param coordinate The coordinate in pixel.
-       * @param direction The direction to check for the closest item. Ether `left` or `right`.
-       * @returns The absolute position of the closest item.
-       */
+     * Gets absolute position of the closest item for a coordinate.
+     * @todo Setting `freeDrag` makes `closest` not reusable. See #165.
+     * @param coordinate The coordinate in pixel.
+     * @param direction The direction to check for the closest item. Ether `left` or `right`.
+     * @returns The absolute position of the closest item.
+     */
     closest(coordinate: number, direction: string): number;
     /**
-       * Animates the stage.
-       * @todo #270
-       * @param coordinate The coordinate in pixels.
-       */
+     * Animates the stage.
+     * @todo #270
+     * @param coordinate The coordinate in pixels.
+     */
     animate(coordinate: number | number[]): void;
     /**
-       * Checks whether the carousel is in a specific state or not.
-       * @param state The state to check.
-       * @returns The flag which indicates if the carousel is busy.
-       */
+     * Checks whether the carousel is in a specific state or not.
+     * @param state The state to check.
+     * @returns The flag which indicates if the carousel is busy.
+     */
     is(state: string): boolean;
     /**
-       * Sets the absolute position of the current item.
-       * @param position The new absolute position or nothing to leave it unchanged.
-       * @returns The absolute position of the current item.
-       */
+     * Sets the absolute position of the current item.
+     * @param position The new absolute position or nothing to leave it unchanged.
+     * @returns The absolute position of the current item.
+     */
     current(position?: number): number;
     /**
-       * Invalidates the given part of the update routine.
-       * @param part The part to invalidate.
-       * @returns The invalidated parts.
-       */
+     * Invalidates the given part of the update routine.
+     * @param part The part to invalidate.
+     * @returns The invalidated parts.
+     */
     invalidate(part: string): string[];
     /**
      * Resets the absolute position of the current item.
@@ -393,99 +393,99 @@ export declare class CarouselService {
      */
     reset(position: number): void;
     /**
-       * Normalizes an absolute or a relative position of an item.
-       * @param position The absolute or relative position to normalize.
-       * @param relative Whether the given position is relative or not.
-       * @returns The normalized position.
-       */
+     * Normalizes an absolute or a relative position of an item.
+     * @param position The absolute or relative position to normalize.
+     * @param relative Whether the given position is relative or not.
+     * @returns The normalized position.
+     */
     normalize(position: number, relative?: boolean): number;
     /**
-       * Converts an absolute position of an item into a relative one.
-       * @param position The absolute position to convert.
-       * @returns The converted position.
-       */
+     * Converts an absolute position of an item into a relative one.
+     * @param position The absolute position to convert.
+     * @returns The converted position.
+     */
     relative(position: number): number;
     /**
-       * Gets the maximum position for the current item.
-       * @param relative Whether to return an absolute position or a relative position.
-       * @returns number of maximum position
-       */
+     * Gets the maximum position for the current item.
+     * @param relative Whether to return an absolute position or a relative position.
+     * @returns number of maximum position
+     */
     maximum(relative?: boolean): number;
     /**
-       * Gets the minimum position for the current item.
-       * @param relative Whether to return an absolute position or a relative position.
-       * @returns number of minimum position
-       */
+     * Gets the minimum position for the current item.
+     * @param relative Whether to return an absolute position or a relative position.
+     * @returns number of minimum position
+     */
     minimum(relative?: boolean): number;
     /**
-       * Gets an item at the specified relative position.
-       * @param position The relative position of the item.
-       * @returns The item at the given position or all items if no position was given.
-       */
+     * Gets an item at the specified relative position.
+     * @param position The relative position of the item.
+     * @returns The item at the given position or all items if no position was given.
+     */
     items(position?: number): CarouselSlideDirective[];
     /**
-       * Gets an item at the specified relative position.
-       * @param position The relative position of the item.
-       * @returns The item at the given position or all items if no position was given.
-       */
+     * Gets an item at the specified relative position.
+     * @param position The relative position of the item.
+     * @returns The item at the given position or all items if no position was given.
+     */
     mergers(position: number): number | number[];
     /**
-       * Gets the absolute positions of clones for an item.
-       * @param position The relative position of the item.
-       * @returns The absolute positions of clones for the item or all if no position was given.
-       */
+     * Gets the absolute positions of clones for an item.
+     * @param position The relative position of the item.
+     * @returns The absolute positions of clones for the item or all if no position was given.
+     */
     clones(position?: number): number[];
     /**
-       * Sets the current animation speed.
-       * @param speed The animation speed in milliseconds or nothing to leave it unchanged.
-       * @returns The current animation speed in milliseconds.
-       */
+     * Sets the current animation speed.
+     * @param speed The animation speed in milliseconds or nothing to leave it unchanged.
+     * @returns The current animation speed in milliseconds.
+     */
     speed(speed?: number): number;
     /**
-       * Gets the coordinate of an item.
-       * @todo The name of this method is missleanding.
-       * @param position The absolute position of the item within `minimum()` and `maximum()`.
-       * @returns The coordinate of the item in pixel or all coordinates.
-       */
+     * Gets the coordinate of an item.
+     * @todo The name of this method is missleanding.
+     * @param position The absolute position of the item within `minimum()` and `maximum()`.
+     * @returns The coordinate of the item in pixel or all coordinates.
+     */
     coordinates(position?: number): number | number[];
     /**
-       * Calculates the speed for a translation.
-       * @param from The absolute position of the start item.
-       * @param to The absolute position of the target item.
-       * @param factor [factor=undefined] - The time factor in milliseconds.
-       * @returns The time in milliseconds for the translation.
-       */
+     * Calculates the speed for a translation.
+     * @param from The absolute position of the start item.
+     * @param to The absolute position of the target item.
+     * @param factor [factor=undefined] - The time factor in milliseconds.
+     * @returns The time in milliseconds for the translation.
+     */
     private _duration;
     /**
-       * Slides to the specified item.
-       * @param position The position of the item.
-       * @param speed The time in milliseconds for the transition.
-       */
+     * Slides to the specified item.
+     * @param position The position of the item.
+     * @param speed The time in milliseconds for the transition.
+     */
     to(position: number, speed: number | boolean): void;
     /**
-       * Slides to the next item.
-       * @param speed The time in milliseconds for the transition.
-       */
+     * Slides to the next item.
+     * @param speed The time in milliseconds for the transition.
+     */
     next(speed: number | boolean): void;
     /**
-       * Slides to the previous item.
-       * @param speed The time in milliseconds for the transition.
-       */
+     * Slides to the previous item.
+     * @param speed The time in milliseconds for the transition.
+     */
     prev(speed: number | boolean): void;
     /**
-       * Handles the end of an animation.
-       * @param event - The event arguments.
-       */
+     * Handles the end of an animation.
+     * @param event - The event arguments.
+     */
     onTransitionEnd(event?: any): boolean;
     /**
-       * Gets viewport width.
-       * @returns - The width in pixel.
-       */
+     * Gets viewport width.
+     * @returns - The width in pixel.
+     */
     private _viewport;
     /**
-       * Sets _items
-       * @param content The list of slides put into CarouselSlideDirectives.
-       */
+     * Sets _items
+     * @param content The list of slides put into CarouselSlideDirectives.
+     */
     setItems(content: CarouselSlideDirective[]): void;
     /**
      * Sets slidesData using this._items
@@ -500,22 +500,22 @@ export declare class CarouselService {
         [key: string]: boolean;
     };
     /**
-       * Operators to calculate right-to-left and left-to-right.
-       * @param a - The left side operand.
-       * @param o - The operator.
-       * @param b - The right side operand.
-       * @returns true/false meaning right-to-left or left-to-right
-       */
+     * Operators to calculate right-to-left and left-to-right.
+     * @param a - The left side operand.
+     * @param o - The operator.
+     * @param b - The right side operand.
+     * @returns true/false meaning right-to-left or left-to-right
+     */
     private _op;
     /**
-       * Triggers a public event.
-       * @todo Remove `status`, `relatedTarget` should be used instead.
-       * @param name The event name.
-       * @param data The event data.
-       * @param namespace The event namespace.
-       * @param state The state which is associated with the event.
-       * @param enter Indicates if the call enters the specified state or not.
-       */
+     * Triggers a public event.
+     * @todo Remove `status`, `relatedTarget` should be used instead.
+     * @param name The event name.
+     * @param data The event data.
+     * @param namespace The event namespace.
+     * @param state The state which is associated with the event.
+     * @param enter Indicates if the call enters the specified state or not.
+     */
     private _trigger;
     /**
      * Enters a state.
@@ -523,37 +523,37 @@ export declare class CarouselService {
      */
     enter(name: string): void;
     /**
-       * Leaves a state.
-       * @param name - The state name.
-       */
+     * Leaves a state.
+     * @param name - The state name.
+     */
     leave(name: string): void;
     /**
-       * Registers an event or state.
-       * @param object - The event or state to register.
-       */
+     * Registers an event or state.
+     * @param object - The event or state to register.
+     */
     register(object: any): void;
     /**
-       * Suppresses events.
-       * @param events The events to suppress.
-       */
+     * Suppresses events.
+     * @param events The events to suppress.
+     */
     private _suppress;
     /**
-       * Releases suppressed events.
-       * @param events The events to release.
-       */
+     * Releases suppressed events.
+     * @param events The events to release.
+     */
     private _release;
     /**
-       * Gets unified pointer coordinates from event.
-       * @todo #261
-       * @param event The `mousedown` or `touchstart` event.
-       * @returns Object Coords which contains `x` and `y` coordinates of current pointer position.
-       */
+     * Gets unified pointer coordinates from event.
+     * @todo #261
+     * @param event The `mousedown` or `touchstart` event.
+     * @returns Object Coords which contains `x` and `y` coordinates of current pointer position.
+     */
     pointer(event: any): Coords;
     /**
-       * Determines if the input is a Number or something that can be coerced to a Number
-       * @param number The input to be tested
-       * @returns An indication if the input is a Number or can be coerced to a Number
-       */
+     * Determines if the input is a Number or something that can be coerced to a Number
+     * @param number The input to be tested
+     * @returns An indication if the input is a Number or can be coerced to a Number
+     */
     private _isNumeric;
     /**
      * Determines whether value is number or boolean type
@@ -574,12 +574,12 @@ export declare class CarouselService {
      */
     private _isStringOrBoolean;
     /**
-       * Gets the difference of two vectors.
-       * @todo #261
-       * @param first The first vector.
-       * @param second The second vector.
-       * @returns The difference.
-       */
+     * Gets the difference of two vectors.
+     * @todo #261
+     * @param first The first vector.
+     * @param second The second vector.
+     * @returns The difference.
+     */
     difference(first: Coords, second: Coords): Coords;
     static ɵfac: i0.ɵɵFactoryDeclaration<CarouselService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<CarouselService>;

@@ -182,52 +182,52 @@ class CarouselService {
     constructor(logger) {
         this.logger = logger;
         /**
-       * Subject for passing data needed for managing View
-       */
+         * Subject for passing data needed for managing View
+         */
         this._viewSettingsShipper$ = new Subject();
         /**
-       * Subject for notification when the carousel got initializes
-       */
+         * Subject for notification when the carousel got initializes
+         */
         this._initializedCarousel$ = new Subject();
         /**
-       * Subject for notification when the carousel's settings start changinf
-       */
+         * Subject for notification when the carousel's settings start changinf
+         */
         this._changeSettingsCarousel$ = new Subject();
         /**
-       * Subject for notification when the carousel's settings have changed
-       */
+         * Subject for notification when the carousel's settings have changed
+         */
         this._changedSettingsCarousel$ = new Subject();
         /**
-       * Subject for notification when the carousel starts translating or moving
-       */
+         * Subject for notification when the carousel starts translating or moving
+         */
         this._translateCarousel$ = new Subject();
         /**
-       * Subject for notification when the carousel stopped translating or moving
-       */
+         * Subject for notification when the carousel stopped translating or moving
+         */
         this._translatedCarousel$ = new Subject();
         /**
-       * Subject for notification when the carousel's rebuilding caused by 'resize' event starts
-       */
+         * Subject for notification when the carousel's rebuilding caused by 'resize' event starts
+         */
         this._resizeCarousel$ = new Subject();
         /**
-       * Subject for notification  when the carousel's rebuilding caused by 'resize' event is ended
-       */
+         * Subject for notification  when the carousel's rebuilding caused by 'resize' event is ended
+         */
         this._resizedCarousel$ = new Subject();
         /**
-       * Subject for notification when the refresh of carousel starts
-       */
+         * Subject for notification when the refresh of carousel starts
+         */
         this._refreshCarousel$ = new Subject();
         /**
-       * Subject for notification when the refresh of carousel is ended
-       */
+         * Subject for notification when the refresh of carousel is ended
+         */
         this._refreshedCarousel$ = new Subject();
         /**
-       * Subject for notification when the dragging of carousel starts
-       */
+         * Subject for notification when the dragging of carousel starts
+         */
         this._dragCarousel$ = new Subject();
         /**
-       * Subject for notification when the dragging of carousel is ended
-       */
+         * Subject for notification when the dragging of carousel is ended
+         */
         this._draggedCarousel$ = new Subject();
         /**
          * Current settings for the carousel.
@@ -236,8 +236,8 @@ class CarouselService {
             items: 0
         };
         /**
-       * Initial data for setting classes to element .owl-carousel
-       */
+         * Initial data for setting classes to element .owl-carousel
+         */
         this.owlDOMData = {
             rtl: false,
             isResponsive: false,
@@ -249,8 +249,8 @@ class CarouselService {
             isTouchDragable: false
         };
         /**
-       * Initial data of .owl-stage
-       */
+         * Initial data of .owl-stage
+         */
         this.stageData = {
             transform: 'translate3d(0px,0px,0px)',
             transition: '0s',
@@ -263,24 +263,24 @@ class CarouselService {
          */
         this._items = []; // is equal to this.slides
         /**
-       * Array with width of every slide.
-       */
+         * Array with width of every slide.
+         */
         this._widths = [];
         /**
-       * Currently suppressed events to prevent them from beeing retriggered.
-       */
+         * Currently suppressed events to prevent them from beeing retriggered.
+         */
         this._supress = {};
         /**
          * References to the running plugins of this carousel.
          */
         this._plugins = {};
         /**
-       * Absolute current position.
-       */
+         * Absolute current position.
+         */
         this._current = null;
         /**
-       * All cloned items.
-       */
+         * All cloned items.
+         */
         this._clones = [];
         /**
          * Merge values of all items.
@@ -288,18 +288,18 @@ class CarouselService {
          */
         this._mergers = [];
         /**
-       * Animation speed in milliseconds.
-       */
+         * Animation speed in milliseconds.
+         */
         this._speed = null;
         /**
-       * Coordinates of all items in pixel.
-       * @todo The name of this member is missleading.
-       */
+         * Coordinates of all items in pixel.
+         * @todo The name of this member is missleading.
+         */
         this._coordinates = [];
         /**
-       * Current breakpoint.
-       * @todo Real media queries would be nice.
-       */
+         * Current breakpoint.
+         * @todo Real media queries would be nice.
+         */
         this._breakpoint = null;
         /**
          * Prefix for id of cloned slides
@@ -325,8 +325,8 @@ class CarouselService {
             }
         };
         /**
-         * Ordered list of workers for the update process.
-       */
+             * Ordered list of workers for the update process.
+         */
         this._pipe = [
             // {
             //   filter: ['width', 'settings'],
@@ -337,7 +337,7 @@ class CarouselService {
             {
                 filter: ['width', 'items', 'settings'],
                 run: cache => {
-                    cache.current = this._items && this._items[this.relative(this._current)].id;
+                    cache.current = this._items && this._items[this.relative(this._current)]?.id;
                 }
             },
             // {
@@ -708,13 +708,13 @@ class CarouselService {
         this._width = width;
     }
     /**
-       * Setups the current settings.
-       * @todo Remove responsive classes. Why should adaptive designs be brought into IE8?
-       * @todo Support for media queries by using `matchMedia` would be nice.
-       * @param carouselWidth width of carousel
-       * @param slides array of slides
-       * @param options options set by user
-       */
+     * Setups the current settings.
+     * @todo Remove responsive classes. Why should adaptive designs be brought into IE8?
+     * @todo Support for media queries by using `matchMedia` would be nice.
+     * @param carouselWidth width of carousel
+     * @param slides array of slides
+     * @param options options set by user
+     */
     setup(carouselWidth, slides, options) {
         this.setCarouselWidth(carouselWidth);
         this.setItems(slides);
@@ -803,8 +803,8 @@ class CarouselService {
         });
     }
     /**
-       * Updates option logic if necessery
-       */
+     * Updates option logic if necessery
+     */
     _optionsLogic() {
         if (this.settings.autoWidth) {
             this.settings.stagePadding = 0;
@@ -832,10 +832,10 @@ class CarouselService {
         }
     }
     /**
-       * Gets the width of the view.
-       * @param [dimension=Width.Default] The dimension to return
-       * @returns The width of the view in pixel.
-       */
+     * Gets the width of the view.
+     * @param [dimension=Width.Default] The dimension to return
+     * @returns The width of the view in pixel.
+     */
     width(dimension) {
         dimension = dimension || Width.Default;
         switch (dimension) {
@@ -847,8 +847,8 @@ class CarouselService {
         }
     }
     /**
-       * Refreshes the carousel primarily for adaptive purposes.
-       */
+     * Refreshes the carousel primarily for adaptive purposes.
+     */
     refresh() {
         this.enter('refreshing');
         this._trigger('refresh');
@@ -862,9 +862,9 @@ class CarouselService {
         this._trigger('refreshed');
     }
     /**
-       * Checks window `resize` event.
-       * @param curWidth width of .owl-carousel
-       */
+     * Checks window `resize` event.
+     * @param curWidth width of .owl-carousel
+     */
     onResize(curWidth) {
         if (!this._items.length) {
             return false;
@@ -882,12 +882,12 @@ class CarouselService {
         this._trigger('resized');
     }
     /**
-       * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
-       * @todo Horizontal swipe threshold as option
-       * @todo #261
-       * @param event - The event arguments.
-       * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
-       */
+     * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
+     * @todo Horizontal swipe threshold as option
+     * @todo #261
+     * @param event - The event arguments.
+     * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
+     */
     prepareDragging(event) {
         let stage = null, transformArr;
         // could be 5 commented lines below; However there's stage transform in stageData and in updates after each move of stage
@@ -918,12 +918,12 @@ class CarouselService {
         this._trigger('drag');
     }
     /**
-       * Defines new coords for .owl-stage while dragging it
-       * @todo #261
-       * @param event the event arguments.
-       * @param dragData initial data got after starting dragging
-       * @returns coords or false
-       */
+     * Defines new coords for .owl-stage while dragging it
+     * @todo #261
+     * @param event the event arguments.
+     * @param dragData initial data got after starting dragging
+     * @returns coords or false
+     */
     defineNewCoordsDrag(event, dragData) {
         let minimum = null, maximum = null, pull = null;
         const delta = this.difference(dragData.pointer, this.pointer(event)), stage = this.difference(dragData.stage.start, delta);
@@ -944,13 +944,13 @@ class CarouselService {
         return stage;
     }
     /**
-       * Finishes dragging of carousel when `touchend` and `mouseup` events fire.
-       * @todo #261
-       * @todo Threshold for click event
-       * @param event the event arguments.
-       * @param dragObj the object with dragging settings and states
-       * @param clickAttacher function which attaches click handler to slide or its children elements in order to prevent event bubling
-       */
+     * Finishes dragging of carousel when `touchend` and `mouseup` events fire.
+     * @todo #261
+     * @todo Threshold for click event
+     * @param event the event arguments.
+     * @param dragObj the object with dragging settings and states
+     * @param clickAttacher function which attaches click handler to slide or its children elements in order to prevent event bubling
+     */
     finishDragging(event, dragObj, clickAttacher) {
         const directions = ['right', 'left'], delta = this.difference(dragObj.pointer, this.pointer(event)), stage = dragObj.stage.current, direction = directions[+(this.settings.rtl ? delta.x < +this.settings.rtl : delta.x > +this.settings.rtl)];
         let currentSlideI, current, newCurrent;
@@ -975,12 +975,12 @@ class CarouselService {
         this._trigger('dragged');
     }
     /**
-       * Gets absolute position of the closest item for a coordinate.
-       * @todo Setting `freeDrag` makes `closest` not reusable. See #165.
-       * @param coordinate The coordinate in pixel.
-       * @param direction The direction to check for the closest item. Ether `left` or `right`.
-       * @returns The absolute position of the closest item.
-       */
+     * Gets absolute position of the closest item for a coordinate.
+     * @todo Setting `freeDrag` makes `closest` not reusable. See #165.
+     * @param coordinate The coordinate in pixel.
+     * @param direction The direction to check for the closest item. Ether `left` or `right`.
+     * @returns The absolute position of the closest item.
+     */
     closest(coordinate, direction) {
         const pull = 30, width = this.width();
         let coordinates = this.coordinates(), position = -1;
@@ -1032,10 +1032,10 @@ class CarouselService {
         return position;
     }
     /**
-       * Animates the stage.
-       * @todo #270
-       * @param coordinate The coordinate in pixels.
-       */
+     * Animates the stage.
+     * @todo #270
+     * @param coordinate The coordinate in pixels.
+     */
     animate(coordinate) {
         const animate = this.speed() > 0;
         if (this.is('animating')) {
@@ -1050,19 +1050,19 @@ class CarouselService {
         // also there was transition by means of JQuery.animate or css-changing property left
     }
     /**
-       * Checks whether the carousel is in a specific state or not.
-       * @param state The state to check.
-       * @returns The flag which indicates if the carousel is busy.
-       */
+     * Checks whether the carousel is in a specific state or not.
+     * @param state The state to check.
+     * @returns The flag which indicates if the carousel is busy.
+     */
     is(state) {
         return this._states.current[state] && this._states.current[state] > 0;
     }
     ;
     /**
-       * Sets the absolute position of the current item.
-       * @param position The new absolute position or nothing to leave it unchanged.
-       * @returns The absolute position of the current item.
-       */
+     * Sets the absolute position of the current item.
+     * @param position The new absolute position or nothing to leave it unchanged.
+     * @returns The absolute position of the current item.
+     */
     current(position) {
         if (position === undefined) {
             return this._current;
@@ -1083,10 +1083,10 @@ class CarouselService {
         return this._current;
     }
     /**
-       * Invalidates the given part of the update routine.
-       * @param part The part to invalidate.
-       * @returns The invalidated parts.
-       */
+     * Invalidates the given part of the update routine.
+     * @param part The part to invalidate.
+     * @returns The invalidated parts.
+     */
     invalidate(part) {
         if (typeof part === 'string') {
             this._invalidated[part] = true;
@@ -1113,11 +1113,11 @@ class CarouselService {
         this._release(['translate', 'translated']);
     }
     /**
-       * Normalizes an absolute or a relative position of an item.
-       * @param position The absolute or relative position to normalize.
-       * @param relative Whether the given position is relative or not.
-       * @returns The normalized position.
-       */
+     * Normalizes an absolute or a relative position of an item.
+     * @param position The absolute or relative position to normalize.
+     * @param relative Whether the given position is relative or not.
+     * @returns The normalized position.
+     */
     normalize(position, relative) {
         const n = this._items.length, m = relative ? 0 : this._clones.length;
         if (!this._isNumeric(position) || n < 1) {
@@ -1129,19 +1129,19 @@ class CarouselService {
         return position;
     }
     /**
-       * Converts an absolute position of an item into a relative one.
-       * @param position The absolute position to convert.
-       * @returns The converted position.
-       */
+     * Converts an absolute position of an item into a relative one.
+     * @param position The absolute position to convert.
+     * @returns The converted position.
+     */
     relative(position) {
         position -= this._clones.length / 2;
         return this.normalize(position, true);
     }
     /**
-       * Gets the maximum position for the current item.
-       * @param relative Whether to return an absolute position or a relative position.
-       * @returns number of maximum position
-       */
+     * Gets the maximum position for the current item.
+     * @param relative Whether to return an absolute position or a relative position.
+     * @returns number of maximum position
+     */
     maximum(relative = false) {
         const settings = this.settings;
         let maximum = this._coordinates.length, iterator, reciprocalItemsWidth, elementWidth;
@@ -1173,18 +1173,18 @@ class CarouselService {
         return Math.max(maximum, 0);
     }
     /**
-       * Gets the minimum position for the current item.
-       * @param relative Whether to return an absolute position or a relative position.
-       * @returns number of minimum position
-       */
+     * Gets the minimum position for the current item.
+     * @param relative Whether to return an absolute position or a relative position.
+     * @returns number of minimum position
+     */
     minimum(relative = false) {
         return relative ? 0 : this._clones.length / 2;
     }
     /**
-       * Gets an item at the specified relative position.
-       * @param position The relative position of the item.
-       * @returns The item at the given position or all items if no position was given.
-       */
+     * Gets an item at the specified relative position.
+     * @param position The relative position of the item.
+     * @returns The item at the given position or all items if no position was given.
+     */
     items(position) {
         if (position === undefined) {
             return this._items.slice();
@@ -1193,10 +1193,10 @@ class CarouselService {
         return [this._items[position]];
     }
     /**
-       * Gets an item at the specified relative position.
-       * @param position The relative position of the item.
-       * @returns The item at the given position or all items if no position was given.
-       */
+     * Gets an item at the specified relative position.
+     * @param position The relative position of the item.
+     * @returns The item at the given position or all items if no position was given.
+     */
     mergers(position) {
         if (position === undefined) {
             return this._mergers.slice();
@@ -1205,10 +1205,10 @@ class CarouselService {
         return this._mergers[position];
     }
     /**
-       * Gets the absolute positions of clones for an item.
-       * @param position The relative position of the item.
-       * @returns The absolute positions of clones for the item or all if no position was given.
-       */
+     * Gets the absolute positions of clones for an item.
+     * @param position The relative position of the item.
+     * @returns The absolute positions of clones for the item or all if no position was given.
+     */
     clones(position) {
         const odd = this._clones.length / 2, even = odd + this._items.length, map = index => index % 2 === 0 ? even + index / 2 : odd - (index + 1) / 2;
         if (position === undefined) {
@@ -1217,10 +1217,10 @@ class CarouselService {
         return this._clones.map((v, i) => v === position ? map(i) : null).filter(item => item);
     }
     /**
-       * Sets the current animation speed.
-       * @param speed The animation speed in milliseconds or nothing to leave it unchanged.
-       * @returns The current animation speed in milliseconds.
-       */
+     * Sets the current animation speed.
+     * @param speed The animation speed in milliseconds or nothing to leave it unchanged.
+     * @returns The current animation speed in milliseconds.
+     */
     speed(speed) {
         if (speed !== undefined) {
             this._speed = speed;
@@ -1228,11 +1228,11 @@ class CarouselService {
         return this._speed;
     }
     /**
-       * Gets the coordinate of an item.
-       * @todo The name of this method is missleanding.
-       * @param position The absolute position of the item within `minimum()` and `maximum()`.
-       * @returns The coordinate of the item in pixel or all coordinates.
-       */
+     * Gets the coordinate of an item.
+     * @todo The name of this method is missleanding.
+     * @param position The absolute position of the item within `minimum()` and `maximum()`.
+     * @returns The coordinate of the item in pixel or all coordinates.
+     */
     coordinates(position) {
         let multiplier = 1, newPosition = position - 1, coordinate, result;
         if (position === undefined) {
@@ -1256,12 +1256,12 @@ class CarouselService {
         return coordinate;
     }
     /**
-       * Calculates the speed for a translation.
-       * @param from The absolute position of the start item.
-       * @param to The absolute position of the target item.
-       * @param factor [factor=undefined] - The time factor in milliseconds.
-       * @returns The time in milliseconds for the translation.
-       */
+     * Calculates the speed for a translation.
+     * @param from The absolute position of the start item.
+     * @param to The absolute position of the target item.
+     * @param factor [factor=undefined] - The time factor in milliseconds.
+     * @returns The time in milliseconds for the translation.
+     */
     _duration(from, to, factor) {
         if (factor === 0) {
             return 0;
@@ -1269,10 +1269,10 @@ class CarouselService {
         return Math.min(Math.max(Math.abs(to - from), 1), 6) * Math.abs((+factor || this.settings.smartSpeed));
     }
     /**
-       * Slides to the specified item.
-       * @param position The position of the item.
-       * @param speed The time in milliseconds for the transition.
-       */
+     * Slides to the specified item.
+     * @param position The position of the item.
+     * @param speed The time in milliseconds for the transition.
+     */
     to(position, speed) {
         let current = this.current(), revert = null, distance = position - this.relative(current), maximum = this.maximum(), delayForLoop = 0;
         const direction = +(distance > 0) - +(distance < 0), items = this._items.length, minimum = this.minimum();
@@ -1304,25 +1304,25 @@ class CarouselService {
         }, delayForLoop);
     }
     /**
-       * Slides to the next item.
-       * @param speed The time in milliseconds for the transition.
-       */
+     * Slides to the next item.
+     * @param speed The time in milliseconds for the transition.
+     */
     next(speed) {
         speed = speed || false;
         this.to(this.relative(this.current()) + 1, speed);
     }
     /**
-       * Slides to the previous item.
-       * @param speed The time in milliseconds for the transition.
-       */
+     * Slides to the previous item.
+     * @param speed The time in milliseconds for the transition.
+     */
     prev(speed) {
         speed = speed || false;
         this.to(this.relative(this.current()) - 1, speed);
     }
     /**
-       * Handles the end of an animation.
-       * @param event - The event arguments.
-       */
+     * Handles the end of an animation.
+     * @param event - The event arguments.
+     */
     onTransitionEnd(event) {
         // if css2 animation then event object is undefined
         if (event !== undefined) {
@@ -1337,9 +1337,9 @@ class CarouselService {
         this._trigger('translated');
     }
     /**
-       * Gets viewport width.
-       * @returns - The width in pixel.
-       */
+     * Gets viewport width.
+     * @returns - The width in pixel.
+     */
     _viewport() {
         let width;
         if (this._width) {
@@ -1351,9 +1351,9 @@ class CarouselService {
         return width;
     }
     /**
-       * Sets _items
-       * @param content The list of slides put into CarouselSlideDirectives.
-       */
+     * Sets _items
+     * @param content The list of slides put into CarouselSlideDirectives.
+     */
     setItems(content) {
         this._items = content;
     }
@@ -1411,12 +1411,12 @@ class CarouselService {
         return currentClasses;
     }
     /**
-       * Operators to calculate right-to-left and left-to-right.
-       * @param a - The left side operand.
-       * @param o - The operator.
-       * @param b - The right side operand.
-       * @returns true/false meaning right-to-left or left-to-right
-       */
+     * Operators to calculate right-to-left and left-to-right.
+     * @param a - The left side operand.
+     * @param o - The operator.
+     * @param b - The right side operand.
+     * @returns true/false meaning right-to-left or left-to-right
+     */
     _op(a, o, b) {
         const rtl = this.settings.rtl;
         switch (o) {
@@ -1433,14 +1433,14 @@ class CarouselService {
         }
     }
     /**
-       * Triggers a public event.
-       * @todo Remove `status`, `relatedTarget` should be used instead.
-       * @param name The event name.
-       * @param data The event data.
-       * @param namespace The event namespace.
-       * @param state The state which is associated with the event.
-       * @param enter Indicates if the call enters the specified state or not.
-       */
+     * Triggers a public event.
+     * @todo Remove `status`, `relatedTarget` should be used instead.
+     * @param name The event name.
+     * @param data The event data.
+     * @param namespace The event namespace.
+     * @param state The state which is associated with the event.
+     * @param enter Indicates if the call enters the specified state or not.
+     */
     _trigger(name, data, namespace, state, enter) {
         switch (name) {
             case 'initialized':
@@ -1494,9 +1494,9 @@ class CarouselService {
     }
     ;
     /**
-       * Leaves a state.
-       * @param name - The state name.
-       */
+     * Leaves a state.
+     * @param name - The state name.
+     */
     leave(name) {
         [name].concat(this._states.tags[name] || []).forEach((stateName) => {
             if (this._states.current[stateName] === 0 || !!this._states.current[stateName]) {
@@ -1506,9 +1506,9 @@ class CarouselService {
     }
     ;
     /**
-       * Registers an event or state.
-       * @param object - The event or state to register.
-       */
+     * Registers an event or state.
+     * @param object - The event or state to register.
+     */
     register(object) {
         if (object.type === Type.State) {
             if (!this._states.tags[object.name]) {
@@ -1523,29 +1523,29 @@ class CarouselService {
         }
     }
     /**
-       * Suppresses events.
-       * @param events The events to suppress.
-       */
+     * Suppresses events.
+     * @param events The events to suppress.
+     */
     _suppress(events) {
         events.forEach(event => {
             this._supress[event] = true;
         });
     }
     /**
-       * Releases suppressed events.
-       * @param events The events to release.
-       */
+     * Releases suppressed events.
+     * @param events The events to release.
+     */
     _release(events) {
         events.forEach(event => {
             delete this._supress[event];
         });
     }
     /**
-       * Gets unified pointer coordinates from event.
-       * @todo #261
-       * @param event The `mousedown` or `touchstart` event.
-       * @returns Object Coords which contains `x` and `y` coordinates of current pointer position.
-       */
+     * Gets unified pointer coordinates from event.
+     * @todo #261
+     * @param event The `mousedown` or `touchstart` event.
+     * @returns Object Coords which contains `x` and `y` coordinates of current pointer position.
+     */
     pointer(event) {
         const result = { x: null, y: null };
         event = event.originalEvent || event || window.event;
@@ -1563,10 +1563,10 @@ class CarouselService {
         return result;
     }
     /**
-       * Determines if the input is a Number or something that can be coerced to a Number
-       * @param number The input to be tested
-       * @returns An indication if the input is a Number or can be coerced to a Number
-       */
+     * Determines if the input is a Number or something that can be coerced to a Number
+     * @param number The input to be tested
+     * @returns An indication if the input is a Number or can be coerced to a Number
+     */
     _isNumeric(number) {
         return !isNaN(parseFloat(number));
     }
@@ -1595,12 +1595,12 @@ class CarouselService {
         return typeof value === 'string' || typeof value === 'boolean';
     }
     /**
-       * Gets the difference of two vectors.
-       * @todo #261
-       * @param first The first vector.
-       * @param second The second vector.
-       * @returns The difference.
-       */
+     * Gets the difference of two vectors.
+     * @todo #261
+     * @param first The first vector.
+     * @param second The second vector.
+     * @returns The difference.
+     */
     difference(first, second) {
         if (null === first || null === second) {
             return {
@@ -3025,8 +3025,8 @@ class CarouselComponent {
         this.changed = new EventEmitter();
         this.initialized = new EventEmitter();
         /**
-           *  Data of every slide
-           */
+         *  Data of every slide
+         */
         this.slidesData = [];
         /**
          * Shows whether carousel is loaded of not.
@@ -3079,14 +3079,13 @@ class CarouselComponent {
             this.logger.log(`There are no slides to show. So the carousel won't be rendered`);
         }
         this._slidesChangesSubscription = this.slides.changes.pipe(tap((slides) => {
-            if (slides.toArray().length) {
-                // this.carouselService.setItems(slides.toArray());
-                this.carouselService.setup(this.carouselWindowWidth, slides.toArray(), this.options);
-                this.carouselService.initialize(slides.toArray());
-            }
-            else {
+            this.carouselService.setup(this.carouselWindowWidth, slides.toArray(), this.options);
+            this.carouselService.initialize(slides.toArray());
+            if (!slides.toArray().length) {
                 this.carouselLoaded = false;
-                this.logger.log(`There are no slides to show. So the carousel won't be re-rendered`);
+            }
+            if (slides.toArray().length && !this.resizeSubscription) {
+                this._winResizeWatcher();
             }
         })).subscribe(() => { });
     }
