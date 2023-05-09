@@ -32,6 +32,7 @@ Example:
 This library is built by means of [NRWL](https://nrwl.io/nx/guide-getting-started). Some information about NRWL is on page [NxExamples](https://github.com/nrwl/nx-examples/blob/master/README.md).
 
 It's recommended to follow these steps for adding new features:
+
 1. Reading section [**Structure of lib**](#structure-of-lib).
 
 2. Forking project (detail info is on page [GitHub - Contributing to a Project](https://git-scm.com/book/en/v2/GitHub-Contributing-to-a-Project); also this [link](https://github.com/OwlCarousel2/OwlCarousel2/blob/develop/CONTRIBUTING.md#pull-requests) can help). Creating new branches must be from `develop` branch.
@@ -42,10 +43,12 @@ It's recommended to follow these steps for adding new features:
 
 5. When everything is done and tests are passing, push your topic branch up to your fork and open a Pull Request.
 
-### Issue with testing 
+### Issue with testing
+
 This corresponds to lib of version `<1.0.0` as it relies on Angular `^6.0.1`. `ngx-owl-carousel-o >=1.0.0` relies on Angular `^7.0.0` which uses Typescript 3.1.6.
 
-I used `Touch` object for testing touch-events. `triggerTouchEvent()` function creates this object. 
+I used `Touch` object for testing touch-events. `triggerTouchEvent()` function creates this object.
+
 ```typescript
 function triggerTouchEvent(element: HTMLElement, eventType: string, evtObj: any) {
   const evtSet = {
@@ -88,6 +91,7 @@ Library **ngx-owl-carousel-o** has such a structure (simplified version):
 Presented above schema is simplified version of library. There are several more services, but they just supply `document` and `window` objects. 
 
 The core service is `CarouselService`. Its content could by classified in such a way:
+
 1. Properties which contain data about different states of carousel, custom options and settings. Mostly they are private.
 2. Methods for evaluating, changing and exposing states of carousel, defining settings according to users and defaults options. Some of these methods are available to all services and components of this library.
 3. Properties which contain data for representing View. They are public and could be changed by any service.
@@ -101,14 +105,18 @@ All services are provided in `CarouselComponent`. This allows to use  `CarouselS
 Also it's worth to say, `CarouselComponent` injects every service even though it doesn't uses any of methods of some services. This is required for initializing services. 
 
 ### Notification system
+
 It's based on `Subject<T>`. All `Subject<T>` are in `CarouselService` and are exposed through special methods as observable (one of this methods is `getInitializedState()`).
+
 ```typescript
 getInitializedState(): Observable<string> {
 		return this._initializedCarousel$.asObservable()
   }
 ```
+
 Method `next()` of every `Subject<T>` is called in method `_trigger(name: string, data?: any, namespace?: string, state?: string, enter?: boolean)`.
 Example of calling `_trigger`:
+
 ```typescript
   this._trigger('translated');
 ```
@@ -119,6 +127,7 @@ Mostly services get notified by type of message (event) and some conditions and 
 When job of a certain service is finished it notifies about it by calling method `this.carouselService.sendChanges()`. This method passes data for representing View to components.
 
 ### Schema of working library
+
 1. `CarouselComponent` gets created.
 2. `CarouselComponent` reads options and included directives `CarouselSlideDirective` which are slides.
 3. `CarouselComponent` call methods `this.carouselService.setup(args)` and `this.carouselService.initialize(args)`.
@@ -129,9 +138,10 @@ When job of a certain service is finished it notifies about it by calling method
 8. Method `sendChanges()` is being called.
 9. `CarouselComponent` and `StageComponent` see changes and update Views.
 
-Navigation and any other changes caused by users actions initiate calling method from corresponding service. Then steps 6-8 are repeating. 
+Navigation and any other changes caused by users actions initiate calling method from corresponding service. Then steps 6-8 are repeating.
 
 ### Data models
+
 The most important data models are `OwlOptions` and `SlideModel`. 
 
 `OwlOptions` is model of all options which can be set by developer. 
@@ -148,6 +158,5 @@ Method `setOptions()` rewrites defaults options into users options.
 
 Method `_defineSlidesData()` makes initial defining of `slidesData`. Changing this method is recommended when `CarouselSlideDirective` gets expanded by new prop and it must be reflected in View. 
 If new prop of `SlideModel` and accordingly `slideData` is evaluated by new service it could be set and populated by value in that service.  
-
 
 **By submitting a patch, you agree to allow the project owner to license your work under the terms of the [MIT License](LICENSE).**
