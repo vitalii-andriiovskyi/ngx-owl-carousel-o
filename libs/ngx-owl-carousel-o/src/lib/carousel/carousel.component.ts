@@ -87,7 +87,7 @@ export class CarouselComponent
   slides: QueryList<CarouselSlideDirective>;
 
   @Output() translated = new EventEmitter<SlidesOutputData>();
-  @Output() dragging = new EventEmitter<{dragging: boolean, data: SlidesOutputData}>();
+  @Output() dragging = new EventEmitter<{ dragging: boolean, data: SlidesOutputData }>();
   @Output() change = new EventEmitter<SlidesOutputData>();
   @Output() changed = new EventEmitter<SlidesOutputData>();
   @Output() initialized = new EventEmitter<SlidesOutputData>();
@@ -125,18 +125,18 @@ export class CarouselComponent
   stageData: StageData;
 
   /**
-	 *  Data of every slide
-	 */
+   *  Data of every slide
+   */
   slidesData: SlideModel[] = [];
 
   /**
-	 * Data of navigation block
-	 */
-	navData: NavData;
+   * Data of navigation block
+   */
+  navData: NavData;
 
-	/**
-	 * Data of dots block
-	 */
+  /**
+   * Data of dots block
+   */
   dotsData: DotsData;
 
   /**
@@ -263,16 +263,17 @@ export class CarouselComponent
 
     this._slidesChangesSubscription = this.slides.changes.pipe(
       tap((slides) => {
-        if (slides.toArray().length) {
-          // this.carouselService.setItems(slides.toArray());
-          this.carouselService.setup(this.carouselWindowWidth, slides.toArray(), this.options);
-          this.carouselService.initialize(slides.toArray());
-        } else {
+        this.carouselService.setup(this.carouselWindowWidth, slides.toArray(), this.options);
+        this.carouselService.initialize(slides.toArray());
+        if (!slides.toArray().length) {
           this.carouselLoaded = false;
-          this.logger.log(`There are no slides to show. So the carousel won't be re-rendered`);
+        }
+
+        if (slides.toArray().length && !this.resizeSubscription) {
+          this._winResizeWatcher();
         }
       })
-    ).subscribe(()=>{});
+    ).subscribe(() => { });
 
   }
 
@@ -376,7 +377,7 @@ export class CarouselComponent
     this._draggingCarousel$ = this.carouselService.getDragState().pipe(
       tap(() => {
         this.gatherTranslatedData();
-        this.dragging.emit({dragging: true, data: this.slidesOutputData});
+        this.dragging.emit({ dragging: true, data: this.slidesOutputData });
       }),
       switchMap(
         () => this.carouselService.getDraggedState().pipe(
@@ -395,7 +396,7 @@ export class CarouselComponent
         }
       ),
       tap(() => {
-        this.dragging.emit({dragging: false, data: this.slidesOutputData});
+        this.dragging.emit({ dragging: false, data: this.slidesOutputData });
       })
     );
 
@@ -407,7 +408,7 @@ export class CarouselComponent
       this._changedCarousel$,
       this._initializedCarousel$
     );
-    this._allObservSubscription = this._carouselMerge$.subscribe(() => {});
+    this._allObservSubscription = this._carouselMerge$.subscribe(() => { });
   }
 
   /**

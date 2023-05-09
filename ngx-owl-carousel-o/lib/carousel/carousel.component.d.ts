@@ -65,12 +65,12 @@ export declare class CarouselComponent implements OnInit, AfterContentInit, OnDe
      */
     stageData: StageData;
     /**
-       *  Data of every slide
-       */
+     *  Data of every slide
+     */
     slidesData: SlideModel[];
     /**
-       * Data of navigation block
-       */
+     * Data of navigation block
+     */
     navData: NavData;
     /**
      * Data of dots block
