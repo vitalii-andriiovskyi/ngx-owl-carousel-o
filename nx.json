@@ -25,16 +25,16 @@
   },
   "defaultProject": "demo-owl-carousel",
   "generators": {
-    "@nrwl/schematics:library": {
-      "unitTestRunner": "karma",
-      "framework": "angular"
+    "@nx/angular:library": {
+      "unitTestRunner": "karma"
     },
-    "@nrwl/schematics:application": {
+    "@nx/angular:application": {
+      "style": "scss",
       "unitTestRunner": "karma",
       "e2eTestRunner": "protractor"
     },
-    "@nrwl/schematics:node-application": {
-      "framework": "express"
+    "@nx/angular:component": {
+      "style": "scss"
     }
   },
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
@@ -61,7 +61,6 @@
       "sharedGlobals"
     ],
     "sharedGlobals": [
-      "{workspaceRoot}/angular.json",
       "{workspaceRoot}/tslint.json",
       "{workspaceRoot}/nx.json",
       "{workspaceRoot}/tsconfig.base.json"

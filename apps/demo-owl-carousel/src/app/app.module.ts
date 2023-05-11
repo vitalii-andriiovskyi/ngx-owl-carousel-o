@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-// import { NxModule } from '@nrwl/angular';
+// import { NxModule } from '@nx/angular';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { HomeModule } from './home/home.module';
 // import { PresentModule } from './present/present.module';
@@ -14,23 +14,25 @@ import { LinkComponent } from './link/link.component';
 const appRoutes: Routes = [
   {
     path: 'present',
-    loadChildren: () => import('./present/present.module').then(mod => mod.PresentModule)
+    loadChildren: () =>
+      import('./present/present.module').then((mod) => mod.PresentModule),
   },
   {
     path: 'doubled-carousel',
-    loadChildren:
-      () => import('./doubled-carousel/doubled-carousel.module').then(
-        mod => mod.DoubledCarouselModule
-      )
+    loadChildren: () =>
+      import('./doubled-carousel/doubled-carousel.module').then(
+        (mod) => mod.DoubledCarouselModule
+      ),
   },
   {
     path: 'gallery-carousel',
-    loadChildren: () => import('./gallery/gallery.module').then(mod => mod.GalleryModule)
+    loadChildren: () =>
+      import('./gallery/gallery.module').then((mod) => mod.GalleryModule),
   },
   {
     path: 'link-comp',
-    component: LinkComponent
-  }
+    component: LinkComponent,
+  },
 ];
 
 @NgModule({
@@ -43,9 +45,9 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     CarouselModule,
     RouterModule.forRoot(appRoutes, {}),
-    LinkModule
+    LinkModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
