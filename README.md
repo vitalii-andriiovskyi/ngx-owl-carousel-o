@@ -4,7 +4,8 @@
 
 ngx-owl-carousel-o      | Angular
 ------------------------|--------
-15.x.x                  | 15.x.x
+16.x.x                  | 16.x.x
+15.x.x (latest `15.0.1`)| 15.x.x
 14.x.x (latest `14.0.1`)| 14.x.x
 7.x.x  (latest `7.0.4`) | 13.x.x
 6.x.x  (latest `6.0.2`) | 12.x.x
@@ -301,8 +302,8 @@ If the `dotContent` isn't provided in `<ng-template [carouselSlide]>`, its value
 
 ### slideBy
 
-When there's the option `slideBy='page'`, disabled __prev__ or __next__ buttons will rewind the carousel to the start or the end accordingly.
-When the number of pages (dots) is 2 and there's the option  `loop=false`, changing pages could cause thoughts  something is wrong (when the carousel is on the first page, click on the __prev__ button makes the carousel show the second page which is the ending of the carousel at the same time; in this case the __next__ and __prev__ button do the same job). To avoid this behavior, the number of pages must be 3 and more or it's needed to set `loop=true`.
+When there's the option `slideBy='page'`, disabled **prev** or **next** buttons will rewind the carousel to the start or the end accordingly.
+When the number of pages (dots) is 2 and there's the option  `loop=false`, changing pages could cause thoughts  something is wrong (when the carousel is on the first page, click on the **prev** button makes the carousel show the second page which is the ending of the carousel at the same time; in this case the **next** and **prev** button do the same job). To avoid this behavior, the number of pages must be 3 and more or it's needed to set `loop=true`.
 
 The number of pages depends on the number of all slides and the option `items` (e.g. if the quantity of slides is `10` and `items=3`, the number of pages will be `4` (10/3=3.3; 3.3 is rounded to 4)).
 
@@ -356,7 +357,7 @@ When the option `skip_validateItems` is `true`, the carousel won't reassign the 
 
 ## Refreshing the carousel if options change
 
-The code can detect different options and rerender the carousel. But the comparison of previous options and new options is shallow: `prevOptions === newOptions`. 
+The code can detect different options and rerender the carousel. But the comparison of previous options and new options is shallow: `prevOptions === newOptions`.
 
 It means that mutating options object won't trigger the carousel refreshing:
 
@@ -373,7 +374,7 @@ It means that mutating options object won't trigger the carousel refreshing:
   }
 ```
 
-It's needed to create a new options object. The object destructuring is helpful here: 
+It's needed to create a new options object. The object destructuring is helpful here:
 
 ```typescript
   // ...
@@ -416,7 +417,7 @@ Example of usage this directive:
   </owl-carousel-o>
 ```
 
-`<a [owlRouterLink]="['/present']" [stopLink]="isDragging">{{item.text}}</a>` contains `owlRouterLink` directive and its _*@Input*_ property `stopLink`.
+`<a [owlRouterLink]="['/present']" [stopLink]="isDragging">{{item.text}}</a>` contains `owlRouterLink` directive and its **@Input** property `stopLink`.
 
 `<a owlRouterLink="'/present'" [stopLink]="isDragging">{{item.text}}</a>` is also possible way of using this directive.
 
