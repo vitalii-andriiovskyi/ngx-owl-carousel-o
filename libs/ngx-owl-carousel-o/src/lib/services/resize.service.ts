@@ -1,6 +1,7 @@
-import { Observable, fromEvent } from 'rxjs';
-import { Inject, Injectable } from '@angular/core';
+import { Observable, Subject, fromEvent } from 'rxjs';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { WINDOW } from './window-ref.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable()
 export class ResizeService {
@@ -14,7 +15,7 @@ export class ResizeService {
     return this.resizeObservable$;
   }
 
-  constructor(@Inject(WINDOW) winRef: any) {
-    this.resizeObservable$ = fromEvent(winRef, 'resize');
+  constructor(@Inject(WINDOW) winRef: any, @Inject(PLATFORM_ID) platformId: Object) {
+    this.resizeObservable$ = isPlatformBrowser(platformId) ? fromEvent(winRef, 'resize') : (new Subject<Event>()).asObservable();
   }
 }

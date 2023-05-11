@@ -58,8 +58,8 @@ export function windowFactory(
     return browserWindowRef.nativeWindow;
   }
   const obj = {
-    setTimeout: (func: any, time: any) => {},
-    clearTimeout: (a: any) => {}
+    setTimeout: (func: any, time: any) => { },
+    clearTimeout: (a: any) => { }
   }
   return obj;
 }
