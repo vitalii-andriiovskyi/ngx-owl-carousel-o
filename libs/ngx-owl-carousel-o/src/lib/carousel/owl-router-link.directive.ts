@@ -1,15 +1,15 @@
-import {LocationStrategy} from '@angular/common';
-import {Attribute, Directive, ElementRef, HostBinding, HostListener, Input, OnChanges, OnDestroy, Renderer2, isDevMode} from '@angular/core';
-import {Subscription} from 'rxjs';
+import { LocationStrategy } from '@angular/common';
+import { Attribute, Directive, ElementRef, HostBinding, HostListener, Input, OnChanges, OnDestroy, Renderer2, isDevMode } from '@angular/core';
+import { Subscription } from 'rxjs';
 
-import {NavigationEnd, RouterEvent, Router, ActivatedRoute, UrlTree} from '@angular/router';
+import { NavigationEnd, RouterEvent, Router, ActivatedRoute, UrlTree } from '@angular/router';
 
 export type QueryParamsHandling = 'merge' | 'preserve' | '';
 
-@Directive({selector: ':not(a)[owlRouterLink]'})
+@Directive({ selector: ':not(a)[owlRouterLink]' })
 export class OwlRouterLinkDirective {
   // TODO(issue/24571): remove '!'.
-  @Input() queryParams !: {[k: string]: any};
+  @Input() queryParams !: { [k: string]: any };
   // TODO(issue/24571): remove '!'.
   @Input() fragment !: string;
   // TODO(issue/24571): remove '!'.
@@ -27,15 +27,15 @@ export class OwlRouterLinkDirective {
   private preserve !: boolean;
 
   constructor(
-      private router: Router, private route: ActivatedRoute,
-      @Attribute('tabindex') tabIndex: string, renderer: Renderer2, el: ElementRef) {
+    private router: Router, private route: ActivatedRoute,
+    @Attribute('tabindex') tabIndex: string, renderer: Renderer2, el: ElementRef) {
     if (tabIndex == null) {
       renderer.setAttribute(el.nativeElement, 'tabindex', '0');
     }
   }
 
   @Input()
-  set owlRouterLink(commands: any[]|string) {
+  set owlRouterLink(commands: any[] | string) {
     if (commands != null) {
       this.commands = Array.isArray(commands) ? commands : [commands];
     } else {
@@ -69,12 +69,12 @@ export class OwlRouterLinkDirective {
 
   get urlTree(): UrlTree {
     return this.router.createUrlTree(this.commands, {
-    relativeTo: this.route,
-    queryParams: this.queryParams,
-    fragment: this.fragment,
-    queryParamsHandling: this.queryParamsHandling,
-    preserveFragment: attrBoolValue(this.preserveFragment)
-});
+      relativeTo: this.route,
+      queryParams: this.queryParams,
+      fragment: this.fragment,
+      queryParamsHandling: this.queryParamsHandling,
+      preserveFragment: attrBoolValue(this.preserveFragment)
+    });
   }
 }
 
@@ -89,12 +89,12 @@ export class OwlRouterLinkDirective {
  *
  * @publicApi
  */
-@Directive({selector: 'a[owlRouterLink]'})
+@Directive({ selector: 'a[owlRouterLink]' })
 export class OwlRouterLinkWithHrefDirective implements OnChanges, OnDestroy {
   // TODO(issue/24571): remove '!'.
   @HostBinding('attr.target') @Input() target !: string;
   // TODO(issue/24571): remove '!'.
-  @Input() queryParams !: {[k: string]: any};
+  @Input() queryParams !: { [k: string]: any };
   // TODO(issue/24571): remove '!'.
   @Input() fragment !: string;
   // TODO(issue/24571): remove '!'.
@@ -117,9 +117,9 @@ export class OwlRouterLinkWithHrefDirective implements OnChanges, OnDestroy {
   @HostBinding() href !: string;
 
   constructor(
-      private router: Router, private route: ActivatedRoute,
-      private locationStrategy: LocationStrategy) {
-    this.subscription = router.events.subscribe((s: RouterEvent) => {
+    private router: Router, private route: ActivatedRoute,
+    private locationStrategy: LocationStrategy) {
+    this.subscription = router.events.subscribe((s: NavigationEnd) => {
       if (s instanceof NavigationEnd) {
         this.updateTargetUrlAndHref();
       }
@@ -127,7 +127,7 @@ export class OwlRouterLinkWithHrefDirective implements OnChanges, OnDestroy {
   }
 
   @Input()
-  set owlRouterLink(commands: any[]|string) {
+  set owlRouterLink(commands: any[] | string) {
     if (commands != null) {
       this.commands = Array.isArray(commands) ? commands : [commands];
     } else {
@@ -174,12 +174,12 @@ export class OwlRouterLinkWithHrefDirective implements OnChanges, OnDestroy {
 
   get urlTree(): UrlTree {
     return this.router.createUrlTree(this.commands, {
-    relativeTo: this.route,
-    queryParams: this.queryParams,
-    fragment: this.fragment,
-    queryParamsHandling: this.queryParamsHandling,
-    preserveFragment: attrBoolValue(this.preserveFragment)
-});
+      relativeTo: this.route,
+      queryParams: this.queryParams,
+      fragment: this.fragment,
+      queryParamsHandling: this.queryParamsHandling,
+      preserveFragment: attrBoolValue(this.preserveFragment)
+    });
   }
 }
 

@@ -9,11 +9,10 @@
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
       "options": {
-        "aot": true,
         "outputPath": "dist/apps/demo-owl-carousel",
         "index": "apps/demo-owl-carousel/src/index.html",
         "main": "apps/demo-owl-carousel/src/main.ts",
-        "polyfills": "apps/demo-owl-carousel/src/polyfills.ts",
+        "polyfills": ["apps/demo-owl-carousel/src/polyfills.ts", "zone.js"],
         "tsConfig": "apps/demo-owl-carousel/tsconfig.app.json",
         "assets": [
           "apps/demo-owl-carousel/src/favicon.ico",
@@ -41,28 +40,31 @@
               "with": "apps/demo-owl-carousel/src/environments/environment.prod.ts"
             }
           ],
-          "optimization": true,
-          "outputHashing": "all",
-          "sourceMap": false,
-          "namedChunks": false,
-          "aot": true,
-          "extractLicenses": true,
-          "vendorChunk": false,
-          "buildOptimizer": true
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
         }
       },
+      "defaultConfiguration": "production",
       "outputs": ["{options.outputPath}"]
     },
     "serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
-      "options": {
-        "browserTarget": "demo-owl-carousel:build"
-      },
       "configurations": {
         "production": {
           "browserTarget": "demo-owl-carousel:build:production"
+        },
+        "development": {
+          "browserTarget": "demo-owl-carousel:build:development"
         }
-      }
+      },
+      "defaultConfiguration": "development"
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
