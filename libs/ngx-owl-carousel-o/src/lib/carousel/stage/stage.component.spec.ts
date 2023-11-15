@@ -120,8 +120,8 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).toBeTruthy('prev button has .disabled');
-    expect(deDots.length).toBe(2, '2 dots');
+    ).withContext('prev button has .disabled').toBeTruthy();
+    expect(deDots.length).withContext('2 dots').toBe(2);
 
     // drag carousel to left hand-side
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -146,8 +146,7 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     });
     tick();
 
-    expect(stageParent.style.transform).toBe(
-      'translate3d(-10px, 0px, 0px)',
+    expect(stageParent.style.transform).withContext('translate3d(-10px, 0px, 0px)').toBe(
       'translate3d(-10px, 0px, 0px)'
     );
 
@@ -156,8 +155,7 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).toBe(
-      'translate3d(-40px, 0px, 0px)',
+    expect(stageParent.style.transform).withContext('translate3d(-40px, 0px, 0px)').toBe(
       'translate3d(-40px, 0px, 0px)'
     );
 
@@ -166,22 +164,19 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).toBe('', '');
+    expect(stageParent.style.transform).withContext('').toBe('');
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
-      'Slide 2',
+    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 2').toContain(
       'Slide 2'
     );
     deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).toBeFalsy("prev button doesn't have .disabled");
+    ).withContext("prev button doesn't have .disabled").toBeFalsy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
-      '1th dot is active'
-    );
+    expect(deDots[0].nativeElement.classList.contains('active')).withContext('1th dot is active').toBeTruthy();
 
     // drag carousel to right hand-side
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -198,42 +193,31 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).toBe(
-      'translate3d(10px, 0px, 0px)',
-      'translate3d(10px, 0px, 0px)'
-    );
+    expect(stageParent.style.transform).withContext('translate3d(10px, 0px, 0px)').toBe('translate3d(10px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mousemove', {
       clientX: coords.x + 40,
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).toBe(
-      'translate3d(40px, 0px, 0px)',
-      'translate3d(40px, 0px, 0px)'
-    );
+    expect(stageParent.style.transform).withContext('translate3d(40px, 0px, 0px)').toBe('translate3d(40px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mouseup', {
       clientX: coords.x + 40,
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).toBe('', '');
+    expect(stageParent.style.transform).withContext('').toBe('');
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
-      'Slide 1',
-      'Slide 1'
-    );
+    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 1').toContain('Slide 1');
     deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).toBeTruthy('prev button has .disabled');
+    ).withContext('prev button has .disabled').toBeTruthy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
-      '1th dot is active'
-    );
+    expect(deDots[0].nativeElement.classList.contains('active')).withContext('1th dot is active').toBeTruthy();
 
     // Slide 1 is active. Thus dragging carousel to right hand-side shoudn't change anything
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -250,9 +234,7 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).toBeTruthy(
-      'translate3d(2px, 0px, 0px)'
-    );
+    expect(stageParent.style.transform).withContext('translate3d(2px, 0px, 0px)').toBeTruthy();
 
     triggerMouseEvent(document, 'mousemove', {
       clientX: coords.x + 40,
@@ -264,22 +246,17 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).toBeFalsy('');
+    expect(stageParent.style.transform).withContext('').toBeFalsy();
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
-      'Slide 1',
-      'Slide 1'
-    );
+    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 1').toContain('Slide 1');
     deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).toBeTruthy('prev button has .disabled');
+    ).withContext('prev button has .disabled').toBeTruthy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
-      '1th dot is active'
-    );
+    expect(deDots[0].nativeElement.classList.contains('active')).withContext('1th dot is active').toBeTruthy();
 
     coords = findCoordsInElem(
       deSlides[2].nativeElement,
@@ -311,22 +288,17 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).toBe('', '');
+    expect(stageParent.style.transform).withContext('').toBe('');
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
-      'Slide 3',
-      'Slide 3'
-    );
+    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 3').toContain('Slide 3');
     deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
     expect(
       deNavButtons[1].nativeElement.classList.contains('disabled')
-    ).toBeTruthy('next button has .disabled');
+    ).withContext('next button has .disabled').toBeTruthy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[1].nativeElement.classList.contains('active')).toBeTruthy(
-      '2th dot is active'
-    );
+    expect(deDots[1].nativeElement.classList.contains('active')).withContext('2th dot is active').toBeTruthy();
 
     // drag carousel to left hand-side
     // Slide 5 is active. Thus dragging carousel to left hand-side shoudn't change anything
@@ -357,18 +329,13 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
-      'Slide 3',
-      'Slide 3'
-    );
+    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 3').toContain('Slide 3');
     deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
     expect(
       deNavButtons[1].nativeElement.classList.contains('disabled')
-    ).toBeTruthy('next button has .disabled');
+    ).withContext('next button has .disabled').toBeTruthy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[1].nativeElement.classList.contains('active')).toBeTruthy(
-      '2th dot is active'
-    );
+    expect(deDots[1].nativeElement.classList.contains('active')).withContext('2th dot is active').toBeTruthy();
   }));
 
   it('should drag carousel by mouse [options]="{nav: true, loop: true}"', fakeAsync(() => {
@@ -406,8 +373,8 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).toBeFalsy("prev button hasn't .disabled");
-    expect(deDots.length).toBe(2, '2 dots');
+    ).withContext("prev button hasn't .disabled").toBeFalsy();
+    expect(deDots.length).withContext('2 dots').toBe(2,);
 
     // drag carousel to left hand-side
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -430,42 +397,31 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     });
     tick();
 
-    expect(stageParent.style.transform).toBe(
-      'translate3d(-10px, 0px, 0px)',
-      'translate3d(-10px, 0px, 0px)'
-    );
+    expect(stageParent.style.transform).withContext('translate3d(-10px, 0px, 0px)').toBe('translate3d(-10px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mousemove', {
       clientX: coords.x - 300,
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).toBe(
-      'translate3d(-300px, 0px, 0px)',
-      'translate3d(-300px, 0px, 0px)'
-    );
+    expect(stageParent.style.transform).withContext('translate3d(-300px, 0px, 0px)').toBe('translate3d(-300px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mouseup', {
       clientX: coords.x - 300,
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).toBe('', '');
+    expect(stageParent.style.transform).withContext('').toBe('');
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
-      'Slide 2',
-      'Slide 2'
-    );
+    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 2').toContain('Slide 2');
     deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).toBeFalsy("prev button doesn't have .disabled");
+    ).withContext("prev button doesn't have .disabled").toBeFalsy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
-      '1th dot is active'
-    );
+    expect(deDots[0].nativeElement.classList.contains('active')).withContext('1th dot is active').toBeTruthy();
 
     // drag carousel to right hand-side on 2 slides, before it carousel is in initial state
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -483,27 +439,21 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     });
     tick();
 
-    expect(stageParent.style.transform).toBe(
-      'translate3d(10px, 0px, 0px)',
-      'translate3d(10px, 0px, 0px)'
-    );
+    expect(stageParent.style.transform).withContext('translate3d(10px, 0px, 0px)').toBe('translate3d(10px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mousemove', {
       clientX: coords.x + 600,
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).toBe(
-      'translate3d(-933px, 0px, 0px)',
-      'translate3d(-933px, 0px, 0px)'
-    );
+    expect(stageParent.style.transform).withContext('translate3d(-933px, 0px, 0px)').toBe('translate3d(-933px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mouseup', {
       clientX: coords.x + 600,
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).toBe('', '');
+    expect(stageParent.style.transform).withContext('').toBe('');
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
@@ -518,11 +468,9 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).toBeFalsy("prev button doesn't have .disabled");
+    ).withContext("prev button doesn't have .disabled").toBeFalsy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
-      '1th dot is active'
-    );
+    expect(deDots[0].nativeElement.classList.contains('active')).withContext('1th dot is active').toBeTruthy();
 
     // drag carousel to left hand-side on 3 slides
     coords = findCoordsInElem(
@@ -545,46 +493,32 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     });
     tick();
 
-    expect(stageParent.style.transform).toBe(
-      'translate3d(-10px, 0px, 0px)',
-      'translate3d(-10px, 0px, 0px)'
-    );
+    expect(stageParent.style.transform).withContext('translate3d(-10px, 0px, 0px)').toBe('translate3d(-10px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mousemove', {
       clientX: coords.x - 900,
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).toBe(
-      'translate3d(-900px, 0px, 0px)',
-      'translate3d(-900px, 0px, 0px)'
-    );
+    expect(stageParent.style.transform).withContext('translate3d(-900px, 0px, 0px)').toBe('translate3d(-900px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mouseup', {
       clientX: coords.x - 900,
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).toBe('', '');
+    expect(stageParent.style.transform).withContext('').toBe('');
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
-      'Slide 1',
-      'Slide 1'
-    );
-    expect(deActiveSlides[2].nativeElement.innerHTML).toContain(
-      'Slide 3',
-      'Slide 3'
-    );
+    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 1').toContain('Slide 1');
+    expect(deActiveSlides[2].nativeElement.innerHTML).withContext('Slide 3').toContain('Slide 3');
     deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).toBeFalsy("prev button doesn't have .disabled");
+    ).withContext("prev button doesn't have .disabled").toBeFalsy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
-      '1th dot is active'
-    );
+    expect(deDots[0].nativeElement.classList.contains('active')).withContext('1th dot is active').toBeTruthy();
   }));
 
   it('shouldn\'t drag the carousel by the mouse [options]="{nav: true, loop: true}"', fakeAsync(() => {
@@ -622,8 +556,8 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).toBeFalsy("prev button hasn't .disabled");
-    expect(deDots.length).toBe(2, '2 dots');
+    ).withContext("prev button hasn't .disabled").toBeFalsy();
+    expect(deDots.length).withContext('2 dots').toBe(2);
 
     // drag carousel to left hand-side
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -646,7 +580,7 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     });
     tick();
 
-    expect(stageParent.style.transform).toBe('', '');
+    expect(stageParent.style.transform).withContext('').toBe('');
   }));
 
   it('should drag carousel by mouse [options]="{nav: true, center: true}"', fakeAsync(() => {
@@ -686,9 +620,9 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).toBeTruthy('prev button has .disabled');
-    expect(deDots.length).toBe(5, '5 dots');
-    expect(centeredSlide.innerHTML).toContain('Slide 1', 'Slide 1');
+    ).withContext('prev button has .disabled').toBeTruthy();
+    expect(deDots.length).withContext('5 dots').toBe(5);
+    expect(centeredSlide.innerHTML).withContext('Slide 1').toContain('Slide 1');
 
     // drag carousel to right hand-side; current first active slide is Slide 1;
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -715,23 +649,18 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).toBe('', '');
+    expect(stageParent.style.transform).withContext('').toBe('');
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
-      'Slide 1',
-      'Slide 1'
-    );
-    expect(centeredSlide.innerHTML).toContain('Slide 1', 'Slide 1');
+    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 1').toContain('Slide 1');
+    expect(centeredSlide.innerHTML).withContext('Slide 1').toContain('Slide 1');
     deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).toBeTruthy('prev button has .disabled');
+    ).withContext('prev button has .disabled').toBeTruthy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
-      '1th dot is active'
-    );
+    expect(deDots[0].nativeElement.classList.contains('active')).withContext('1th dot is active').toBeTruthy();
 
     // drag carousel to right hand-side on 1 slide; current centered slide is Slide 1;
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -761,22 +690,17 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
-      'Slide 1',
-      'Slide 1'
-    );
+    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 1').toContain('Slide 1');
     centeredSlide = deCarouselComponent.query(
       By.css('.owl-item.active.center')
     ).nativeElement;
-    expect(centeredSlide.innerHTML).toContain('Slide 2', 'Slide 2');
+    expect(centeredSlide.innerHTML).withContext('Slide 2').toContain('Slide 2');
     deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).toBeFalsy("prev button hasn't .disabled");
+    ).withContext("prev button hasn't .disabled").toBeFalsy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[1].nativeElement.classList.contains('active')).toBeTruthy(
-      '2th dot is active'
-    );
+    expect(deDots[1].nativeElement.classList.contains('active')).withContext('2th dot is active').toBeTruthy();
 
     // drag carousel to right hand-side on 1 slide; current centered slide is Slide 2;
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -806,18 +730,13 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
-      'Slide 2',
-      'Slide 2'
-    );
+    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 2').toContain('Slide 2');
     centeredSlide = deCarouselComponent.query(
       By.css('.owl-item.active.center')
     ).nativeElement;
-    expect(centeredSlide.innerHTML).toContain('Slide 3', 'Slide 3');
+    expect(centeredSlide.innerHTML).withContext('Slide 3').toContain('Slide 3');
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[2].nativeElement.classList.contains('active')).toBeTruthy(
-      '3th dot is active'
-    );
+    expect(deDots[2].nativeElement.classList.contains('active')).withContext('3th dot is active').toBeTruthy();
 
     // drag carousel to left hand-side on 1 slide; current centered slide is Slide 3
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -847,18 +766,13 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
-      'Slide 1',
-      'Slide 1'
-    );
+    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 1').toContain('Slide 1');
     centeredSlide = deCarouselComponent.query(
       By.css('.owl-item.active.center')
     ).nativeElement;
-    expect(centeredSlide.innerHTML).toContain('Slide 2', 'Slide 2');
+    expect(centeredSlide.innerHTML).withContext('Slide 2').toContain('Slide 2');
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[1].nativeElement.classList.contains('active')).toBeTruthy(
-      '2th dot is active'
-    );
+    expect(deDots[1].nativeElement.classList.contains('active')).withContext('2th dot is active').toBeTruthy();
   }));
 
   it('should drag carousel by mouse [options]="{nav: true, rewind: true}"', fakeAsync(() => {
@@ -895,8 +809,8 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).toBeFalsy("prev button hasn't .disabled");
-    expect(deDots.length).toBe(2, '2 dots');
+    ).withContext("prev button hasn't .disabled").toBeFalsy();
+    expect(deDots.length).withContext('2 dots').toBe(2);
 
     // drag carousel to right hand-side; current first active slide is Slide 1;
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -3094,7 +3008,7 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     discardPeriodicTasks();
     const html = `
       <div style="width: 920px; margin: auto">
-        <owl-carousel-o [options]="{nav: true}" (dragging)="isDragging = $event">
+        <owl-carousel-o [options]="{nav: true}" (dragging)="isDragging = $event.dragging">
           <ng-template carouselSlide id="owl-slide-1">
             <div><a [owlRouterLink]="['/any-component']" [stopLink]="isDragging">Slide 1</a></div>
           </ng-template>
@@ -3138,6 +3052,8 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     locationService.back();
     tick();
     fixtureHost.detectChanges();
+    expect(locationService.path()).withContext("owlRouterLink doesn't work").toBe('');
+
     coords = findCoordsInElem(
       anchorIn1tSlide.nativeElement,
       getCoords(anchorIn1tSlide.nativeElement)
@@ -3159,20 +3075,21 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     });
     tick();
 
-    expect(testComponent.isDragging).toBeTruthy('isDragging property is true');
+    expect(testComponent.isDragging).withContext('isDragging property is true').toBeTruthy();
 
     anchorIn1tSlide.triggerEventHandler('click', { button: 0 });
-    expect(locationService.path()).toBe('', "owlRouterLink doesn't work");
+    expect(locationService.path()).withContext("owlRouterLink doesn't work").toBe('');
 
     triggerMouseEvent(document, 'mousemove', {
       clientX: coords.x - 40,
       clientY: coords.y,
     });
     tick();
+    fixtureHost.detectChanges();
 
-    expect(testComponent.isDragging).toBeTruthy('isDragging property is true');
-
-    expect(locationService.path()).toBe('', "owlRouterLink doesn't work");
+    expect(testComponent.isDragging).withContext('isDragging property is true').toBeTruthy();
+    // for some reason this test fails, however in practice everything works
+    expect(locationService.path()).withContext("owlRouterLink doesn't work 2").toBe('');
 
     triggerMouseEvent(document, 'mouseup', {
       clientX: coords.x - 40,
@@ -3182,7 +3099,9 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     // Code can't wait the end of transition. Thus transition is finished manually.
     deStageWrapper.componentInstance.onTransitionEnd();
     fixtureHost.detectChanges();
-    expect(locationService.path()).toBe('', "owlRouterLink doesn't work");
+    // console.log('locationService.path() 3: ', locationService.path())
+    // for some reason this test fails, however in practice everything works
+    expect(locationService.path()).withContext("owlRouterLink doesn't work 3").toBe('');
   }));
   // the ending of tests
 });
@@ -3195,7 +3114,7 @@ class TestComponent {
   options: any = {};
   translatedData: SlidesOutputData;
   isDragging: boolean;
-  constructor(private location: Location) {}
+  constructor(private location: Location) { }
   getPassedData(data: any) {
     this.translatedData = data;
   }
@@ -3207,7 +3126,7 @@ class TestComponent {
 })
 class AnyComponent implements OnInit {
   init = false;
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
     this.init = true;
