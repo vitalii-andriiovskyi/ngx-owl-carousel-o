@@ -2,38 +2,39 @@
 <section>
   <header class="text-center">
     <h2 class="mt-4">Owl Carousel</h2>
-    <p class="mb-2">"autoHeight=<span class="text-success">true</span>", "URLhashListener=<span class="text-success">true</span>" and "startPosition=<span class="text-warning">'URLHash'</span>"</p>
+    <p class="mb-2">"autoHeight=<span class="text-success">true</span>", "URLhashListener=<span
+        class="text-success">true</span>" and "startPosition=<span class="text-warning">'URLHash'</span>"</p>
     <nav class="nav nav-pills flex-column flex-sm-row justify-content-center mb-4">
-      <ng-container *ngFor="let slide of carouselData">
-        <a class="flex-sm-fill text-sm-center nav-link"
-           [routerLink]="['/home', 'subhome']" [fragment]="slide.dataHash"
-           [ngClass]="{'active': slide.dataHash === fragment}" >
-          {{slide.dataHash}}
-        </a>
-      </ng-container>
+      @for(slide of carouselData; track slide.text) {
+      <a class="flex-sm-fill text-sm-center nav-link" [routerLink]="['/home', 'subhome']" [fragment]="slide.dataHash"
+        [ngClass]="{'active': slide.dataHash === fragment()}">
+        {{slide.dataHash}}
+      </a>
+      }
     </nav>
   </header>
   <div class="container">
     <div class="row">
       <div class="col-10 offset-1">
-        
+
         <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)">
-          
-          <ng-container *ngFor="let item of carouselData; let i=index">
-            <ng-template carouselSlide [dataHash]="item.dataHash">
-              <div class="slider">
-                <!-- <p>{{item.text}}</p> -->
-                <img class="owl-lazy" [src]="[item.src]" alt="">
-                  
-              </div><!-- /.carousel-item team-member -->
-            </ng-template>
-          </ng-container>
-          
+
+          @for(item of carouselData; track item.dataHash; let i = $index) {
+          <ng-template carouselSlide [dataHash]="item.dataHash">
+            <div class="slider">
+              <!-- <p>{{item.text}}</p> -->
+              <img class="owl-lazy" [src]="[item.src]" alt="">
+
+            </div><!-- /.carousel-item team-member -->
+          </ng-template>
+          }
+
+
         </owl-carousel-o>
-  
+
       </div> <!-- /.col-sm-10 col-sm-offset-1 -->
-      
+
     </div> <!-- row -->
-    
+
   </div> <!-- /.container -->
 </section>

@@ -6,33 +6,37 @@
   <div class="container">
     <div class="row">
       <div class="col-10 offset-1">
-        
+
         <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" #owlCar>
-          
-          <ng-container *ngFor="let item of carouselData; let i=index">
-            <ng-template carouselSlide [width]="item.width">
-              <div class="slider">
-                <p>{{item.text}}</p>
-                <div *ngIf="i == 2">
-                  <button mat-raised-button color="accent" [matMenuTriggerFor]="menu" (menuOpened)="owlCar.stopAutoplay()">Menu</button>
-                  <mat-menu #menu="matMenu" (closed)="owlCar.startAutoplay()">
-                    <button mat-menu-item>Item 1</button>
-                    <button mat-menu-item>Item 2</button>
-                    <button mat-menu-item>Item 3</button>
-                    <button mat-menu-item>Item 4</button>
-                    <button mat-menu-item>Item 5</button>
-                  </mat-menu>
-                </div>
-                  
-              </div><!-- /.carousel-item team-member -->
-            </ng-template>
-          </ng-container>
-          
+          @for(item of carouselData; track item.text; let i = $index) {
+
+          <ng-template carouselSlide [width]="item.width">
+            <div class="slider">
+              <p>{{item.text}}</p>
+              @if(i == 2) {
+              <div>
+                <button mat-raised-button color="accent" [matMenuTriggerFor]="menu"
+                  (menuOpened)="owlCar.stopAutoplay()">Menu</button>
+                <mat-menu #menu="matMenu" (closed)="owlCar.startAutoplay()">
+                  <button mat-menu-item>Item 1</button>
+                  <button mat-menu-item>Item 2</button>
+                  <button mat-menu-item>Item 3</button>
+                  <button mat-menu-item>Item 4</button>
+                  <button mat-menu-item>Item 5</button>
+                </mat-menu>
+              </div>
+              }
+
+            </div><!-- /.carousel-item team-member -->
+          </ng-template>
+          }
+
+
         </owl-carousel-o>
-  
+
       </div> <!-- /.col-sm-10 col-sm-offset-1 -->
-      
+
     </div> <!-- row -->
-    
+
   </div> <!-- /.container -->
 </section>

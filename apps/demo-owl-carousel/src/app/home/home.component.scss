@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+.slider {
+  height: 60px;
+  border-right: 1px solid #fff;
+  background-color: rgba(#000, 0.2);
+  text-align: center;
+}
+
+
+::ng-deep .owl-theme .owl-dots .owl-dot span {
+  background: pink !important;
+  width: 40px !important;
+}
+
+.owl-theme .owl-dots .owl-dot.active span,
+.owl-theme .owl-dots .owl-dot:hover span {
+  background: red !important;
+}
