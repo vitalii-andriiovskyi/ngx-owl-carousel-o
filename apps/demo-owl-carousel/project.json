@@ -58,10 +58,10 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "demo-owl-carousel:build:production"
+          "buildTarget": "demo-owl-carousel:build:production"
         },
         "development": {
-          "browserTarget": "demo-owl-carousel:build:development"
+          "buildTarget": "demo-owl-carousel:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -69,7 +69,7 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "demo-owl-carousel:build"
+        "buildTarget": "demo-owl-carousel:build"
       }
     },
     "test": {

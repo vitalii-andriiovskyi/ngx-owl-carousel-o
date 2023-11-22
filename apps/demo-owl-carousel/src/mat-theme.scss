@@ -1,7 +1,7 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
-@import '@angular/material/theming';
+// @import '@angular/material/theming';
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -29,13 +29,10 @@ $owl-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$owl-theme: mat.define-light-theme((
-  color: (
-    primary: $owl-primary,
-    accent: $owl-accent,
-    warn: $owl-warn,
-  )
-));
+$owl-theme: mat.define-light-theme((color: (primary: $owl-primary,
+        accent: $owl-accent,
+        warn: $owl-warn,
+      )));
 
 // $accent: map-get($owl-theme, accent);
 // $primary: map-get($owl-theme, primary);
@@ -50,5 +47,3 @@ $owl-theme: mat.define-light-theme((
 // @include mat.icon-theme($owl-theme);
 @include mat.legacy-button-theme($owl-theme);
 // @include mat.all-component-themes($owl-theme);
-
-

@@ -1,12 +1,19 @@
-import 'zone.js/dist/zone-testing';
+import 'zone.js/testing';
 // import 'zone.js/dist/zone-patch-rxjs-fake-async';
-import { TestBed, inject, ComponentFixture, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
+import {
+  TestBed,
+  inject,
+  ComponentFixture,
+  fakeAsync,
+  tick,
+  waitForAsync,
+} from '@angular/core/testing';
 
 import { CarouselService } from './carousel.service';
 import { Component, DebugElement } from '@angular/core';
 import { CarouselComponent } from '../carousel/carousel.component';
-import { SlidesOutputData } from "../models/SlidesOutputData";
-import { CarouselSlideDirective } from "../carousel/carousel-slide.directive";
+import { SlidesOutputData } from '../models/SlidesOutputData';
+import { CarouselSlideDirective } from '../carousel/carousel-slide.directive';
 import { createGenericTestComponent } from '../carousel/test/common';
 import { ResizeService } from './resize.service';
 import { WINDOW_PROVIDERS } from './window-ref.service';
@@ -16,7 +23,7 @@ import { By } from '@angular/platform-browser';
 import { DOCUMENT_PROVIDERS } from './document-ref.service';
 import { StageComponent } from '../carousel/stage/stage.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from "@angular/router/testing";
+import { RouterTestingModule } from '@angular/router/testing';
 import { OwlLogger } from './logger.service';
 
 describe('CarouselService', () => {
@@ -24,14 +31,17 @@ describe('CarouselService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CarouselService, OwlLogger]
+      providers: [CarouselService, OwlLogger],
     });
     carouselService = TestBed.get(CarouselService);
   });
 
-  it('should be created', inject([CarouselService], (service: CarouselService) => {
-    expect(service).toBeTruthy();
-  }));
+  it('should be created', inject(
+    [CarouselService],
+    (service: CarouselService) => {
+      expect(service).toBeTruthy();
+    }
+  ));
 
   it('should add new key to prop _invalidated; method invalidate()', () => {
     const result = carouselService.invalidate('move');
@@ -40,9 +50,15 @@ describe('CarouselService', () => {
   });
 
   it('should add new state to carouselService.states; call method enter()', () => {
-    expect(carouselService.states.current.hasOwnProperty('move')).toBe(false, 'there\'s no state move');
+    expect(carouselService.states.current.hasOwnProperty('move')).toBe(
+      false,
+      "there's no state move"
+    );
     carouselService.enter('move');
-    expect(carouselService.states.current.hasOwnProperty('move')).toBe(true, 'has state move');
+    expect(carouselService.states.current.hasOwnProperty('move')).toBe(
+      true,
+      'has state move'
+    );
     expect(carouselService.states.current['move']).toBe(1);
   });
 
@@ -61,13 +77,14 @@ describe('CarouselService', () => {
     carouselService.leave('move');
     state = carouselService.is('move');
     expect('' + state).toBe('0', 'state is 0 after leaving');
-
   });
-
 });
 
 const createTestComponent = (html: string) =>
-    createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>
+  createGenericTestComponent(
+    html,
+    TestComponent
+  ) as ComponentFixture<TestComponent>;
 
 describe('CarouselService in context of TestComponent', () => {
   let carouselService: CarouselService;
@@ -76,30 +93,30 @@ describe('CarouselService in context of TestComponent', () => {
   let fixtureHost: ComponentFixture<TestComponent>;
   let deCarouselComponent: DebugElement;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          NoopAnimationsModule,
-          RouterTestingModule.withRoutes([{path: '', component: TestComponent}])
-        ],
-        declarations: [
-          CarouselComponent,
-          TestComponent,
-          CarouselSlideDirective,
-          StageComponent
-        ],
-        providers: [
-          ResizeService,
-          WINDOW_PROVIDERS,
-          CarouselService,
-          NavigationService,
-          DOCUMENT_PROVIDERS,
-          OwlLogger
-        ]
-      });
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        NoopAnimationsModule,
+        RouterTestingModule.withRoutes([
+          { path: '', component: TestComponent },
+        ]),
+      ],
+      declarations: [
+        CarouselComponent,
+        TestComponent,
+        CarouselSlideDirective,
+        StageComponent,
+      ],
+      providers: [
+        ResizeService,
+        WINDOW_PROVIDERS,
+        CarouselService,
+        NavigationService,
+        DOCUMENT_PROVIDERS,
+        OwlLogger,
+      ],
+    });
+  }));
 
   it('should be correct result after calling closest() method with 2th argument "null"', fakeAsync(() => {
     const html = `
@@ -116,7 +133,9 @@ describe('CarouselService in context of TestComponent', () => {
 
     let closestItem: number;
     fixtureHost = createTestComponent(html);
-    deCarouselComponent = fixtureHost.debugElement.query(By.css('owl-carousel-o'));
+    deCarouselComponent = fixtureHost.debugElement.query(
+      By.css('owl-carousel-o')
+    );
     tick();
     carouselService = deCarouselComponent.injector.get(CarouselService);
 
@@ -129,12 +148,11 @@ describe('CarouselService in context of TestComponent', () => {
     closestItem = carouselService.closest(50, null);
     expect(closestItem).toBe(0, '0');
   }));
-
 });
 
 @Component({
   selector: 'test-dom',
-  template: ''
+  template: '',
 })
 class TestComponent {
   options: any = {};

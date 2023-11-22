@@ -1,20 +1,35 @@
-import { Component, OnInit, ElementRef, ChangeDetectionStrategy } from '@angular/core';
-import { CarouselData } from '../app.component';
-import { OwlOptions } from 'ngx-owl-carousel-o';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit, ChangeDetectionStrategy, WritableSignal, signal } from '@angular/core';
+import { CarouselModule, OwlOptions, SlidesOutputData } from 'ngx-owl-carousel-o';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+
+interface CarouselData {
+  id?: string;
+  text: string;
+  dataMerge?: number;
+  width: number;
+  dotContent?: string;
+  src?: string;
+  dataHash?: string;
+}
+
 
 @Component({
-  selector: 'owl-carousel-libdemo-present',
+  selector: 'app-present',
+  standalone: true,
+  imports: [CommonModule, CarouselModule, MatMenuModule, MatButtonModule],
   templateUrl: './present.component.html',
-  styleUrls: ['./present.component.sass'],
+  styleUrl: './present.component.sass',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PresentComponent implements OnInit {
   carouselData: CarouselData[] = [
-    { text: 'Slide 1 PM', dataMerge: 2, width: 300, dotContent: 'text1'},
-    { text: 'Slide 2 PM', dataMerge: 1, width: 500, dotContent: 'text2'},
-    { text: 'Slide 3 PM', dataMerge: 3, dotContent: 'text3'},
-    { text: 'Slide 4 PM', width: 450, dotContent: 'text4'},
-    { text: 'Slide 5 PM', dataMerge: 2, dotContent: 'text5'},
+    { text: 'Slide 1 PM', dataMerge: 2, width: 300, dotContent: 'text1' },
+    { text: 'Slide 2 PM', dataMerge: 1, width: 500, dotContent: 'text2' },
+    { text: 'Slide 3 PM', dataMerge: 3, width: 500, dotContent: 'text3' },
+    { text: 'Slide 4 PM', width: 450, dotContent: 'text4' },
+    { text: 'Slide 5 PM', dataMerge: 2, width: 500, dotContent: 'text5' },
     // { text: 'Slide 6', dotContent: 'text5'},
     // { text: 'Slide 7', dotContent: 'text5'},
     // { text: 'Slide 8', dotContent: 'text5'},
@@ -36,7 +51,7 @@ export class PresentComponent implements OnInit {
     autoplay: true,
     autoplayTimeout: 1000,
     autoplayHoverPause: true,
-		autoplaySpeed: 900,
+    autoplaySpeed: 900,
     dotsSpeed: 500,
     autoplayMouseleaveTimeout: 1100,
     // dots: false,
@@ -67,16 +82,15 @@ export class PresentComponent implements OnInit {
     // stagePadding: 40,
     nav: true
   }
-  activeSlides: any;
+  activeSlides: WritableSignal<SlidesOutputData> = signal({});
 
-  constructor(private el: ElementRef) { }
+  constructor() { }
 
   ngOnInit() {
   }
 
   getPassedData(data: any) {
-    this.activeSlides = data;
-    // console.log(this.activeSlides);
+    this.activeSlides.set(data);
+    // console.log(this.activeSlides());
   }
-
 }

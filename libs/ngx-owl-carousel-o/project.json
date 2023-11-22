@@ -10,7 +10,8 @@
       "options": {
         "tsConfig": "libs/ngx-owl-carousel-o/tsconfig.lib.json",
         "project": "libs/ngx-owl-carousel-o/ng-package.json",
-        "buildableProjectDepsInPackageJsonType": "dependencies"
+        "buildableProjectDepsInPackageJsonType": "dependencies",
+        "updateBuildableProjectDepsInPackageJson": true
       },
       "configurations": {
         "production": {

@@ -1,14 +1,17 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CarouselComponent, OwlOptions } from 'ngx-owl-carousel-o';
+import { CarouselComponent, CarouselModule, OwlOptions, SlidesOutputData } from 'ngx-owl-carousel-o';
 
 @Component({
-  selector: 'owl-carousel-libdemo-doubled-carousel',
+  selector: 'app-doubled-carousel',
+  standalone: true,
+  imports: [CommonModule, CarouselModule],
   templateUrl: './doubled-carousel.component.html',
-  styleUrls: ['./doubled-carousel.component.scss']
+  styleUrl: './doubled-carousel.component.scss'
 })
 export class DoubledCarouselComponent implements OnInit {
-  @ViewChild('owlMac') owlMac: CarouselComponent;
-  @ViewChild('owlCat') owlCat: CarouselComponent;
+  @ViewChild('owlMac') owlMac!: CarouselComponent;
+  @ViewChild('owlCat') owlCat!: CarouselComponent;
 
   categoriesOptions: any = {
     loop: true,
@@ -108,15 +111,14 @@ export class DoubledCarouselComponent implements OnInit {
     this.owlMac.moveByDot(category);
   }
 
-  changeSlide($event) {
+  changeSlide($event: SlidesOutputData) {
     if (this.owlCat) {
       // this.category$.next($event.slides[0].id);
-      this.owlCat.moveByDot(this.owlCat.dotsData.dots[$event.startPosition].id)
+      this.owlCat.moveByDot(this.owlCat.dotsData.dots[$event.startPosition as number].id)
     }
   }
 
 
   ngOnInit() {
   }
-
 }

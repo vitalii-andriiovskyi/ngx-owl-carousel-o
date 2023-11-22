@@ -5,35 +5,38 @@
 <div class="container">
   <div class="row">
     <div class="col-10 offset-1">
-      
-      <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" (change)="getChangeData($event)" (changed)="getChangedData($event)" #owlCar>
-        
-        <ng-container *ngFor="let item of carouselData">
-          <ng-template carouselSlide [id]="item.id" [width]="item.width">
-            <div class="slider">
-              <p>{{item.text}}</p>
-                
-            </div>
-          </ng-template>
-        </ng-container>
-        
+
+      <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" (change)="getChangeData($event)"
+        (changed)="getChangedData($event)" #owlCar>
+
+        @for (item of carouselData(); track item.id) {
+        <ng-template carouselSlide [id]="item.id" [width]="item.width">
+          <div class="slider">
+            <p>{{item.text}}</p>
+          </div>
+        </ng-template>
+        }
+
       </owl-carousel-o>
 
     </div> <!-- /.col-sm-10 col-sm-offset-1 -->
-    
+
   </div> <!-- row -->
-  
+
 </div> <!-- /.container -->
 <div class="container-fluid">
   <p>
-    <a class="btn btn-success" (click)="owlCar.prev()">prev</a> <==>
-    <a class="btn btn-success" (click)="owlCar.next()">next</a>
+    <a class="btn btn-success" (click)="owlCar.prev()">prev</a>
+    <==>
+      <a class="btn btn-success" (click)="owlCar.next()">next</a>
   </p>
   <p><a class="btn btn-success" (click)="owlCar.to('slide-3')">move to 3th slide</a></p>
+  <p><a class="btn btn-success" (click)="removeLastSlide()">Remove the last slide</a></p>
   <br>
   <div class="d-flex justify-content-center mt-3 mb-5">
-    <a [routerLink]="['/home', 'subhome']" fragment="two" class="btn btn-success">Go to SubHomeComponent with carousel with url navigation</a>
+    <a [routerLink]="['/home', 'subhome']" fragment="two" class="btn btn-success">Go to SubHomeComponent with carousel
+      with url navigation</a>
   </div>
-  
+
   <router-outlet></router-outlet>
 </div>

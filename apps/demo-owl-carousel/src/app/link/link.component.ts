@@ -1,19 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, WritableSignal, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 import { CarouselData } from '../app.component';
 
 @Component({
-  selector: 'owl-carousel-libdemo-link',
+  selector: 'app-link',
+  standalone: true,
+  imports: [CommonModule, CarouselModule],
   templateUrl: './link.component.html',
-  styleUrls: ['./link.component.sass']
+  styleUrl: './link.component.sass'
 })
-export class LinkComponent implements OnInit {
-  isDragging: boolean;
+export class LinkComponent {
+  isDragging: WritableSignal<boolean> = signal(false);
   carouselData: CarouselData[] = [
-    { text: 'Slide 1', src: 'assets/images/350x450&text=1.png', dataHash: 'one'},
-    { text: 'Slide 2', src: 'assets/images/350x650&text=2.png', dataHash: 'two'},
-    { text: 'Slide 3', src: 'assets/images/350x250&text=3-fallback.png', dataHash: 'three'},
-    { text: 'Slide 4', src: 'assets/images/350x250&text=4.png', dataHash: 'four'},
-    { text: 'Slide 5', src: 'assets/images/350x250&text=5.png', dataHash: 'five'},
+    { text: 'Slide 1', src: 'assets/images/350x450&text=1.png', dataHash: 'one' },
+    { text: 'Slide 2', src: 'assets/images/350x650&text=2.png', dataHash: 'two' },
+    { text: 'Slide 3', src: 'assets/images/350x250&text=3-fallback.png', dataHash: 'three' },
+    { text: 'Slide 4', src: 'assets/images/350x250&text=4.png', dataHash: 'four' },
+    { text: 'Slide 5', src: 'assets/images/350x250&text=5.png', dataHash: 'five' },
     // { text: 'Slide 6', dotContent: 'text5'},
     // { text: 'Slide 7', dotContent: 'text5'},
     // { text: 'Slide 8', dotContent: 'text5'},
@@ -39,10 +43,4 @@ export class LinkComponent implements OnInit {
       }
     },
   }
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
 }
