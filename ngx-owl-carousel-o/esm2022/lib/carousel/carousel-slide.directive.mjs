@@ -41,10 +41,10 @@ export class CarouselSlideDirective {
     isNumeric(number) {
         return !isNaN(parseFloat(number));
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "17.0.2", ngImport: i0, type: CarouselSlideDirective, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "17.0.2", type: CarouselSlideDirective, selector: "ng-template[carouselSlide]", inputs: { id: "id", dataMerge: "dataMerge", width: "width", dotContent: "dotContent", dataHash: "dataHash" }, ngImport: i0 });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "18.0.1", ngImport: i0, type: CarouselSlideDirective, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "18.0.1", type: CarouselSlideDirective, selector: "ng-template[carouselSlide]", inputs: { id: "id", dataMerge: "dataMerge", width: "width", dotContent: "dotContent", dataHash: "dataHash" }, ngImport: i0 });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "17.0.2", ngImport: i0, type: CarouselSlideDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "18.0.1", ngImport: i0, type: CarouselSlideDirective, decorators: [{
             type: Directive,
             args: [{ selector: 'ng-template[carouselSlide]' }]
         }], ctorParameters: () => [{ type: i0.TemplateRef }], propDecorators: { id: [{
