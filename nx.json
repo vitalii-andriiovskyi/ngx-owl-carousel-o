@@ -1,7 +1,4 @@
 {
-  "affected": {
-    "defaultBase": "master"
-  },
   "cli": {
     "warnings": {
       "typescriptMismatch": false,
@@ -54,5 +51,6 @@
       "!{projectRoot}/karma.conf.js"
     ]
   },
-  "parallel": 1
+  "parallel": 1,
+  "defaultBase": "master"
 }
