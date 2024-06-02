@@ -1,13 +1,22 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
-@import '@angular/material/theming';
+// @import '@angular/material/theming';
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
-@include mat.core();
+// TODO(v15): As of v15 mat.legacy-core no longer includes default typography styles.
+//  The following line adds:
+//    1. Default typography styles for all components
+//    2. Styles for typography hierarchy classes (e.g. .mat-headline-1)
+//  If you specify typography styles for the components you use elsewhere, you should delete this line.
+//  If you don't need the default component typographies but still want the hierarchy styles,
+//  you can delete this line and instead use:
+//    `@include mat.legacy-typography-hierarchy(mat.define-legacy-typography-config());`
+@include mat.all-legacy-component-typographies();
+@include mat.legacy-core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
@@ -20,13 +29,10 @@ $owl-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$owl-theme: mat.define-light-theme((
-  color: (
-    primary: $owl-primary,
-    accent: $owl-accent,
-    warn: $owl-warn,
-  )
-));
+$owl-theme: mat.define-light-theme((color: (primary: $owl-primary,
+        accent: $owl-accent,
+        warn: $owl-warn,
+      )));
 
 // $accent: map-get($owl-theme, accent);
 // $primary: map-get($owl-theme, primary);
@@ -35,11 +41,9 @@ $owl-theme: mat.define-light-theme((
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.core-theme($owl-theme);
-@include mat.menu-theme($owl-theme);
+@include mat.legacy-core-theme($owl-theme);
+@include mat.legacy-menu-theme($owl-theme);
 // @include mat.progress-spinner-theme($owl-theme);
 // @include mat.icon-theme($owl-theme);
-@include mat.button-theme($owl-theme);
+@include mat.legacy-button-theme($owl-theme);
 // @include mat.all-component-themes($owl-theme);
-
-

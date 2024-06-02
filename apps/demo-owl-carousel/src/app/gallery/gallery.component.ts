@@ -1,17 +1,19 @@
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
-import { OwlOptions } from 'ngx-owl-carousel-o';
+import { Component } from '@angular/core';
+import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 
 interface Image {
   src: string;
   title?: string;
   alt?: string;
 }
-
 @Component({
-  selector: 'owl-carousel-libdemo-gallery',
+  selector: 'app-gallery',
+  standalone: true,
+  imports: [CommonModule, CarouselModule, NgOptimizedImage],
   templateUrl: './gallery.component.html',
-  styleUrls: ['./gallery.component.sass'],
+  styleUrl: './gallery.component.sass',
   animations: [
     trigger('activeSlide', [
       state('active', style({
@@ -31,8 +33,7 @@ interface Image {
     ])
   ]
 })
-export class GalleryComponent implements OnInit {
-
+export class GalleryComponent {
   imagesData: Image[] = [
     {
       src: 'assets/images/cities/bridge.jpg',
@@ -109,7 +110,5 @@ export class GalleryComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
 
 }

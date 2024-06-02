@@ -1,20 +1,18 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SubHomeComponent } from './subhome.component';
+import { SubhomeComponent } from './subhome.component';
 
 describe('SubhomeComponent', () => {
-  let component: SubHomeComponent;
-  let fixture: ComponentFixture<SubHomeComponent>;
+  let component: SubhomeComponent;
+  let fixture: ComponentFixture<SubhomeComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ SubHomeComponent ]
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [SubhomeComponent]
     })
     .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SubHomeComponent);
+    
+    fixture = TestBed.createComponent(SubhomeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

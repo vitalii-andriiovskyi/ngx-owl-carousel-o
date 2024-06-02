@@ -1,0 +1,33 @@
+{
+  "name": "ngx-owl-carousel-o",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ngx-owl-carousel-o/src",
+  "projectType": "library",
+  "prefix": "owl-carousel-libdemo",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "options": {
+        "tsConfig": "libs/ngx-owl-carousel-o/tsconfig.lib.json",
+        "project": "libs/ngx-owl-carousel-o/ng-package.json",
+        "buildableProjectDepsInPackageJsonType": "dependencies",
+        "updateBuildableProjectDepsInPackageJson": true
+      },
+      "configurations": {
+        "production": {
+          "project": "libs/ngx-owl-carousel-o/ng-package.prod.json"
+        }
+      }
+    },
+    "test": {
+      "executor": "@angular-devkit/build-angular:karma",
+      "options": {
+        "main": "libs/ngx-owl-carousel-o/src/test.ts",
+        "tsConfig": "libs/ngx-owl-carousel-o/tsconfig.spec.json",
+        "karmaConfig": "libs/ngx-owl-carousel-o/karma.conf.js"
+      },
+      "outputs": ["{workspaceRoot}/coverage/libs/ngx-owl-carousel-o"]
+    }
+  },
+  "tags": []
+}

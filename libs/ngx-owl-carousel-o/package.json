@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/ng-packagr/package.schema.json",
   "name": "ngx-owl-carousel-o",
-  "version": "14.0.0",
+  "version": "17.0.0",
   "description": "Angular powered owl-carousel",
   "keywords": [
     "angular",
@@ -24,14 +24,31 @@
     "url": "https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues"
   },
   "peerDependencies": {
-    "@angular/common": " ^14.0.0-rc.0 || ^14.0.0",
-    "@angular/core": "^14.0.0-rc.0 || ^14.0.0",
+    "@angular/common": " ^17.0.0-rc.0 || ^17.0.0",
+    "@angular/core": "^17.0.0-rc.0 || ^17.0.0",
     "rxjs": "^6.0.1 || ^7.0.0"
   },
   "ngPackage": {
     "lib": {
       "entryFile": "./src/index.ts"
     },
-    "dest": "../../ngx-owl-carousel-o"
+    "dest": "../../ngx-owl-carousel-o",
+    "assets": [
+      "./lib/styles/**/*.scss",
+      "./lib/styles/**/*.css",
+      "./lib/styles/**/*.gif",
+      "./lib/styles/**/*.png"
+    ]
+  },
+  "exports": {
+    "./lib/styles/scss/owl.carousel": {
+      "sass": "./lib/styles/scss/owl.carousel.scss"
+    },
+    "./lib/styles/scss/owl.theme.default": {
+      "sass": "./lib/styles/scss/owl.theme.default.scss"
+    },
+    "./lib/styles/scss/owl.theme.green": {
+      "sass": "./lib/styles/scss/owl.theme.green.scss"
+    }
   }
 }

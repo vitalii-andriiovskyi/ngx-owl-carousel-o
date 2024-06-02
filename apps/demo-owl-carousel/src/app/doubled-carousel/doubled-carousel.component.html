@@ -1,0 +1,34 @@
+<section>
+  <header class="text-center my-4">
+    <h1>Owl Carousel - Doubled Carousel</h1>
+    <!-- <p>"autoplay=<span class="text-success">true</span>", "loop=<span class="text-success">true</span>"</p> -->
+  </header>
+  <div class="container">
+    <div class="row">
+      <div class="col-10 offset-1">
+
+        <owl-carousel-o [options]="categoriesOptions" #owlCat>
+          @for(category of categories.items; track category.id; let i = $index) {
+          <ng-template carouselSlide [id]="category.id">
+            <div class="category">
+              <span (click)="slideTo(owlMac.dotsData.dots[i].id)"
+                class="category__title">{{category.displayedName}}</span>
+            </div>
+          </ng-template>
+          }
+        </owl-carousel-o>
+
+        <owl-carousel-o [options]="carouselOptions" #owlMac (changed)="changeSlide($event)">
+          @for(category of categories.items; track category.id; let i = $index) {
+          <ng-template carouselSlide [id]="category.id">
+            <div class="content-second-carousel">Content for <strong>Slide {{i + 1}}</strong></div>
+          </ng-template>
+          }
+        </owl-carousel-o>
+
+      </div> <!-- /.col-sm-10 col-sm-offset-1 -->
+
+    </div> <!-- row -->
+
+  </div> <!-- /.container -->
+</section>

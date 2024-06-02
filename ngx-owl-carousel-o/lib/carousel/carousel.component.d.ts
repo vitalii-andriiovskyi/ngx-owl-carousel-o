@@ -65,12 +65,12 @@ export declare class CarouselComponent implements OnInit, AfterContentInit, OnDe
      */
     stageData: StageData;
     /**
-       *  Data of every slide
-       */
+     *  Data of every slide
+     */
     slidesData: SlideModel[];
     /**
-       * Data of navigation block
-       */
+     * Data of navigation block
+     */
     navData: NavData;
     /**
      * Data of dots block
@@ -173,5 +173,5 @@ export declare class CarouselComponent implements OnInit, AfterContentInit, OnDe
     stopAutoplay(): void;
     startAutoplay(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<CarouselComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<CarouselComponent, "owl-carousel-o", never, { "options": "options"; }, { "translated": "translated"; "dragging": "dragging"; "change": "change"; "changed": "changed"; "initialized": "initialized"; }, ["slides"], never, false>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<CarouselComponent, "owl-carousel-o", never, { "options": { "alias": "options"; "required": false; }; }, { "translated": "translated"; "dragging": "dragging"; "change": "change"; "changed": "changed"; "initialized": "initialized"; }, ["slides"], never, false, never>;
 }
