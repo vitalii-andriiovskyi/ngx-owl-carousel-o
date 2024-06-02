@@ -6,7 +6,8 @@
 
 ngx-owl-carousel-o      | Angular
 ------------------------|--------
-17.x.x                  | 17.x.x
+18.x.x                  | 18.x.x
+17.x.x (latest `17.0.0`)| 17.x.x
 16.x.x (latest `16.0.0`)| 16.x.x
 15.x.x (latest `15.0.1`)| 15.x.x
 14.x.x (latest `14.0.1`)| 14.x.x
