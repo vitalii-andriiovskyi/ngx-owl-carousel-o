@@ -14,11 +14,10 @@ export interface CarouselData {
 }
 
 @Component({
-  selector: 'owl-carousel-libdemo-root',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet, CarouselModule, RouterLink],
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
+    selector: 'owl-carousel-libdemo-root',
+    imports: [CommonModule, RouterOutlet, CarouselModule, RouterLink],
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
 }

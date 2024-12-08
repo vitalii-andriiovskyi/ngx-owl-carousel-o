@@ -9,29 +9,28 @@ interface Image {
   alt?: string;
 }
 @Component({
-  selector: 'app-gallery',
-  standalone: true,
-  imports: [CommonModule, CarouselModule, NgOptimizedImage],
-  templateUrl: './gallery.component.html',
-  styleUrl: './gallery.component.sass',
-  animations: [
-    trigger('activeSlide', [
-      state('active', style({
-        transform: 'scale(1.4)',
-        opacity: 1,
-      })),
-      state('inActive', style({
-        transform: 'scale(0.7)',
-        opacity: 0.8,
-      })),
-      transition('active => inActive', [
-        animate('0.5s')
-      ]),
-      transition('inActive => active', [
-        animate('0.5s')
-      ])
-    ])
-  ]
+    selector: 'app-gallery',
+    imports: [CommonModule, CarouselModule, NgOptimizedImage],
+    templateUrl: './gallery.component.html',
+    styleUrl: './gallery.component.sass',
+    animations: [
+        trigger('activeSlide', [
+            state('active', style({
+                transform: 'scale(1.4)',
+                opacity: 1,
+            })),
+            state('inActive', style({
+                transform: 'scale(0.7)',
+                opacity: 0.8,
+            })),
+            transition('active => inActive', [
+                animate('0.5s')
+            ]),
+            transition('inActive => active', [
+                animate('0.5s')
+            ])
+        ])
+    ]
 })
 export class GalleryComponent {
   imagesData: Image[] = [

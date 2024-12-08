@@ -11,7 +11,6 @@ import {
 import { Component, DebugElement, OnInit } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Location } from '@angular/common';
 
 import { StageComponent } from './stage.component';
@@ -30,6 +29,7 @@ import {
   OwlRouterLinkWithHrefDirective,
 } from '../owl-router-link.directive';
 import { OwlLogger } from '../../services/logger.service';
+import { provideRouter, RouterModule } from '@angular/router';
 
 const createTestComponent = (html: string) =>
   createGenericTestComponent(
@@ -59,7 +59,7 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,
-        RouterTestingModule.withRoutes([
+        RouterModule.forRoot([
           { path: '', component: TestComponent },
           { path: 'any-component', component: AnyComponent },
         ]),
@@ -3109,6 +3109,7 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 @Component({
   selector: 'test-dom',
   template: '',
+  standalone: false
 })
 class TestComponent {
   options: any = {};
@@ -3123,6 +3124,7 @@ class TestComponent {
 @Component({
   selector: 'owl-any',
   template: '<div>It works</div>',
+  standalone: false
 })
 class AnyComponent implements OnInit {
   init = false;

@@ -16,11 +16,10 @@ interface CarouselData {
 }
 
 @Component({
-  selector: 'app-subhome',
-  standalone: true,
-  imports: [CommonModule, RouterLink, CarouselModule],
-  templateUrl: './subhome.component.html',
-  styleUrl: './subhome.component.scss'
+    selector: 'app-subhome',
+    imports: [CommonModule, RouterLink, CarouselModule],
+    templateUrl: './subhome.component.html',
+    styleUrl: './subhome.component.scss'
 })
 export class SubhomeComponent implements OnInit {
   currentUrl: WritableSignal<string> = signal('');

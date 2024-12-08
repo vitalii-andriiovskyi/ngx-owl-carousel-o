@@ -3,11 +3,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CarouselComponent, CarouselModule, OwlOptions, SlidesOutputData } from 'ngx-owl-carousel-o';
 
 @Component({
-  selector: 'app-doubled-carousel',
-  standalone: true,
-  imports: [CommonModule, CarouselModule],
-  templateUrl: './doubled-carousel.component.html',
-  styleUrl: './doubled-carousel.component.scss'
+    selector: 'app-doubled-carousel',
+    imports: [CommonModule, CarouselModule],
+    templateUrl: './doubled-carousel.component.html',
+    styleUrl: './doubled-carousel.component.scss'
 })
 export class DoubledCarouselComponent implements OnInit {
   @ViewChild('owlMac') owlMac!: CarouselComponent;

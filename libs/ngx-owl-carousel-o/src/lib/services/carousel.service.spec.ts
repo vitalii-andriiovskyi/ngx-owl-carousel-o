@@ -23,8 +23,8 @@ import { By } from '@angular/platform-browser';
 import { DOCUMENT_PROVIDERS } from './document-ref.service';
 import { StageComponent } from '../carousel/stage/stage.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
 import { OwlLogger } from './logger.service';
+import { RouterModule } from '@angular/router';
 
 describe('CarouselService', () => {
   let carouselService: CarouselService;
@@ -33,7 +33,7 @@ describe('CarouselService', () => {
     TestBed.configureTestingModule({
       providers: [CarouselService, OwlLogger],
     });
-    carouselService = TestBed.get(CarouselService);
+    carouselService = TestBed.inject(CarouselService);
   });
 
   it('should be created', inject(
@@ -97,7 +97,7 @@ describe('CarouselService in context of TestComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,
-        RouterTestingModule.withRoutes([
+        RouterModule.forRoot([
           { path: '', component: TestComponent },
         ]),
       ],
@@ -153,11 +153,12 @@ describe('CarouselService in context of TestComponent', () => {
 @Component({
   selector: 'test-dom',
   template: '',
+  standalone: false
 })
 class TestComponent {
   options: any = {};
   translatedData: SlidesOutputData;
-  constructor() {}
+  constructor() { }
   getPassedData(data: any) {
     this.translatedData = data;
   }
