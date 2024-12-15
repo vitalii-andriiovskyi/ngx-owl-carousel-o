@@ -2,7 +2,10 @@ import { Input, Directive, TemplateRef } from '@angular/core';
 
 let nextId = 0;
 
-@Directive({ selector: 'ng-template[carouselSlide]' })
+@Directive({
+    selector: 'ng-template[carouselSlide]',
+    standalone: false
+})
 export class CarouselSlideDirective {
   /**
    * Unique slide identifier. Must be unique for the entire document for proper accessibility support.

@@ -51,22 +51,29 @@ import { SlidesOutputData } from '../models/SlidesOutputData';
       (touchstart)="startPausing()"
       (touchend)="startPlayTE()">
 
-      <div *ngIf="carouselLoaded" class="owl-stage-outer">
-        <owl-stage [owlDraggable]="{'isMouseDragable': owlDOMData?.isMouseDragable, 'isTouchDragable': owlDOMData?.isTouchDragable}"
-                    [stageData]="stageData"
-                    [slidesData]="slidesData"></owl-stage>
-      </div> <!-- /.owl-stage-outer -->
-      <ng-container *ngIf="slides.toArray().length">
-        <div class="owl-nav" [ngClass]="{'disabled': navData?.disabled}">
-          <div class="owl-prev" [ngClass]="{'disabled': navData?.prev?.disabled}" (click)="prev()" [innerHTML]="navData?.prev?.htmlText"></div>
-          <div class="owl-next" [ngClass]="{'disabled': navData?.next?.disabled}" (click)="next()" [innerHTML]="navData?.next?.htmlText"></div>
-        </div> <!-- /.owl-nav -->
-        <div class="owl-dots" [ngClass]="{'disabled': dotsData?.disabled}">
-          <div *ngFor="let dot of dotsData?.dots" class="owl-dot" [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" (click)="moveByDot(dot.id)">
-            <span [innerHTML]="dot.innerContent"></span>
-          </div>
-        </div> <!-- /.owl-dots -->
-      </ng-container>
+      @if(carouselLoaded) {
+        <div class="owl-stage-outer">
+          <owl-stage [owlDraggable]="{'isMouseDragable': owlDOMData?.isMouseDragable, 'isTouchDragable': owlDOMData?.isTouchDragable}"
+                      [stageData]="stageData"
+                      [slidesData]="slidesData"></owl-stage>
+        </div> <!-- /.owl-stage-outer -->
+      }
+
+      @if(slides.toArray().length) {
+          <div class="owl-nav" [ngClass]="{'disabled': navData?.disabled}">
+            <div class="owl-prev" [ngClass]="{'disabled': navData?.prev?.disabled}" (click)="prev()" [innerHTML]="navData?.prev?.htmlText"></div>
+            <div class="owl-next" [ngClass]="{'disabled': navData?.next?.disabled}" (click)="next()" [innerHTML]="navData?.next?.htmlText"></div>
+          </div> <!-- /.owl-nav -->
+          <div class="owl-dots" [ngClass]="{'disabled': dotsData?.disabled}">
+
+            @for (dot of dotsData?.dots; track dot.id) {
+              <div  class="owl-dot" [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" (click)="moveByDot(dot.id)">
+                <span [innerHTML]="dot.innerContent"></span>
+              </div>
+            }
+            
+          </div> <!-- /.owl-dots -->
+      }
     </div> <!-- /.owl-carousel owl-loaded -->
   `,
   styles: [`.owl-theme { display: block; }`],
@@ -79,7 +86,8 @@ import { SlidesOutputData } from '../models/SlidesOutputData';
     AutoHeightService,
     HashService
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class CarouselComponent
   implements OnInit, AfterContentInit, OnDestroy, OnChanges {

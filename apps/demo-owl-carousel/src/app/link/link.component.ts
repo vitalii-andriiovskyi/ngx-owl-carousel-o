@@ -4,11 +4,10 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
 import { CarouselData } from '../app.component';
 
 @Component({
-  selector: 'app-link',
-  standalone: true,
-  imports: [CommonModule, CarouselModule],
-  templateUrl: './link.component.html',
-  styleUrl: './link.component.sass'
+    selector: 'app-link',
+    imports: [CommonModule, CarouselModule],
+    templateUrl: './link.component.html',
+    styleUrl: './link.component.sass'
 })
 export class LinkComponent {
   isDragging: WritableSignal<boolean> = signal(false);

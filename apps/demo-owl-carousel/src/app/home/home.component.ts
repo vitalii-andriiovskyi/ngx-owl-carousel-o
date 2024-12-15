@@ -17,11 +17,10 @@ interface CarouselData {
 
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [CommonModule, CarouselModule, RouterOutlet, RouterLink],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+    selector: 'app-home',
+    imports: [CommonModule, CarouselModule, RouterOutlet, RouterLink],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
   carouselData: WritableSignal<CarouselData[]> = signal([

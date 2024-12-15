@@ -12,9 +12,8 @@ import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { cold, getTestScheduler, hot } from 'jasmine-marbles';
+import { Router, RouterModule } from '@angular/router';
+import { RouterTestingHarness } from '@angular/router/testing';
 
 import { CarouselComponent } from './carousel.component';
 import { SlidesOutputData } from '../models/SlidesOutputData';
@@ -61,15 +60,16 @@ describe('CarouselComponent', () => {
 
   let location: Location;
   let router: Router;
+  let harness: RouterTestingHarness;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         NoopAnimationsModule,
-        RouterTestingModule.withRoutes([
+        RouterModule.forRoot([
           { path: '', component: TestComponent },
           { path: 'owl-car', component: HashComponent },
-        ]),
+        ])
       ],
       declarations: [
         CarouselComponent,
@@ -6858,13 +6858,14 @@ describe('CarouselComponent', () => {
 @Component({
   selector: 'test-dom',
   template: '',
+  standalone: false
 })
 class TestComponent {
   options: any = {};
   translatedData: SlidesOutputData;
   currentSlidesData: SlidesOutputData;
   slidesData: string[] = [];
-  constructor() {}
+  constructor() { }
   getPassedData(data: any) {
     this.translatedData = data;
   }
@@ -6903,9 +6904,10 @@ class TestComponent {
       </owl-carousel-o>
     </div>
   `,
+  standalone: false
 })
 class HashComponent {
-  constructor() {}
+  constructor() { }
 }
 
 function triggerMouseEvent(node: any, eventType: string, evtObj: any) {

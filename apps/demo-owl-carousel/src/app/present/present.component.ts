@@ -16,12 +16,11 @@ interface CarouselData {
 
 
 @Component({
-  selector: 'app-present',
-  standalone: true,
-  imports: [CommonModule, CarouselModule, MatMenuModule, MatButtonModule],
-  templateUrl: './present.component.html',
-  styleUrl: './present.component.sass',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-present',
+    imports: [CommonModule, CarouselModule, MatMenuModule, MatButtonModule],
+    templateUrl: './present.component.html',
+    styleUrl: './present.component.sass',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PresentComponent implements OnInit {
   carouselData: CarouselData[] = [

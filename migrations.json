@@ -1,80 +1,110 @@
 {
   "migrations": [
     {
-      "version": "18.1.0-beta.3",
-      "description": "Moves affected.defaultBase to defaultBase in `nx.json`",
-      "implementation": "./src/migrations/update-17-2-0/move-default-base",
-      "package": "nx",
-      "name": "move-default-base-to-nx-json-root"
+      "cli": "nx",
+      "version": "20.2.0-beta.2",
+      "description": "Update the ModuleFederationConfig import use @nx/module-federation.",
+      "factory": "./src/migrations/update-20-2-0/migrate-mf-imports-to-new-package",
+      "package": "@nx/angular",
+      "name": "update-20-2-0-update-module-federation-config-import"
     },
     {
       "cli": "nx",
-      "version": "18.1.0-beta.1",
-      "requires": {
-        "@angular/core": ">=17.2.0"
-      },
-      "description": "Update the @angular/cli package version to ~17.2.0.",
-      "factory": "./src/migrations/update-18-1-0/update-angular-cli",
+      "version": "20.2.0-beta.2",
+      "description": "Update the withModuleFederation import use @nx/module-federation/angular.",
+      "factory": "./src/migrations/update-20-2-0/migrate-with-mf-import-to-new-package",
       "package": "@nx/angular",
-      "name": "update-angular-cli-version-17-2-0"
+      "name": "update-20-2-0-update-with-module-federation-import"
     },
     {
       "cli": "nx",
-      "version": "18.1.1-beta.0",
-      "description": "Ensure targetDefaults inputs for task hashing when '@nx/angular:webpack-browser' is used are correct for Module Federation.",
-      "factory": "./src/migrations/update-18-1-1/fix-target-defaults-inputs",
+      "version": "20.2.0-beta.5",
+      "requires": { "@angular/core": ">=19.0.0" },
+      "description": "Update the @angular/cli package version to ~19.0.0.",
+      "factory": "./src/migrations/update-20-2-0/update-angular-cli",
       "package": "@nx/angular",
-      "name": "fix-target-defaults-for-webpack-browser"
+      "name": "update-angular-cli-version-19-0-0"
     },
     {
       "cli": "nx",
-      "version": "18.2.0-beta.0",
-      "requires": {
-        "@angular/core": ">=17.3.0"
-      },
-      "description": "Update the @angular/cli package version to ~17.3.0.",
-      "factory": "./src/migrations/update-18-2-0/update-angular-cli",
+      "version": "20.2.0-beta.5",
+      "requires": { "@angular/core": ">=19.0.0" },
+      "description": "Add the '@angular/localize/init' polyfill to the 'polyfills' option of targets using esbuild-based executors.",
+      "factory": "./src/migrations/update-20-2-0/add-localize-polyfill-to-targets",
       "package": "@nx/angular",
-      "name": "update-angular-cli-version-17-3-0"
+      "name": "add-localize-polyfill-to-targets"
     },
     {
       "cli": "nx",
-      "version": "19.1.0-beta.2",
-      "requires": {
-        "@angular/core": ">=18.0.0"
-      },
-      "description": "Update the @angular/cli package version to ~18.0.0.",
-      "factory": "./src/migrations/update-19-1-0/update-angular-cli",
+      "version": "20.2.0-beta.5",
+      "requires": { "@angular/core": ">=19.0.0" },
+      "description": "Update '@angular/ssr' import paths to use the new '/node' entry point when 'CommonEngine' is detected.",
+      "factory": "./src/migrations/update-20-2-0/update-angular-ssr-imports-to-use-node-entry-point",
       "package": "@nx/angular",
-      "name": "update-angular-cli-version-18-0-0"
+      "name": "update-angular-ssr-imports-to-use-node-entry-point"
     },
     {
-      "version": "18.0.0",
-      "description": "Updates two-way bindings that have an invalid expression to use the longform expression instead.",
-      "factory": "./migrations/invalid-two-way-bindings/bundle",
+      "cli": "nx",
+      "version": "20.2.0-beta.6",
+      "requires": { "@angular/core": ">=19.0.0" },
+      "description": "Disable the Angular ESLint prefer-standalone rule if not set.",
+      "factory": "./src/migrations/update-20-2-0/disable-angular-eslint-prefer-standalone",
+      "package": "@nx/angular",
+      "name": "disable-angular-eslint-prefer-standalone"
+    },
+    {
+      "cli": "nx",
+      "version": "20.2.0-beta.8",
+      "requires": { "@angular/core": ">=19.0.0" },
+      "description": "Remove Angular ESLint rules that were removed in v19.0.0.",
+      "factory": "./src/migrations/update-20-2-0/remove-angular-eslint-rules",
+      "package": "@nx/angular",
+      "name": "remove-angular-eslint-rules"
+    },
+    {
+      "cli": "nx",
+      "version": "20.2.0-beta.8",
+      "requires": { "@angular/core": ">=19.0.0" },
+      "description": "Remove the deprecated 'tailwindConfig' option from ng-packagr executors. Tailwind CSS configurations located at the project or workspace root will be picked up automatically.",
+      "factory": "./src/migrations/update-20-2-0/remove-tailwind-config-from-ng-packagr-executors",
+      "package": "@nx/angular",
+      "name": "remove-tailwind-config-from-ng-packagr-executors"
+    },
+    {
+      "version": "19.0.0",
+      "description": "Updates non-standalone Directives, Component and Pipes to 'standalone:false' and removes 'standalone:true' from those who are standalone",
+      "factory": "./bundles/explicit-standalone-flag#migrate",
       "package": "@angular/core",
-      "name": "invalid-two-way-bindings"
+      "name": "explicit-standalone-flag"
     },
     {
-      "version": "18.0.0",
-      "description": "Replace deprecated HTTP related modules with provider functions",
-      "factory": "./migrations/http-providers/bundle",
+      "version": "19.0.0",
+      "description": "Updates ExperimentalPendingTasks to PendingTasks",
+      "factory": "./bundles/pending-tasks#migrate",
       "package": "@angular/core",
-      "name": "migration-http-providers"
+      "name": "pending-tasks"
     },
     {
-      "version": "18.0.0-0",
-      "description": "Updates Angular Material to v18",
-      "factory": "./ng-update/index_bundled#updateToV18",
+      "version": "19.0.0",
+      "description": "Replaces `APP_INITIALIZER`, `ENVIRONMENT_INITIALIZER` & `PLATFORM_INITIALIZER` respectively with `provideAppInitializer`, `provideEnvironmentInitializer` & `providePlatformInitializer`.",
+      "factory": "./bundles/provide-initializer#migrate",
+      "optional": true,
+      "package": "@angular/core",
+      "name": "provide-initializer"
+    },
+    {
+      "version": "19.0.0-0",
+      "description": "Updates Angular Material to v19",
+      "factory": "./ng-update/index_bundled#updateToV19",
       "package": "@angular/material",
-      "name": "migration-v18"
+      "name": "migration-v19"
     },
     {
-      "version": "18.0.0-0",
-      "description": "Updates the Angular CDK to v18",
-      "factory": "./ng-update/index#updateToV18",
+      "version": "19.0.0-0",
+      "description": "Updates the Angular CDK to v19",
+      "factory": "./ng-update/index#updateToV19",
       "package": "@angular/cdk",
-      "name": "migration-v18"
+      "name": "migration-v19"
     }
   ]
 }
