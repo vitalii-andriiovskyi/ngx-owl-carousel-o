@@ -88,11 +88,11 @@ export declare class StageComponent implements OnInit, OnDestroy {
      */
     bindOnDragEnd: (ev: any) => void;
     /**
-       * Handles `touchstart` and `mousedown` events.
-       * @todo Horizontal swipe threshold as option
-       * @todo #261
-       * @param event - The event arguments.
-       */
+     * Handles `touchstart` and `mousedown` events.
+     * @todo Horizontal swipe threshold as option
+     * @todo #261
+     * @param event - The event arguments.
+     */
     private _onDragStart;
     /**
      * Attaches listeners to `touchmove` and `mousemove` events; initiates updating carousel after starting dragging
@@ -105,10 +105,10 @@ export declare class StageComponent implements OnInit, OnDestroy {
      */
     private blockClickAnchorInDragging;
     /**
-     * Handles the `touchmove` and `mousemove` events.
-     * @todo #261
-     * @param event - The event arguments.
-     */
+   * Handles the `touchmove` and `mousemove` events.
+   * @todo #261
+   * @param event - The event arguments.
+   */
     private _onDragMove;
     /**
      * Moves .owl-stage left-right
@@ -116,17 +116,17 @@ export declare class StageComponent implements OnInit, OnDestroy {
      */
     private _animate;
     /**
-       * Handles the `touchend` and `mouseup` events.
-       * @todo #261
-       * @todo Threshold for click event
-       * @param event - The event arguments.
-       */
+     * Handles the `touchend` and `mouseup` events.
+     * @todo #261
+     * @todo Threshold for click event
+     * @param event - The event arguments.
+     */
     private _onDragEnd;
     /**
-       * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
-       * @param event - The event arguments.
-       * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
-       */
+     * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
+     * @param event - The event arguments.
+     * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
+     */
     private _prepareDragging;
     /**
      * Attaches handler for 'click' event on any element in .owl-stage in order to prevent dragging when moving of cursor is less than 3px
@@ -138,23 +138,23 @@ export declare class StageComponent implements OnInit, OnDestroy {
      */
     private _finishDragging;
     /**
-       * Gets unified pointer coordinates from event.
-       * @param event The `mousedown` or `touchstart` event.
-       * @returns Contains `x` and `y` coordinates of current pointer position.
-       */
+     * Gets unified pointer coordinates from event.
+     * @param event The `mousedown` or `touchstart` event.
+     * @returns Contains `x` and `y` coordinates of current pointer position.
+     */
     private _pointer;
     /**
-       * Gets the difference of two vectors.
-       * @param first The first vector.
-       * @param second The second vector.
-       * @returns The difference.
-       */
+     * Gets the difference of two vectors.
+     * @param first The first vector.
+     * @param second The second vector.
+     * @returns The difference.
+     */
     private _difference;
     /**
-       * Checks whether the carousel is in a specific state or not.
-       * @param specificState The state to check.
-       * @returns The flag which indicates if the carousel is busy.
-       */
+     * Checks whether the carousel is in a specific state or not.
+     * @param specificState The state to check.
+     * @returns The flag which indicates if the carousel is busy.
+     */
     private _is;
     /**
     * Enters a state.
@@ -162,16 +162,16 @@ export declare class StageComponent implements OnInit, OnDestroy {
     */
     private _enter;
     /**
-       * Sends all data needed for View.
-       */
+     * Sends all data needed for View.
+     */
     private _sendChanges;
     /**
      * Handler for transitioend event
      */
     onTransitionEnd(): void;
     /**
-       * Enters into a 'dragging' state
-       */
+     * Enters into a 'dragging' state
+     */
     private _enterDragging;
     /**
      * Handles the end of 'animationend' event
