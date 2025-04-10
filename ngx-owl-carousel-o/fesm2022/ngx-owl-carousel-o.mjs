@@ -429,18 +429,18 @@ class CarouselService {
                     prepend.unshift({ ...this.slidesData[clones[clones.length - 1]] });
                 }
                 this._clones = clones;
-                append = append.map(slide => {
-                    slide.id = `${this.clonedIdPrefix}${slide.id}`;
-                    slide.isActive = false;
-                    slide.isCloned = true;
-                    return slide;
-                });
-                prepend = prepend.map(slide => {
-                    slide.id = `${this.clonedIdPrefix}${slide.id}`;
-                    slide.isActive = false;
-                    slide.isCloned = true;
-                    return slide;
-                });
+                append = append.map(slide => ({
+                    ...slide,
+                    id: `${this.clonedIdPrefix}${slide.id}-append`,
+                    isActive: false,
+                    isCloned: true,
+                }));
+                prepend = prepend.map(slide => ({
+                    ...slide,
+                    id: `${this.clonedIdPrefix}${slide.id}`,
+                    isActive: false,
+                    isCloned: true,
+                }));
                 this.slidesData = prepend.concat(this.slidesData).concat(append);
             }
         }, {
