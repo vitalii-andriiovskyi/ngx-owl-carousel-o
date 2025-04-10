@@ -2661,17 +2661,21 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.0.0", ngImpor
 
 class ResizeService {
     resizeObservable$;
+    docRef;
     /**
      * Makes resizeSubject become Observable
      * @returns Observable of resizeSubject
      */
     get onResize$() {
-        return this.resizeObservable$;
+        return this.resizeObservable$.pipe(filter(() => !this.docRef?.fullscreenElement));
     }
-    constructor(winRef, platformId) {
-        this.resizeObservable$ = isPlatformBrowser(platformId) ? fromEvent(winRef, 'resize') : (new Subject()).asObservable();
+    constructor(winRef, docRef, platformId) {
+        this.docRef = docRef;
+        this.resizeObservable$ = isPlatformBrowser(platformId)
+            ? fromEvent(winRef, 'resize')
+            : (new Subject()).asObservable();
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.0.0", ngImport: i0, type: ResizeService, deps: [{ token: WINDOW }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "16.0.0", ngImport: i0, type: ResizeService, deps: [{ token: WINDOW }, { token: DOCUMENT }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
     static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "16.0.0", ngImport: i0, type: ResizeService });
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.0.0", ngImport: i0, type: ResizeService, decorators: [{
@@ -2679,6 +2683,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "16.0.0", ngImpor
         }], ctorParameters: function () { return [{ type: undefined, decorators: [{
                     type: Inject,
                     args: [WINDOW]
+                }] }, { type: undefined, decorators: [{
+                    type: Inject,
+                    args: [DOCUMENT]
                 }] }, { type: Object, decorators: [{
                     type: Inject,
                     args: [PLATFORM_ID]
