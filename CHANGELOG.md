@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v19.0.1](#v1901)
 * [v19.0.0](#v1900)
 * [v18.0.0](#v1800)
 * [v17.0.0](#v1700)
@@ -57,6 +58,10 @@
 * [v0.1.1](#v011)
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
+
+## v19.0.1
+
+The version `v19.0.1` fixes the bug [`#288`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/288).
 
 ## v19.0.0
 
