@@ -1,6 +1,7 @@
 import { EventManager } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { DOCUMENT } from './document-ref.service';
 
 @Injectable()
 export class ResizeService {
@@ -21,8 +22,12 @@ export class ResizeService {
    * Subject of 'resize' event
    */
   private resizeSubject: Subject<Window>;
+  private docRef: Document;
 
-  constructor(private eventManager: EventManager) {
+  constructor(private eventManager: EventManager, @Inject(DOCUMENT) docRef: any,) {
+
+    this.docRef = docRef as Document;
+
     this.resizeSubject = new Subject();
     this.eventManager.addGlobalEventListener(
       'window',
@@ -41,6 +46,9 @@ export class ResizeService {
    * @param event Event Object of 'resize' event
    */
   private onResize(event: UIEvent) {
+    if (this.docRef.fullscreenElement) {
+      return
+    }
     this.resizeSubject.next(<Window>event.target);
   }
 
