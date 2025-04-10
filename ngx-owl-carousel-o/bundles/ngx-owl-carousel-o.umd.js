@@ -223,9 +223,85 @@
         return value;
     }
 
+    /**
+     * Create a new injection token for injecting the Document into a component.
+     */
+    var DOCUMENT = new core.InjectionToken('DocumentToken');
+    /**
+     * Define abstract class for obtaining reference to the global Document object.
+     */
+    var DocumentRef = /** @class */ (function () {
+        function DocumentRef() {
+        }
+        Object.defineProperty(DocumentRef.prototype, "nativeDocument", {
+            get: function () {
+                throw new Error('Not implemented.');
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return DocumentRef;
+    }());
+    /**
+     * Define class that implements the abstract class and returns the native Document object.
+     */
+    var BrowserDocumentRef = /** @class */ (function (_super) {
+        __extends(BrowserDocumentRef, _super);
+        function BrowserDocumentRef() {
+            return _super.call(this) || this;
+        }
+        Object.defineProperty(BrowserDocumentRef.prototype, "nativeDocument", {
+            /**
+             * @returns Document object
+             */
+            get: function () {
+                return document;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return BrowserDocumentRef;
+    }(DocumentRef));
+    /**
+     * Create an factory function that returns the native Document object.
+     * @param browserDocumentRef Native Document object
+     * @param platformId id of platform
+     * @returns type of platform of empty object
+     */
+    function documentFactory(browserDocumentRef, platformId) {
+        if (common.isPlatformBrowser(platformId)) {
+            return browserDocumentRef.nativeDocument;
+        }
+        var doc = {
+            hidden: false,
+            visibilityState: 'visible'
+        };
+        return doc;
+    }
+    /**
+     * Create a injectable provider for the DocumentRef token that uses the BrowserDocumentRef class.
+     */
+    var browserDocumentProvider = {
+        provide: DocumentRef,
+        useClass: BrowserDocumentRef
+    };
+    /**
+     * Create an injectable provider that uses the DocumentFactory function for returning the native Document object.
+     */
+    var documentProvider = {
+        provide: DOCUMENT,
+        useFactory: documentFactory,
+        deps: [DocumentRef, core.PLATFORM_ID]
+    };
+    /**
+     * Create an array of providers.
+     */
+    var DOCUMENT_PROVIDERS = [browserDocumentProvider, documentProvider];
+
     var ResizeService = /** @class */ (function () {
-        function ResizeService(eventManager) {
+        function ResizeService(eventManager, docRef) {
             this.eventManager = eventManager;
+            this.docRef = docRef;
             this.resizeSubject = new rxjs.Subject();
             this.eventManager.addGlobalEventListener('window', 'resize', this.onResize.bind(this));
             this.eventManager.addGlobalEventListener('window', 'onload', this.onLoaded.bind(this));
@@ -246,6 +322,9 @@
          * @param event Event Object of 'resize' event
          */
         ResizeService.prototype.onResize = function (event) {
+            if (this.docRef.fullscreenElement) {
+                return;
+            }
             this.resizeSubject.next(event.target);
         };
         /**
@@ -256,10 +335,12 @@
             this.windowWidth = event.target;
         };
         ResizeService.ctorParameters = function () { return [
-            { type: platformBrowser.EventManager }
+            { type: platformBrowser.EventManager },
+            { type: undefined, decorators: [{ type: core.Inject, args: [DOCUMENT,] }] }
         ]; };
         ResizeService = __decorate([
-            core.Injectable()
+            core.Injectable(),
+            __param(1, core.Inject(DOCUMENT))
         ], ResizeService);
         return ResizeService;
     }());
@@ -2277,81 +2358,6 @@
      * Create an array of providers.
      */
     var WINDOW_PROVIDERS = [browserWindowProvider, windowProvider];
-
-    /**
-     * Create a new injection token for injecting the Document into a component.
-     */
-    var DOCUMENT = new core.InjectionToken('DocumentToken');
-    /**
-     * Define abstract class for obtaining reference to the global Document object.
-     */
-    var DocumentRef = /** @class */ (function () {
-        function DocumentRef() {
-        }
-        Object.defineProperty(DocumentRef.prototype, "nativeDocument", {
-            get: function () {
-                throw new Error('Not implemented.');
-            },
-            enumerable: true,
-            configurable: true
-        });
-        return DocumentRef;
-    }());
-    /**
-     * Define class that implements the abstract class and returns the native Document object.
-     */
-    var BrowserDocumentRef = /** @class */ (function (_super) {
-        __extends(BrowserDocumentRef, _super);
-        function BrowserDocumentRef() {
-            return _super.call(this) || this;
-        }
-        Object.defineProperty(BrowserDocumentRef.prototype, "nativeDocument", {
-            /**
-             * @returns Document object
-             */
-            get: function () {
-                return document;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        return BrowserDocumentRef;
-    }(DocumentRef));
-    /**
-     * Create an factory function that returns the native Document object.
-     * @param browserDocumentRef Native Document object
-     * @param platformId id of platform
-     * @returns type of platform of empty object
-     */
-    function documentFactory(browserDocumentRef, platformId) {
-        if (common.isPlatformBrowser(platformId)) {
-            return browserDocumentRef.nativeDocument;
-        }
-        var doc = {
-            hidden: false,
-            visibilityState: 'visible'
-        };
-        return doc;
-    }
-    /**
-     * Create a injectable provider for the DocumentRef token that uses the BrowserDocumentRef class.
-     */
-    var browserDocumentProvider = {
-        provide: DocumentRef,
-        useClass: BrowserDocumentRef
-    };
-    /**
-     * Create an injectable provider that uses the DocumentFactory function for returning the native Document object.
-     */
-    var documentProvider = {
-        provide: DOCUMENT,
-        useFactory: documentFactory,
-        deps: [DocumentRef, core.PLATFORM_ID]
-    };
-    /**
-     * Create an array of providers.
-     */
-    var DOCUMENT_PROVIDERS = [browserDocumentProvider, documentProvider];
 
     var AutoplayService = /** @class */ (function () {
         function AutoplayService(carouselService, winRef, docRef) {
