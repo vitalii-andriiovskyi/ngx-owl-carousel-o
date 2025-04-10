@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v7.0.5](#v705)
 * [v7.0.4](#v704)
 * [v7.0.3](#v703)
 * [v7.0.2](#v702)
@@ -50,6 +51,10 @@
 * [v0.1.1](#v011)
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
+
+## v7.0.5
+
+The version `v7.0.5` includes fixes for [`#217`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/217).
 
 ## v7.0.4
 
