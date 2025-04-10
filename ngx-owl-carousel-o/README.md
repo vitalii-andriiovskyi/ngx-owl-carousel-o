@@ -7,17 +7,17 @@
 ngx-owl-carousel-o      | Angular
 ------------------------|--------
 19.x.x                  | 19.x.x
-18.x.x (latest `18.0.0`)| 18.x.x
-17.x.x (latest `17.0.0`)| 17.x.x
-16.x.x (latest `16.0.0`)| 16.x.x
-15.x.x (latest `15.0.1`)| 15.x.x
-14.x.x (latest `14.0.1`)| 14.x.x
-7.x.x  (latest `7.0.4`) | 13.x.x
-6.x.x  (latest `6.0.2`) | 12.x.x
-5.x.x  (latest `5.1.1`) | 11.x.x
-4.x.x  (latest `4.1.1`) | 10.x.x
+18.x.x (latest `18.0.1`)| 18.x.x
+17.x.x (latest `17.0.1`)| 17.x.x
+16.x.x (latest `16.0.1`)| 16.x.x
+15.x.x (latest `15.0.2`)| 15.x.x
+14.x.x (latest `14.0.2`)| 14.x.x
+7.x.x  (latest `7.0.5`) | 13.x.x
+6.x.x  (latest `6.0.3`) | 12.x.x
+5.x.x  (latest `5.1.2`) | 11.x.x
+4.x.x  (latest `4.1.2`) | 10.x.x
 3.x.x  (latest `3.1.1`) | 9.x.x
-2.x.x  (latest `2.1.1`) | 8.x.x
+2.x.x  (latest `2.1.2`) | 8.x.x
 1.x.x  (latest `1.2.1`) | 7.x.x
 0.x.x  (latest `0.1.2`) | 6.x.x
 
