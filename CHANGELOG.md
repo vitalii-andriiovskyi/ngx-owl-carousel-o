@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v15.0.2](#v1502)
 * [v15.0.1](#v1501)
 * [v15.0.0](#v1500)
 * [v14.0.1](#v1401)
@@ -53,6 +54,10 @@
 * [v0.1.1](#v011)
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
+
+## v15.0.2
+
+The version `v15.0.2` fixes the bug [`#217`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/217).
 
 ## v15.0.1
 
