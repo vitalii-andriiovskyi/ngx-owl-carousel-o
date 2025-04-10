@@ -5,18 +5,18 @@
 }(this, (function (exports, core, common, rxjs, platformBrowser, operators, router, animations) { 'use strict';
 
     /*! *****************************************************************************
-    Copyright (c) Microsoft Corporation. All rights reserved.
-    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-    this file except in compliance with the License. You may obtain a copy of the
-    License at http://www.apache.org/licenses/LICENSE-2.0
+    Copyright (c) Microsoft Corporation.
 
-    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-    MERCHANTABLITY OR NON-INFRINGEMENT.
+    Permission to use, copy, modify, and/or distribute this software for any
+    purpose with or without fee is hereby granted.
 
-    See the Apache Version 2.0 License for specific language governing permissions
-    and limitations under the License.
+    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+    REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+    INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+    LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+    OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+    PERFORMANCE OF THIS SOFTWARE.
     ***************************************************************************** */
     /* global Reflect, Promise */
 
@@ -109,8 +109,13 @@
         }
     }
 
+    function __createBinding(o, m, k, k2) {
+        if (k2 === undefined) k2 = k;
+        o[k2] = m[k];
+    }
+
     function __exportStar(m, exports) {
-        for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+        for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) exports[p] = m[p];
     }
 
     function __values(o) {
@@ -218,9 +223,88 @@
         return value;
     }
 
+    /**
+     * Create a new injection token for injecting the Document into a component.
+     */
+    var DOCUMENT = new core.InjectionToken('DocumentToken');
+    /**
+     * Define abstract class for obtaining reference to the global Document object.
+     */
+    var DocumentRef = /** @class */ (function () {
+        function DocumentRef() {
+        }
+        Object.defineProperty(DocumentRef.prototype, "nativeDocument", {
+            get: function () {
+                throw new Error('Not implemented.');
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return DocumentRef;
+    }());
+    /**
+     * Define class that implements the abstract class and returns the native Document object.
+     */
+    var BrowserDocumentRef = /** @class */ (function (_super) {
+        __extends(BrowserDocumentRef, _super);
+        function BrowserDocumentRef() {
+            return _super.call(this) || this;
+        }
+        Object.defineProperty(BrowserDocumentRef.prototype, "nativeDocument", {
+            /**
+             * @returns Document object
+             */
+            get: function () {
+                return document;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        BrowserDocumentRef = __decorate([
+            core.Injectable()
+        ], BrowserDocumentRef);
+        return BrowserDocumentRef;
+    }(DocumentRef));
+    /**
+     * Create an factory function that returns the native Document object.
+     * @param browserDocumentRef Native Document object
+     * @param platformId id of platform
+     * @returns type of platform of empty object
+     */
+    function documentFactory(browserDocumentRef, platformId) {
+        if (common.isPlatformBrowser(platformId)) {
+            return browserDocumentRef.nativeDocument;
+        }
+        var doc = {
+            hidden: false,
+            visibilityState: 'visible'
+        };
+        return doc;
+    }
+    /**
+     * Create a injectable provider for the DocumentRef token that uses the BrowserDocumentRef class.
+     */
+    var browserDocumentProvider = {
+        provide: DocumentRef,
+        useClass: BrowserDocumentRef
+    };
+    /**
+     * Create an injectable provider that uses the DocumentFactory function for returning the native Document object.
+     */
+    var documentProvider = {
+        provide: DOCUMENT,
+        useFactory: documentFactory,
+        deps: [DocumentRef, core.PLATFORM_ID]
+    };
+    /**
+     * Create an array of providers.
+     */
+    var DOCUMENT_PROVIDERS = [browserDocumentProvider, documentProvider];
+
     var ResizeService = /** @class */ (function () {
-        function ResizeService(eventManager) {
+        function ResizeService(eventManager, docRef) {
             this.eventManager = eventManager;
+            this.docRef = docRef;
             this.resizeSubject = new rxjs.Subject();
             this.eventManager.addGlobalEventListener('window', 'resize', this.onResize.bind(this));
             this.eventManager.addGlobalEventListener('window', 'onload', this.onLoaded.bind(this));
@@ -241,6 +325,10 @@
          * @param event Event Object of 'resize' event
          */
         ResizeService.prototype.onResize = function (event) {
+            var _a;
+            if ((_a = this.docRef) === null || _a === void 0 ? void 0 : _a.fullscreenElement) {
+                return;
+            }
             this.resizeSubject.next(event.target);
         };
         /**
@@ -251,10 +339,12 @@
             this.windowWidth = event.target;
         };
         ResizeService.ctorParameters = function () { return [
-            { type: platformBrowser.EventManager }
+            { type: platformBrowser.EventManager },
+            { type: undefined, decorators: [{ type: core.Inject, args: [DOCUMENT,] }] }
         ]; };
         ResizeService = __decorate([
-            core.Injectable()
+            core.Injectable(),
+            __param(1, core.Inject(DOCUMENT))
         ], ResizeService);
         return ResizeService;
     }());
@@ -2277,84 +2367,6 @@
      * Create an array of providers.
      */
     var WINDOW_PROVIDERS = [browserWindowProvider, windowProvider];
-
-    /**
-     * Create a new injection token for injecting the Document into a component.
-     */
-    var DOCUMENT = new core.InjectionToken('DocumentToken');
-    /**
-     * Define abstract class for obtaining reference to the global Document object.
-     */
-    var DocumentRef = /** @class */ (function () {
-        function DocumentRef() {
-        }
-        Object.defineProperty(DocumentRef.prototype, "nativeDocument", {
-            get: function () {
-                throw new Error('Not implemented.');
-            },
-            enumerable: true,
-            configurable: true
-        });
-        return DocumentRef;
-    }());
-    /**
-     * Define class that implements the abstract class and returns the native Document object.
-     */
-    var BrowserDocumentRef = /** @class */ (function (_super) {
-        __extends(BrowserDocumentRef, _super);
-        function BrowserDocumentRef() {
-            return _super.call(this) || this;
-        }
-        Object.defineProperty(BrowserDocumentRef.prototype, "nativeDocument", {
-            /**
-             * @returns Document object
-             */
-            get: function () {
-                return document;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        BrowserDocumentRef = __decorate([
-            core.Injectable()
-        ], BrowserDocumentRef);
-        return BrowserDocumentRef;
-    }(DocumentRef));
-    /**
-     * Create an factory function that returns the native Document object.
-     * @param browserDocumentRef Native Document object
-     * @param platformId id of platform
-     * @returns type of platform of empty object
-     */
-    function documentFactory(browserDocumentRef, platformId) {
-        if (common.isPlatformBrowser(platformId)) {
-            return browserDocumentRef.nativeDocument;
-        }
-        var doc = {
-            hidden: false,
-            visibilityState: 'visible'
-        };
-        return doc;
-    }
-    /**
-     * Create a injectable provider for the DocumentRef token that uses the BrowserDocumentRef class.
-     */
-    var browserDocumentProvider = {
-        provide: DocumentRef,
-        useClass: BrowserDocumentRef
-    };
-    /**
-     * Create an injectable provider that uses the DocumentFactory function for returning the native Document object.
-     */
-    var documentProvider = {
-        provide: DOCUMENT,
-        useFactory: documentFactory,
-        deps: [DocumentRef, core.PLATFORM_ID]
-    };
-    /**
-     * Create an array of providers.
-     */
-    var DOCUMENT_PROVIDERS = [browserDocumentProvider, documentProvider];
 
     var AutoplayService = /** @class */ (function () {
         function AutoplayService(carouselService, winRef, docRef) {
