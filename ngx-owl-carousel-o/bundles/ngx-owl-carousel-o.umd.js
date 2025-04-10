@@ -4,160 +4,6 @@
     (global = global || self, factory(global['ngx-owl-carousel-o'] = {}, global.ng.core, global.ng.common, global.rxjs, global.ng.platformBrowser, global.rxjs.operators, global.ng.router, global.ng.animations));
 }(this, (function (exports, core, common, rxjs, platformBrowser, operators, router, animations) { 'use strict';
 
-    var ResizeService = /** @class */ (function () {
-        function ResizeService(eventManager) {
-            this.eventManager = eventManager;
-            this.resizeSubject = new rxjs.Subject();
-            this.eventManager.addGlobalEventListener('window', 'resize', this.onResize.bind(this));
-            this.eventManager.addGlobalEventListener('window', 'onload', this.onLoaded.bind(this));
-        }
-        Object.defineProperty(ResizeService.prototype, "onResize$", {
-            /**
-             * Makes resizeSubject become Observable
-             * @returns Observable of resizeSubject
-             */
-            get: function () {
-                return this.resizeSubject.asObservable();
-            },
-            enumerable: false,
-            configurable: true
-        });
-        /**
-         * Handler of 'resize' event. Passes data throw resizeSubject
-         * @param event Event Object of 'resize' event
-         */
-        ResizeService.prototype.onResize = function (event) {
-            this.resizeSubject.next(event.target);
-        };
-        /**
-         * Handler of 'onload' event. Defines the width of window
-         * @param event Event Object of 'onload' event
-         */
-        ResizeService.prototype.onLoaded = function (event) {
-            this.windowWidth = event.target;
-        };
-        return ResizeService;
-    }());
-    ResizeService.decorators = [
-        { type: core.Injectable }
-    ];
-    ResizeService.ctorParameters = function () { return [
-        { type: platformBrowser.EventManager }
-    ]; };
-
-    /**
-     * Defaults value of options
-     */
-    var OwlCarouselOConfig = /** @class */ (function () {
-        function OwlCarouselOConfig() {
-            this.items = 3;
-            this.skip_validateItems = false;
-            this.loop = false;
-            this.center = false;
-            this.rewind = false;
-            this.mouseDrag = true;
-            this.touchDrag = true;
-            this.pullDrag = true;
-            this.freeDrag = false;
-            this.margin = 0;
-            this.stagePadding = 0;
-            this.merge = false;
-            this.mergeFit = true;
-            this.autoWidth = false;
-            this.startPosition = 0;
-            this.rtl = false;
-            this.smartSpeed = 250;
-            this.fluidSpeed = false;
-            this.dragEndSpeed = false;
-            this.responsive = {};
-            this.responsiveRefreshRate = 200;
-            // defaults to Navigation
-            this.nav = false;
-            this.navText = ['prev', 'next'];
-            this.navSpeed = false;
-            this.slideBy = 1; // stage moves on 1 width of slide; if slideBy = 2, stage moves on 2 widths of slide
-            this.dots = true;
-            this.dotsEach = false;
-            this.dotsData = false;
-            this.dotsSpeed = false;
-            // defaults to Autoplay
-            this.autoplay = false;
-            this.autoplayTimeout = 5000;
-            this.autoplayHoverPause = false;
-            this.autoplaySpeed = false;
-            this.autoplayMouseleaveTimeout = 1;
-            // defaults to LazyLoading
-            this.lazyLoad = false;
-            this.lazyLoadEager = 0;
-            // defaults to Animate
-            this.slideTransition = '';
-            this.animateOut = false;
-            this.animateIn = false;
-            // defaults to AutoHeight
-            this.autoHeight = false;
-            // defaults to Hash
-            this.URLhashListener = false;
-        }
-        return OwlCarouselOConfig;
-    }());
-    /**
-     * we can't read types from OwlOptions in javascript because of props have undefined value and types of those props are used for validating inputs
-     * class below is copy of OwlOptions but its all props have string value showing certain type;
-     * this is class is being used just in method _validateOptions() of CarouselService;
-     */
-    var OwlOptionsMockedTypes = /** @class */ (function () {
-        function OwlOptionsMockedTypes() {
-            this.items = 'number';
-            this.skip_validateItems = 'boolean';
-            this.loop = 'boolean';
-            this.center = 'boolean';
-            this.rewind = 'boolean';
-            this.mouseDrag = 'boolean';
-            this.touchDrag = 'boolean';
-            this.pullDrag = 'boolean';
-            this.freeDrag = 'boolean';
-            this.margin = 'number';
-            this.stagePadding = 'number';
-            this.merge = 'boolean';
-            this.mergeFit = 'boolean';
-            this.autoWidth = 'boolean';
-            this.startPosition = 'number|string';
-            this.rtl = 'boolean';
-            this.smartSpeed = 'number';
-            this.fluidSpeed = 'boolean';
-            this.dragEndSpeed = 'number|boolean';
-            this.responsive = {};
-            this.responsiveRefreshRate = 'number';
-            // defaults to Navigation
-            this.nav = 'boolean';
-            this.navText = 'string[]';
-            this.navSpeed = 'number|boolean';
-            this.slideBy = 'number|string'; // stage moves on 1 width of slide; if slideBy = 2, stage moves on 2 widths of slide
-            this.dots = 'boolean';
-            this.dotsEach = 'number|boolean';
-            this.dotsData = 'boolean';
-            this.dotsSpeed = 'number|boolean';
-            // defaults to Autoplay
-            this.autoplay = 'boolean';
-            this.autoplayTimeout = 'number';
-            this.autoplayHoverPause = 'boolean';
-            this.autoplaySpeed = 'number|boolean';
-            this.autoplayMouseleaveTimeout = 'number';
-            // defaults to LazyLoading
-            this.lazyLoad = 'boolean';
-            this.lazyLoadEager = 'number';
-            // defaults to Animate
-            this.slideTransition = 'string';
-            this.animateOut = 'string|boolean';
-            this.animateIn = 'string|boolean';
-            // defaults to AutoHeight
-            this.autoHeight = 'boolean';
-            // defaults to Hash
-            this.URLhashListener = "boolean";
-        }
-        return OwlOptionsMockedTypes;
-    }());
-
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation. All rights reserved.
     Licensed under the Apache License, Version 2.0 (the "License"); you may not use
@@ -444,6 +290,245 @@
         privateMap.set(receiver, value);
         return value;
     }
+
+    /**
+     * Create a new injection token for injecting the Document into a component.
+     */
+    var DOCUMENT = new core.InjectionToken('DocumentToken');
+    /**
+     * Define abstract class for obtaining reference to the global Document object.
+     */
+    var DocumentRef = /** @class */ (function () {
+        function DocumentRef() {
+        }
+        Object.defineProperty(DocumentRef.prototype, "nativeDocument", {
+            get: function () {
+                throw new Error('Not implemented.');
+            },
+            enumerable: false,
+            configurable: true
+        });
+        return DocumentRef;
+    }());
+    /**
+     * Define class that implements the abstract class and returns the native Document object.
+     */
+    var BrowserDocumentRef = /** @class */ (function (_super) {
+        __extends(BrowserDocumentRef, _super);
+        function BrowserDocumentRef() {
+            return _super.call(this) || this;
+        }
+        Object.defineProperty(BrowserDocumentRef.prototype, "nativeDocument", {
+            /**
+             * @returns Document object
+             */
+            get: function () {
+                return document;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        return BrowserDocumentRef;
+    }(DocumentRef));
+    BrowserDocumentRef.decorators = [
+        { type: core.Injectable }
+    ];
+    BrowserDocumentRef.ctorParameters = function () { return []; };
+    /**
+     * Create an factory function that returns the native Document object.
+     * @param browserDocumentRef Native Document object
+     * @param platformId id of platform
+     * @returns type of platform of empty object
+     */
+    function documentFactory(browserDocumentRef, platformId) {
+        if (common.isPlatformBrowser(platformId)) {
+            return browserDocumentRef.nativeDocument;
+        }
+        var doc = {
+            hidden: false,
+            visibilityState: 'visible'
+        };
+        return doc;
+    }
+    /**
+     * Create a injectable provider for the DocumentRef token that uses the BrowserDocumentRef class.
+     */
+    var browserDocumentProvider = {
+        provide: DocumentRef,
+        useClass: BrowserDocumentRef
+    };
+    /**
+     * Create an injectable provider that uses the DocumentFactory function for returning the native Document object.
+     */
+    var documentProvider = {
+        provide: DOCUMENT,
+        useFactory: documentFactory,
+        deps: [DocumentRef, core.PLATFORM_ID]
+    };
+    /**
+     * Create an array of providers.
+     */
+    var DOCUMENT_PROVIDERS = [browserDocumentProvider, documentProvider];
+
+    var ResizeService = /** @class */ (function () {
+        function ResizeService(eventManager, docRef) {
+            this.eventManager = eventManager;
+            this.docRef = docRef;
+            this.resizeSubject = new rxjs.Subject();
+            this.eventManager.addGlobalEventListener('window', 'resize', this.onResize.bind(this));
+            this.eventManager.addGlobalEventListener('window', 'onload', this.onLoaded.bind(this));
+        }
+        Object.defineProperty(ResizeService.prototype, "onResize$", {
+            /**
+             * Makes resizeSubject become Observable
+             * @returns Observable of resizeSubject
+             */
+            get: function () {
+                return this.resizeSubject.asObservable();
+            },
+            enumerable: false,
+            configurable: true
+        });
+        /**
+         * Handler of 'resize' event. Passes data throw resizeSubject
+         * @param event Event Object of 'resize' event
+         */
+        ResizeService.prototype.onResize = function (event) {
+            var _a;
+            if ((_a = this.docRef) === null || _a === void 0 ? void 0 : _a.fullscreenElement) {
+                return;
+            }
+            this.resizeSubject.next(event.target);
+        };
+        /**
+         * Handler of 'onload' event. Defines the width of window
+         * @param event Event Object of 'onload' event
+         */
+        ResizeService.prototype.onLoaded = function (event) {
+            this.windowWidth = event.target;
+        };
+        return ResizeService;
+    }());
+    ResizeService.decorators = [
+        { type: core.Injectable }
+    ];
+    ResizeService.ctorParameters = function () { return [
+        { type: platformBrowser.EventManager },
+        { type: undefined, decorators: [{ type: core.Inject, args: [DOCUMENT,] }] }
+    ]; };
+
+    /**
+     * Defaults value of options
+     */
+    var OwlCarouselOConfig = /** @class */ (function () {
+        function OwlCarouselOConfig() {
+            this.items = 3;
+            this.skip_validateItems = false;
+            this.loop = false;
+            this.center = false;
+            this.rewind = false;
+            this.mouseDrag = true;
+            this.touchDrag = true;
+            this.pullDrag = true;
+            this.freeDrag = false;
+            this.margin = 0;
+            this.stagePadding = 0;
+            this.merge = false;
+            this.mergeFit = true;
+            this.autoWidth = false;
+            this.startPosition = 0;
+            this.rtl = false;
+            this.smartSpeed = 250;
+            this.fluidSpeed = false;
+            this.dragEndSpeed = false;
+            this.responsive = {};
+            this.responsiveRefreshRate = 200;
+            // defaults to Navigation
+            this.nav = false;
+            this.navText = ['prev', 'next'];
+            this.navSpeed = false;
+            this.slideBy = 1; // stage moves on 1 width of slide; if slideBy = 2, stage moves on 2 widths of slide
+            this.dots = true;
+            this.dotsEach = false;
+            this.dotsData = false;
+            this.dotsSpeed = false;
+            // defaults to Autoplay
+            this.autoplay = false;
+            this.autoplayTimeout = 5000;
+            this.autoplayHoverPause = false;
+            this.autoplaySpeed = false;
+            this.autoplayMouseleaveTimeout = 1;
+            // defaults to LazyLoading
+            this.lazyLoad = false;
+            this.lazyLoadEager = 0;
+            // defaults to Animate
+            this.slideTransition = '';
+            this.animateOut = false;
+            this.animateIn = false;
+            // defaults to AutoHeight
+            this.autoHeight = false;
+            // defaults to Hash
+            this.URLhashListener = false;
+        }
+        return OwlCarouselOConfig;
+    }());
+    /**
+     * we can't read types from OwlOptions in javascript because of props have undefined value and types of those props are used for validating inputs
+     * class below is copy of OwlOptions but its all props have string value showing certain type;
+     * this is class is being used just in method _validateOptions() of CarouselService;
+     */
+    var OwlOptionsMockedTypes = /** @class */ (function () {
+        function OwlOptionsMockedTypes() {
+            this.items = 'number';
+            this.skip_validateItems = 'boolean';
+            this.loop = 'boolean';
+            this.center = 'boolean';
+            this.rewind = 'boolean';
+            this.mouseDrag = 'boolean';
+            this.touchDrag = 'boolean';
+            this.pullDrag = 'boolean';
+            this.freeDrag = 'boolean';
+            this.margin = 'number';
+            this.stagePadding = 'number';
+            this.merge = 'boolean';
+            this.mergeFit = 'boolean';
+            this.autoWidth = 'boolean';
+            this.startPosition = 'number|string';
+            this.rtl = 'boolean';
+            this.smartSpeed = 'number';
+            this.fluidSpeed = 'boolean';
+            this.dragEndSpeed = 'number|boolean';
+            this.responsive = {};
+            this.responsiveRefreshRate = 'number';
+            // defaults to Navigation
+            this.nav = 'boolean';
+            this.navText = 'string[]';
+            this.navSpeed = 'number|boolean';
+            this.slideBy = 'number|string'; // stage moves on 1 width of slide; if slideBy = 2, stage moves on 2 widths of slide
+            this.dots = 'boolean';
+            this.dotsEach = 'number|boolean';
+            this.dotsData = 'boolean';
+            this.dotsSpeed = 'number|boolean';
+            // defaults to Autoplay
+            this.autoplay = 'boolean';
+            this.autoplayTimeout = 'number';
+            this.autoplayHoverPause = 'boolean';
+            this.autoplaySpeed = 'number|boolean';
+            this.autoplayMouseleaveTimeout = 'number';
+            // defaults to LazyLoading
+            this.lazyLoad = 'boolean';
+            this.lazyLoadEager = 'number';
+            // defaults to Animate
+            this.slideTransition = 'string';
+            this.animateOut = 'string|boolean';
+            this.animateIn = 'string|boolean';
+            // defaults to AutoHeight
+            this.autoHeight = 'boolean';
+            // defaults to Hash
+            this.URLhashListener = "boolean";
+        }
+        return OwlOptionsMockedTypes;
+    }());
 
     var OwlLogger = /** @class */ (function () {
         function OwlLogger(errorHandler) {
@@ -2358,85 +2443,6 @@
      * Create an array of providers.
      */
     var WINDOW_PROVIDERS = [browserWindowProvider, windowProvider];
-
-    /**
-     * Create a new injection token for injecting the Document into a component.
-     */
-    var DOCUMENT = new core.InjectionToken('DocumentToken');
-    /**
-     * Define abstract class for obtaining reference to the global Document object.
-     */
-    var DocumentRef = /** @class */ (function () {
-        function DocumentRef() {
-        }
-        Object.defineProperty(DocumentRef.prototype, "nativeDocument", {
-            get: function () {
-                throw new Error('Not implemented.');
-            },
-            enumerable: false,
-            configurable: true
-        });
-        return DocumentRef;
-    }());
-    /**
-     * Define class that implements the abstract class and returns the native Document object.
-     */
-    var BrowserDocumentRef = /** @class */ (function (_super) {
-        __extends(BrowserDocumentRef, _super);
-        function BrowserDocumentRef() {
-            return _super.call(this) || this;
-        }
-        Object.defineProperty(BrowserDocumentRef.prototype, "nativeDocument", {
-            /**
-             * @returns Document object
-             */
-            get: function () {
-                return document;
-            },
-            enumerable: false,
-            configurable: true
-        });
-        return BrowserDocumentRef;
-    }(DocumentRef));
-    BrowserDocumentRef.decorators = [
-        { type: core.Injectable }
-    ];
-    BrowserDocumentRef.ctorParameters = function () { return []; };
-    /**
-     * Create an factory function that returns the native Document object.
-     * @param browserDocumentRef Native Document object
-     * @param platformId id of platform
-     * @returns type of platform of empty object
-     */
-    function documentFactory(browserDocumentRef, platformId) {
-        if (common.isPlatformBrowser(platformId)) {
-            return browserDocumentRef.nativeDocument;
-        }
-        var doc = {
-            hidden: false,
-            visibilityState: 'visible'
-        };
-        return doc;
-    }
-    /**
-     * Create a injectable provider for the DocumentRef token that uses the BrowserDocumentRef class.
-     */
-    var browserDocumentProvider = {
-        provide: DocumentRef,
-        useClass: BrowserDocumentRef
-    };
-    /**
-     * Create an injectable provider that uses the DocumentFactory function for returning the native Document object.
-     */
-    var documentProvider = {
-        provide: DOCUMENT,
-        useFactory: documentFactory,
-        deps: [DocumentRef, core.PLATFORM_ID]
-    };
-    /**
-     * Create an array of providers.
-     */
-    var DOCUMENT_PROVIDERS = [browserDocumentProvider, documentProvider];
 
     var AutoplayService = /** @class */ (function () {
         function AutoplayService(carouselService, winRef, docRef) {

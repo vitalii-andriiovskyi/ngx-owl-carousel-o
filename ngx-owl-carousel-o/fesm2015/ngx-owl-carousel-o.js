@@ -1,4 +1,4 @@
-import { Injectable, isDevMode, ErrorHandler, InjectionToken, PLATFORM_ID, Inject, Optional, Directive, TemplateRef, Input, EventEmitter, Component, ChangeDetectionStrategy, ElementRef, ChangeDetectorRef, ContentChildren, Output, HostListener, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
+import { InjectionToken, Injectable, PLATFORM_ID, Inject, isDevMode, ErrorHandler, Optional, Directive, TemplateRef, Input, EventEmitter, Component, ChangeDetectionStrategy, ElementRef, ChangeDetectorRef, ContentChildren, Output, HostListener, NgZone, Renderer2, Attribute, HostBinding, NgModule } from '@angular/core';
 import { isPlatformBrowser, LocationStrategy, CommonModule } from '@angular/common';
 import { Subject, merge, of, from } from 'rxjs';
 import { EventManager } from '@angular/platform-browser';
@@ -6,9 +6,76 @@ import { tap, filter, switchMap, first, take, skip, map, toArray, delay } from '
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
+/**
+ * Create a new injection token for injecting the Document into a component.
+ */
+const DOCUMENT = new InjectionToken('DocumentToken');
+/**
+ * Define abstract class for obtaining reference to the global Document object.
+ */
+class DocumentRef {
+    get nativeDocument() {
+        throw new Error('Not implemented.');
+    }
+}
+/**
+ * Define class that implements the abstract class and returns the native Document object.
+ */
+class BrowserDocumentRef extends DocumentRef {
+    constructor() {
+        super();
+    }
+    /**
+     * @returns Document object
+     */
+    get nativeDocument() {
+        return document;
+    }
+}
+BrowserDocumentRef.decorators = [
+    { type: Injectable }
+];
+BrowserDocumentRef.ctorParameters = () => [];
+/**
+ * Create an factory function that returns the native Document object.
+ * @param browserDocumentRef Native Document object
+ * @param platformId id of platform
+ * @returns type of platform of empty object
+ */
+function documentFactory(browserDocumentRef, platformId) {
+    if (isPlatformBrowser(platformId)) {
+        return browserDocumentRef.nativeDocument;
+    }
+    const doc = {
+        hidden: false,
+        visibilityState: 'visible'
+    };
+    return doc;
+}
+/**
+ * Create a injectable provider for the DocumentRef token that uses the BrowserDocumentRef class.
+ */
+const browserDocumentProvider = {
+    provide: DocumentRef,
+    useClass: BrowserDocumentRef
+};
+/**
+ * Create an injectable provider that uses the DocumentFactory function for returning the native Document object.
+ */
+const documentProvider = {
+    provide: DOCUMENT,
+    useFactory: documentFactory,
+    deps: [DocumentRef, PLATFORM_ID]
+};
+/**
+ * Create an array of providers.
+ */
+const DOCUMENT_PROVIDERS = [browserDocumentProvider, documentProvider];
+
 class ResizeService {
-    constructor(eventManager) {
+    constructor(eventManager, docRef) {
         this.eventManager = eventManager;
+        this.docRef = docRef;
         this.resizeSubject = new Subject();
         this.eventManager.addGlobalEventListener('window', 'resize', this.onResize.bind(this));
         this.eventManager.addGlobalEventListener('window', 'onload', this.onLoaded.bind(this));
@@ -25,6 +92,10 @@ class ResizeService {
      * @param event Event Object of 'resize' event
      */
     onResize(event) {
+        var _a;
+        if ((_a = this.docRef) === null || _a === void 0 ? void 0 : _a.fullscreenElement) {
+            return;
+        }
         this.resizeSubject.next(event.target);
     }
     /**
@@ -39,7 +110,8 @@ ResizeService.decorators = [
     { type: Injectable }
 ];
 ResizeService.ctorParameters = () => [
-    { type: EventManager }
+    { type: EventManager },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] }] }
 ];
 
 /**
@@ -2006,72 +2078,6 @@ const windowProvider = {
  * Create an array of providers.
  */
 const WINDOW_PROVIDERS = [browserWindowProvider, windowProvider];
-
-/**
- * Create a new injection token for injecting the Document into a component.
- */
-const DOCUMENT = new InjectionToken('DocumentToken');
-/**
- * Define abstract class for obtaining reference to the global Document object.
- */
-class DocumentRef {
-    get nativeDocument() {
-        throw new Error('Not implemented.');
-    }
-}
-/**
- * Define class that implements the abstract class and returns the native Document object.
- */
-class BrowserDocumentRef extends DocumentRef {
-    constructor() {
-        super();
-    }
-    /**
-     * @returns Document object
-     */
-    get nativeDocument() {
-        return document;
-    }
-}
-BrowserDocumentRef.decorators = [
-    { type: Injectable }
-];
-BrowserDocumentRef.ctorParameters = () => [];
-/**
- * Create an factory function that returns the native Document object.
- * @param browserDocumentRef Native Document object
- * @param platformId id of platform
- * @returns type of platform of empty object
- */
-function documentFactory(browserDocumentRef, platformId) {
-    if (isPlatformBrowser(platformId)) {
-        return browserDocumentRef.nativeDocument;
-    }
-    const doc = {
-        hidden: false,
-        visibilityState: 'visible'
-    };
-    return doc;
-}
-/**
- * Create a injectable provider for the DocumentRef token that uses the BrowserDocumentRef class.
- */
-const browserDocumentProvider = {
-    provide: DocumentRef,
-    useClass: BrowserDocumentRef
-};
-/**
- * Create an injectable provider that uses the DocumentFactory function for returning the native Document object.
- */
-const documentProvider = {
-    provide: DOCUMENT,
-    useFactory: documentFactory,
-    deps: [DocumentRef, PLATFORM_ID]
-};
-/**
- * Create an array of providers.
- */
-const DOCUMENT_PROVIDERS = [browserDocumentProvider, documentProvider];
 
 class AutoplayService {
     constructor(carouselService, winRef, docRef) {
