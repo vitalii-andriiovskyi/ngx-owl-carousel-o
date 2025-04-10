@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v2.1.2](#v212)
 * [v2.1.1](#v211)
 * [v2.1.0](#v210)
 * [v2.0.3](#v203)
@@ -33,6 +34,10 @@
 * [v0.1.1](#v011)
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
+
+## v2.1.2
+
+The version `v2.1.2` fixes the issue [`#217`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/217)
 
 ## v2.1.1
 
