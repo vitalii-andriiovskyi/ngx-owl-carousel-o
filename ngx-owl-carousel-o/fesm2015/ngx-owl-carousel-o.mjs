@@ -2586,8 +2586,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImpor
             }] } });
 
 class ResizeService {
-    constructor(eventManager) {
+    constructor(eventManager, docRef) {
         this.eventManager = eventManager;
+        this.docRef = docRef;
         this.resizeSubject = new Subject();
         this.eventManager.addGlobalEventListener('window', 'resize', this.onResize.bind(this));
         this.eventManager.addGlobalEventListener('window', 'onload', this.onLoaded.bind(this));
@@ -2604,6 +2605,10 @@ class ResizeService {
      * @param event Event Object of 'resize' event
      */
     onResize(event) {
+        var _a;
+        if ((_a = this.docRef) === null || _a === void 0 ? void 0 : _a.fullscreenElement) {
+            return;
+        }
         this.resizeSubject.next(event.target);
     }
     /**
@@ -2614,11 +2619,16 @@ class ResizeService {
         this.windowWidth = event.target;
     }
 }
-ResizeService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: ResizeService, deps: [{ token: i1$1.EventManager }], target: i0.ɵɵFactoryTarget.Injectable });
+ResizeService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: ResizeService, deps: [{ token: i1$1.EventManager }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
 ResizeService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: ResizeService });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.4", ngImport: i0, type: ResizeService, decorators: [{
             type: Injectable
-        }], ctorParameters: function () { return [{ type: i1$1.EventManager }]; } });
+        }], ctorParameters: function () {
+        return [{ type: i1$1.EventManager }, { type: undefined, decorators: [{
+                        type: Inject,
+                        args: [DOCUMENT]
+                    }] }];
+    } });
 
 class StageComponent {
     constructor(zone, el, renderer, carouselService, animateService) {
