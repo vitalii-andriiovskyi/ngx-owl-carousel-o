@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v14.0.2](#v1402)
 * [v14.0.1](#v1401)
 * [v14.0.0](#v1400)
 * [v7.0.4](#v704)
@@ -52,6 +53,10 @@
 * [v0.1.1](#v011)
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
+
+## v14.0.2
+
+The version `v14.0.1` includes fixes for [`#217`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/217).
 
 ## v14.0.1
 
