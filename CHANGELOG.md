@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v18.0.1](#v1801)
 * [v18.0.0](#v1800)
 * [v17.0.0](#v1700)
 * [v16.0.0](#v1600)
@@ -56,6 +57,10 @@
 * [v0.1.1](#v011)
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
+
+## v18.0.1
+
+The version `v18.0.1` fixes the bug [`#217`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/217).
 
 ## v18.0.0
 
