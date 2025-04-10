@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v5.1.2](#v512)
 * [v5.1.1](#v511)
 * [v5.1.0](#v510)
 * [v5.0.0](#v500)
@@ -42,6 +43,10 @@
 * [v0.1.1](#v011)
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
+
+## v5.1.2
+
+The version `v5.1.2` includes fixes for [`#217`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/217).
 
 ## v5.1.1
 
