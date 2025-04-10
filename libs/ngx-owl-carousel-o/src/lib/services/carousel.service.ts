@@ -353,7 +353,7 @@ export class CarouselService {
 				this._clones = clones;
 
 				append = append.map(slide => {
-					slide.id = `${this.clonedIdPrefix}${slide.id}`;
+					slide.id = `${this.clonedIdPrefix}${slide.id}-append`;
 					slide.isActive = false;
 					slide.isCloned = true;
 					return slide;
