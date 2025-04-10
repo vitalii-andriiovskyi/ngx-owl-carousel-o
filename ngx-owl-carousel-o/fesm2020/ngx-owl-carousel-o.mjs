@@ -2582,8 +2582,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImpor
             }] } });
 
 class ResizeService {
-    constructor(eventManager) {
+    constructor(eventManager, docRef) {
         this.eventManager = eventManager;
+        this.docRef = docRef;
         this.resizeSubject = new Subject();
         this.eventManager.addGlobalEventListener('window', 'resize', this.onResize.bind(this));
         this.eventManager.addGlobalEventListener('window', 'onload', this.onLoaded.bind(this));
@@ -2600,6 +2601,9 @@ class ResizeService {
      * @param event Event Object of 'resize' event
      */
     onResize(event) {
+        if (this.docRef?.fullscreenElement) {
+            return;
+        }
         this.resizeSubject.next(event.target);
     }
     /**
@@ -2610,11 +2614,14 @@ class ResizeService {
         this.windowWidth = event.target;
     }
 }
-ResizeService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: ResizeService, deps: [{ token: i1$1.EventManager }], target: i0.ɵɵFactoryTarget.Injectable });
+ResizeService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: ResizeService, deps: [{ token: i1$1.EventManager }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable });
 ResizeService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: ResizeService });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.0.2", ngImport: i0, type: ResizeService, decorators: [{
             type: Injectable
-        }], ctorParameters: function () { return [{ type: i1$1.EventManager }]; } });
+        }], ctorParameters: function () { return [{ type: i1$1.EventManager }, { type: undefined, decorators: [{
+                    type: Inject,
+                    args: [DOCUMENT]
+                }] }]; } });
 
 class StageComponent {
     constructor(zone, el, renderer, carouselService, animateService) {

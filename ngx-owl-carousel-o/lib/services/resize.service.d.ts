@@ -16,7 +16,8 @@ export declare class ResizeService {
      * Subject of 'resize' event
      */
     private resizeSubject;
-    constructor(eventManager: EventManager);
+    private docRef;
+    constructor(eventManager: EventManager, docRef: any);
     /**
      * Handler of 'resize' event. Passes data throw resizeSubject
      * @param event Event Object of 'resize' event
