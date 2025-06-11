@@ -11,7 +11,7 @@
           @for(category of categories.items; track category.id; let i = $index) {
           <ng-template carouselSlide [id]="category.id">
             <div class="category">
-              <span (click)="slideTo(owlMac.dotsData.dots[i].id)"
+              <span (click)="slideTo(owlMac.dotsData().dots[i].id)"
                 class="category__title">{{category.displayedName}}</span>
             </div>
           </ng-template>
