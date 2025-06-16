@@ -268,7 +268,7 @@ export class CarouselService {
 		{
 			filter: ['width', 'items', 'settings'],
 			run: cache => {
-				cache.current = this._items && this._items[this.relative(this._current)]?.id;
+				cache.current = this._items && this._items[this.relative(this._current as number)]?.id();
 			}
 		},
 		// {
@@ -300,10 +300,10 @@ export class CarouselService {
 		}, {
 			filter: ['width', 'items', 'settings'],
 			run: (cache) => {
-				const width: any = +(this.width() / this.settings.items).toFixed(3) - this.settings.margin,
+				const width: any = +(this.width() / (this.settings.items || 1)).toFixed(3) - (this.settings.margin || 0),
 					grid = !this.settings.autoWidth,
-					widths = [];
-				let merge = null,
+					widths: number[] = [];
+				let merge = 0,
 					iterator = this._items.length;
 
 				cache.items = {
@@ -312,11 +312,11 @@ export class CarouselService {
 				};
 
 				while (iterator-- > 0) {
-					merge = this._mergers[iterator];
-					merge = this.settings.mergeFit && Math.min(merge, this.settings.items) || merge;
+					merge = this._mergers[iterator] || 1;
+					merge = this.settings.mergeFit && Math.min(merge, this.settings.items || 1) || merge;
 					cache.items.merge = merge > 1 || cache.items.merge;
 
-					widths[iterator] = !grid ? this._items[iterator].width ? this._items[iterator].width : width : width * merge;
+					widths[iterator] = !grid ? this._items[iterator].width() ? this._items[iterator].width() : width : width * merge;
 				}
 
 				this._widths = widths;
@@ -373,7 +373,7 @@ export class CarouselService {
 			run: () => {
 				const rtl = this.settings.rtl ? 1 : -1,
 					size = this._clones.length + this._items.length,
-					coordinates = [];
+					coordinates: number[] = [];
 				let iterator = -1,
 					previous = 0,
 					current = 0;
@@ -389,7 +389,7 @@ export class CarouselService {
 		}, {
 			filter: ['width', 'items', 'settings'],
 			run: () => {
-				const padding = this.settings.stagePadding,
+				const padding = this.settings.stagePadding || 0,
 					coordinates = this._coordinates,
 					css = {
 						'width': Math.ceil(Math.abs(coordinates[coordinates.length - 1])) + padding * 2,
@@ -434,14 +434,14 @@ export class CarouselService {
 		}, {
 			filter: ['position'],
 			run: () => {
-				this.animate(this.coordinates(this._current));
+				this.animate(this.coordinates(this._current as number));
 			}
 		}, {
 			filter: ['width', 'position', 'items', 'settings'],
 			run: () => {
 				const rtl = this.settings.rtl ? 1 : -1,
-					padding = this.settings.stagePadding * 2,
-					matches = [];
+					padding = (this.settings.stagePadding || 0) * 2,
+					matches: number[] = [];
 				let begin, end, inner, outer, i, n;
 
 				begin = this.coordinates(this.current());
@@ -455,7 +455,7 @@ export class CarouselService {
 
 				if (rtl === -1 && this.settings.center) {
 					const result = this._coordinates.filter(element => {
-						return this.settings.items % 2 === 1 ? element >= begin : element > begin;
+						return (this.settings.items || 1) % 2 === 1 ? element >= begin : element > begin;
 					});
 					begin = result.length ? result[result.length - 1] : begin;
 				}
@@ -483,7 +483,9 @@ export class CarouselService {
 						slide.isCentered = false;
 						return slide;
 					});
-					this.slidesData[this.current()].isCentered = true;
+					if (this.slidesData[this.current() as number]) {
+						this.slidesData[this.current() as number].isCentered = true;
+					}
 				}
 			}
 		}
@@ -622,7 +624,9 @@ export class CarouselService {
 				if (mockedTypes[key] === 'number') {
 					if (this._isNumeric(checkedOptions[key])) {
 						checkedOptions[key] = +checkedOptions[key];
-						checkedOptions[key] = key === 'items' ? this._validateItems(checkedOptions[key], checkedOptions.skip_validateItems) : checkedOptions[key];
+						checkedOptions[key] = key === 'items'
+							? this._validateItems(checkedOptions[key], checkedOptions.skip_validateItems as boolean)
+							: checkedOptions[key];
 					} else {
 						checkedOptions[key] = setRightOption(mockedTypes[key], key);
 					}
@@ -710,7 +714,7 @@ export class CarouselService {
 	 */
 	setOptionsForViewport() {
 		const viewport = this._width,
-			overwrites = this._options.responsive;
+			overwrites = this._options.responsive || {};
 		let match = -1;
 
 		if (!Object.keys(overwrites).length) {
@@ -730,18 +734,24 @@ export class CarouselService {
 			}
 		}
 
-		this.settings = { ...this._options, ...overwrites[match], items: (overwrites[match] && overwrites[match].items) ? this._validateItems(overwrites[match].items, this._options.skip_validateItems) : this._options.items };
+		this.settings = {
+			...this._options,
+			...overwrites[match],
+			items: (overwrites[match] && overwrites[match].items)
+				? this._validateItems(overwrites[match].items as number, this._options.skip_validateItems as boolean)
+				: this._options.items
+		};
 		// if (typeof this.settings.stagePadding === 'function') {
 		// 	this.settings.stagePadding = this.settings.stagePadding();
 		// }
 		delete this.settings.responsive;
 		this.owlDOMData.isResponsive = true;
-		this.owlDOMData.isMouseDragable = this.settings.mouseDrag;
-		this.owlDOMData.isTouchDragable = this.settings.touchDrag;
+		this.owlDOMData.isMouseDragable = this.settings.mouseDrag as boolean;
+		this.owlDOMData.isTouchDragable = this.settings.touchDrag as boolean;
 
-		const mergers = [];
+		const mergers: number[] = [];
 		this._items.forEach(item => {
-			const mergeN: number = this.settings.merge ? item.dataMerge : 1;
+			const mergeN: number = this.settings.merge ? item.dataMerge() : 1;
 			mergers.push(mergeN);
 		});
 		this._mergers = mergers;
@@ -759,26 +769,26 @@ export class CarouselService {
 		this.enter('initializing');
 		// this.trigger('initialize');
 
-		this.owlDOMData.rtl = this.settings.rtl;
+		this.owlDOMData.rtl = this.settings.rtl as boolean;
 
 		if (this._mergers.length) {
 			this._mergers = [];
 		}
 
 		slides.forEach(item => {
-			const mergeN: number = this.settings.merge ? item.dataMerge : 1;
+			const mergeN: number = this.settings.merge ? item.dataMerge() : 1;
 			this._mergers.push(mergeN);
 		});
 		this._clones = [];
 
-		this.reset(this._isNumeric(this.settings.startPosition) ? +this.settings.startPosition : 0);
+		this.reset(this._isNumeric(this.settings.startPosition) ? +(this.settings?.startPosition || 0) : 0);
 
 		this.invalidate('items');
 		this.refresh();
 
 		this.owlDOMData.isLoaded = true;
-		this.owlDOMData.isMouseDragable = this.settings.mouseDrag;
-		this.owlDOMData.isTouchDragable = this.settings.touchDrag;
+		this.owlDOMData.isMouseDragable = this.settings.mouseDrag as boolean;
+		this.owlDOMData.isTouchDragable = this.settings.touchDrag as boolean;
 
 		this.sendChanges();
 
@@ -848,7 +858,7 @@ export class CarouselService {
 			case Width.Outer:
 				return this._width;
 			default:
-				return this._width - this.settings.stagePadding * 2 + this.settings.margin;
+				return this._width - (this.settings.stagePadding || 0) * 2 + (this.settings.margin || 0);
 		}
 	}
 
@@ -907,7 +917,7 @@ export class CarouselService {
 	 * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
 	 */
 	prepareDragging(event: any): Coords {
-		let stage: Coords = null,
+		let stage: Coords,
 			transformArr: string[];
 
 		// could be 5 commented lines below; However there's stage transform in stageData and in updates after each move of stage
@@ -951,9 +961,9 @@ export class CarouselService {
 	 * @returns coords or false
 	 */
 	defineNewCoordsDrag(event: any, dragData: any): boolean | Coords {
-		let minimum = null,
-			maximum = null,
-			pull = null;
+		let minimum: number | number[],
+			maximum: number,
+			pull: number = 0;
 		const delta = this.difference(dragData.pointer, this.pointer(event)),
 			stage = this.difference(dragData.stage.start, delta);
 
@@ -962,12 +972,12 @@ export class CarouselService {
 		}
 
 		if (this.settings.loop) {
-			minimum = this.coordinates(this.minimum());
+			minimum = this.coordinates(this.minimum()) as number;
 			maximum = +this.coordinates(this.maximum() + 1) - minimum;
 			stage.x = (((stage.x - minimum) % maximum + maximum) % maximum) + minimum;
 		} else {
-			minimum = this.settings.rtl ? this.coordinates(this.maximum()) : this.coordinates(this.minimum());
-			maximum = this.settings.rtl ? this.coordinates(this.minimum()) : this.coordinates(this.maximum());
+			minimum = this.settings.rtl ? this.coordinates(this.maximum()) as number : this.coordinates(this.minimum()) as number;
+			maximum = this.settings.rtl ? this.coordinates(this.minimum()) as number : this.coordinates(this.maximum()) as number;
 			pull = this.settings.pullDrag ? -1 * delta.x / 5 : 0;
 			stage.x = Math.max(Math.min(stage.x, minimum + pull), maximum + pull);
 		}
@@ -987,14 +997,14 @@ export class CarouselService {
 		const directions = ['right', 'left'],
 			delta = this.difference(dragObj.pointer, this.pointer(event)),
 			stage = dragObj.stage.current,
-			direction = directions[+(this.settings.rtl ? delta.x < +this.settings.rtl : delta.x > +this.settings.rtl)];
+			direction = directions[+(this.settings.rtl ? delta.x < +this.settings.rtl : delta.x > +(this.settings.rtl || 0))];
 		let currentSlideI: number, current: number, newCurrent: number;
 
 		if (delta.x !== 0 && this.is('dragging') || !this.is('valid')) {
-			this.speed(+this.settings.dragEndSpeed || this.settings.smartSpeed);
+			this.speed(+(this.settings.dragEndSpeed || 0) || this.settings.smartSpeed);
 			currentSlideI = this.closest(stage.x, delta.x !== 0 ? direction : dragObj.direction);
-			current = this.current();
-			newCurrent = this.current(currentSlideI === -1 ? undefined : currentSlideI);
+			current = this.current() as number;
+			newCurrent = this.current(currentSlideI === -1 ? undefined : currentSlideI) as number;
 
 			if (current !== newCurrent) {
 				this.invalidate('position');
@@ -1113,9 +1123,9 @@ export class CarouselService {
 	 * @param position The new absolute position or nothing to leave it unchanged.
 	 * @returns The absolute position of the current item.
 	 */
-	current(position?: number): number {
+	current(position?: number): number | undefined {
 		if (position === undefined) {
-			return this._current;
+			return this._current as number;
 		}
 
 		if (this._items.length === 0) {
@@ -1131,7 +1141,7 @@ export class CarouselService {
 			// 	position = this.normalize(event.data);
 			// }
 
-			this._current = position;
+			this._current = position as number;
 
 			this.invalidate('position');
 			this._trigger('changed', { property: { name: 'position', value: this._current } });
@@ -1158,7 +1168,7 @@ export class CarouselService {
 	 * @param position the absolute position of the new item.
 	 */
 	reset(position: number) {
-		position = this.normalize(position);
+		position = this.normalize(position) as number;
 
 		if (position === undefined) {
 			return;
@@ -1180,17 +1190,18 @@ export class CarouselService {
 	 * @param relative Whether the given position is relative or not.
 	 * @returns The normalized position.
 	 */
-	normalize(position: number, relative?: boolean): number {
+	normalize(position: number, relative?: boolean): number | undefined {
 		const n = this._items.length,
 			m = relative ? 0 : this._clones.length;
+		let result: number | undefined = position;
 
 		if (!this._isNumeric(position) || n < 1) {
-			position = undefined;
+			result = undefined;
 		} else if (position < 0 || position >= n + m) {
-			position = ((position - m / 2) % n + n) % n + m / 2;
+			result = ((position - m / 2) % n + n) % n + m / 2;
 		}
 
-		return position;
+		return result;
 	}
 
 	/**
@@ -1200,7 +1211,7 @@ export class CarouselService {
 	 */
 	relative(position: number): number {
 		position -= this._clones.length / 2;
-		return this.normalize(position, true);
+		return this.normalize(position, true) as number;
 	}
 
 	/**
@@ -1223,7 +1234,7 @@ export class CarouselService {
 			elementWidth = this._width;
 			while (iterator-- > 0) {
 				// it could be use this._items instead of this.slidesData;
-				reciprocalItemsWidth += +this.slidesData[iterator].width + this.settings.margin;
+				reciprocalItemsWidth += +(this.slidesData[iterator].width || 0) + (this.settings.margin || 0);
 				if (reciprocalItemsWidth > elementWidth) {
 					break;
 				}
@@ -1232,7 +1243,7 @@ export class CarouselService {
 		} else if (settings.center) {
 			maximum = this._items.length - 1;
 		} else {
-			maximum = this._items.length - settings.items;
+			maximum = this._items.length - (settings.items || 1);
 		}
 
 		if (relative) {
@@ -1261,7 +1272,7 @@ export class CarouselService {
 			return this._items.slice();
 		}
 
-		position = this.normalize(position, true);
+		position = this.normalize(position, true) as number;
 		return [this._items[position]];
 	}
 
@@ -1275,7 +1286,7 @@ export class CarouselService {
 			return this._mergers.slice();
 		}
 
-		position = this.normalize(position, true);
+		position = this.normalize(position, true) as number;
 		return this._mergers[position];
 	}
 
@@ -1287,13 +1298,13 @@ export class CarouselService {
 	clones(position?: number): number[] {
 		const odd = this._clones.length / 2,
 			even = odd + this._items.length,
-			map = index => index % 2 === 0 ? even + index / 2 : odd - (index + 1) / 2;
+			map = (index: number) => index % 2 === 0 ? even + index / 2 : odd - (index + 1) / 2;
 
 		if (position === undefined) {
 			return this._clones.map((v, i) => map(i));
 		}
 
-		return this._clones.map((v, i) => v === position ? map(i) : null).filter(item => item);
+		return this._clones.map((v, i) => v === position ? map(i) : null).filter(item => item !== null);
 	}
 
 	/**
@@ -1306,7 +1317,7 @@ export class CarouselService {
 			this._speed = speed;
 		}
 
-		return this._speed;
+		return this._speed as number;
 	}
 
 	/**
@@ -1317,7 +1328,7 @@ export class CarouselService {
 	 */
 	coordinates(position?: number): number | number[] {
 		let multiplier = 1,
-			newPosition = position - 1,
+			newPosition = (position || 0) - 1,
 			coordinate,
 			result: number[];
 
@@ -1357,7 +1368,7 @@ export class CarouselService {
 			return 0;
 		}
 
-		return Math.min(Math.max(Math.abs(to - from), 1), 6) * Math.abs((+factor || this.settings.smartSpeed));
+		return Math.min(Math.max(Math.abs(to - from), 1), 6) * Math.abs(+(factor || 0) || this.settings.smartSpeed || 0);
 	}
 
 	/**
@@ -1366,8 +1377,8 @@ export class CarouselService {
 	 * @param speed The time in milliseconds for the transition.
 	 */
 	to(position: number, speed: number | boolean) {
-		let current = this.current(),
-			revert = null,
+		let current = this.current() as number,
+			revert: number,
 			distance = position - this.relative(current),
 			maximum = this.maximum(),
 			delayForLoop = 0;
@@ -1412,7 +1423,7 @@ export class CarouselService {
 	 */
 	next(speed: number | boolean) {
 		speed = speed || false;
-		this.to(this.relative(this.current()) + 1, speed);
+		this.to(this.relative(this.current() as number) + 1, speed);
 	}
 
 	/**
@@ -1421,7 +1432,7 @@ export class CarouselService {
 	 */
 	prev(speed: number | boolean) {
 		speed = speed || false;
-		this.to(this.relative(this.current()) - 1, speed);
+		this.to(this.relative(this.current() as number) - 1, speed);
 	}
 
 	/**
@@ -1486,14 +1497,14 @@ export class CarouselService {
 
 		this.slidesData = this._items.map(slide => {
 			return {
-				id: `${slide.id}`,
+				id: `${slide.id()}`,
 				isActive: false,
 				tplRef: slide.tplRef,
-				dataMerge: slide.dataMerge,
+				dataMerge: slide.dataMerge(),
 				width: 0,
 				isCloned: false,
-				load: loadMap ? loadMap.get(slide.id) : false,
-				hashFragment: slide.dataHash
+				load: loadMap ? loadMap.get(slide.id()) : false,
+				hashFragment: slide.dataHash()
 			};
 		});
 	}
@@ -1506,18 +1517,18 @@ export class CarouselService {
 	setCurSlideClasses(slide: SlideModel): { [key: string]: boolean } {
 		// CSS classes: added/removed per current state of component properties
 		const currentClasses: { [key: string]: boolean } = {
-			'active': slide.isActive,
-			'center': slide.isCentered,
-			'cloned': slide.isCloned,
-			'animated': slide.isAnimated,
-			'owl-animated-in': slide.isDefAnimatedIn,
-			'owl-animated-out': slide.isDefAnimatedOut
+			'active': slide.isActive || false,
+			'center': slide.isCentered || false,
+			'cloned': slide.isCloned || false,
+			'animated': slide.isAnimated || false,
+			'owl-animated-in': slide.isDefAnimatedIn || false,
+			'owl-animated-out': slide.isDefAnimatedOut || false
 		};
 		if (this.settings.animateIn) {
-			currentClasses[this.settings.animateIn as string] = slide.isCustomAnimatedIn;
+			currentClasses[this.settings.animateIn as string] = slide.isCustomAnimatedIn || false;
 		}
 		if (this.settings.animateOut) {
-			currentClasses[this.settings.animateOut as string] = slide.isCustomAnimatedOut;
+			currentClasses[this.settings.animateOut as string] = slide.isCustomAnimatedOut || false;
 		}
 		return currentClasses;
 	}
@@ -1543,6 +1554,7 @@ export class CarouselService {
 			default:
 				break;
 		}
+		return false;
 	}
 
 	/**
@@ -1666,7 +1678,7 @@ export class CarouselService {
 	 * @returns Object Coords which contains `x` and `y` coordinates of current pointer position.
 	 */
 	pointer(event: any): Coords {
-		const result = { x: null, y: null };
+		const result = { x: 0, y: 0 };
 
 		event = event.originalEvent || event || window.event;
 

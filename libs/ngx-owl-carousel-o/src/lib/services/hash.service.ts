@@ -46,7 +46,7 @@ export class HashService implements OnDestroy {
    */
   spyDataStreams() {
     const initializedCarousel$: Observable<string> = this.carouselService.getInitializedState().pipe(
-      tap(() => this.listenToRoute() )
+      tap(() => this.listenToRoute())
     );
 
     const changedSettings$: Observable<any> = this.carouselService.getChangedState().pipe(
@@ -56,16 +56,16 @@ export class HashService implements OnDestroy {
           const newCurFragment = this.carouselService.slidesData[newCurSlide].hashFragment;
 
           if (!newCurFragment || newCurFragment === this.currentHashFragment) {
-						return;
+            return;
           }
-          this.router.navigate(['./'], {fragment: newCurFragment, relativeTo: this.route});
+          this.router.navigate(['./'], { fragment: newCurFragment, relativeTo: this.route });
         }
       })
     );
 
     const hashFragment$: Observable<string | any> = merge(initializedCarousel$, changedSettings$);
     this.hashSubscription = hashFragment$.subscribe(
-      () => {}
+      () => { }
     );
   }
 
@@ -80,7 +80,7 @@ export class HashService implements OnDestroy {
       return;
     }
 
-		this.carouselService.to(this.carouselService.relative(position), false);
+    this.carouselService.to(this.carouselService.relative(position), false);
   }
 
   /**
@@ -89,8 +89,8 @@ export class HashService implements OnDestroy {
   listenToRoute() {
     const count = this.carouselService.settings.startPosition === 'URLHash' ? 0 : 2;
     this.route.fragment.pipe(
-        skip(count)
-      )
+      skip(count)
+    )
       .subscribe(
         fragment => {
           this.currentHashFragment = fragment;

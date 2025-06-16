@@ -1,4 +1,4 @@
-import { Component, NgZone, ElementRef, HostListener, Renderer2, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, NgZone, ElementRef, HostListener, Renderer2, OnInit, OnDestroy, input } from '@angular/core';
 import { CarouselService, Coords } from '../../services/carousel.service';
 import { Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -16,15 +16,15 @@ import {
   selector: 'owl-stage',
   template: `
     <div>
-      <div class="owl-stage" [ngStyle]="{'width': stageData.width + 'px',
-                                        'transform': stageData.transform,
-                                        'transition': stageData.transition,
-                                        'padding-left': stageData.paddingL ? stageData.paddingL + 'px' : '',
-                                        'padding-right': stageData.paddingR ? stageData.paddingR + 'px' : '' }"
+      <div class="owl-stage" [ngStyle]="{'width': stageData().width + 'px',
+                                        'transform': stageData().transform,
+                                        'transition': stageData().transition,
+                                        'padding-left': stageData().paddingL ? stageData().paddingL + 'px' : '',
+                                        'padding-right': stageData().paddingR ? stageData().paddingR + 'px' : '' }"
           (transitionend)="onTransitionEnd()"
       >
 
-        @for(slide of slidesData; track slide.id; let i = $index) {
+        @for(slide of slidesData(); track slide.id; let i = $index) {
           <div class="owl-item" [ngClass]="slide.classes"
                                 [ngStyle]="{'width': slide.width + 'px',
                                             'margin-left': slide.marginL ? slide.marginL + 'px' : '',
@@ -65,20 +65,20 @@ export class StageComponent implements OnInit, OnDestroy {
   /**
    * Object with settings which make carousel draggable by touch or mouse
    */
-  @Input() owlDraggable: {
+  owlDraggable = input<{
     isMouseDragable: boolean,
     isTouchDragable: boolean
-  };
+  }>();
 
   /**
    * Data of owl-stage
    */
-  @Input() stageData: StageData;
+  stageData = input<StageData>();
 
   /**
    *  Data of every slide
    */
-  @Input() slidesData: SlideModel[];
+  slidesData = input<SlideModel[]>();
 
   /**
    * Function wich will be returned after attaching listener to 'mousemove' event
@@ -152,7 +152,7 @@ export class StageComponent implements OnInit, OnDestroy {
     private animateService: AnimateService) { }
 
   @HostListener('mousedown', ['$event']) onMouseDown(event) {
-    if (this.owlDraggable.isMouseDragable) {
+    if (this.owlDraggable()?.isMouseDragable) {
       this._onDragStart(event);
     }
   }
@@ -161,7 +161,7 @@ export class StageComponent implements OnInit, OnDestroy {
     if (event.targetTouches.length >= 2) {
       return false;
     }
-    if (this.owlDraggable.isTouchDragable) {
+    if (this.owlDraggable()?.isTouchDragable) {
       this._onDragStart(event);
     }
   }
@@ -171,13 +171,13 @@ export class StageComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('dragstart') onDragStart() {
-    if (this.owlDraggable.isMouseDragable) {
+    if (this.owlDraggable()?.isMouseDragable) {
       return false;
     }
   }
 
   @HostListener('selectstart') onSelectStart() {
-    if (this.owlDraggable.isMouseDragable) {
+    if (this.owlDraggable()?.isMouseDragable) {
       return false;
     }
   }
@@ -224,14 +224,11 @@ export class StageComponent implements OnInit, OnDestroy {
    * @param event - The event arguments.
    */
   private _onDragStart(event): any {
-    let stage: Coords = null;
-
     if (event.which === 3) {
       return;
     }
 
-    stage = this._prepareDragging(event);
-
+    const stage: Coords = this._prepareDragging(event);
     this._drag.time = new Date().getTime();
     this._drag.target = event.target;
     this._drag.stage.start = stage;
@@ -336,7 +333,7 @@ export class StageComponent implements OnInit, OnDestroy {
 
     if (this._drag.moving) {
       this.renderer.setStyle(this.el.nativeElement.children[0], 'transform', ``);
-      this.renderer.setStyle(this.el.nativeElement.children[0], 'transition', this.carouselService.speed(+this.carouselService.settings.dragEndSpeed || this.carouselService.settings.smartSpeed) / 1000 + 's');
+      this.renderer.setStyle(this.el.nativeElement.children[0], 'transition', this.carouselService.speed(+(this.carouselService?.settings?.dragEndSpeed || 0) || this.carouselService.settings.smartSpeed) / 1000 + 's');
 
       this._finishDragging(event);
       this.listenerMouseMove();

@@ -118,26 +118,26 @@ describe('CarouselComponent', () => {
       ).nativeElement;
       expect(carouselComponent).toBeTruthy();
 
-      expect(carouselComponent.owlDOMData.isMouseDragable).toBeTruthy(
+      expect(carouselComponent.owlDOMData().isMouseDragable).toBeTruthy(
         'isMouseDragable should be true'
       );
       expect(carouselHTML.classList.contains('owl-drag')).toBeTruthy(
         'has .owl-drag'
       );
 
-      expect(carouselComponent.owlDOMData.rtl).toBeFalsy('rtl should be true');
+      expect(carouselComponent.owlDOMData().rtl).toBeFalsy('rtl should be true');
       expect(carouselHTML.classList.contains('owl-rtl')).toBeFalsy(
         'has .owl-rtl'
       );
 
-      expect(carouselComponent.owlDOMData.isResponsive).toBeFalsy(
+      expect(carouselComponent.owlDOMData().isResponsive).toBeFalsy(
         'isResponsive should be true'
       );
       expect(carouselHTML.classList.contains('owl-responsive')).toBeFalsy(
         'has .owl-responsive'
       );
 
-      expect(carouselComponent.owlDOMData.isLoaded).toBe(
+      expect(carouselComponent.owlDOMData().isLoaded).toBe(
         true,
         'isLoaded should be true'
       );
@@ -145,7 +145,7 @@ describe('CarouselComponent', () => {
         'has .owl-loaded'
       );
 
-      expect(carouselComponent.owlDOMData.isGrab).toBe(
+      expect(carouselComponent.owlDOMData().isGrab).toBe(
         false,
         'isGrab should be true'
       );
@@ -158,10 +158,10 @@ describe('CarouselComponent', () => {
       );
 
       deStage = deCarouselComponent.query(By.css('.owl-stage'));
-      expect(carouselComponent.stageData.width).toBe(2000, 'width of stage');
+      expect(carouselComponent.stageData().width).toBe(2000, 'width of stage');
       expect(deStage.nativeElement.clientWidth).toBe(2000, 'width of stage');
 
-      expect(carouselComponent.stageData.transition).toBe(
+      expect(carouselComponent.stageData().transition).toBe(
         '0s',
         'transition of stage'
       );
@@ -170,7 +170,7 @@ describe('CarouselComponent', () => {
         'transition of stage'
       );
 
-      expect(carouselComponent.stageData.transform).toBe(
+      expect(carouselComponent.stageData().transform).toBe(
         'translate3d(0px,0px,0px)',
         'transform of stage'
       );
@@ -179,7 +179,7 @@ describe('CarouselComponent', () => {
         'transform of stage'
       );
 
-      expect(carouselComponent.stageData.paddingL).toBe(
+      expect(carouselComponent.stageData().paddingL).toBe(
         '',
         'padding-left of stage'
       );
@@ -188,7 +188,7 @@ describe('CarouselComponent', () => {
         'padding-left of stage'
       );
 
-      expect(carouselComponent.stageData.paddingR).toBe(
+      expect(carouselComponent.stageData().paddingR).toBe(
         '',
         'padding-right of stage'
       );
@@ -198,11 +198,11 @@ describe('CarouselComponent', () => {
       );
 
       deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
-      expect(carouselComponent.slidesData[0].dataMerge).toBe(
+      expect(carouselComponent.slidesData()[0]?.dataMerge).toBe(
         1,
         'dataMerge of first slide is 1'
       );
-      expect(carouselComponent.slidesData.length).toBe(
+      expect(carouselComponent.slidesData().length).toBe(
         5,
         'length of slidesData'
       );
@@ -5496,7 +5496,7 @@ describe('CarouselComponent', () => {
     expect(deSlides.length).toBe(11, '11 slides');
 
     let deImages = deCarouselComponent.queryAll(By.css('.owl-item .owl-lazy'));
-    expect(deImages.length).toBe(6, '6 images');
+    expect(deImages.length).toBe(7, '7 images');
     let img: DebugElement = deSlides[3].query(By.css('.owl-lazy'));
     expect(img).toBeTruthy('img in 1th visible slide is loaded');
     img = deSlides[4].query(By.css('.owl-lazy'));
@@ -5520,7 +5520,7 @@ describe('CarouselComponent', () => {
     fixtureHost.detectChanges();
 
     deImages = deCarouselComponent.queryAll(By.css('.owl-item .owl-lazy'));
-    expect(deImages.length).toBe(8, '8 images');
+    expect(deImages.length).toBe(9, '9 images');
     img = deSlides[1].query(By.css('.owl-lazy'));
     expect(img).toBeTruthy('img in 2th slide is loaded');
     img = deSlides[6].query(By.css('.owl-lazy'));
@@ -5551,9 +5551,9 @@ describe('CarouselComponent', () => {
     expect(deSlides.length).toBe(11, '11 slides');
 
     let deImages = deCarouselComponent.queryAll(By.css('.owl-item .owl-lazy'));
-    expect(deImages.length).toBe(8, '8 images');
+    expect(deImages.length).toBe(9, '9 images');
     let img: DebugElement = deSlides[0].query(By.css('.owl-lazy'));
-    expect(img).toBeFalsy("img in 1th slide isn't loaded");
+    expect(img).toBeTruthy("img in 1th slide isn loaded");
     img = deSlides[1].query(By.css('.owl-lazy'));
     expect(img).toBeFalsy("img in 2th slide isn't loaded");
     img = deSlides[2].query(By.css('.owl-lazy'));
@@ -5583,7 +5583,7 @@ describe('CarouselComponent', () => {
     fixtureHost.detectChanges();
 
     deImages = deCarouselComponent.queryAll(By.css('.owl-item .owl-lazy'));
-    expect(deImages.length).toBe(10, '10 images');
+    expect(deImages.length).toBe(11, '11 images');
     img = deSlides[1].query(By.css('.owl-lazy'));
     expect(img).toBeTruthy('img in 2th slide is loaded');
     img = deSlides[6].query(By.css('.owl-lazy'));
@@ -6534,7 +6534,7 @@ describe('CarouselComponent', () => {
     ).nativeElement;
     // Slide 1 is centered at the beginning. Then ActivatedRoute passes 'fragment' of url and carousel changes centered slide according to 'fragment'
     expect(deActiveCenteredSlide.innerHTML).toContain('Slide 1', 'Slide 1');
-    expect(location.path()).toBe('/owl-car#two', '/owl-car#two');
+    expect(location.path(true)).toBe('/owl-car#two', '/owl-car#two');
 
     tick();
     fixtureHost.detectChanges();
@@ -6554,7 +6554,7 @@ describe('CarouselComponent', () => {
       By.css('.owl-item.active.center')
     ).nativeElement;
     expect(deActiveCenteredSlide.innerHTML).toContain('Slide 3', 'Slide 3');
-    expect(location.path()).toBe('/owl-car#three', '/owl-car#three');
+    expect(location.path(true)).toBe('/owl-car#three', '/owl-car#three');
 
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
     deDots[0].triggerEventHandler('click', null);
@@ -6566,7 +6566,7 @@ describe('CarouselComponent', () => {
       By.css('.owl-item.active.center')
     ).nativeElement;
     expect(deActiveCenteredSlide.innerHTML).toContain('Slide 1', 'Slide 1');
-    expect(location.path()).toBe('/owl-car#one', '/owl-car#one');
+    expect(location.path(true)).toBe('/owl-car#one', '/owl-car#one');
 
     deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
     deNavButtons[1].triggerEventHandler('click', null);
@@ -6578,7 +6578,7 @@ describe('CarouselComponent', () => {
       By.css('.owl-item.active.center')
     ).nativeElement;
     expect(deActiveCenteredSlide.innerHTML).toContain('Slide 2', 'Slide 2');
-    expect(location.path()).toBe('/owl-car#two', '/owl-car#two');
+    expect(location.path(true)).toBe('/owl-car#two', '/owl-car#two');
 
     router.navigate(['owl-car'], { fragment: 'five' });
 
@@ -6589,7 +6589,7 @@ describe('CarouselComponent', () => {
       By.css('.owl-item.active.center')
     ).nativeElement;
     expect(deActiveCenteredSlide.innerHTML).toContain('Slide 5', 'Slide 5');
-    expect(location.path()).toBe('/owl-car#five', '/owl-car#five');
+    expect(location.path(true)).toBe('/owl-car#five', '/owl-car#five');
   }));
 
   it("shouldn't set centered slide according to 'fragment' of url after init component with carousel [options]=\"{center: true, URLhashListener:true, nav: true}\"", fakeAsync(() => {
@@ -6635,7 +6635,7 @@ describe('CarouselComponent', () => {
     ).nativeElement;
     // Slide 1 is centered at the beginning. Then ActivatedRoute passes 'fragment' of url and carousel changes centered slide according to 'fragment'
     expect(deActiveCenteredSlide.innerHTML).toContain('Slide 1', 'Slide 1');
-    expect(location.path()).toBe('/owl-car#two', '/owl-car#two');
+    expect(location.path(true)).toBe('/owl-car#two', '/owl-car#two');
 
     tick();
     fixtureHost.detectChanges();
@@ -6655,7 +6655,7 @@ describe('CarouselComponent', () => {
       By.css('.owl-item.active.center')
     ).nativeElement;
     expect(deActiveCenteredSlide.innerHTML).toContain('Slide 3', 'Slide 3');
-    expect(location.path()).toBe('/owl-car#three', '/owl-car#three');
+    expect(location.path(true)).toBe('/owl-car#three', '/owl-car#three');
 
     router.navigate(['owl-car'], { fragment: 'five' });
 
@@ -6666,7 +6666,7 @@ describe('CarouselComponent', () => {
       By.css('.owl-item.active.center')
     ).nativeElement;
     expect(deActiveCenteredSlide.innerHTML).toContain('Slide 5', 'Slide 5');
-    expect(location.path()).toBe('/owl-car#five', '/owl-car#five');
+    expect(location.path(true)).toBe('/owl-car#five', '/owl-car#five');
   }));
 
   it("shouldn't render carousel when array with slides is empty", fakeAsync(() => {

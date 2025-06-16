@@ -4,7 +4,8 @@
 
 ngx-owl-carousel-o      | Angular
 ------------------------|--------
-19.x.x                  | 19.x.x
+20.x.x                  | 20.x.x
+19.x.x (latest `19.0.2`)| 19.x.x
 18.x.x (latest `18.0.1`)| 18.x.x
 17.x.x (latest `17.0.1`)| 17.x.x
 16.x.x (latest `16.0.1`)| 16.x.x
@@ -125,11 +126,11 @@ ngx-owl-carousel-o      | Angular
       <div>Some tags before</div>
       <owl-carousel-o [options]="customOptions">
 
-        <ng-container *ngFor="let slide of slidesStore">
+        @for (slide of slidesStore; track slide.id) {
           <ng-template carouselSlide [id]="slide.id">
             <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
           </ng-template>
-        </ng-container>
+        }
 
       </owl-carousel-o>
       <div>Some tags after</div>
@@ -163,11 +164,11 @@ The example of setting ids:
   <div>Some tags before</div>
   <owl-carousel-o [options]="customOptions">
 
-    <ng-container *ngFor="let slide of slidesStore">
+    @for(let slide of slidesStore; track slide.id) {
       <ng-template carouselSlide [id]="slide.id">
         <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
       </ng-template>
-    </ng-container>
+    }
 
   </owl-carousel-o>
   <div>Some tags after</div>
@@ -405,7 +406,7 @@ Example of usage this directive:
 ```html
   <owl-carousel-o [options]="customOptions" (dragging)="isDragging = $event.dragging">
   
-    <ng-container *ngFor="let item of carouselData">
+    @for (item of carouselData; track item.id) {
       <ng-template carouselSlide>
         <div class="slider">
           <a [owlRouterLink]="['/present']" [stopLink]="isDragging">{{item.text}}</a>
@@ -415,7 +416,7 @@ Example of usage this directive:
 
         </div>
       </ng-template>
-    </ng-container>
+    }
 
   </owl-carousel-o>
 ```
@@ -500,11 +501,11 @@ import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
       template: `
       <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)">
 
-        <ng-container *ngFor="let slide of slidesStore">
+        @for (slide of slidesStore; track slide.id) {
           <ng-template carouselSlide [id]="slide.id">
             <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
           </ng-template>
-        </ng-container>
+        }
 
       </owl-carousel-o>
     `
@@ -604,7 +605,7 @@ Example of using this event:
 ```html
   <owl-carousel-o [options]="customOptions" (dragging)="isDragging = $event.dragging">
 
-    <ng-container *ngFor="let item of carouselData">
+    @for (item of carouselData; track item.id) {
       <ng-template carouselSlide>
 
         <div class="slider">
@@ -615,7 +616,7 @@ Example of using this event:
 
         </div>
       </ng-template>
-    </ng-container>
+    }
 
   </owl-carousel-o>
 ```
@@ -661,11 +662,11 @@ import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
       template: `
       <owl-carousel-o [options]="customOptions" (initialized)="getData($event)">
 
-        <ng-container *ngFor="let slide of slidesStore">
+        @for (slide of slidesStore; track slide.id) {
           <ng-template carouselSlide [id]="slide.id">
             <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
           </ng-template>
-        </ng-container>
+        }
 
       </owl-carousel-o>
     `
@@ -751,11 +752,11 @@ import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
       template: `
       <owl-carousel-o [options]="customOptions" (change)="getData($event)">
 
-        <ng-container *ngFor="let slide of slidesStore">
+        @for (slide of slidesStore; track slide.id) {
           <ng-template carouselSlide [id]="slide.id">
             <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
           </ng-template>
-        </ng-container>
+        }
 
       </owl-carousel-o>
     `
@@ -841,11 +842,11 @@ import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
       template: `
       <owl-carousel-o [options]="customOptions" (changed)="getData($event)">
 
-        <ng-container *ngFor="let slide of slidesStore">
+        @for (slide of slidesStore; track slide.id) {
           <ng-template carouselSlide [id]="slide.id">
             <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
           </ng-template>
-        </ng-container>
+        }
 
       </owl-carousel-o>
     `
@@ -989,14 +990,14 @@ It's possible to move the carousel left/right and to needed slide from different
 ```html
 <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" #owlCar>
 
-  <ng-container *ngFor="let item of carouselData">
+  @for (item of carouselData; track item.id) {
     <ng-template carouselSlide [id]="item.id" [width]="item.width">
       <div class="slider">
         <p>{{item.text}}</p>
 
       </div><!-- /.carousel-item team-member -->
     </ng-template>
-  </ng-container>
+  }
   
 </owl-carousel-o>
 
@@ -1274,14 +1275,14 @@ An internal slide data could be very helpful to add cool Angular animations. Use
 
     ```html
       <owl-carousel-o [options]="customOptions" #owlCat>
-        <ng-container *ngFor="let image of imagesData">
+        @for (image of imagesData; track image.id) {
           <ng-template carouselSlide let-owlItem> 
             <!--                                 \/          -->
             <div class="slide" [@activeSlide]="owlItem.isCentered ? 'active' : 'inActive'">
               <img [src]="image.src" [alt]="image.alt" [title]="image.title">
             </div>
           </ng-template>
-        </ng-container>
+        }
       </owl-carousel-o>
     ```
 
@@ -1296,24 +1297,26 @@ Example of usage in a template with `mat-menu`:
 ```html
   <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" #owlCar>
           
-    <ng-container *ngFor="let item of carouselData; let i=index">
+    @for (item of carouselData; track item.id; let i = $index) {
       <ng-template carouselSlide [width]="item.width">
         <div class="slider">
           <p>{{item.text}}</p>
-          <div *ngIf="i == 2">
-            <button mat-raised-button color="accent" [matMenuTriggerFor]="menu" (menuOpened)="owlCar.stopAutoplay()">Menu</button>
-            <mat-menu #menu="matMenu" (closed)="owlCar.startAutoplay()">
-              <button mat-menu-item>Item 1</button>
-              <button mat-menu-item>Item 2</button>
-              <button mat-menu-item>Item 3</button>
-              <button mat-menu-item>Item 4</button>
-              <button mat-menu-item>Item 5</button>
-            </mat-menu>
-          </div>
+          @if (i == 2) {
+            <div>
+              <button mat-raised-button color="accent" [matMenuTriggerFor]="menu" (menuOpened)="owlCar.stopAutoplay()">Menu</button>
+              <mat-menu #menu="matMenu" (closed)="owlCar.startAutoplay()">
+                <button mat-menu-item>Item 1</button>
+                <button mat-menu-item>Item 2</button>
+                <button mat-menu-item>Item 3</button>
+                <button mat-menu-item>Item 4</button>
+                <button mat-menu-item>Item 5</button>
+              </mat-menu>
+            </div>
+          }
             
         </div><!-- /.carousel-item team-member -->
       </ng-template>
-    </ng-container>
+    }
     
   </owl-carousel-o>
 ```

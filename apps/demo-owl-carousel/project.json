@@ -4,6 +4,7 @@
   "sourceRoot": "apps/demo-owl-carousel/src",
   "projectType": "application",
   "prefix": "owl-carousel-libdemo",
+  "tags": [],
   "generators": {},
   "targets": {
     "build": {
@@ -64,7 +65,8 @@
           "buildTarget": "demo-owl-carousel:build:development"
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "development",
+      "continuous": true
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
@@ -91,6 +93,5 @@
       },
       "outputs": ["{workspaceRoot}/coverage/apps/demo-owl-carousel/"]
     }
-  },
-  "tags": []
+  }
 }

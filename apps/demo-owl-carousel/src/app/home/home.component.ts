@@ -17,10 +17,10 @@ interface CarouselData {
 
 
 @Component({
-    selector: 'app-home',
-    imports: [CommonModule, CarouselModule, RouterOutlet, RouterLink],
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.scss'
+  selector: 'app-home',
+  imports: [CommonModule, CarouselModule, RouterOutlet, RouterLink],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
   carouselData: WritableSignal<CarouselData[]> = signal([
@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
   ]);
 
   customOptions: OwlOptions = {
-    // autoWidth: true,
+    autoWidth: true,
     loop: false,
     // items: '10',
     // margin: 10,
@@ -138,5 +138,24 @@ export class HomeComponent implements OnInit {
 
   carouselChanged(evt: SlidesOutputData) {
     console.log(evt);
+  }
+
+  changeCustomOptions() {
+    this.customOptions = {
+      ...this.customOptions,
+      loop: !this.customOptions.loop,
+      responsive: {
+        0: {
+          items: 1
+        },
+        600: {
+          items: 2
+        },
+        900: {
+          items: 2
+        }
+      },
+    };
+    console.log('customOptions', this.customOptions);
   }
 }

@@ -33,6 +33,8 @@
   <p><a class="btn btn-success" (click)="owlCar.to('slide-3')">move to 3th slide</a></p>
   <p><a class="btn btn-success" (click)="removeLastSlide()">Remove the last slide</a></p>
   <br>
+  <p><button class="btn btn-warning" type="button" (click)="changeCustomOptions()">Change options</button></p>
+  <br>
   <div class="d-flex justify-content-center mt-3 mb-5">
     <a [routerLink]="['/home', 'subhome']" fragment="two" class="btn btn-success">Go to SubHomeComponent with carousel
       with url navigation</a>

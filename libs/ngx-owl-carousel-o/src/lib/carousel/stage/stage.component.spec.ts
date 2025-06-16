@@ -3013,16 +3013,16 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
             <div><a [owlRouterLink]="['/any-component']" [stopLink]="isDragging">Slide 1</a></div>
           </ng-template>
           <ng-template carouselSlide id="owl-slide-2">
-            <div><a [owlRouterLink]="['/any-component']" [stopLink]="isDragging">Slide 2</a></div>
+            <div><a [owlRouterLink]="['/any-component-2']" [stopLink]="isDragging">Slide 2</a></div>
           </ng-template>
           <ng-template carouselSlide id="owl-slide-3">
-            <div><a [owlRouterLink]="['/any-component']" [stopLink]="isDragging">Slide 3</a></div>
+            <div><a [owlRouterLink]="['/any-component-3']" [stopLink]="isDragging">Slide 3</a></div>
           </ng-template>
           <ng-template carouselSlide id="owl-slide-4">
-            <div><a [owlRouterLink]="['/any-component']" [stopLink]="isDragging">Slide 4</a></div>
+            <div><a [owlRouterLink]="['/any-component-4']" [stopLink]="isDragging">Slide 4</a></div>
           </ng-template>
           <ng-template carouselSlide id="owl-slide-5">
-            <div><a [owlRouterLink]="['/any-component']" [stopLink]="isDragging">Slide 5</a></div>
+            <div><a [owlRouterLink]="['/any-component-5']" [stopLink]="isDragging">Slide 5</a></div>
           </ng-template>
         </owl-carousel-o>
       </div>
