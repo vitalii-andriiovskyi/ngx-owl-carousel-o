@@ -2,46 +2,79 @@
   "migrations": [
     {
       "cli": "nx",
-      "version": "20.3.0-beta.2",
-      "description": "If workspace includes Module Federation projects, ensure the new @nx/module-federation package is installed.",
-      "factory": "./src/migrations/update-20-3-0/ensure-nx-module-federation-package",
+      "version": "21.2.0-beta.3",
+      "requires": { "@angular/core": ">=20.0.0" },
+      "description": "Update the @angular/cli package version to ~20.0.0.",
+      "factory": "./src/migrations/update-21-2-0/update-angular-cli",
       "package": "@nx/angular",
-      "name": "ensure-nx-module-federation-package"
+      "name": "update-angular-cli-version-20-0-0"
     },
     {
-      "cli": "nx",
-      "version": "20.4.0-beta.1",
-      "requires": { "@angular/core": ">=19.1.0" },
-      "description": "Update the @angular/cli package version to ~19.1.0.",
-      "factory": "./src/migrations/update-20-4-0/update-angular-cli",
+      "version": "21.2.0-beta.3",
+      "requires": { "@angular/core": ">=20.0.0" },
+      "description": "Migrate imports of `provideServerRendering` from `@angular/platform-server` to `@angular/ssr`.",
+      "factory": "./src/migrations/update-21-2-0/migrate-provide-server-rendering-import",
       "package": "@nx/angular",
-      "name": "update-angular-cli-version-19-1-0"
+      "name": "migrate-provide-server-rendering-import"
     },
     {
-      "cli": "nx",
-      "version": "20.5.0-beta.5",
-      "requires": { "@angular/core": ">=19.2.0" },
-      "description": "Update the @angular/cli package version to ~19.2.0.",
-      "factory": "./src/migrations/update-20-5-0/update-angular-cli",
+      "version": "21.2.0-beta.3",
+      "requires": { "@angular/core": ">=20.0.0" },
+      "description": "Replace `provideServerRouting` and `provideServerRoutesConfig` with `provideServerRendering` using `withRoutes`.",
+      "factory": "./src/migrations/update-21-2-0/replace-provide-server-routing",
       "package": "@nx/angular",
-      "name": "update-angular-cli-version-19-2-0"
+      "name": "replace-provide-server-routing"
     },
     {
-      "cli": "nx",
-      "version": "21.0.0-beta.3",
-      "description": "Set the `continuous` option to `true` for continuous tasks.",
-      "factory": "./src/migrations/update-21-0-0/set-continuous-option",
+      "version": "21.2.0-beta.3",
+      "requires": { "@angular/core": ">=20.0.0" },
+      "description": "Update the generator defaults to maintain the previous style guide behavior.",
+      "factory": "./src/migrations/update-21-2-0/set-generator-defaults-for-previous-style-guide",
       "package": "@nx/angular",
-      "name": "set-continuous-option"
+      "name": "set-generator-defaults-for-previous-style-guide"
     },
     {
-      "cli": "nx",
-      "version": "21.0.0-beta.5",
-      "requires": { "@ngrx/store": ">=16.0.0" },
-      "description": "Change the data persistence operator imports to '@ngrx/router-store/data-persistence'.",
-      "factory": "./src/migrations/update-21-0-0/change-data-persistence-operators-imports-to-ngrx-router-store-data-persistence",
+      "version": "21.2.0-beta.3",
+      "requires": { "@angular/core": ">=20.0.0" },
+      "description": "Update 'moduleResolution' to 'bundler' in TypeScript configurations. You can read more about this here: https://www.typescriptlang.org/tsconfig/#moduleResolution.",
+      "factory": "./src/migrations/update-21-2-0/update-module-resolution",
       "package": "@nx/angular",
-      "name": "change-data-persistence-operators-imports-to-ngrx-router-store-data-persistence"
+      "name": "update-module-resolution"
+    },
+    {
+      "version": "20.0.0",
+      "description": "Replaces usages of the deprecated InjectFlags enum",
+      "factory": "./bundles/inject-flags.cjs#migrate",
+      "package": "@angular/core",
+      "name": "inject-flags"
+    },
+    {
+      "version": "20.0.0",
+      "description": "Replaces usages of the deprecated TestBed.get method with TestBed.inject",
+      "factory": "./bundles/test-bed-get.cjs#migrate",
+      "package": "@angular/core",
+      "name": "test-bed-get"
+    },
+    {
+      "version": "20.0.0",
+      "description": "Moves imports of `DOCUMENT` from `@angular/common` to `@angular/core`",
+      "factory": "./bundles/document-core.cjs#migrate",
+      "package": "@angular/core",
+      "name": "document-core"
+    },
+    {
+      "version": "20.0.0-0",
+      "description": "Updates Angular Material to v20",
+      "factory": "./ng-update/index_bundled#updateToV20",
+      "package": "@angular/material",
+      "name": "migration-v20"
+    },
+    {
+      "version": "20.0.0-0",
+      "description": "Updates the Angular CDK to v20",
+      "factory": "./ng-update/index#updateToV20",
+      "package": "@angular/cdk",
+      "name": "migration-v20"
     }
   ]
 }
