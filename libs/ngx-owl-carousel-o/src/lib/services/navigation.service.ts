@@ -328,6 +328,7 @@ export class NavigationService implements OnDestroy {
     const position = this.carouselService.slidesData.findIndex(slide => slide.id === id && slide.isCloned === false);
 
     if (position === -1 || position === this.carouselService.current()) {
+      console.log(`Slide with id=${id} not found`)
       return;
     }
 
