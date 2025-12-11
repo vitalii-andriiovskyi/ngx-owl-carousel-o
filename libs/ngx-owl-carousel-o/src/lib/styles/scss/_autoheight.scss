@@ -3,5 +3,14 @@
  */
 
 .owl-height {
-	transition: height 500ms ease-in-out;
+	transition: height .5s ease-in-out, max-height 0.35s ease-in-out;
+
+	&.height-0 {
+		max-height: 0;
+		transition-duration: 700ms;
+	}
+
+	&.height-full {
+		max-height: 2000px;
+	}
 }

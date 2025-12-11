@@ -59,8 +59,7 @@ ngx-owl-carousel-o      | Angular
         ```
 
 3. Import `RouterModule` and `Routes` into `AppModule` unless they are imported.
-4. Import `BrowserAnimationsModule` into `AppModule`  unless it is imported.
-5. Import `CarouselModule` into a module which declares a component intended to have a carousel.
+4. Import `CarouselModule` into a module which declares a component intended to have a carousel.
 
     ```typescript
     import { CarouselModule } from 'ngx-owl-carousel-o';
@@ -71,7 +70,7 @@ ngx-owl-carousel-o      | Angular
     export class SomeModule { }
     ```
 
-6. Add to needed component `customOptions` or named in different way object with options for the carousel:
+5. Add to needed component `customOptions` or named in different way object with options for the carousel:
 
     ```typescript
     import { OwlOptions } from 'ngx-owl-carousel-o';
@@ -108,7 +107,7 @@ ngx-owl-carousel-o      | Angular
     }
     ```
 
-7. Add html-markup to the template of the component (in this case, add it to `carousel-holder.component.html`):
+6. Add html-markup to the template of the component (in this case, add it to `carousel-holder.component.html`):
 
     ```html
       <div>Some tags before</div>
@@ -1218,7 +1217,7 @@ To get this data, define the variable `let-owlItem` or `let-slideData` in your t
   </ng-template>
 ```
 
-An internal slide data could be very helpful to add cool Angular animations. Use properties `isActive` and `isCentered` to switch the state of animation. An example is below.
+An internal slide data could be very helpful to add cool animations using native CSS animations. Use properties `isActive` and `isCentered` to toggle a CSS class. An example is below.
 
 1. Define animation in `your.component.ts`:
 
@@ -1226,26 +1225,25 @@ An internal slide data could be very helpful to add cool Angular animations. Use
     @Component({
       selector: 'app-test',
       templateUrl: './test.component.html',
+      // CSS animation is defined in the .slide, .slide.active classes. Check rules `transform`, `opacity`, and `transition`
+      styles: [`
+        .slide {
+          position: relative;
+          transform-origin: center;
+          transform: scale(0.7);
+          opacity: 0.8;
+          transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+        .slide.active {
+            transform: scale(1.4);
+            opacity: 1;
+        }
 
-      // .....
-      animations: [
-        trigger('activeSlide', [
-          state('active', style({
-            transform: 'scale(1.4)',
-            opacity: 1,
-          })),
-          state('inActive', style({
-            transform: 'scale(0.7)',
-            opacity: 0.8,
-          })),
-          transition('active => inActive', [
-            animate('0.5s')
-          ]),
-          transition('inActive => active', [
-            animate('0.5s')
-          ])
-        ])
-      ]
+        .wrapper {
+          max-width: 800px;
+          margin: 0 auto;
+        }
+      `]
     })
     export class TestComponent implements OnInit {
     // .....
@@ -1269,7 +1267,7 @@ An internal slide data could be very helpful to add cool Angular animations. Use
     }
     ```
 
-2. Use internal slide data in the template. This example uses `let-owlItem` and prop `isCentered` (`owlItem.isCentered`) to toggle animation state:
+2. Use internal slide data in the template. This example uses `let-owlItem` and prop `isCentered` (`owlItem.isCentered`) to toggle CSS class `.active`:
 
     `test.component.html`
 
@@ -1278,7 +1276,7 @@ An internal slide data could be very helpful to add cool Angular animations. Use
         @for (image of imagesData; track image.id) {
           <ng-template carouselSlide let-owlItem> 
             <!--                                 \/          -->
-            <div class="slide" [@activeSlide]="owlItem.isCentered ? 'active' : 'inActive'">
+            <div class="slide" [class.active]="owlItem.isCentered">
               <img [src]="image.src" [alt]="image.alt" [title]="image.title">
             </div>
           </ng-template>

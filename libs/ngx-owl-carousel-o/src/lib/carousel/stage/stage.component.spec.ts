@@ -1,4 +1,3 @@
-import 'zone.js/testing';
 // import 'zone.js/dist/zone-patch-rxjs-fake-async';
 import {
   ComponentFixture,
@@ -9,7 +8,6 @@ import {
   waitForAsync,
 } from '@angular/core/testing';
 import { Component, DebugElement, OnInit } from '@angular/core';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 
@@ -58,7 +56,6 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
-        NoopAnimationsModule,
         RouterModule.forRoot([
           { path: '', component: TestComponent },
           { path: 'any-component', component: AnyComponent },
