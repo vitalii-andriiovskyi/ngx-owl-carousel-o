@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v20.1.0](#v2010)
 * [v20.0.1](#v2001)
 * [v20.0.0](#v2000)
 * [v19.0.2](#v1902)
@@ -70,6 +71,10 @@
 * [v0.1.1](#v011)
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
+
+## v20.1.0
+
+The version `v20.1.0` fixes bugs [`#293`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/293), [`#294`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/294), and [`#295`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/295).
 
 ## v20.0.1
 
