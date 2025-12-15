@@ -1,74 +1,72 @@
-import { Component, NgZone, ElementRef, HostListener, Renderer2, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, NgZone, ElementRef, HostListener, Renderer2, OnInit, OnDestroy, input, computed } from '@angular/core';
 import { CarouselService, Coords } from '../../services/carousel.service';
 import { Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { StageData } from '../../models/stage-data.model';
 import { SlideModel } from '../../models/slide.model';
 import { AnimateService } from '../../services/animate.service';
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition
-} from '@angular/animations';
 @Component({
   selector: 'owl-stage',
   template: `
     <div>
-      <div class="owl-stage" [ngStyle]="{'width': stageData.width + 'px',
-                                        'transform': stageData.transform,
-                                        'transition': stageData.transition,
-                                        'padding-left': stageData.paddingL ? stageData.paddingL + 'px' : '',
-                                        'padding-right': stageData.paddingR ? stageData.paddingR + 'px' : '' }"
-          (transitionend)="onTransitionEnd()">
-        <ng-container *ngFor="let slide of slidesData; let i = index">
+      <div class="owl-stage" [ngStyle]="{'width': stageData().width + 'px',
+                                        'transform': stageData().transform,
+                                        'transition': stageData().transition,
+                                        'padding-left': stageData().paddingL ? stageData().paddingL + 'px' : '',
+                                        'padding-right': stageData().paddingR ? stageData().paddingR + 'px' : '' }"
+          (transitionend)="onTransitionEnd()"
+      >
+
+        @for(slide of slidesData(); track slide.id; let i = $index) {
           <div class="owl-item" [ngClass]="slide.classes"
                                 [ngStyle]="{'width': slide.width + 'px',
                                             'margin-left': slide.marginL ? slide.marginL + 'px' : '',
                                             'margin-right': slide.marginR ? slide.marginR + 'px' : '',
                                             'left': slide.left}"
                                 (animationend)="clear(slide.id)"
-                                [@autoHeight]="slide.heightState">
-            <ng-template *ngIf="slide.load" [ngTemplateOutlet]="slide.tplRef" [ngTemplateOutletContext]="{ $implicit: preparePublicSlide(slide), index: i }"></ng-template>
+                                [id]="slide.id"
+                                role="group"
+                                [attr.aria-label]="'Slide ' + getActualSlideNumber(slide.id) + ' of ' + slidesCount()"
+                                [attr.aria-hidden]="!slide.isActive ? 'true' : null">
+              @if(slide.load) {
+                <ng-template  [ngTemplateOutlet]="slide.tplRef" [ngTemplateOutletContext]="{ 
+                  $implicit: preparePublicSlide(slide), 
+                  index: i
+                }">
+                </ng-template>
+              }
           </div><!-- /.owl-item -->
-        </ng-container>
+        }  
+      
       </div><!-- /.owl-stage -->
     </div>
   `,
-  animations: [
-    trigger('autoHeight', [
-      state('nulled', style({height: 0})),
-      state('full', style({height: '*'})),
-      transition('full => nulled', [
-        // style({height: '*'}),
-        animate('700ms 350ms')
-      ]),
-      transition('nulled => full', [
-        // style({height: 0}),
-        animate(350)
-      ]),
-    ])
-  ]
+
+  standalone: false
 })
 export class StageComponent implements OnInit, OnDestroy {
   /**
    * Object with settings which make carousel draggable by touch or mouse
    */
-  @Input() owlDraggable: {
+  owlDraggable = input<{
     isMouseDragable: boolean,
     isTouchDragable: boolean
-  };
+  }>();
 
   /**
    * Data of owl-stage
    */
-  @Input() stageData: StageData;
+  stageData = input<StageData>();
 
-	/**
-	 *  Data of every slide
-	 */
-  @Input() slidesData: SlideModel[];
+  /**
+   *  Data of every slide
+   */
+  slidesData = input<SlideModel[]>();
+
+  /**
+   *  The number of actual slides without cloned ones
+   */
+  slidesCount = computed(() => this.slidesData()?.filter(slide => !slide.isCloned)?.length);
 
   /**
    * Function wich will be returned after attaching listener to 'mousemove' event
@@ -136,13 +134,13 @@ export class StageComponent implements OnInit, OnDestroy {
   }
 
   constructor(private zone: NgZone,
-              private el: ElementRef,
-              private renderer: Renderer2,
-              private carouselService: CarouselService,
-              private animateService: AnimateService) { }
+    private el: ElementRef,
+    private renderer: Renderer2,
+    private carouselService: CarouselService,
+    private animateService: AnimateService) { }
 
   @HostListener('mousedown', ['$event']) onMouseDown(event) {
-    if (this.owlDraggable.isMouseDragable) {
+    if (this.owlDraggable()?.isMouseDragable) {
       this._onDragStart(event);
     }
   }
@@ -151,7 +149,7 @@ export class StageComponent implements OnInit, OnDestroy {
     if (event.targetTouches.length >= 2) {
       return false;
     }
-    if (this.owlDraggable.isTouchDragable) {
+    if (this.owlDraggable()?.isTouchDragable) {
       this._onDragStart(event);
     }
   }
@@ -161,13 +159,13 @@ export class StageComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('dragstart') onDragStart() {
-    if (this.owlDraggable.isMouseDragable) {
+    if (this.owlDraggable()?.isMouseDragable) {
       return false;
     }
   }
 
   @HostListener('selectstart') onSelectStart() {
-    if (this.owlDraggable.isMouseDragable) {
+    if (this.owlDraggable()?.isMouseDragable) {
       return false;
     }
   }
@@ -203,29 +201,26 @@ export class StageComponent implements OnInit, OnDestroy {
    */
   bindOnDragEnd = (ev) => {
     // this.zone.run(() => {
-      this._onDragEnd(ev);
+    this._onDragEnd(ev);
     // });
   }
 
   /**
-	 * Handles `touchstart` and `mousedown` events.
-	 * @todo Horizontal swipe threshold as option
-	 * @todo #261
-	 * @param event - The event arguments.
-	 */
-	private _onDragStart(event): any {
-		let stage: Coords = null;
-
-		if (event.which === 3) {
-			return;
+   * Handles `touchstart` and `mousedown` events.
+   * @todo Horizontal swipe threshold as option
+   * @todo #261
+   * @param event - The event arguments.
+   */
+  private _onDragStart(event): any {
+    if (event.which === 3) {
+      return;
     }
 
-    stage = this._prepareDragging(event);
-
-		this._drag.time = new Date().getTime();
-		this._drag.target = event.target;
-		this._drag.stage.start = stage;
-		this._drag.stage.current = stage;
+    const stage: Coords = this._prepareDragging(event);
+    this._drag.time = new Date().getTime();
+    this._drag.target = event.target;
+    this._drag.stage.start = stage;
+    this._drag.stage.current = stage;
     this._drag.pointer = this._pointer(event);
 
     this.listenerMouseUp = this.renderer.listen(document, 'mouseup', this.bindOnDragEnd);
@@ -247,7 +242,7 @@ export class StageComponent implements OnInit, OnDestroy {
     if (this.listenerATag) {
       this.listenerATag();
     }
-    if ( Math.abs(delta.x) < 3 && Math.abs(delta.y) < 3 && this._is('valid')) {
+    if (Math.abs(delta.x) < 3 && Math.abs(delta.y) < 3 && this._is('valid')) {
       return;
     }
 
@@ -284,12 +279,12 @@ export class StageComponent implements OnInit, OnDestroy {
     }
   }
 
-  	/**
-	 * Handles the `touchmove` and `mousemove` events.
-	 * @todo #261
-	 * @param event - The event arguments.
-	 */
-	private _onDragMove(event) {
+  /**
+ * Handles the `touchmove` and `mousemove` events.
+ * @todo #261
+ * @param event - The event arguments.
+ */
+  private _onDragMove(event) {
     let stage: Coords;
     const stageOrExit: boolean | Coords = this.carouselService.defineNewCoordsDrag(event, this._drag);
 
@@ -298,10 +293,10 @@ export class StageComponent implements OnInit, OnDestroy {
     }
     stage = stageOrExit as Coords;
 
-		event.preventDefault();
+    event.preventDefault();
 
     this._drag.stage.current = stage;
-		this._animate(stage.x - this._drag.stage.start.x);
+    this._animate(stage.x - this._drag.stage.start.x);
   };
 
   /**
@@ -314,19 +309,19 @@ export class StageComponent implements OnInit, OnDestroy {
   }
 
   /**
-	 * Handles the `touchend` and `mouseup` events.
-	 * @todo #261
-	 * @todo Threshold for click event
-	 * @param event - The event arguments.
-	 */
-	private _onDragEnd(event) {
+   * Handles the `touchend` and `mouseup` events.
+   * @todo #261
+   * @todo Threshold for click event
+   * @param event - The event arguments.
+   */
+  private _onDragEnd(event) {
     this.carouselService.owlDOMData.isGrab = false;
     this.listenerOneMouseMove();
     this.listenerOneTouchMove();
 
     if (this._drag.moving) {
       this.renderer.setStyle(this.el.nativeElement.children[0], 'transform', ``);
-      this.renderer.setStyle(this.el.nativeElement.children[0], 'transition', this.carouselService.speed(+this.carouselService.settings.dragEndSpeed || this.carouselService.settings.smartSpeed)/1000 +'s');
+      this.renderer.setStyle(this.el.nativeElement.children[0], 'transition', this.carouselService.speed(+(this.carouselService?.settings?.dragEndSpeed || 0) || this.carouselService.settings.smartSpeed) / 1000 + 's');
 
       this._finishDragging(event);
       this.listenerMouseMove();
@@ -352,10 +347,10 @@ export class StageComponent implements OnInit, OnDestroy {
   };
 
   /**
-	 * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
-	 * @param event - The event arguments.
-	 * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
-	 */
+   * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
+   * @param event - The event arguments.
+   * @returns stage - object with 'x' and 'y' coordinates of .owl-stage
+   */
   private _prepareDragging(event: any): Coords {
     return this.carouselService.prepareDragging(event);
   }
@@ -377,29 +372,29 @@ export class StageComponent implements OnInit, OnDestroy {
   }
 
   /**
-	 * Gets unified pointer coordinates from event.
-	 * @param event The `mousedown` or `touchstart` event.
-	 * @returns Contains `x` and `y` coordinates of current pointer position.
-	 */
+   * Gets unified pointer coordinates from event.
+   * @param event The `mousedown` or `touchstart` event.
+   * @returns Contains `x` and `y` coordinates of current pointer position.
+   */
   private _pointer(event: any): any {
     return this.carouselService.pointer(event);
   }
 
   /**
-	 * Gets the difference of two vectors.
-	 * @param first The first vector.
-	 * @param second The second vector.
-	 * @returns The difference.
-	 */
+   * Gets the difference of two vectors.
+   * @param first The first vector.
+   * @param second The second vector.
+   * @returns The difference.
+   */
   private _difference(firstC: Coords, second: Coords): any {
     return this.carouselService.difference(firstC, second);
   }
 
   /**
-	 * Checks whether the carousel is in a specific state or not.
-	 * @param specificState The state to check.
-	 * @returns The flag which indicates if the carousel is busy.
-	 */
+   * Checks whether the carousel is in a specific state or not.
+   * @param specificState The state to check.
+   * @returns The flag which indicates if the carousel is busy.
+   */
   private _is(specificState: string): boolean {
     return this.carouselService.is(specificState);
   }
@@ -413,8 +408,8 @@ export class StageComponent implements OnInit, OnDestroy {
   }
 
   /**
-	 * Sends all data needed for View.
-	 */
+   * Sends all data needed for View.
+   */
   private _sendChanges() {
     this.carouselService.sendChanges();
   }
@@ -427,8 +422,8 @@ export class StageComponent implements OnInit, OnDestroy {
   }
 
   /**
-	 * Enters into a 'dragging' state
-	 */
+   * Enters into a 'dragging' state
+   */
   private _enterDragging() {
     this.carouselService.enterDragging();
   }
@@ -439,5 +434,13 @@ export class StageComponent implements OnInit, OnDestroy {
    */
   clear(id) {
     this.animateService.clear(id);
+  }
+
+  protected getActualSlideNumber(slideId: string): number {
+    const originalId = slideId.replace('cloned-', '').replace('-append', '');
+    const index = this.slidesData()
+      ?.filter((el) => !el.isCloned)
+      ?.findIndex(slide => slide.id === originalId);
+    return (index || 0) + 1;
   }
 }

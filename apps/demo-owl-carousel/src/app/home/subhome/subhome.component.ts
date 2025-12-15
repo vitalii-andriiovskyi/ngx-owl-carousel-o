@@ -17,7 +17,6 @@ interface CarouselData {
 
 @Component({
   selector: 'app-subhome',
-  standalone: true,
   imports: [CommonModule, RouterLink, CarouselModule],
   templateUrl: './subhome.component.html',
   styleUrl: './subhome.component.scss'
@@ -30,7 +29,7 @@ export class SubhomeComponent implements OnInit {
     { text: 'Slide 2', src: 'assets/images/350x650&text=2.png', dataHash: 'two' },
     { text: 'Slide 3', src: 'assets/images/350x250&text=3-fallback.png', dataHash: 'three' },
     { text: 'Slide 4', src: 'assets/images/350x250&text=4.png', dataHash: 'four' },
-    { text: 'Slide 5', src: 'assets/images/350x250&text=5.png', dataHash: 'five' },
+    { text: 'Slide 5', src: 'assets/images/350x250&text=5.png', dataHash: 'five', },
     // { text: 'Slide 6', dotContent: 'text5'},
     // { text: 'Slide 7', dotContent: 'text5'},
     // { text: 'Slide 8', dotContent: 'text5'},

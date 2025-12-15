@@ -1,19 +1,25 @@
 # ngx-owl-carousel-o
 
+**WARNING**: The version `20.1.0` introduces accessibility features with breaking changes for navigation buttons (prev/next) HTML structure and CSS.
+So if you update the lib from the version `<20.1.0` to `>=20.1.0`, you need to update your custom styles for navigation buttons.
+
 ## Compatibility
 
 ngx-owl-carousel-o      | Angular
 ------------------------|--------
-17.x.x                  | 17.x.x
-16.x.x (latest `16.0.0`)| 16.x.x
-15.x.x (latest `15.0.1`)| 15.x.x
-14.x.x (latest `14.0.1`)| 14.x.x
-7.x.x  (latest `7.0.4`) | 13.x.x
-6.x.x  (latest `6.0.2`) | 12.x.x
-5.x.x  (latest `5.1.1`) | 11.x.x
-4.x.x  (latest `4.1.1`) | 10.x.x
+20.x.x                  | 20.x.x
+19.x.x (latest `19.0.2`)| 19.x.x
+18.x.x (latest `18.0.1`)| 18.x.x
+17.x.x (latest `17.0.1`)| 17.x.x
+16.x.x (latest `16.0.1`)| 16.x.x
+15.x.x (latest `15.0.2`)| 15.x.x
+14.x.x (latest `14.0.2`)| 14.x.x
+7.x.x  (latest `7.0.5`) | 13.x.x
+6.x.x  (latest `6.0.3`) | 12.x.x
+5.x.x  (latest `5.1.2`) | 11.x.x
+4.x.x  (latest `4.1.2`) | 10.x.x
 3.x.x  (latest `3.1.1`) | 9.x.x
-2.x.x  (latest `2.1.1`) | 8.x.x
+2.x.x  (latest `2.1.2`) | 8.x.x
 1.x.x  (latest `1.2.1`) | 7.x.x
 0.x.x  (latest `0.1.2`) | 6.x.x
 
@@ -33,6 +39,7 @@ ngx-owl-carousel-o      | Angular
 - [ReferenceError: Event is not defined](#referenceError-event-is-not-defined)
 - [Using `ngx-owl-carousel-o` slide data in custom code](#using-internal-slide-data)
 - [Issue: `autoplay` doesn't stay paused when user opens `mat-menu`](#issue-autoplay-doesnt-stay-paused-when-user-opens-mat-menu)
+- [Accessibility](#accessibility)
 
 ## Get started
 
@@ -57,8 +64,7 @@ ngx-owl-carousel-o      | Angular
         ```
 
 3. Import `RouterModule` and `Routes` into `AppModule` unless they are imported.
-4. Import `BrowserAnimationsModule` into `AppModule`  unless it is imported.
-5. Import `CarouselModule` into a module which declares a component intended to have a carousel.
+4. Import `CarouselModule` into a module which declares a component intended to have a carousel.
 
     ```typescript
     import { CarouselModule } from 'ngx-owl-carousel-o';
@@ -69,7 +75,7 @@ ngx-owl-carousel-o      | Angular
     export class SomeModule { }
     ```
 
-6. Add to needed component `customOptions` or named in different way object with options for the carousel:
+5. Add to needed component `customOptions` or named in different way object with options for the carousel:
 
     ```typescript
     import { OwlOptions } from 'ngx-owl-carousel-o';
@@ -106,7 +112,7 @@ ngx-owl-carousel-o      | Angular
     }
     ```
 
-7. Add html-markup to the template of the component (in this case, add it to `carousel-holder.component.html`):
+6. Add html-markup to the template of the component (in this case, add it to `carousel-holder.component.html`):
 
     ```html
       <div>Some tags before</div>
@@ -124,11 +130,11 @@ ngx-owl-carousel-o      | Angular
       <div>Some tags before</div>
       <owl-carousel-o [options]="customOptions">
 
-        <ng-container *ngFor="let slide of slidesStore">
+        @for (slide of slidesStore; track slide.id) {
           <ng-template carouselSlide [id]="slide.id">
             <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
           </ng-template>
-        </ng-container>
+        }
 
       </owl-carousel-o>
       <div>Some tags after</div>
@@ -162,11 +168,11 @@ The example of setting ids:
   <div>Some tags before</div>
   <owl-carousel-o [options]="customOptions">
 
-    <ng-container *ngFor="let slide of slidesStore">
+    @for(let slide of slidesStore; track slide.id) {
       <ng-template carouselSlide [id]="slide.id">
         <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
       </ng-template>
-    </ng-container>
+    }
 
   </owl-carousel-o>
   <div>Some tags after</div>
@@ -404,7 +410,7 @@ Example of usage this directive:
 ```html
   <owl-carousel-o [options]="customOptions" (dragging)="isDragging = $event.dragging">
   
-    <ng-container *ngFor="let item of carouselData">
+    @for (item of carouselData; track item.id) {
       <ng-template carouselSlide>
         <div class="slider">
           <a [owlRouterLink]="['/present']" [stopLink]="isDragging">{{item.text}}</a>
@@ -414,7 +420,7 @@ Example of usage this directive:
 
         </div>
       </ng-template>
-    </ng-container>
+    }
 
   </owl-carousel-o>
 ```
@@ -499,11 +505,11 @@ import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
       template: `
       <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)">
 
-        <ng-container *ngFor="let slide of slidesStore">
+        @for (slide of slidesStore; track slide.id) {
           <ng-template carouselSlide [id]="slide.id">
             <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
           </ng-template>
-        </ng-container>
+        }
 
       </owl-carousel-o>
     `
@@ -603,7 +609,7 @@ Example of using this event:
 ```html
   <owl-carousel-o [options]="customOptions" (dragging)="isDragging = $event.dragging">
 
-    <ng-container *ngFor="let item of carouselData">
+    @for (item of carouselData; track item.id) {
       <ng-template carouselSlide>
 
         <div class="slider">
@@ -614,7 +620,7 @@ Example of using this event:
 
         </div>
       </ng-template>
-    </ng-container>
+    }
 
   </owl-carousel-o>
 ```
@@ -660,11 +666,11 @@ import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
       template: `
       <owl-carousel-o [options]="customOptions" (initialized)="getData($event)">
 
-        <ng-container *ngFor="let slide of slidesStore">
+        @for (slide of slidesStore; track slide.id) {
           <ng-template carouselSlide [id]="slide.id">
             <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
           </ng-template>
-        </ng-container>
+        }
 
       </owl-carousel-o>
     `
@@ -750,11 +756,11 @@ import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
       template: `
       <owl-carousel-o [options]="customOptions" (change)="getData($event)">
 
-        <ng-container *ngFor="let slide of slidesStore">
+        @for (slide of slidesStore; track slide.id) {
           <ng-template carouselSlide [id]="slide.id">
             <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
           </ng-template>
-        </ng-container>
+        }
 
       </owl-carousel-o>
     `
@@ -840,11 +846,11 @@ import { SlidesOutputData, OwlOptions } from 'ngx-owl-carousel-o';
       template: `
       <owl-carousel-o [options]="customOptions" (changed)="getData($event)">
 
-        <ng-container *ngFor="let slide of slidesStore">
+        @for (slide of slidesStore; track slide.id) {
           <ng-template carouselSlide [id]="slide.id">
             <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
           </ng-template>
-        </ng-container>
+        }
 
       </owl-carousel-o>
     `
@@ -988,14 +994,14 @@ It's possible to move the carousel left/right and to needed slide from different
 ```html
 <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" #owlCar>
 
-  <ng-container *ngFor="let item of carouselData">
+  @for (item of carouselData; track item.id) {
     <ng-template carouselSlide [id]="item.id" [width]="item.width">
       <div class="slider">
         <p>{{item.text}}</p>
 
       </div><!-- /.carousel-item team-member -->
     </ng-template>
-  </ng-container>
+  }
   
 </owl-carousel-o>
 
@@ -1216,7 +1222,7 @@ To get this data, define the variable `let-owlItem` or `let-slideData` in your t
   </ng-template>
 ```
 
-An internal slide data could be very helpful to add cool Angular animations. Use properties `isActive` and `isCentered` to switch the state of animation. An example is below.
+An internal slide data could be very helpful to add cool animations using native CSS animations. Use properties `isActive` and `isCentered` to toggle a CSS class. An example is below.
 
 1. Define animation in `your.component.ts`:
 
@@ -1224,26 +1230,25 @@ An internal slide data could be very helpful to add cool Angular animations. Use
     @Component({
       selector: 'app-test',
       templateUrl: './test.component.html',
+      // CSS animation is defined in the .slide, .slide.active classes. Check rules `transform`, `opacity`, and `transition`
+      styles: [`
+        .slide {
+          position: relative;
+          transform-origin: center;
+          transform: scale(0.7);
+          opacity: 0.8;
+          transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+        .slide.active {
+            transform: scale(1.4);
+            opacity: 1;
+        }
 
-      // .....
-      animations: [
-        trigger('activeSlide', [
-          state('active', style({
-            transform: 'scale(1.4)',
-            opacity: 1,
-          })),
-          state('inActive', style({
-            transform: 'scale(0.7)',
-            opacity: 0.8,
-          })),
-          transition('active => inActive', [
-            animate('0.5s')
-          ]),
-          transition('inActive => active', [
-            animate('0.5s')
-          ])
-        ])
-      ]
+        .wrapper {
+          max-width: 800px;
+          margin: 0 auto;
+        }
+      `]
     })
     export class TestComponent implements OnInit {
     // .....
@@ -1267,20 +1272,20 @@ An internal slide data could be very helpful to add cool Angular animations. Use
     }
     ```
 
-2. Use internal slide data in the template. This example uses `let-owlItem` and prop `isCentered` (`owlItem.isCentered`) to toggle animation state:
+2. Use internal slide data in the template. This example uses `let-owlItem` and prop `isCentered` (`owlItem.isCentered`) to toggle CSS class `.active`:
 
     `test.component.html`
 
     ```html
       <owl-carousel-o [options]="customOptions" #owlCat>
-        <ng-container *ngFor="let image of imagesData">
+        @for (image of imagesData; track image.id) {
           <ng-template carouselSlide let-owlItem> 
             <!--                                 \/          -->
-            <div class="slide" [@activeSlide]="owlItem.isCentered ? 'active' : 'inActive'">
+            <div class="slide" [class.active]="owlItem.isCentered">
               <img [src]="image.src" [alt]="image.alt" [title]="image.title">
             </div>
           </ng-template>
-        </ng-container>
+        }
       </owl-carousel-o>
     ```
 
@@ -1295,30 +1300,50 @@ Example of usage in a template with `mat-menu`:
 ```html
   <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" #owlCar>
           
-    <ng-container *ngFor="let item of carouselData; let i=index">
+    @for (item of carouselData; track item.id; let i = $index) {
       <ng-template carouselSlide [width]="item.width">
         <div class="slider">
           <p>{{item.text}}</p>
-          <div *ngIf="i == 2">
-            <button mat-raised-button color="accent" [matMenuTriggerFor]="menu" (menuOpened)="owlCar.stopAutoplay()">Menu</button>
-            <mat-menu #menu="matMenu" (closed)="owlCar.startAutoplay()">
-              <button mat-menu-item>Item 1</button>
-              <button mat-menu-item>Item 2</button>
-              <button mat-menu-item>Item 3</button>
-              <button mat-menu-item>Item 4</button>
-              <button mat-menu-item>Item 5</button>
-            </mat-menu>
-          </div>
+          @if (i == 2) {
+            <div>
+              <button mat-raised-button color="accent" [matMenuTriggerFor]="menu" (menuOpened)="owlCar.stopAutoplay()">Menu</button>
+              <mat-menu #menu="matMenu" (closed)="owlCar.startAutoplay()">
+                <button mat-menu-item>Item 1</button>
+                <button mat-menu-item>Item 2</button>
+                <button mat-menu-item>Item 3</button>
+                <button mat-menu-item>Item 4</button>
+                <button mat-menu-item>Item 5</button>
+              </mat-menu>
+            </div>
+          }
             
         </div><!-- /.carousel-item team-member -->
       </ng-template>
-    </ng-container>
+    }
     
   </owl-carousel-o>
 ```
 
 When menu is opened, you call `stopAutoplay`: `(menuOpened)="owlCar.stopAutoplay()"`  
 When menu is closed, you call `startAutoplay`: `(closed)="owlCar.startAutoplay()"`
+
+## Accessibility
+
+_Important_:
+Inactive slides should be hidden from screen readers. To achieve that, the logic sets the option `ariaHidden` to `true`. But if you have focusable elements inside inactive slides, you should set `ariaHidden` to `false` and `tabindex` to `-1` for these elements as well. Otherwise, a user pressing `Tab` key will be able to focus these elements in inactive slides and be confused with this.
+
+The logic for accessibility covers these scenarios:
+
+- A user presses tab when any tabbable element before the carousel is focused to move the focus to the first focusable element in the carousel
+        This could be the prev button, unless it is disabled at the moment, or the next button if the prev button is disabled.
+- If both nav buttons are enabled a user should be able to move focus between prev and next buttons using arrowLeft and arrowRight keys
+- If the focus is on the next button and a user presses tab, the focus should move to the active dot.
+- If a user wants to focus another dot to click (press) it to change a slide, one should use arrowLeft and arrowRight keys to move focus between dots.
+- If a dot is focused and a user presses the Tab key, the focus should move to the first tabbable element after carousel.
+- If a user presses `Shift+Tab` then the focus moves back to the dot that was focused before tabbing out of carousel.
+- If a user presses `Shift+Tab` again, the focus should move to next nav button.
+- If a user presses `Shift+Tab` again, the focus should move to an active slide if it has a focusable element, or prev button if it's not disabled, 
+    or the last tabbable element before carousel.
 
 ## License
 

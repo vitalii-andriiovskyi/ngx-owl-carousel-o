@@ -4,7 +4,7 @@ import { CarouselService } from './carousel.service';
 import { tap } from 'rxjs/operators';
 
 @Injectable()
-export class AutoHeightService implements OnDestroy{
+export class AutoHeightService implements OnDestroy {
   /**
    * Subscrioption to merge Observable  from CarouselService
    */
@@ -32,9 +32,9 @@ export class AutoHeightService implements OnDestroy{
 
     const changedSettings$: Observable<any> = this.carouselService.getChangedState().pipe(
       tap(data => {
-        if (this.carouselService.settings.autoHeight && data.property.name === 'position'){
-					this.update();
-				}
+        if (this.carouselService.settings.autoHeight && data.property.name === 'position') {
+          this.update();
+        }
       })
     );
 
@@ -46,9 +46,14 @@ export class AutoHeightService implements OnDestroy{
       })
     );
 
-    const autoHeight$: Observable<string | any> = merge(initializedCarousel$, changedSettings$, refreshedCarousel$);
+    const autoHeight$: Observable<string | any> = merge(initializedCarousel$, changedSettings$, refreshedCarousel$).pipe(
+      tap(() => {
+        this.carouselService.slidesData.forEach(slide => slide.classes = this.carouselService.setCurSlideClasses(slide));
+        this.carouselService.sendChanges();
+      })
+    );
     this.autoHeightSubscription = autoHeight$.subscribe(
-      () => {}
+      () => { }
     );
   }
 
@@ -58,7 +63,7 @@ export class AutoHeightService implements OnDestroy{
   update() {
     const items = this.carouselService.settings.items
     let start = this.carouselService.current(),
-        end = start + items;
+      end = start + items;
 
     if (this.carouselService.settings.center) {
       start = items % 2 === 1 ? start - (items - 1) / 2 : start - items / 2;

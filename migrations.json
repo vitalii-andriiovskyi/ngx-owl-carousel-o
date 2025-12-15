@@ -1,94 +1,90 @@
 {
   "migrations": [
     {
-      "cli": "nx",
-      "version": "17.1.0-beta.5",
-      "requires": {
-        "@angular/core": ">=17.0.0"
-      },
-      "description": "Update the @angular/cli package version to ~17.0.0.",
-      "factory": "./src/migrations/update-17-1-0/update-angular-cli",
-      "package": "@nx/angular",
-      "name": "update-angular-cli-version-17-0-0"
+      "version": "22.0.0-beta.1",
+      "description": "Updates release version config based on the breaking changes in Nx v22",
+      "implementation": "./src/migrations/update-22-0-0/release-version-config-changes",
+      "package": "nx",
+      "name": "22-0-0-release-version-config-changes"
+    },
+    {
+      "version": "22.0.0-beta.2",
+      "description": "Consolidates releaseTag* options into nested releaseTag object structure",
+      "implementation": "./src/migrations/update-22-0-0/consolidate-release-tag-config",
+      "package": "nx",
+      "name": "22-0-0-consolidate-release-tag-config"
     },
     {
       "cli": "nx",
-      "version": "17.1.0-beta.5",
-      "requires": {
-        "@angular/core": ">=17.0.0"
-      },
-      "description": "Rename 'browserTarget' to 'buildTarget'.",
-      "factory": "./src/migrations/update-17-1-0/browser-target-to-build-target",
-      "package": "@nx/angular",
-      "name": "rename-browser-target-to-build-target"
+      "version": "22.1.0-beta.5",
+      "description": "Updates the nx wrapper.",
+      "implementation": "./src/migrations/update-22-1-0/update-nx-wrapper",
+      "package": "nx",
+      "name": "22-1-0-update-nx-wrapper"
     },
     {
       "cli": "nx",
-      "version": "17.1.0-beta.5",
-      "requires": {
-        "@angular/core": ">=17.0.0"
-      },
-      "description": "Replace usages of '@nguniversal/builders' with '@angular-devkit/build-angular'.",
-      "factory": "./src/migrations/update-17-1-0/replace-nguniversal-builders",
+      "version": "21.3.0-beta.4",
+      "requires": { "@angular/core": ">=20.1.0" },
+      "description": "Update the @angular/cli package version to ~20.1.0.",
+      "factory": "./src/migrations/update-21-3-0/update-angular-cli",
       "package": "@nx/angular",
-      "name": "replace-nguniversal-builders"
+      "name": "update-angular-cli-version-20-1-0"
+    },
+    {
+      "version": "21.5.0-beta.0",
+      "description": "Set the 'tsConfig' option to build and test targets to help with Angular migration issues.",
+      "factory": "./src/migrations/update-21-5-0/set-tsconfig-option",
+      "package": "@nx/angular",
+      "name": "set-tsconfig-option"
     },
     {
       "cli": "nx",
-      "version": "17.1.0-beta.5",
-      "requires": {
-        "@angular/core": ">=17.0.0"
-      },
-      "description": "Replace usages of '@nguniversal/' packages with '@angular/ssr'.",
-      "factory": "./src/migrations/update-17-1-0/replace-nguniversal-engines",
+      "version": "21.5.0-beta.2",
+      "requires": { "@angular/core": ">=20.2.0" },
+      "description": "Update the @angular/cli package version to ~20.2.0.",
+      "factory": "./src/migrations/update-21-5-0/update-angular-cli",
       "package": "@nx/angular",
-      "name": "replace-nguniversal-engines"
+      "name": "update-angular-cli-version-20-2-0"
+    },
+    {
+      "version": "21.5.0-beta.2",
+      "requires": { "@angular/core": ">=20.2.0" },
+      "description": "Remove any Karma configuration files that only contain the default content. The default configuration is automatically available without a specific project configurationfile.",
+      "factory": "./src/migrations/update-21-5-0/remove-default-karma-configuration-files",
+      "package": "@nx/angular",
+      "name": "remove-default-karma-configuration-files"
     },
     {
       "cli": "nx",
-      "version": "17.1.0-beta.5",
-      "requires": {
-        "@angular/core": ">=17.0.0"
-      },
-      "description": "Replace the deep imports from 'zone.js/dist/zone' and 'zone.js/dist/zone-testing' with 'zone.js' and 'zone.js/testing'.",
-      "factory": "./src/migrations/update-17-1-0/update-zone-js-deep-import",
+      "version": "21.6.1-beta.2",
+      "requires": { "@angular/core": ">=20.3.0" },
+      "description": "Update the @angular/cli package version to ~20.3.0.",
+      "factory": "./src/migrations/update-21-6-1/update-angular-cli",
       "package": "@nx/angular",
-      "name": "update-zone-js-deep-import"
+      "name": "update-angular-cli-version-20-3-0"
     },
     {
-      "version": "17.0.0",
-      "description": "Angular v17 introduces a new control flow syntax that uses the @ and } characters. This migration replaces the existing usages with their corresponding HTML entities.",
-      "factory": "./migrations/block-template-entities/bundle",
+      "version": "20.2.0",
+      "description": "Replaces usages of the deprecated Router.getCurrentNavigation method with the Router.currentNavigation signal",
+      "factory": "./bundles/router-current-navigation.cjs#migrate",
+      "optional": true,
       "package": "@angular/core",
-      "name": "block-template-entities"
+      "name": "router-current-navigation"
     },
     {
-      "version": "17.0.0",
-      "description": "CompilerOption.useJit and CompilerOption.missingTranslation are unused under Ivy. This migration removes their usage",
-      "factory": "./migrations/compiler-options/bundle",
+      "version": "20.3.0",
+      "description": "Adds `BootstrapContext` to `bootstrapApplication` calls in `main.server.ts` to support server rendering.",
+      "factory": "./bundles/add-bootstrap-context-to-server-main.cjs#migrate",
       "package": "@angular/core",
-      "name": "migration-v17-compiler-options"
+      "name": "add-bootstrap-context-to-server-main"
     },
     {
-      "version": "17.0.0",
-      "description": "Updates `TransferState`, `makeStateKey`, `StateKey` imports from `@angular/platform-browser` to `@angular/core`.",
-      "factory": "./migrations/transfer-state/bundle",
-      "package": "@angular/core",
-      "name": "migration-transfer-state"
-    },
-    {
-      "version": "17.0.0-0",
-      "description": "Updates Angular Material to v17",
-      "factory": "./ng-update/index_bundled#updateToV17",
-      "package": "@angular/material",
-      "name": "migration-v17"
-    },
-    {
-      "version": "17.0.0-0",
-      "description": "Updates the Angular CDK to v17",
-      "factory": "./ng-update/index#updateToV17",
-      "package": "@angular/cdk",
-      "name": "migration-v17"
+      "description": "Replace deprecated tapResponse signature",
+      "version": "20.0.0-rc.0",
+      "factory": "./20_0_0-rc_0-tap-response/index",
+      "package": "@ngrx/operators",
+      "name": "20.0.0-rc_0-tap-response"
     }
   ]
 }

@@ -6,7 +6,10 @@ import { NavigationEnd, RouterEvent, Router, ActivatedRoute, UrlTree } from '@an
 
 export type QueryParamsHandling = 'merge' | 'preserve' | '';
 
-@Directive({ selector: ':not(a)[owlRouterLink]' })
+@Directive({
+    selector: ':not(a)[owlRouterLink]',
+    standalone: false
+})
 export class OwlRouterLinkDirective {
   // TODO(issue/24571): remove '!'.
   @Input() queryParams !: { [k: string]: any };
@@ -89,7 +92,10 @@ export class OwlRouterLinkDirective {
  *
  * @publicApi
  */
-@Directive({ selector: 'a[owlRouterLink]' })
+@Directive({
+    selector: 'a[owlRouterLink]',
+    standalone: false
+})
 export class OwlRouterLinkWithHrefDirective implements OnChanges, OnDestroy {
   // TODO(issue/24571): remove '!'.
   @HostBinding('attr.target') @Input() target !: string;

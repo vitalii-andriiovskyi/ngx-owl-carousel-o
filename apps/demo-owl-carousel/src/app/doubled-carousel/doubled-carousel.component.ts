@@ -4,7 +4,6 @@ import { CarouselComponent, CarouselModule, OwlOptions, SlidesOutputData } from 
 
 @Component({
   selector: 'app-doubled-carousel',
-  standalone: true,
   imports: [CommonModule, CarouselModule],
   templateUrl: './doubled-carousel.component.html',
   styleUrl: './doubled-carousel.component.scss'
@@ -114,7 +113,7 @@ export class DoubledCarouselComponent implements OnInit {
   changeSlide($event: SlidesOutputData) {
     if (this.owlCat) {
       // this.category$.next($event.slides[0].id);
-      this.owlCat.moveByDot(this.owlCat.dotsData.dots[$event.startPosition as number].id)
+      this.owlCat.moveByDot(this.owlCat.dotsData().dots[$event.startPosition as number].id)
     }
   }
 

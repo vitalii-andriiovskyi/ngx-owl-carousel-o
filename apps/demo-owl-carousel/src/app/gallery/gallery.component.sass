@@ -1,6 +1,12 @@
 .slide
-  transform-origin: center
   position: relative
+  transform-origin: center
+  transform: scale(0.7)
+  opacity: 0.8
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out
+  &.active
+    transform: scale(1.4)
+    opacity: 1
 
 .wrapper
   max-width: 800px

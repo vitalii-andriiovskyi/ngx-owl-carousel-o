@@ -24,7 +24,11 @@
       "options": {
         "main": "libs/ngx-owl-carousel-o/src/test.ts",
         "tsConfig": "libs/ngx-owl-carousel-o/tsconfig.spec.json",
-        "karmaConfig": "libs/ngx-owl-carousel-o/karma.conf.js"
+        "karmaConfig": "libs/ngx-owl-carousel-o/karma.conf.js",
+         "styles": [
+          "libs/ngx-owl-carousel-o/src/lib/styles/prebuilt-themes/owl.carousel.min.css",
+          "libs/ngx-owl-carousel-o/src/lib/styles/prebuilt-themes/owl.theme.default.min.css"
+        ]
       },
       "outputs": ["{workspaceRoot}/coverage/libs/ngx-owl-carousel-o"]
     }

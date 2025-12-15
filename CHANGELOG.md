@@ -1,28 +1,45 @@
 # Versions Changes
 
+* [v20.1.0](#v2010)
+* [v20.0.1](#v2001)
+* [v20.0.0](#v2000)
+* [v19.0.2](#v1902)
+* [v19.0.1](#v1901)
+* [v19.0.0](#v1900)
+* [v18.0.1](#v1801)
+* [v18.0.0](#v1800)
+* [v17.0.1](#v1701)
 * [v17.0.0](#v1700)
+* [v16.0.1](#v1601)
 * [v16.0.0](#v1600)
+* [v15.0.2](#v1502)
 * [v15.0.1](#v1501)
 * [v15.0.0](#v1500)
+* [v14.0.2](#v1402)
 * [v14.0.1](#v1401)
 * [v14.0.0](#v1400)
+* [v7.0.5](#v705)
 * [v7.0.4](#v704)
 * [v7.0.3](#v703)
 * [v7.0.2](#v702)
 * [v7.0.1](#v701)
 * [v7.0.0](#v700)
+* [v6.0.3](#v603)
 * [v6.0.2](#v602)
 * [v6.0.1](#v601)
 * [v6.0.0](#v600)
+* [v5.1.2](#v512)
 * [v5.1.1](#v511)
 * [v5.1.0](#v510)
 * [v5.0.0](#v500)
+* [v4.1.2](#v412)
 * [v4.1.1](#v411)
 * [v4.1.0](#v410)
 * [v4.0.0](#v400)
 * [v3.1.0](#v310)
 * [v3.0.1](#v301)
 * [v3.0.0](#v300)
+* [v2.1.2](#v212)
 * [v2.1.1](#v211)
 * [v2.1.0](#v210)
 * [v2.0.3](#v203)
@@ -32,7 +49,6 @@
 * [v1.2.1](#v121)
 * [v1.2.0](#v120)
 * [v1.1.7](#v117)
-* [v1.1.6](#v116)
 * [v1.1.5](#v115)
 * [v1.1.4](#v114)
 * [v1.1.3](#v113)
@@ -56,13 +72,57 @@
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
 
+## v20.1.0
+
+The version `v20.1.0` fixes bugs [`#293`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/293), [`#294`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/294), and [`#295`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/295).
+
+## v20.0.1
+
+The version `v20.0.1` fixes the bug [`#292`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/292).
+
+## v20.0.0
+
+The version `v20.0.0` is generated for Angular 20.
+
+## v19.0.2
+
+The version `v19.0.2` fixes the bug [`#217`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/217).
+
+## v19.0.1
+
+The version `v19.0.1` fixes the bug [`#288`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/288).
+
+## v19.0.0
+
+The version `v19.0.0` is generated for Angular 19.
+
+## v18.0.1
+
+The version `v18.0.1` fixes the bug [`#217`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/217).
+
+## v18.0.0
+
+The version `v18.0.0` is generated for Angular 18.
+
+## v17.0.1
+
+The version `v17.0.1` fixes the bug [`#217`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/217).
+
 ## v17.0.0
 
 The version `v17.0.0` is generated for Angular 17.
 
+## v16.0.1
+
+The version `v16.0.1` fixes the bug [`#217`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/217).
+
 ## v16.0.0
 
 The version `v16.0.0` is generated for Angular 16.
+
+## v15.0.2
+
+The version `v15.0.2` fixes the bug [`#217`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/217).
 
 ## v15.0.1
 
@@ -72,6 +132,10 @@ The version `v15.0.1` fixes the bug [`#242`](https://github.com/vitalii-andriiov
 
 The version `v15.0.0` is generated for Angular 15.
 
+## v14.0.2
+
+The version `v14.0.2` fixes the bug [`#217`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/217).
+
 ## v14.0.1
 
 The version `v14.0.1` includes fixes for [`#93`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/93).
@@ -79,6 +143,10 @@ The version `v14.0.1` includes fixes for [`#93`](https://github.com/vitalii-andr
 ## v14.0.0
 
 The version `v14.0.0` is generated for Angular 14.
+
+## v7.0.5
+
+The version `v7.0.5` fixes the bug [`#217`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/217).
 
 ## v7.0.4
 
@@ -100,7 +168,11 @@ The version `v7.0.1` includes fixes for [`#187`](https://github.com/vitalii-andr
 
 The version `v7.0.0` is generated for Angular 13.
 
-## v6.0.2 
+## v6.0.3
+
+The version `v6.0.3` fixes the bug [`#217`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/217).
+
+## v6.0.2
 
 The version `v6.0.2` includes fixes for [`#187`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/187) and adds logic to detect changes in options object to rerender the carousel.
 
@@ -111,6 +183,10 @@ The version `v6.0.1` includes fixes for [`#170`](https://github.com/vitalii-andr
 ## v6.0.0
 
 The version `v6.0.0` is generated for Angular 12.
+
+## v5.1.2
+
+The version `v5.1.2` fixes the bug [`#217`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/217).
 
 ## v5.1.1
 
@@ -123,6 +199,10 @@ The version `v5.1.0` includes fixes for [`#151`](https://github.com/vitalii-andr
 ## v5.0.0
 
 The version `v5.0.0` is generated for Angular 11.
+
+## v4.1.2
+
+The version `v4.1.2` fixes the bug [`#217`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/217).
 
 ## v4.1.1
 
@@ -147,6 +227,10 @@ The version `v3.0.1` fixes the issue [`#86`](https://github.com/vitalii-andriiov
 ## v3.0.0
 
 The version `v2.1.1` fixes the issue [`#86`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/86)
+
+## v2.1.2
+
+The version `v2.1.2` fixes the bug [`#217`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/217).
 
 ## v2.1.1
 

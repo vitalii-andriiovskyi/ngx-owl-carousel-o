@@ -94,14 +94,14 @@ export class NavigationService implements OnDestroy {
 
     const navMerge$: Observable<string> = merge(initializedCarousel$, changedSettings$, refreshedCarousel$);
     this.navSubscription = navMerge$.subscribe(
-      () => {}
+      () => { }
     );
   }
 
   /**
-	 * Initializes the layout of the plugin and extends the carousel.
-	 */
-	initialize() {
+   * Initializes the layout of the plugin and extends the carousel.
+   */
+  initialize() {
     this._navData.disabled = true;
     this._navData.prev.htmlText = this.carouselService.settings.navText[0];
     this._navData.next.htmlText = this.carouselService.settings.navText[1];
@@ -115,66 +115,66 @@ export class NavigationService implements OnDestroy {
   /**
    * Calculates internal states and updates prop _pages
    */
-	private _updateNavPages() {
-		let i: number, j: number, k: number;
-		const lower: number = this.carouselService.clones().length / 2,
+  private _updateNavPages() {
+    let i: number, j: number, k: number;
+    const lower: number = this.carouselService.clones().length / 2,
       upper: number = lower + this.carouselService.items().length,
       maximum: number = this.carouselService.maximum(true),
       pages: any[] = [],
       settings: OwlOptions = this.carouselService.settings;
-     let size = settings.center || settings.autoWidth || settings.dotsData
-        ? 1 : Math.floor(Number(settings.dotsEach)) || Math.floor(settings.items);
-      size = +size;
-		if (settings.slideBy !== 'page') {
-			settings.slideBy = Math.min(+settings.slideBy, settings.items);
-		}
+    let size = settings.center || settings.autoWidth || settings.dotsData
+      ? 1 : Math.floor(Number(settings.dotsEach)) || Math.floor(settings.items);
+    size = +size;
+    if (settings.slideBy !== 'page') {
+      settings.slideBy = Math.min(+settings.slideBy, settings.items);
+    }
 
-		if (settings.dots || settings.slideBy === 'page') {
+    if (settings.dots || settings.slideBy === 'page') {
 
-			for (i = lower, j = 0, k = 0; i < upper; i++) {
-				if (j >= size || j === 0) {
-					pages.push({
-						start: Math.min(maximum, i - lower),
-						end: i - lower + size - 1
-					});
-					if (Math.min(maximum, i - lower) === maximum) {
-						break;
-					}
-					j = 0, ++k;
-				}
-				j += this.carouselService.mergers(this.carouselService.relative(i)) as number;
-			}
-		}
-		this._pages = pages;
-	}
+      for (i = lower, j = 0, k = 0; i < upper; i++) {
+        if (j >= size || j === 0) {
+          pages.push({
+            start: Math.min(maximum, i - lower),
+            end: i - lower + size - 1
+          });
+          if (Math.min(maximum, i - lower) === maximum) {
+            break;
+          }
+          j = 0, ++k;
+        }
+        j += this.carouselService.mergers(this.carouselService.relative(i)) as number;
+      }
+    }
+    this._pages = pages;
+  }
 
   /**
-	 * Draws the user interface.
-	 * @todo The option `dotsData` wont work.
-	 */
+   * Draws the user interface.
+   * @todo The option `dotsData` wont work.
+   */
   draw() {
-		let difference: number;
-    const	settings: OwlOptions = this.carouselService.settings,
+    let difference: number;
+    const settings: OwlOptions = this.carouselService.settings,
       items: CarouselSlideDirective[] = this.carouselService.items(),
       disabled = items.length <= settings.items;
 
-		this._navData.disabled = !settings.nav || disabled;
-		this._dotsData.disabled = !settings.dots || disabled;
+    this._navData.disabled = !settings.nav || disabled;
+    this._dotsData.disabled = !settings.dots || disabled;
 
-		if (settings.dots) {
-			difference = this._pages.length - this._dotsData.dots.length;
+    if (settings.dots) {
+      difference = this._pages.length - this._dotsData.dots.length;
 
-			if (settings.dotsData && difference !== 0) {
+      if (settings.dotsData && difference !== 0) {
         this._dotsData.dots = [];
         items.forEach(item => {
           this._dotsData.dots.push({
             active: false,
             id: `dot-${item.id}`,
-            innerContent: item.dotContent,
+            innerContent: item.dotContent(),
             showInnerContent: true
           });
         });
-			} else if (difference > 0) {
+      } else if (difference > 0) {
         const startI: number = this._dotsData.dots.length > 0 ? this._dotsData.dots.length : 0;
         for (let i = 0; i < difference; i++) {
           this._dotsData.dots.push({
@@ -184,9 +184,9 @@ export class NavigationService implements OnDestroy {
             showInnerContent: false
           });
         }
-			} else if (difference < 0) {
+      } else if (difference < 0) {
         this._dotsData.dots.splice(difference, Math.abs(difference))
-			}
+      }
     }
 
     this.carouselService.navData = this._navData;
@@ -205,13 +205,13 @@ export class NavigationService implements OnDestroy {
    * Changes state of nav buttons (disabled, enabled)
    */
   private _updateNavButtons() {
-    const	settings: OwlOptions = this.carouselService.settings,
+    const settings: OwlOptions = this.carouselService.settings,
       loop: boolean = settings.loop || settings.rewind,
       index: number = this.carouselService.relative(this.carouselService.current());
 
     if (settings.nav) {
       this._navData.prev.disabled = !loop && index <= this.carouselService.minimum(true);
-			this._navData.next.disabled = !loop && index >= this.carouselService.maximum(true);
+      this._navData.next.disabled = !loop && index >= this.carouselService.maximum(true);
     }
 
     this.carouselService.navData = this._navData;
@@ -223,7 +223,7 @@ export class NavigationService implements OnDestroy {
   private _updateDots() {
     let curActiveDotI: number;
 
-    if(!this.carouselService.settings.dots) {
+    if (!this.carouselService.settings.dots) {
       return;
     }
     this._dotsData.dots.forEach(item => {
@@ -240,10 +240,10 @@ export class NavigationService implements OnDestroy {
   }
 
   /**
-	 * Gets the current page position of the carousel.
-	 * @returns the current page position of the carousel
-	 */
-	private _current(): any {
+   * Gets the current page position of the carousel.
+   * @returns the current page position of the carousel
+   */
+  private _current(): any {
     const current: number = this.carouselService.relative(this.carouselService.current());
     let finalCurrent: number;
     const pages: any = this._pages.filter((page, index) => {
@@ -258,58 +258,58 @@ export class NavigationService implements OnDestroy {
   };
 
   /**
-	 * Gets the current succesor/predecessor position.
+   * Gets the current succesor/predecessor position.
    * @param sussessor position of slide
-	 * @returns the current succesor/predecessor position
-	 */
-	private _getPosition(successor: number | boolean): number {
-		let position: number, length: number;
-		const	settings: OwlOptions = this.carouselService.settings;
+   * @returns the current succesor/predecessor position
+   */
+  private _getPosition(successor: number | boolean): number {
+    let position: number, length: number;
+    const settings: OwlOptions = this.carouselService.settings;
 
-		if (settings.slideBy === 'page') {
-			position = this._current();
-			length = this._pages.length;
-			successor ? ++position : --position;
-			position = this._pages[((position % length) + length) % length].start;
-		} else {
-			position = this.carouselService.relative(this.carouselService.current());
-			length = this.carouselService.items().length;
-			successor ? position += +settings.slideBy : position -= +settings.slideBy;
-		}
+    if (settings.slideBy === 'page') {
+      position = this._current();
+      length = this._pages.length;
+      successor ? ++position : --position;
+      position = this._pages[((position % length) + length) % length].start;
+    } else {
+      position = this.carouselService.relative(this.carouselService.current());
+      length = this.carouselService.items().length;
+      successor ? position += +settings.slideBy : position -= +settings.slideBy;
+    }
 
-		return position;
+    return position;
   };
 
   /**
-	 * Slides to the next item or page.
-	 * @param speed The time in milliseconds for the transition.
-	 */
-	next(speed: number | boolean) {
+   * Slides to the next item or page.
+   * @param speed The time in milliseconds for the transition.
+   */
+  next(speed: number | boolean) {
     this.carouselService.to(this._getPosition(true), speed);
-	};
+  };
 
-	/**
-	 * Slides to the previous item or page.
-	 * @param speed The time in milliseconds for the transition.
-	 */
-	prev(speed: number | boolean) {
+  /**
+   * Slides to the previous item or page.
+   * @param speed The time in milliseconds for the transition.
+   */
+  prev(speed: number | boolean) {
     this.carouselService.to(this._getPosition(false), speed);
   };
 
- 	/**
-	 * Slides to the specified item or page.
-	 * @param position - The position of the item or page.
-	 * @param speed - The time in milliseconds for the transition.
-	 * @param standard - Whether to use the standard behaviour or not. Default meaning false
-	 */
-	to(position: number, speed: number | boolean, standard?: boolean) {
-		let length: number;
-		if (!standard && this._pages.length) {
+  /**
+ * Slides to the specified item or page.
+ * @param position - The position of the item or page.
+ * @param speed - The time in milliseconds for the transition.
+ * @param standard - Whether to use the standard behaviour or not. Default meaning false
+ */
+  to(position: number, speed: number | boolean, standard?: boolean) {
+    let length: number;
+    if (!standard && this._pages.length) {
       length = this._pages.length;
       this.carouselService.to(this._pages[((position % length) + length) % length].start, speed);
-		} else {
+    } else {
       this.carouselService.to(position, speed);
-		}
+    }
   };
 
   /**
@@ -328,10 +328,11 @@ export class NavigationService implements OnDestroy {
     const position = this.carouselService.slidesData.findIndex(slide => slide.id === id && slide.isCloned === false);
 
     if (position === -1 || position === this.carouselService.current()) {
+      console.log(`Slide with id=${id} not found`)
       return;
     }
 
-		this.carouselService.to(this.carouselService.relative(position), false);
+    this.carouselService.to(this.carouselService.relative(position), false);
   }
 
 }
