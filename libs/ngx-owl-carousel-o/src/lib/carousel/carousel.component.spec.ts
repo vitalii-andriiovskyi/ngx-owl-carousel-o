@@ -255,10 +255,8 @@ describe('CarouselComponent', () => {
         "there's just empty span in .owl-dot"
       );
 
-      deNavButtonsWrapper = deCarouselComponent.query(By.css('.owl-nav'));
-      expect(
-        deNavButtonsWrapper.nativeElement.classList.contains('disabled')
-      ).toBeTruthy('.owl-nav is disabled');
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class*="owl-"]'));
+      expect(deNavButtons.length).toBe(0, 'nav buttons are disabled');
       // discardPeriodicTasks();
     });
   }));
@@ -1035,7 +1033,7 @@ describe('CarouselComponent', () => {
     );
     expect(activeSlides.length).toBe(3, 'should be 3 active slides');
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     expect(deDots.length).toBe(2, '2 dots');
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
       '1th dot is active'
@@ -1063,7 +1061,7 @@ describe('CarouselComponent', () => {
     expect(activeSlides[0].nativeElement.innerHTML).toContain('Slide 1');
 
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     expect(deDots.length).toBe(3, '3 dots');
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
       '1th dot is active'
@@ -1088,7 +1086,7 @@ describe('CarouselComponent', () => {
     expect(activeSlides[0].nativeElement.innerHTML).toContain('Slide 1');
 
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     expect(deDots.length).toBe(5, '5 dots');
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
       '1th dot is active'
@@ -1110,7 +1108,7 @@ describe('CarouselComponent', () => {
     expect(activeSlides[0].nativeElement.innerHTML).toContain('Slide 1');
 
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     expect(deDots.length).toBe(3, '3 dots');
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
       '1th dot is active'
@@ -1132,7 +1130,7 @@ describe('CarouselComponent', () => {
     expect(activeSlides[0].nativeElement.innerHTML).toContain('Slide 1');
 
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     expect(deDots.length).toBe(2, '2 dots');
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
       '1th dot is active'
@@ -1191,7 +1189,7 @@ describe('CarouselComponent', () => {
     );
 
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     expect(deDots.length).toBe(3, '3 dots');
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
       '1th dot is active'
@@ -1229,13 +1227,12 @@ describe('CarouselComponent', () => {
     );
 
     deDotsWrapper = deCarouselComponent.query(By.css('.owl-dots'));
-    deNavButtonsWrapper = deCarouselComponent.query(By.css('.owl-nav'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class*="owl-"]'));
     expect(
       deDotsWrapper.nativeElement.classList.contains('disabled')
     ).toBeTruthy('dots are disabled');
-    expect(
-      deNavButtonsWrapper.nativeElement.classList.contains('disabled')
-    ).toBeTruthy('nav buttons are disabled');
+    expect(deNavButtons.length).toBe(0, 'nav buttons are disabled');
+
 
     deStage = deCarouselComponent.query(By.css('.owl-carousel .owl-stage'));
     expect(deStage.nativeElement.style.paddingLeft).toBe(
@@ -1262,7 +1259,7 @@ describe('CarouselComponent', () => {
     );
 
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     expect(deDots.length).toBe(5, '5 dots');
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
       '1th dot is active'
@@ -1307,7 +1304,7 @@ describe('CarouselComponent', () => {
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
     expect(deActiveSlides.length).toBe(3, 'should be 3 active slides');
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
       '1th dot is active'
     );
@@ -1925,7 +1922,7 @@ describe('CarouselComponent', () => {
     fixtureHost.whenStable().then(() => {
       fixtureHost.detectChanges();
 
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
       expect(deNavButtons.length).toBe(2, '2 buttons');
 
       prevButton = deNavButtons[0].nativeElement;
@@ -1964,7 +1961,7 @@ describe('CarouselComponent', () => {
     fixtureHost.whenStable().then(() => {
       fixtureHost.detectChanges();
 
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
       prevButton = deNavButtons[0].nativeElement;
       nextButton = deNavButtons[1].nativeElement;
       expect(
@@ -2155,7 +2152,7 @@ describe('CarouselComponent', () => {
   it(`should prev button be enabled when loop=true in [options]="{loop: true}"`, waitForAsync(() => {
     const html = `
       <div style="width: 1200px; margin: auto">
-        <owl-carousel-o [options]="{ loop: true}">
+        <owl-carousel-o [options]="{ loop: true, nav: true }">
           <ng-template carouselSlide>Slide 1</ng-template>
           <ng-template carouselSlide>Slide 2</ng-template>
           <ng-template carouselSlide>Slide 3</ng-template>
@@ -2172,7 +2169,7 @@ describe('CarouselComponent', () => {
     fixtureHost.whenStable().then(() => {
       fixtureHost.detectChanges();
 
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
       prevButton = deNavButtons[0].nativeElement;
       expect(prevButton.classList.contains('disabled')).toBeFalsy(
         'prev button is enabled'
@@ -2616,7 +2613,7 @@ describe('CarouselComponent', () => {
       );
 
       nextButton = deCarouselComponent.query(
-        By.css('.owl-nav > .owl-next')
+        By.css('.owl-carousel-inner > .owl-next')
       ).nativeElement;
       expect(nextButton.classList.contains('disabled')).toBeTruthy(
         'next nav button has class .disabled'
@@ -2651,7 +2648,7 @@ describe('CarouselComponent', () => {
       );
 
       nextButton = deCarouselComponent.query(
-        By.css('.owl-nav > .owl-next')
+        By.css('.owl-carousel-inner > .owl-next')
       ).nativeElement;
       expect(nextButton.classList.contains('disabled')).toBeFalsy(
         "next nav button hasn't class .disabled"
@@ -2678,12 +2675,12 @@ describe('CarouselComponent', () => {
     tick();
     fixtureHost.detectChanges();
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     nextButton = deCarouselComponent.query(
-      By.css('.owl-nav > .owl-next')
+      By.css('.owl-carousel-inner > .owl-next')
     ).nativeElement;
     prevButton = deCarouselComponent.query(
-      By.css('.owl-nav > .owl-prev')
+      By.css('.owl-carousel-inner > .owl-prev')
     ).nativeElement;
 
     carouselService = deCarouselComponent.injector.get(CarouselService);
@@ -2731,12 +2728,12 @@ describe('CarouselComponent', () => {
       tick();
       fixtureHost.detectChanges();
 
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
       nextButton = deCarouselComponent.query(
-        By.css('.owl-nav > .owl-next')
+        By.css('.owl-carousel-inner > .owl-next')
       ).nativeElement;
       prevButton = deCarouselComponent.query(
-        By.css('.owl-nav > .owl-prev')
+        By.css('.owl-carousel-inner > .owl-prev')
       ).nativeElement;
 
       carouselService = deCarouselComponent.injector.get(CarouselService);
@@ -2793,7 +2790,7 @@ describe('CarouselComponent', () => {
       deCarouselComponent = fixtureHost.debugElement.query(
         By.css('owl-carousel-o')
       );
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
       deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
       deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
       expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
@@ -2863,12 +2860,12 @@ describe('CarouselComponent', () => {
       carouselHTML = deCarouselComponent.query(
         By.css('.owl-carousel')
       ).nativeElement;
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
       nextButton = deCarouselComponent.query(
-        By.css('.owl-nav > .owl-next')
+        By.css('.owl-carousel-inner > .owl-next')
       ).nativeElement;
       prevButton = deCarouselComponent.query(
-        By.css('.owl-nav > .owl-prev')
+        By.css('.owl-carousel-inner > .owl-prev')
       ).nativeElement;
 
       carouselService = deCarouselComponent.injector.get(CarouselService);
@@ -2928,7 +2925,7 @@ describe('CarouselComponent', () => {
       expect(deActiveSlides.length).toBe(3, '3 active slide');
       // -------------------------
 
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
       prevButton = deNavButtons[0].nativeElement;
 
       expect(prevButton.classList.contains('disabled')).toBeTruthy(
@@ -2970,7 +2967,7 @@ describe('CarouselComponent', () => {
       '11 slides: 3 cloned + 5 origin + 3 cloned '
     );
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
 
     // move carousel left
@@ -3187,7 +3184,7 @@ describe('CarouselComponent', () => {
       '11 slides: 3 cloned + 5 origin + 3 cloned '
     );
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
 
     deNavButtons[0].triggerEventHandler('click', null);
     tick();
@@ -3272,7 +3269,7 @@ describe('CarouselComponent', () => {
     deCarouselComponent = fixtureHost.debugElement.query(
       By.css('owl-carousel-o')
     );
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
 
     let centeredSlide: HTMLElement = deCarouselComponent.query(
@@ -3326,7 +3323,7 @@ describe('CarouselComponent', () => {
     deCarouselComponent = fixtureHost.debugElement.query(
       By.css('owl-carousel-o')
     );
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -3368,7 +3365,7 @@ describe('CarouselComponent', () => {
     deCarouselComponent = fixtureHost.debugElement.query(
       By.css('owl-carousel-o')
     );
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -3411,7 +3408,7 @@ describe('CarouselComponent', () => {
     deCarouselComponent = fixtureHost.debugElement.query(
       By.css('owl-carousel-o')
     );
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -3467,7 +3464,7 @@ describe('CarouselComponent', () => {
       deCarouselComponent = fixtureHost.debugElement.query(
         By.css('owl-carousel-o')
       );
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
       deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
       deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
       expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
@@ -3512,7 +3509,7 @@ describe('CarouselComponent', () => {
       deCarouselComponent = fixtureHost.debugElement.query(
         By.css('owl-carousel-o')
       );
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
       deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
       deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
       expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
@@ -3582,7 +3579,7 @@ describe('CarouselComponent', () => {
       deCarouselComponent = fixtureHost.debugElement.query(
         By.css('owl-carousel-o')
       );
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
       deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
       deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -3645,7 +3642,7 @@ describe('CarouselComponent', () => {
       expect(
         deNavButtons[1].nativeElement.classList.contains('disabled')
       ).toBeTruthy(
-        'next button is disabled; however click on it rewinds the carousel to the begin without loop effect'
+        'next button is disabled'
       );
 
       deNavButtons[1].triggerEventHandler('click', null);
@@ -3654,16 +3651,16 @@ describe('CarouselComponent', () => {
 
       deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
       expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
-        'Slide 1',
-        'Slide 1'
+        'Slide 8',
+        'Slide 8'
       );
-      expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
-        '1th dot is active'
+      expect(deDots[3].nativeElement.classList.contains('active')).toBeTruthy(
+        '4th dot is active'
       );
       expect(
         deNavButtons[0].nativeElement.classList.contains('disabled')
-      ).toBeTruthy(
-        'prev button is disabled; however click on it rewinds the carousel to the end'
+      ).toBeFalsy(
+        'prev button is active'
       );
 
       deNavButtons[0].triggerEventHandler('click', null);
@@ -3671,16 +3668,16 @@ describe('CarouselComponent', () => {
       fixtureHost.detectChanges();
       deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
       expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
-        'Slide 8',
-        'Slide 8'
+        'Slide 7',
+        'Slide 7'
       );
-      expect(deDots[3].nativeElement.classList.contains('active')).toBeTruthy(
-        '1th dot is active'
+      expect(deDots[2].nativeElement.classList.contains('active')).toBeTruthy(
+        '3th dot is active'
       );
       expect(
         deNavButtons[1].nativeElement.classList.contains('disabled')
-      ).toBeTruthy(
-        'next button is disabled; however click on it rewinds the carousel to the begin'
+      ).toBeFalsy(
+        'next button is not disabled'
       );
     }));
 
@@ -3708,7 +3705,7 @@ describe('CarouselComponent', () => {
       deCarouselComponent = fixtureHost.debugElement.query(
         By.css('owl-carousel-o')
       );
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
       deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
       deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -3834,7 +3831,7 @@ describe('CarouselComponent', () => {
       deCarouselComponent = fixtureHost.debugElement.query(
         By.css('owl-carousel-o')
       );
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
       deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
       deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -3988,7 +3985,7 @@ describe('CarouselComponent', () => {
       carouselHTML = deCarouselComponent.query(
         By.css('.owl-carousel')
       ).nativeElement;
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
       deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
       deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -4091,7 +4088,7 @@ describe('CarouselComponent', () => {
     tick();
 
     fixtureHost.detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deStage = deCarouselComponent.query(By.css('.owl-stage'));
 
     expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe(
@@ -4129,7 +4126,7 @@ describe('CarouselComponent', () => {
     tick();
 
     fixtureHost.detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -4160,7 +4157,7 @@ describe('CarouselComponent', () => {
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
       'Slide 3',
       'Slide 3'
@@ -4199,7 +4196,7 @@ describe('CarouselComponent', () => {
     tick();
 
     fixtureHost.detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -4362,7 +4359,7 @@ describe('CarouselComponent', () => {
     tick();
 
     fixtureHost.detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -4393,7 +4390,7 @@ describe('CarouselComponent', () => {
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
       'Slide 7',
       'Slide 7'
@@ -4506,7 +4503,7 @@ describe('CarouselComponent', () => {
     ).nativeElement;
     deStage = deCarouselComponent.query(By.css('.owl-stage'));
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
 
     expect(deDots.length).toBe(4, '4 dots');
     expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe(
@@ -4599,7 +4596,7 @@ describe('CarouselComponent', () => {
 
     fixtureHost.detectChanges();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     expect(deDots.length).toBe(2, '2 dots');
 
     deDots[1].triggerEventHandler('click', null);
@@ -4677,7 +4674,7 @@ describe('CarouselComponent', () => {
 
     fixtureHost.detectChanges();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     expect(deDots.length).toBe(2, '2 dots');
 
     expect(testComponent.currentSlidesData.startPosition).toBe(
@@ -4784,7 +4781,7 @@ describe('CarouselComponent', () => {
 
     fixtureHost.detectChanges();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     expect(deDots.length).toBe(2, '2 dots');
 
     expect(testComponent.currentSlidesData.startPosition).toBe(
@@ -4935,7 +4932,7 @@ describe('CarouselComponent', () => {
     tick();
 
     fixtureHost.detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
 
     deNavButtons[0].triggerEventHandler('click', null);
     tick();
@@ -5457,7 +5454,7 @@ describe('CarouselComponent', () => {
     img = deSlides[3].query(By.css('.owl-lazy'));
     expect(img).toBeFalsy("img in 4th slide isn't loaded");
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick();
@@ -5510,7 +5507,7 @@ describe('CarouselComponent', () => {
     img = deSlides[10].query(By.css('.owl-lazy'));
     expect(img).toBeTruthy('img in 11th slide is loaded');
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick();
@@ -5573,7 +5570,7 @@ describe('CarouselComponent', () => {
     img = deSlides[10].query(By.css('.owl-lazy'));
     expect(img).toBeTruthy('img in 11th slide is loaded');
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deNavButtons[0].triggerEventHandler('click', null);
 
     tick();
@@ -5731,7 +5728,7 @@ describe('CarouselComponent', () => {
       'Slide 1'
     );
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick();
@@ -5825,7 +5822,7 @@ describe('CarouselComponent', () => {
       'Slide 1'
     );
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick();
@@ -5907,7 +5904,7 @@ describe('CarouselComponent', () => {
       'Slide 1'
     );
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick();
@@ -5987,7 +5984,7 @@ describe('CarouselComponent', () => {
       'Slide 1'
     );
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick();
@@ -6284,7 +6281,7 @@ describe('CarouselComponent', () => {
       '100px height'
     );
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick(450);
@@ -6460,7 +6457,7 @@ describe('CarouselComponent', () => {
       '100px height'
     );
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick(450);
@@ -6673,7 +6670,7 @@ describe('CarouselComponent', () => {
     expect(deActiveCenteredSlide.innerHTML).toContain('Slide 1', 'Slide 1');
     expect(location.path(true)).toBe('/owl-car#one', '/owl-car#one');
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-nav > div'));
+    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick();
@@ -6957,6 +6954,354 @@ describe('CarouselComponent', () => {
     expect(deActiveSlides.length).toBe(2, '2 active slides');
   }));
 
+  it(`should render the carousel correspoding to accessibility requirements -> [options]="{nav: true, dots: true}"`, fakeAsync(() => {
+    const html = `
+      <div style="width: 1200px; margin: auto">
+      <input type="text" placeholder="Just an input to test focus trapping" autofocus id="test-input"/>
+        <owl-carousel-o [options]="{nav: true, dots: true}">
+          <ng-template id="access-slide-1" carouselSlide>Slide 1</ng-template>
+          <ng-template id="access-slide-2" carouselSlide>Slide 2</ng-template>
+          <ng-template id="access-slide-3" carouselSlide>Slide 3</ng-template>
+          <ng-template id="access-slide-4" carouselSlide>Slide 4</ng-template>
+          <ng-template id="access-slide-5" carouselSlide>Slide 5</ng-template>
+          <ng-template id="access-slide-6" carouselSlide>Slide 6</ng-template>
+          <ng-template id="access-slide-7" carouselSlide>Slide 7</ng-template>
+          <ng-template id="access-slide-8" carouselSlide>Slide 8</ng-template>
+          <ng-template id="access-slide-9" carouselSlide>Slide 9</ng-template>
+          <ng-template id="access-slide-10" carouselSlide>Slide 10</ng-template>
+        </owl-carousel-o>
+        <button id="after-carousel-button">After Carousel Button</button>
+      </div>
+    `;
+    fixtureHost = createTestComponent(html);
+    testComponent = fixtureHost.componentInstance;
+    deCarouselComponent = fixtureHost.debugElement.query(
+      By.css('owl-carousel-o')
+    );
+    tick();
+    fixtureHost.detectChanges();
+
+    const activeSlides: DebugElement[] = deCarouselComponent.queryAll(
+      By.css('.owl-item.active')
+    );
+    expect(activeSlides.length).toBe(3, '3 active slides');
+
+    // tests for accessibility options
+    //  find .owl-carousel.owl-theme div and check if it has role="region" and aria-label="Carousel"
+    //  find owl-next and owl-prev buttons and check if they are buttons, have aria-labels
+    const carouselDiv: HTMLElement = deCarouselComponent.query(
+      By.css('.owl-carousel.owl-theme')
+    ).nativeElement;
+    expect(carouselDiv.getAttribute('role')).toBe('region', 'role="region" for carousel div');
+    expect(carouselDiv.getAttribute('aria-label')).toBe('Carousel', 'aria-label="Carousel" for carousel div');
+
+    const navButtons: DebugElement[] = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class*="owl-"]')
+    );
+    expect(navButtons.length).toBe(2, '2 nav buttons');
+
+    const prevButton: HTMLElement = navButtons[0].nativeElement;
+    expect(prevButton.getAttribute('type')).toBe('button', 'type="button" for prev button');
+    expect(prevButton.getAttribute('aria-label')).toBe('Previous Slide', 'aria-label="Previous Slide" for prev button');
+    expect(prevButton.hasAttribute('disabled')).toBeTruthy('prev button is disabled at the beginning');
+
+    const nextButton: HTMLElement = navButtons[1].nativeElement;
+    expect(nextButton.getAttribute('type')).toBe('button', 'type="button" for next button');
+    expect(nextButton.getAttribute('aria-label')).toBe('Next Slide', 'aria-label="Next Slide" for next button');
+
+    deSlides = deCarouselComponent.queryAll(
+      By.css('.owl-item')
+    );
+    expect(deSlides.length).toBe(10, '10 slides');
+
+    //.  check if  .owl-item has aria-hidden set to true or false depending on active state, has role="group" and aria-label with slide number and total slides
+    activeSlides.forEach((slide, index) => {
+      const slideEl: HTMLElement = slide.nativeElement;
+      expect(slideEl.getAttribute('role')).toBe('group', `role="group" for active slide ${slideEl.id}`);
+      const slideNumber = index + 1;
+      expect(slideEl.getAttribute('aria-label')).toBe(
+        `Slide ${slideNumber} of 10`,
+        `aria-label="Slide ${slideNumber} of 10" for active slide ${slideNumber}`
+      );
+      expect(slideEl.getAttribute('aria-hidden')).toBeFalsy(
+        `aria-hidden="true" is absent for active slide ${slideNumber}`
+      );
+    });
+    const inactiveSlides: DebugElement[] = deCarouselComponent.queryAll(
+      By.css('.owl-item:not(.active)')
+    );
+    inactiveSlides.forEach((slide, index) => {
+      const slideEl: HTMLElement = slide.nativeElement;
+      const slideNumber = index + activeSlides.length + 1;
+      expect(slideEl.getAttribute('role')).toBe('group', `role="group" for inactive slide ${slideNumber}`);
+      expect(slideEl.getAttribute('aria-label')).toBe(
+        `Slide ${slideNumber} of 10`,
+        `aria-label="Slide ${slideNumber} of 10" for inactive slide ${slideNumber}`
+      );
+      expect(slideEl.getAttribute('aria-hidden')).toBe('true', `aria-hidden="true" for inactive slide ${slideNumber}`);
+    });
+
+    //  find .owl-dots and check if they have aria-label, 
+    const dotsContainer: HTMLElement = deCarouselComponent.query(
+      By.css('.owl-dots')
+    ).nativeElement;
+    expect(dotsContainer.getAttribute('aria-label')).toBe('Carousel Dots Pagination', 'aria-label="Carousel Dots Pagination" for dots container');
+
+    //  find each .owl-dot and check if it is button, aria-current set to true for active dot, tabindex=0 for active dot, tabindex=-1 for inactive dots, all dots should have aria-label with "Carousel Dot and dot number"
+    const dots: DebugElement[] = deCarouselComponent.queryAll(
+      By.css('.owl-dots > .owl-dot')
+    );
+    expect(dots.length).toBe(4, '4 dots for 10 slides with 3 items per slide');
+
+    dots.forEach((dot, index) => {
+      const dotEl: HTMLElement = dot.nativeElement;
+      expect(dotEl.getAttribute('type')).toBe('button', `type="button" for dot ${index + 1}`);
+      const isActiveDot = dotEl.classList.contains('active');
+      if (isActiveDot) {
+        expect(dotEl.getAttribute('aria-current')).toBe('true', `aria-current="true" for active dot ${index + 1}`);
+        expect(dotEl.getAttribute('tabindex')).toBe('0', `tabindex="0" for active dot ${index + 1}`);
+      } else {
+        expect(dotEl.getAttribute('aria-current')).toBeNull(`aria-current is null for inactive dot ${index + 1}`);
+        expect(dotEl.getAttribute('tabindex')).toBe('-1', `tabindex="-1" for inactive dot ${index + 1}`);
+      }
+      expect(dotEl.getAttribute('aria-label')).toBe(`Carousel Dot ${index + 1}`, `aria-label="Carousel Dot ${index + 1}" for dot ${index + 1}`);
+    })
+
+
+    /* 
+      The logic below should test this schenarios:
+        A user presses tab when any tabbable element before carousel is focused to move focus to first focusable element in carousel
+        This could be prev button, unless it is disabled at the moment, or next button if the prev button is disabled.
+        If both nav buttons are enabled a user should be able to move focus between prev and next buttons using arrowLeft and arrowRight keys
+        If the focus is on next button and user presses tab, the focus should move to the active dot. All other dots should have tabindex=-1, so they are not focusable by tab key
+        If a user wants to focus another dot to click (press) it to change a slide, he should use arrowLeft and arrowRight keys to move focus between dots.
+        If a user presses arrowLeft or arrowRight on a focused dot, the focus should move to previous or next dot respectively, 
+        that dot should get tabindex=0, while previously focused dot should get tabindex=-1, and aria-current attributes should be updated accordingly. 
+        If a dot is focused and user presses tab, the focus should move to the first tabbable element after carousel.
+        If a user presses shift+tab when the focus move back to the dot that was focused before tabbing out of carousel.
+        If a user presses shift+tab again, the focus should move to next.
+        If a user presses shift+tab again, the focus should move to an active slide if it has focusable element, or prev button if it's not disabled, 
+        or the last tabbable element before carousel.
+    
+     I cannot write tests for these scenarios because:
+      "Modern browsers generally block programmatic events from affecting the browser's default focus navigation for security and 
+      user experience reasons. The event will fire, and any custom JavaScript event listeners you have bound to the keydown event will execute, 
+      but the native browser behavior of changing focus will likely not occur"
+
+      So firing 'tab' key event on focused element doesn't move focus to the next focusable element as it would be in the browser.
+      The only way to test this is manual testing in the browser.
+      I comment out the code below that tries to test focus trapping inside carousel.
+    */
+
+    // *************************************************************************
+
+    // // test focus trapping inside the carousel
+    // const testInput: HTMLElement = fixtureHost.debugElement.query(
+    //   By.css('#test-input')
+    // ).nativeElement;
+    // testInput.focus();
+    // tick();
+    // fixtureHost.detectChanges();
+    // expect(document.activeElement).toEqual(testInput, 'focus is on the input before tabbing into carousel');
+
+    // // press tab to focus first focusable element in carousel. prev button is disabled, so focus should go to next button 
+    // // press tab to focus first dot 
+    // // press tab so first dot looses focus and focus goes to #after-carousel-button.
+    // triggerKeyboardEvent(testInput, 'keypress', 9, 'Tab');
+    // tick();
+    // fixtureHost.detectChanges();
+
+    // const navButtonsAfterInput: DebugElement[] = deCarouselComponent.queryAll(
+    //   By.css('.owl-carousel-inner > button[class*="owl-"]')
+    // );
+    // const nextButtonAfterInput: HTMLElement = navButtonsAfterInput[1].nativeElement;
+    // // for now cannot simulate tab event 
+    // expect(document.activeElement).toEqual(nextButtonAfterInput, 'focus is on next button after tabbing from input');
+
+    // // press tab to focus first dot
+    // triggerKeyboardEvent(nextButtonAfterInput, 'keydown', 9, 'Tab');
+    // tick();
+    // fixtureHost.detectChanges();
+
+    // let deDots: DebugElement[] = deCarouselComponent.queryAll(
+    //   By.css('.owl-dots > .owl-dot')
+    // );
+    // const firstDotAfterInput: HTMLElement = deDots[0].nativeElement;
+    // expect(document.activeElement).toBe(firstDotAfterInput, 'focus is on first dot after tabbing from next button');
+
+    // // press tab to focus #after-carousel-button
+    // const afterCarouselButton: HTMLElement = fixtureHost.debugElement.query(
+    //   By.css('#after-carousel-button')
+    // ).nativeElement;
+    // triggerKeyboardEvent(firstDotAfterInput, 'keydown', 9, 'Tab');
+    // tick();
+    // fixtureHost.detectChanges();
+
+    // expect(document.activeElement).toBe(afterCarouselButton, 'focus is on #after-carousel-button after tabbing from first dot');
+
+    // navButtonsAfterInput[1].nativeElement.focus().click();
+    // tick();
+    // fixtureHost.detectChanges();
+
+    // // carousel moved, focus is still on next button, first slide is no longer active, aria-hidden for first slide should be true,
+    // // first nav button is no longer disabled
+    // expect(document.activeElement).toBe(navButtonsAfterInput[1].nativeElement, 'focus is on next button after clicking it');
+    // expect(navButtonsAfterInput[0].nativeElement.getAttribute('disabled')).toBeNull('prev button is enabled after moving carousel');
+
+    // // 2, 3 and 4th slides are active, aria-hidden for them should be false
+    // const allSlidesAfterNav: DebugElement[] = deCarouselComponent.queryAll(
+    //   By.css('.owl-item')
+    // );
+    // allSlidesAfterNav.forEach((slide) => {
+    //   const slideEl: HTMLElement = slide.nativeElement;
+    //   if (slideEl.innerHTML.includes('Slide 1')) {
+    //     expect(slideEl.getAttribute('aria-hidden')).toBe('true', 'aria-hidden="true" for first slide after moving carousel');
+    //   } else if (
+    //     slideEl.innerHTML.includes('Slide 2') ||
+    //     slideEl.innerHTML.includes('Slide 3') ||
+    //     slideEl.innerHTML.includes('Slide 4')
+    //   ) {
+    //     expect(slideEl.getAttribute('aria-hidden')).toBeFalsy('aria-hidden="true" is absent for active slides after moving carousel');
+    //   }
+    // });
+
+    // // first dot is no longer active, so aria-current should be null, tabindex should be -1
+    // // second dot is active, so aria-current should be true, tabindex should be 0
+    // deDots = deCarouselComponent.queryAll(
+    //   By.css('.owl-dots > .owl-dot')
+    // );
+    // expect(deDots[0].nativeElement.getAttribute('aria-current')).toBeNull('aria-current is null for first dot after moving carousel');
+    // expect(deDots[0].nativeElement.getAttribute('tabindex')).toBe('-1', 'tabindex="-1" for first dot after moving carousel');
+    // expect(deDots[1].nativeElement.getAttribute('aria-current')).toBe('true', 'aria-current="true" for second dot after moving carousel');
+    // expect(deDots[1].nativeElement.getAttribute('tabindex')).toBe('0', 'tabindex="0" for second dot after moving carousel');
+
+    // // arrowLeft and arrowRight key events should move focus to prev and next nav buttons respectively
+    // // press arrowLeft on next button to move focus to prev button
+    // triggerKeyboardEvent(navButtonsAfterInput[1].nativeElement, 'keydown', 37, 'ArrowLeft');
+    // tick();
+    // fixtureHost.detectChanges();
+    // expect(document.activeElement).toBe(navButtonsAfterInput[0].nativeElement, 'focus is on prev button after pressing ArrowLeft on next button');
+
+    // // press arrowRight on prev button to move focus to next button
+    // triggerKeyboardEvent(navButtonsAfterInput[0].nativeElement, 'keydown', 39, 'ArrowRight');
+    // tick();
+    // fixtureHost.detectChanges();
+    // expect(document.activeElement).toBe(navButtonsAfterInput[1].nativeElement, 'focus is on next button after pressing ArrowRight on prev button');
+
+    // // press arrowLeft on next button to move focus to prev button
+    // triggerKeyboardEvent(navButtonsAfterInput[1].nativeElement, 'keydown', 37, 'ArrowLeft');
+    // tick();
+    // fixtureHost.detectChanges();
+
+    // // click prev button to move carousel back
+    // navButtonsAfterInput[0].nativeElement.click();
+    // tick();
+    // fixtureHost.detectChanges();
+
+
+    // // prev button is disabled again, slide 1 is active again
+    // expect(navButtonsAfterInput[0].nativeElement.getAttribute('disabled')).toBeTruthy('prev button is disabled after moving carousel back');
+    // const allSlidesAfterNavBack: DebugElement[] = deCarouselComponent.queryAll(
+    //   By.css('.owl-item')
+    // );
+    // allSlidesAfterNavBack.forEach((slide) => {
+    //   const slideEl: HTMLElement = slide.nativeElement;
+    //   if (
+    //     slideEl.innerHTML.includes('Slide 1') ||
+    //     slideEl.innerHTML.includes('Slide 2') ||
+    //     slideEl.innerHTML.includes('Slide 3')
+    //   ) {
+    //     expect(slideEl.getAttribute('aria-hidden')).toBeFalsy('aria-hidden="true" is absent for first slide after moving carousel back');
+    //   } else if (slideEl.innerHTML.includes('Slide 4')) {
+    //     expect(slideEl.getAttribute('aria-hidden')).toBe('true', 'aria-hidden="true" for non-active slides after moving carousel back');
+    //   }
+    // });
+
+    // // move focus to next button and then to first dot
+    // triggerKeyboardEvent(navButtonsAfterInput[0].nativeElement, 'keydown', 9, 'Tab');
+    // tick();
+    // fixtureHost.detectChanges();
+
+    // triggerKeyboardEvent(navButtonsAfterInput[1].nativeElement, 'keydown', 9, 'Tab');
+    // tick();
+    // fixtureHost.detectChanges();
+
+    // deDots = deCarouselComponent.queryAll(
+    //   By.css('.owl-dots > .owl-dot')
+    // );
+    // const firstDotAfterNavBack: HTMLElement = deDots[0].nativeElement;
+    // expect(document.activeElement).toBe(firstDotAfterNavBack, 'focus is on first dot after moving carousel back');
+
+    // // move arrowRight to focus second dot and check if it has focus and tabindex=0, first should have tabindex=-1
+    // triggerKeyboardEvent(firstDotAfterNavBack, 'keydown', 39, 'ArrowRight');
+    // tick();
+    // fixtureHost.detectChanges();
+
+    // deDots = deCarouselComponent.queryAll(
+    //   By.css('.owl-dots > .owl-dot')
+    // );
+    // const secondDotAfterNavBack: HTMLElement = deDots[1].nativeElement;
+    // expect(document.activeElement).toBe(secondDotAfterNavBack, 'focus is on second dot after pressing ArrowRight on first dot');
+    // expect(secondDotAfterNavBack.getAttribute('tabindex')).toBe('0', 'tabindex="0" for second dot after pressing ArrowRight on first dot');
+    // expect(firstDotAfterNavBack.getAttribute('tabindex')).toBe('-1', 'tabindex="-1" for first dot after pressing ArrowRight on first dot');
+
+    // // move focus to third dot using arrowRight and check if it has focus and tabindex=0, second should have tabindex=-1
+    // triggerKeyboardEvent(secondDotAfterNavBack, 'keydown', 39, 'ArrowRight');
+    // tick();
+    // fixtureHost.detectChanges();
+
+    // deDots = deCarouselComponent.queryAll(
+    //   By.css('.owl-dots > .owl-dot')
+    // );
+    // const thirdDotAfterNavBack: HTMLElement = deDots[2].nativeElement;
+    // expect(document.activeElement).toBe(thirdDotAfterNavBack, 'focus is on third dot after pressing ArrowRight on second dot');
+    // expect(thirdDotAfterNavBack.getAttribute('tabindex')).toBe('0', 'tabindex="0" for third dot after pressing ArrowRight on second dot');
+    // expect(secondDotAfterNavBack.getAttribute('tabindex')).toBe('-1', 'tabindex="-1" for second dot after pressing ArrowRight on second dot');
+
+    // // move focus to second dot using arrowLeft and check if it has focus and tabindex=0, third should have tabindex=-1
+    // triggerKeyboardEvent(thirdDotAfterNavBack, 'keydown', 37, 'ArrowLeft');
+    // tick();
+    // fixtureHost.detectChanges();
+
+    // deDots = deCarouselComponent.queryAll(
+    //   By.css('.owl-dots > .owl-dot')
+    // );
+    // expect(document.activeElement).toBe(secondDotAfterNavBack, 'focus is on second dot after pressing ArrowLeft on third dot');
+    // expect(secondDotAfterNavBack.getAttribute('tabindex')).toBe('0', 'tabindex="0" for second dot after pressing ArrowLeft on third dot');
+    // expect(thirdDotAfterNavBack.getAttribute('tabindex')).toBe('-1', 'tabindex="-1" for third dot after pressing ArrowLeft on third dot');
+
+    // secondDotAfterNavBack.click();
+    // tick();
+    // fixtureHost.detectChanges();
+
+    // // second, third and fourth slides are active, aria-hidden for them should be false
+    // deSlides = deCarouselComponent.queryAll(
+    //   By.css('.owl-item')
+    // );
+    // deSlides.forEach((slide) => {
+    //   const slideEl: HTMLElement = slide.nativeElement;
+    //   if (slideEl.innerHTML.includes('Slide 1')) {
+    //     expect(slideEl.getAttribute('aria-hidden')).toBe('true', 'aria-hidden="true" for first slide after clicking second dot');
+    //   } else if (
+    //     slideEl.innerHTML.includes('Slide 2') ||
+    //     slideEl.innerHTML.includes('Slide 3') ||
+    //     slideEl.innerHTML.includes('Slide 4')
+    //   ) {
+    //     expect(slideEl.getAttribute('aria-hidden')).toBeFalsy('aria-hidden="true" is absent for active slides after clicking second dot');
+    //   }
+    // });
+
+    // // first dot is inactive, so aria-current should be null, tabindex should be -1
+    // // second dot is active, so aria-current should be true, tabindex should be 0
+    // deDots = deCarouselComponent.queryAll(
+    //   By.css('.owl-dots > .owl-dot')
+    // );
+    // expect(deDots[0].nativeElement.getAttribute('aria-current')).toBeNull('aria-current is null for first dot after clicking second dot');
+    // expect(deDots[0].nativeElement.getAttribute('tabindex')).toBe('-1', 'tabindex="-1" for first dot after clicking second dot');
+    // expect(deDots[1].nativeElement.getAttribute('aria-current')).toBe('true', 'aria-current="true" for second dot after clicking second dot');
+    // expect(deDots[1].nativeElement.getAttribute('tabindex')).toBe('0', 'tabindex="0" for second dot after clicking second dot');
+  }));
+
   // the ending of tests
 });
 
@@ -7046,4 +7391,20 @@ function triggerTouchEvent(
   });
 
   element.dispatchEvent(touchEvent);
+}
+
+function triggerKeyboardEvent(
+  element: HTMLElement,
+  eventType: string,
+  keyCode: number,
+  key: string
+) {
+  const keyboardEvent = new KeyboardEvent(eventType, {
+    key: key,
+    code: key,
+    keyCode: keyCode,
+    which: keyCode,
+    bubbles: true,
+  });
+  element.dispatchEvent(keyboardEvent);
 }
