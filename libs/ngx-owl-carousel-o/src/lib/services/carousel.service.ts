@@ -1530,6 +1530,11 @@ export class CarouselService {
 		if (this.settings.animateOut) {
 			currentClasses[this.settings.animateOut as string] = slide.isCustomAnimatedOut || false;
 		}
+		if (this.settings.autoHeight) {
+			currentClasses['owl-height'] = true;
+			currentClasses['height-0'] = slide.heightState === 'nulled';
+			currentClasses['height-full'] = slide.heightState === 'full';
+		}
 		return currentClasses;
 	}
 

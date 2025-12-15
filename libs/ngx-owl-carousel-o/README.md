@@ -2,6 +2,9 @@
 
 **ngx-owl-carousel-o** is built for Angular >=6.0.0. It doesn't use jQuery.
 
+**WARNING**: The version `20.1.0` introduces accessibility features with breaking changes for navigation buttons (prev/next) HTML structure and CSS.
+So if you update the lib from the version `<20.1.0` to `>=20.1.0`, you need to update your custom styles for navigation buttons.
+
 ## Compatibility
 
 ngx-owl-carousel-o      | Angular
@@ -37,10 +40,11 @@ ngx-owl-carousel-o      | Angular
 - [ReferenceError: Event is not defined](#referenceError-event-is-not-defined)
 - [Using `ngx-owl-carousel-o` slide data in custom code](#using-internal-slide-data)
 - [Issue: `autoplay` doesnt stay paused when user opens `mat-menu`](#issue-autoplay-doesnt-stay-paused-when-user-opens-mat-menu)
+- [Accessibility](#accessibility)
 
 ## Get started
 
-1. Run `yarn add ngx-owl-carousel-o` or `npm install ngx-owl-carousel-o` or `ng add ngx-owl-carousel-o`.
+1. Run `yarn add ngx-owl-carousel-o` or `npm install ngx-owl-carousel-o`.
 2. Add styles (one of these variants).
 
     - `angular.json`:
@@ -61,8 +65,7 @@ ngx-owl-carousel-o      | Angular
         ```
 
 3. Import `RouterModule` and `Routes` into `AppModule` unless they are imported.
-4. Import `BrowserAnimationsModule` into `AppModule`  unless it is imported.
-5. Import `CarouselModule` into a module which declares a component intended to have a carousel.
+4. Import `CarouselModule` into a module which declares a component intended to have a carousel.
 
     ```typescript
     import { CarouselModule } from 'ngx-owl-carousel-o';
@@ -73,10 +76,11 @@ ngx-owl-carousel-o      | Angular
     export class SomeModule { }
     ```
 
-6. Add to needed component `customOptions` or named in different way object with options for the carousel:
+5. Add to needed component `customOptions` or named in different way object with options for the carousel:
 
     ```typescript
     import { OwlOptions } from 'ngx-owl-carousel-o';
+    import { Component } from "@angular/core";
     @Component({
       selector: '....',
       templateUrl: 'carousel-holder.component.html'
@@ -109,7 +113,7 @@ ngx-owl-carousel-o      | Angular
     }
     ```
 
-7. Add html-markup to the template of the component (in this case, add it to `carousel-holder.component.html`):
+6. Add html-markup to the template of the component (in this case, add it to `carousel-holder.component.html`):
 
     ```html
       <div>Some tags before</div>
@@ -1218,7 +1222,7 @@ To get this data, define the variable `let-owlItem` or `let-slideData` in your t
   </ng-template>
 ```
 
-An internal slide data could be very helpful to add cool Angular animations. Use properties `isActive` and `isCentered` to switch the state of animation. An example is below.
+An internal slide data could be very helpful to add cool animations using native CSS animations. Use properties `isActive` and `isCentered` to toggle a CSS class. An example is below.
 
 1. Define animation in `your.component.ts`:
 
@@ -1226,26 +1230,25 @@ An internal slide data could be very helpful to add cool Angular animations. Use
     @Component({
       selector: 'app-test',
       templateUrl: './test.component.html',
+      // CSS animation is defined in the .slide, .slide.active classes. Check rules `transform`, `opacity`, and `transition`
+      styles: [`
+        .slide {
+          position: relative;
+          transform-origin: center;
+          transform: scale(0.7);
+          opacity: 0.8;
+          transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        }
+        .slide.active {
+            transform: scale(1.4);
+            opacity: 1;
+        }
 
-      // .....
-      animations: [
-        trigger('activeSlide', [
-          state('active', style({
-            transform: 'scale(1.4)',
-            opacity: 1,
-          })),
-          state('inActive', style({
-            transform: 'scale(0.7)',
-            opacity: 0.8,
-          })),
-          transition('active => inActive', [
-            animate('0.5s')
-          ]),
-          transition('inActive => active', [
-            animate('0.5s')
-          ])
-        ])
-      ]
+        .wrapper {
+          max-width: 800px;
+          margin: 0 auto;
+        }
+      `]
     })
     export class TestComponent implements OnInit {
     // .....
@@ -1269,7 +1272,7 @@ An internal slide data could be very helpful to add cool Angular animations. Use
     }
     ```
 
-2. Use internal slide data in the template. This example uses `let-owlItem` and prop `isCentered` (`owlItem.isCentered`) to toggle animation state:
+2. Use internal slide data in the template. This example uses `let-owlItem` and prop `isCentered` (`owlItem.isCentered`) to toggle CSS class `.active`:
 
     `test.component.html`
 
@@ -1278,7 +1281,7 @@ An internal slide data could be very helpful to add cool Angular animations. Use
         @for (image of imagesData; track image.id) {
           <ng-template carouselSlide let-owlItem> 
             <!--                                 \/          -->
-            <div class="slide" [@activeSlide]="owlItem.isCentered ? 'active' : 'inActive'">
+            <div class="slide" [class.active]="owlItem.isCentered">
               <img [src]="image.src" [alt]="image.alt" [title]="image.title">
             </div>
           </ng-template>
@@ -1322,6 +1325,24 @@ Example of usage in a template with `mat-menu`:
 
 When menu is opened, you call `stopAutoplay`: `(menuOpened)="owlCar.stopAutoplay()"`  
 When menu is closed, you call `startAutoplay`: `(closed)="owlCar.startAutoplay()"`
+
+## Accessibility
+
+_**Important**_:
+Inactive slides should be hidden from screen readers. To achieve that, the logic sets the option `ariaHidden` to `true`. But if you have focusable elements inside inactive slides, you should set `ariaHidden` to `false` and `tabindex` to `-1` for these elements as well. Otherwise, a user pressing `Tab` key will be able to focus these elements in inactive slides and be confused with this.
+
+The logic for accessibility covers these scenarios:
+
+- A user presses tab when any tabbable element before the carousel is focused to move the focus to the first focusable element in the carousel
+        This could be the prev button, unless it is disabled at the moment, or the next button if the prev button is disabled.
+- If both nav buttons are enabled a user should be able to move focus between prev and next buttons using arrowLeft and arrowRight keys
+- If the focus is on the next button and a user presses tab, the focus should move to the active dot.
+- If a user wants to focus another dot to click (press) it to change a slide, one should use arrowLeft and arrowRight keys to move focus between dots.
+- If a dot is focused and a user presses the Tab key, the focus should move to the first tabbable element after carousel.
+- If a user presses `Shift+Tab` then the focus moves back to the dot that was focused before tabbing out of carousel.
+- If a user presses `Shift+Tab` again, the focus should move to next nav button.
+- If a user presses `Shift+Tab` again, the focus should move to an active slide if it has a focusable element, or prev button if it's not disabled, 
+    or the last tabbable element before carousel.
 
 ## License
 

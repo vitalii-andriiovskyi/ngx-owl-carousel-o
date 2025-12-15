@@ -14,6 +14,7 @@ import {
   ContentChildren,
   QueryList,
   AfterContentInit,
+  viewChildren,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 
@@ -26,7 +27,7 @@ import { StageData } from "../models/stage-data.model";
 import { OwlDOMData } from "../models/owlDOM-data.model";
 import { SlideModel } from '../models/slide.model';
 import { OwlOptions } from '../models/owl-options.model';
-import { NavData, DotsData } from '../models/navigation-data.models';
+import { NavData, DotsData, OwlSingeDot } from '../models/navigation-data.models';
 import { NavigationService } from '../services/navigation.service';
 import { AutoplayService } from '../services/autoplay.service';
 import { LazyLoadService } from '../services/lazyload.service';
@@ -41,7 +42,7 @@ import { SlidesOutputData } from '../models/SlidesOutputData';
 @Component({
   selector: 'owl-carousel-o',
   template: `
-    <div class="owl-carousel owl-theme" #owlCarousel
+    <div role="region" aria-label="Carousel" class="owl-carousel owl-theme" #owlCarousel
       [ngClass]="{'owl-rtl': owlDOMData()?.rtl,
                   'owl-loaded': owlDOMData()?.isLoaded,
                   'owl-responsive': owlDOMData()?.isResponsive,
@@ -51,6 +52,22 @@ import { SlidesOutputData } from '../models/SlidesOutputData';
       (mouseleave)="startPlayML()"
       (touchstart)="startPausing()"
       (touchend)="startPlayTE()">
+
+      <div class="owl-carousel-inner">
+        @if(slides.toArray().length && !navData()?.disabled) {
+          <button 
+            #navBtn
+            id="owl-prev"
+            type="button" 
+            aria-label="Previous Slide" 
+            class="owl-prev" 
+            [ngClass]="{'disabled': navData()?.prev?.disabled}" 
+            (click)="prev()" 
+            [innerHTML]="navData()?.prev?.htmlText" 
+            (keydown)="onNavKeydown($event, 'owl-prev');"
+            [disabled]="navData()?.prev?.disabled">
+          </button>
+        }
 
       @if(carouselLoaded()) {
         <div class="owl-stage-outer">
@@ -62,22 +79,43 @@ import { SlidesOutputData } from '../models/SlidesOutputData';
                       [slidesData]="slidesData()"></owl-stage>
         </div> <!-- /.owl-stage-outer -->
       }
-
-      @if(slides.toArray().length) {
-          <div class="owl-nav" [ngClass]="{'disabled': navData()?.disabled}">
-            <div class="owl-prev" [ngClass]="{'disabled': navData()?.prev?.disabled}" (click)="prev()" [innerHTML]="navData()?.prev?.htmlText"></div>
-            <div class="owl-next" [ngClass]="{'disabled': navData()?.next?.disabled}" (click)="next()" [innerHTML]="navData()?.next?.htmlText"></div>
-          </div> <!-- /.owl-nav -->
-          <div class="owl-dots" [ngClass]="{'disabled': dotsData()?.disabled}">
-
-            @for (dot of dotsData()?.dots; track dot.id) {
-              <div  class="owl-dot" [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" (click)="moveByDot(dot.id)">
-                <span [innerHTML]="dot.innerContent"></span>
-              </div>
-            }
-            
-          </div> <!-- /.owl-dots -->
+      @if(slides.toArray().length && !navData()?.disabled) {
+        <button  
+          #navBtn
+          id="owl-next"
+          type="button" 
+          aria-label="Next Slide" 
+          class="owl-next" 
+          [ngClass]="{'disabled': navData()?.next?.disabled}" 
+          (click)="next()" 
+          [innerHTML]="navData()?.next?.htmlText" 
+          (keydown)="onNavKeydown($event, 'owl-next');"
+          [disabled]="navData()?.next?.disabled">
+        </button>
       }
+    </div>
+
+    @if(slides.toArray().length) {
+        <div class="owl-dots" [ngClass]="{'disabled': dotsData()?.disabled}" aria-label="Carousel Dots Pagination">
+
+          @for (dot of dotsData()?.dots; track dot.id; let i = $index) {
+            <button 
+              #dot 
+              [id]="dot.id"
+              type="button" 
+              [attr.aria-label]="'Carousel Dot ' + (i+1)"
+              [attr.aria-current]="dot.active ? 'true' : null"
+              class="owl-dot"
+              [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" 
+              (click)="moveByDot(dot.id)" 
+              (keydown)="onDotKeydown($event, dot.id);"
+              [attr.tabindex]="defineTabIndexForDots(dot)">
+              <span [innerHTML]="dot.innerContent"></span>
+            </button>
+          }
+          
+        </div> <!-- /.owl-dots -->
+    }
     </div> <!-- /.owl-carousel owl-loaded -->
   `,
   styles: [`.owl-theme { display: block; }`],
@@ -99,6 +137,9 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterContentInit {
   // when using effect I get endless loop, because it also uses options() input and they fire one after another
   @ContentChildren(CarouselSlideDirective)
   slides: QueryList<CarouselSlideDirective>;
+
+  dots = viewChildren<ElementRef>('dot');
+  navButtons = viewChildren<ElementRef>('navBtn');
 
   translated = output<SlidesOutputData>();
   dragging = output<{ dragging: boolean, data: SlidesOutputData }>();
@@ -461,6 +502,69 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterContentInit {
     }
   }
 
+  private _hasADotFocus(): boolean {
+    const activeEl = this.docRef?.activeElement;
+    return this.dots().some((dotEl) => dotEl.nativeElement === activeEl);
+  }
+
+  protected defineTabIndexForDots(dot: OwlSingeDot): number {
+    if (!this._carouselLoaded()) return -1;
+
+    if (!this._hasADotFocus() && dot.active) {
+      return 0;
+    }
+
+    const focusedElId = this.docRef?.activeElement?.id;
+    if (this._hasADotFocus() && focusedElId === dot.id) {
+      return 0;
+    }
+
+    return -1;
+  }
+
+  private _onArrowKeydown(event: KeyboardEvent, elems: readonly ElementRef<any>[], targetId: string) {
+    if (!this._carouselLoaded()) return;
+
+    const isArrowLeft = event.key === 'ArrowLeft' || event.code === 'ArrowLeft';
+    const isArrowRight = event.key === 'ArrowRight' || event.code === 'ArrowRight';
+
+    if (!isArrowLeft && !isArrowRight) {
+      return;
+    }
+
+    const curIndex = elems.findIndex((el) => el.nativeElement.id === targetId);
+    const futureIndex = isArrowLeft
+      ? (curIndex - 1 + elems.length) % elems.length
+      : (curIndex + 1) % elems.length;
+
+    elems?.[futureIndex]?.nativeElement?.focus();
+    return false;
+  }
+
+  protected onDotKeydown(event: KeyboardEvent, dotId: string) {
+    if (!this._carouselLoaded()) return;
+
+    if (event.key === 'Enter' || event.code === 'Enter') {
+      this.navigationService.moveByDot(dotId);
+      return false;
+    }
+    this._onArrowKeydown(event, this.dots() || [], dotId);
+  }
+
+  protected onNavKeydown(event: KeyboardEvent, navId: string) {
+    if (!this._carouselLoaded()) return;
+
+    if (event.key === 'Enter' || event.code === 'Enter') {
+      const navFunctions: { [key: string]: () => void } = {
+        'owl-next': () => this.next(),
+        'owl-prev': () => this.prev()
+      }
+      navFunctions[navId]?.();
+      return false;
+    }
+    this._onArrowKeydown(event, this.navButtons() || [], navId);
+  }
+
   /**
    * Handler for transitioend event
    */
@@ -472,16 +576,18 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterContentInit {
    * Handler for click event, attached to next button
    */
   next() {
-    if (!this._carouselLoaded()) return;
+    if (!this._carouselLoaded() || this.navData()?.next?.disabled) return;
     this.navigationService.next(this.carouselService.settings.navSpeed || false);
+    return false;
   }
 
   /**
    * Handler for click event, attached to prev button
    */
   prev() {
-    if (!this._carouselLoaded()) return;
+    if (!this._carouselLoaded() || this.navData()?.prev?.disabled) return;
     this.navigationService.prev(this.carouselService.settings.navSpeed || false);
+    return false;
   }
 
   /**
@@ -490,6 +596,7 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterContentInit {
   moveByDot(dotId: string) {
     if (!this._carouselLoaded()) return;
     this.navigationService.moveByDot(dotId);
+    return false;
   }
 
   /**
