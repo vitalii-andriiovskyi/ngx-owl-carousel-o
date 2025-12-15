@@ -1,4 +1,4 @@
-import { Component, NgZone, ElementRef, HostListener, Renderer2, OnInit, OnDestroy, input } from '@angular/core';
+import { Component, NgZone, ElementRef, HostListener, Renderer2, OnInit, OnDestroy, input, computed } from '@angular/core';
 import { CarouselService, Coords } from '../../services/carousel.service';
 import { Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -23,7 +23,11 @@ import { AnimateService } from '../../services/animate.service';
                                             'margin-left': slide.marginL ? slide.marginL + 'px' : '',
                                             'margin-right': slide.marginR ? slide.marginR + 'px' : '',
                                             'left': slide.left}"
-                                (animationend)="clear(slide.id)">
+                                (animationend)="clear(slide.id)"
+                                [id]="slide.id"
+                                role="group"
+                                [attr.aria-label]="'Slide ' + getActualSlideNumber(slide.id) + ' of ' + slidesCount()"
+                                [attr.aria-hidden]="!slide.isActive ? 'true' : null">
               @if(slide.load) {
                 <ng-template  [ngTemplateOutlet]="slide.tplRef" [ngTemplateOutletContext]="{ 
                   $implicit: preparePublicSlide(slide), 
@@ -58,6 +62,11 @@ export class StageComponent implements OnInit, OnDestroy {
    *  Data of every slide
    */
   slidesData = input<SlideModel[]>();
+
+  /**
+   *  The number of actual slides without cloned ones
+   */
+  slidesCount = computed(() => this.slidesData()?.filter(slide => !slide.isCloned)?.length);
 
   /**
    * Function wich will be returned after attaching listener to 'mousemove' event
@@ -425,5 +434,13 @@ export class StageComponent implements OnInit, OnDestroy {
    */
   clear(id) {
     this.animateService.clear(id);
+  }
+
+  protected getActualSlideNumber(slideId: string): number {
+    const originalId = slideId.replace('cloned-', '').replace('-append', '');
+    const index = this.slidesData()
+      ?.filter((el) => !el.isCloned)
+      ?.findIndex(slide => slide.id === originalId);
+    return (index || 0) + 1;
   }
 }
