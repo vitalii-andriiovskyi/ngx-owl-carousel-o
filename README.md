@@ -1,5 +1,7 @@
 # ngx-owl-carousel-o
 
+**ngx-owl-carousel-o** is built for Angular >=6.0.0. It doesn't use jQuery.
+
 **WARNING**: The version `20.1.0` introduces accessibility features with breaking changes for navigation buttons (prev/next) HTML structure and CSS.
 So if you update the lib from the version `<20.1.0` to `>=20.1.0`, you need to update your custom styles for navigation buttons.
 
@@ -7,7 +9,8 @@ So if you update the lib from the version `<20.1.0` to `>=20.1.0`, you need to u
 
 ngx-owl-carousel-o      | Angular
 ------------------------|--------
-20.x.x                  | 20.x.x
+21.x.x                  | 21.x.x
+20.x.x (latest `20.1.0`)| 20.x.x
 19.x.x (latest `19.0.2`)| 19.x.x
 18.x.x (latest `18.0.1`)| 18.x.x
 17.x.x (latest `17.0.1`)| 17.x.x
@@ -59,8 +62,8 @@ ngx-owl-carousel-o      | Angular
     - `src/styles.sass` or `src/styles.scss`:
 
         ```sass
-        @import 'ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
-        @import 'ngx-owl-carousel-o/lib/styles/scss/owl.theme.default';
+          @use 'ngx-owl-carousel-o/lib/styles/scss/owl.carousel';
+          @use 'ngx-owl-carousel-o/lib/styles/scss/owl.theme.default' as owl-theme;
         ```
 
 3. Import `RouterModule` and `Routes` into `AppModule` unless they are imported.
@@ -109,6 +112,20 @@ ngx-owl-carousel-o      | Angular
         },
         nav: true
       }
+      slidesStore = signal<any[]>([
+        { id: 'slide-1', text: 'Slide 1 HM', dataMerge: 2, width: 300, dotContent: 'text1' },
+        { id: 'slide-2', text: 'Slide 2 HM', dataMerge: 1, width: 500, dotContent: 'text2' },
+        { id: 'slide-3', text: 'Slide 3 HM', dataMerge: 3, width: 500, dotContent: 'text3' },
+        { id: 'slide-4', text: 'Slide 4 HM', width: 450, dotContent: 'text4' },
+        { id: 'slide-5', text: 'Slide 5 HM', dataMerge: 2, width: 500, dotContent: 'text5' },
+        { id: 'slide-6', text: 'Slide 6', width: 500, dotContent: 'text5' },
+        { id: 'slide-7', text: 'Slide 7', width: 500, dotContent: 'text6' },
+        { id: 'slide-8', text: 'Slide 8', width: 500, dotContent: 'text8' },
+        // { id: 'slide-7', text: 'Slide 7', dotContent: 'text5'},
+        // { id: 'slide-8', text: 'Slide 8', dotContent: 'text5'},
+        // { id: 'slide-9', text: 'Slide 9', dotContent: 'text5'},
+        // { id: 'slide-10', text: 'Slide 10', dotContent: 'text5'},
+      ]);
     }
     ```
 
@@ -130,7 +147,7 @@ ngx-owl-carousel-o      | Angular
       <div>Some tags before</div>
       <owl-carousel-o [options]="customOptions">
 
-        @for (slide of slidesStore; track slide.id) {
+        @for (slide of slidesStore(); track slide.id) {
           <ng-template carouselSlide [id]="slide.id">
             <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
           </ng-template>
@@ -168,7 +185,7 @@ The example of setting ids:
   <div>Some tags before</div>
   <owl-carousel-o [options]="customOptions">
 
-    @for(let slide of slidesStore; track slide.id) {
+    @for(let slide of slidesStore(); track slide.id) {
       <ng-template carouselSlide [id]="slide.id">
         <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
       </ng-template>
@@ -382,7 +399,7 @@ It means that mutating options object won't trigger the carousel refreshing:
   }
 ```
 
-It's needed to create a new options object. The object destructuring is helpful here:
+It's needed to create a new options object. The object destructuring is helpful here (Note it works if you still use Zone.js):
 
 ```typescript
   // ...
@@ -394,6 +411,35 @@ It's needed to create a new options object. The object destructuring is helpful 
 
   changeOptions() {
     this.customOptions = { ...this.customOptions, loop: false } // this will make the carousel refresh
+  }
+```
+
+For projects with no Zone.js, you should use signals and do this:
+
+```typescript
+  // ...
+  customOptions = signal<OwlOptions>({
+    autoWidth: true,
+    loop: true,
+    // ....
+  })
+
+  changeOptions() {
+   this.customOptions.update((cur) => ({
+      ...cur,
+      loop: !cur.loop,
+      responsive: {
+        0: {
+          items: 1
+        },
+        600: {
+          items: 2
+        },
+        900: {
+          items: 2
+        }
+      },
+    })); // this will make the carousel refresh
   }
 ```
 
@@ -410,7 +456,7 @@ Example of usage this directive:
 ```html
   <owl-carousel-o [options]="customOptions" (dragging)="isDragging = $event.dragging">
   
-    @for (item of carouselData; track item.id) {
+    @for (item of slidesStore(); track item.id) {
       <ng-template carouselSlide>
         <div class="slider">
           <a [owlRouterLink]="['/present']" [stopLink]="isDragging">{{item.text}}</a>

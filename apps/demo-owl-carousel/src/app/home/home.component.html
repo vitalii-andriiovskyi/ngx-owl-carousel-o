@@ -6,7 +6,7 @@
   <div class="row">
     <div class="col-10 offset-1">
 
-      <owl-carousel-o [options]="customOptions" (translated)="getPassedData($event)" (change)="getChangeData($event)"
+      <owl-carousel-o [options]="customOptions()" (translated)="getPassedData($event)" (change)="getChangeData($event)"
         (changed)="getChangedData($event)" #owlCar>
 
         @for (item of carouselData(); track item.id) {
