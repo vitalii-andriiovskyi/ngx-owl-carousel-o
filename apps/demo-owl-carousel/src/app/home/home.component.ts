@@ -1,5 +1,5 @@
 import { Component, OnInit, WritableSignal, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { Router, ActivatedRoute, RouterOutlet, RouterLink } from '@angular/router';
 import { tap } from 'rxjs/operators';
@@ -18,7 +18,7 @@ interface CarouselData {
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, CarouselModule, RouterOutlet, RouterLink],
+  imports: [CarouselModule, RouterOutlet, RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
     // { id: 'slide-10', text: 'Slide 10', dotContent: 'text5'},
   ]);
 
-  customOptions: OwlOptions = {
+  customOptions = signal<OwlOptions>({
     autoWidth: true,
     loop: false,
     // items: '10',
@@ -79,7 +79,7 @@ export class HomeComponent implements OnInit {
     },
     // stagePadding: 40,
     nav: true
-  }
+  })
 
   currentUrl: WritableSignal<string> = signal('');
   fragment: WritableSignal<string | null> = signal('');
@@ -141,9 +141,9 @@ export class HomeComponent implements OnInit {
   }
 
   changeCustomOptions() {
-    this.customOptions = {
-      ...this.customOptions,
-      loop: !this.customOptions.loop,
+    this.customOptions.update((cur) => ({
+      ...cur,
+      loop: !cur.loop,
       responsive: {
         0: {
           items: 1
@@ -155,7 +155,7 @@ export class HomeComponent implements OnInit {
           items: 2
         }
       },
-    };
-    console.log('customOptions', this.customOptions);
+    }));
+    console.log('customOptions', this.customOptions());
   }
 }

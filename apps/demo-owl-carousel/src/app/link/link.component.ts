@@ -1,11 +1,11 @@
 import { Component, WritableSignal, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { CarouselData } from '../app.component';
 
 @Component({
     selector: 'app-link',
-    imports: [CommonModule, CarouselModule],
+    imports: [CarouselModule],
     templateUrl: './link.component.html',
     styleUrl: './link.component.sass'
 })

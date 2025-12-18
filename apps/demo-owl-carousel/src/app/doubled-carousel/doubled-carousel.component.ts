@@ -1,10 +1,10 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CarouselComponent, CarouselModule, OwlOptions, SlidesOutputData } from 'ngx-owl-carousel-o';
 
 @Component({
   selector: 'app-doubled-carousel',
-  imports: [CommonModule, CarouselModule],
+  imports: [CarouselModule],
   templateUrl: './doubled-carousel.component.html',
   styleUrl: './doubled-carousel.component.scss'
 })
