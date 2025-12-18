@@ -1,4 +1,4 @@
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import { Component } from '@angular/core';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 
@@ -9,7 +9,7 @@ interface Image {
 }
 @Component({
   selector: 'app-gallery',
-  imports: [CommonModule, CarouselModule, NgOptimizedImage],
+  imports: [CarouselModule, NgOptimizedImage],
   templateUrl: './gallery.component.html',
   styleUrl: './gallery.component.sass',
 })

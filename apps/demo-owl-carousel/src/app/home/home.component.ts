@@ -1,5 +1,5 @@
 import { Component, OnInit, WritableSignal, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import { Router, ActivatedRoute, RouterOutlet, RouterLink } from '@angular/router';
 import { tap } from 'rxjs/operators';
@@ -18,7 +18,7 @@ interface CarouselData {
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, CarouselModule, RouterOutlet, RouterLink],
+  imports: [CarouselModule, RouterOutlet, RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

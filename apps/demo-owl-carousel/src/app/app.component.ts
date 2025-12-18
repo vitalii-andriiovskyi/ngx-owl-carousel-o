@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 
@@ -15,7 +15,7 @@ export interface CarouselData {
 
 @Component({
     selector: 'owl-carousel-libdemo-root',
-    imports: [CommonModule, RouterOutlet, CarouselModule, RouterLink],
+    imports: [RouterOutlet, CarouselModule, RouterLink],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.sass']
 })

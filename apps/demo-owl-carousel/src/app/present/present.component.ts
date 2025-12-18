@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit, ChangeDetectionStrategy, WritableSignal, signal } from '@angular/core';
 import { CarouselModule, OwlOptions, SlidesOutputData } from 'ngx-owl-carousel-o';
 import { MatMenuModule } from '@angular/material/menu';
@@ -17,7 +17,7 @@ interface CarouselData {
 
 @Component({
     selector: 'app-present',
-    imports: [CommonModule, CarouselModule, MatMenuModule, MatButtonModule],
+    imports: [CarouselModule, MatMenuModule, MatButtonModule],
     templateUrl: './present.component.html',
     styleUrl: './present.component.sass',
     changeDetection: ChangeDetectionStrategy.OnPush
