@@ -141,9 +141,9 @@ export class HomeComponent implements OnInit {
   }
 
   changeCustomOptions() {
-    this.customOptions.set({
-      ...this.customOptions(),
-      loop: !this.customOptions().loop,
+    this.customOptions.update((cur) => ({
+      ...cur,
+      loop: !cur.loop,
       responsive: {
         0: {
           items: 1
@@ -155,7 +155,7 @@ export class HomeComponent implements OnInit {
           items: 2
         }
       },
-    });
+    }));
     console.log('customOptions', this.customOptions());
   }
 }
