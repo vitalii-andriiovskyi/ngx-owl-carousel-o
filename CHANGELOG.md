@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v21.0.1](#v2101)
 * [v21.0.0](#v2100)
 * [v20.1.0](#v2010)
 * [v20.0.1](#v2001)
@@ -72,6 +73,10 @@
 * [v0.1.1](#v011)
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
+
+## v21.0.1
+
+The version `v21.0.1` adds css files export, so it is possible to `@import "ngx-owl-carousel-o/lib/styles/prebuilt-themes/owl.carousel.min.css"` in global css file.
 
 ## v21.0.0
 
