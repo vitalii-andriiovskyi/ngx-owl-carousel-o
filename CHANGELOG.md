@@ -1,5 +1,6 @@
 # Versions Changes
 
+* [v21.0.2](#v2102)
 * [v21.0.1](#v2101)
 * [v21.0.0](#v2100)
 * [v20.1.0](#v2010)
@@ -73,6 +74,10 @@
 * [v0.1.1](#v011)
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
+
+## v21.0.2
+
+The version `v21.0.2` fixes bugs accidentally introduced in the previous version.
 
 ## v21.0.1
 
