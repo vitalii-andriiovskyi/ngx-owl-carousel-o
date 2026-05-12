@@ -169,7 +169,7 @@ export class NavigationService implements OnDestroy {
         items.forEach(item => {
           this._dotsData.dots.push({
             active: false,
-            id: `dot-${item.id}`,
+            id: `dot-${item.id()}`,
             innerContent: item.dotContent(),
             showInnerContent: true
           });
