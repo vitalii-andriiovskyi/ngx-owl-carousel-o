@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/ng-packagr/package.schema.json",
   "name": "ngx-owl-carousel-o",
-  "version": "21.0.0",
+  "version": "21.0.2",
   "description": "Angular powered owl-carousel",
   "keywords": [
     "angular",
@@ -49,6 +49,15 @@
     },
     "./lib/styles/scss/owl.theme.green": {
       "sass": "./lib/styles/scss/owl.theme.green.scss"
+    },
+     "./lib/styles/prebuilt-themes/owl.carousel.min.css": {
+      "style": "./lib/styles/prebuilt-themes/owl.carousel.min.css"
+    },
+    "./lib/styles/prebuilt-themes/owl.theme.default.min.css": {
+      "style": "./lib/styles/prebuilt-themes/owl.theme.default.min.css"
+    },
+    "./lib/styles/prebuilt-themes/owl.theme.green.min.css": {
+      "style": "./lib/styles/prebuilt-themes/owl.theme.green.min.css"
     }
   }
 }
