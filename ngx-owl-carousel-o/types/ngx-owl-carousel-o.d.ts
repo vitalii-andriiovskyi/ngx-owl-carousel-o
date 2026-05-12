@@ -1222,11 +1222,11 @@ declare class NavigationService implements OnDestroy {
      */
     prev(speed: number | boolean): void;
     /**
-   * Slides to the specified item or page.
-   * @param position - The position of the item or page.
-   * @param speed - The time in milliseconds for the transition.
-   * @param standard - Whether to use the standard behaviour or not. Default meaning false
-   */
+     * Slides to the specified item or page.
+     * @param position - The position of the item or page.
+     * @param speed - The time in milliseconds for the transition.
+     * @param standard - Whether to use the standard behaviour or not. Default meaning false
+     */
     to(position: number, speed: number | boolean, standard?: boolean): void;
     /**
      * Moves carousel after user's clicking on any dots
