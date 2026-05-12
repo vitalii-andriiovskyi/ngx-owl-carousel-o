@@ -10,7 +10,7 @@ So if you update the lib from the version `<20.1.0` to `>=20.1.0`, you need to u
 ngx-owl-carousel-o      | Angular
 ------------------------|--------
 21.x.x                  | 21.x.x
-20.x.x (latest `20.1.0`)| 20.x.x
+20.x.x (latest `20.1.1`)| 20.x.x
 19.x.x (latest `19.0.2`)| 19.x.x
 18.x.x (latest `18.0.1`)| 18.x.x
 17.x.x (latest `17.0.1`)| 17.x.x

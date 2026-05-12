@@ -1682,11 +1682,11 @@ class NavigationService {
         disabled: false,
         prev: {
             disabled: false,
-            htmlText: ''
+            htmlText: '',
         },
         next: {
             disabled: false,
-            htmlText: ''
+            htmlText: '',
         },
     };
     /**
@@ -1694,7 +1694,7 @@ class NavigationService {
      */
     _dotsData = {
         disabled: false,
-        dots: []
+        dots: [],
     };
     constructor(carouselService) {
         this.carouselService = carouselService;
@@ -1707,7 +1707,9 @@ class NavigationService {
      * Defines Observables which service must observe
      */
     spyDataStreams() {
-        const initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(state => {
+        const initializedCarousel$ = this.carouselService
+            .getInitializedState()
+            .pipe(tap((state) => {
             this.initialize();
             this._updateNavPages();
             this.draw();
@@ -1716,7 +1718,9 @@ class NavigationService {
         }));
         // mostly changes in carouselService and carousel at all causes carouselService.to(). It moves stage right-left by its code and calling needed functions
         // Thus this method by calling carouselService.current(position) notifies about changes
-        const changedSettings$ = this.carouselService.getChangedState().pipe(filter(data => data.property.name === 'position'), tap(data => {
+        const changedSettings$ = this.carouselService
+            .getChangedState()
+            .pipe(filter((data) => data.property.name === 'position'), tap((data) => {
             this.update();
             // should be the call of the function written at the end of comment
             // but the method carouselServive.to() has setTimeout(f, 0) which contains carouselServive.update() which calls sendChanges() method.
@@ -1725,7 +1729,9 @@ class NavigationService {
             // carouselService.current(position) is being calling earlier than carouselServive.update();
             // this.carouselService.sendChanges();
         }));
-        const refreshedCarousel$ = this.carouselService.getRefreshedState().pipe(tap(() => {
+        const refreshedCarousel$ = this.carouselService
+            .getRefreshedState()
+            .pipe(tap(() => {
             this._updateNavPages();
             this.draw();
             this.update();
@@ -1752,7 +1758,8 @@ class NavigationService {
         let i, j, k;
         const lower = this.carouselService.clones().length / 2, upper = lower + this.carouselService.items().length, maximum = this.carouselService.maximum(true), pages = [], settings = this.carouselService.settings;
         let size = settings.center || settings.autoWidth || settings.dotsData
-            ? 1 : Math.floor(Number(settings.dotsEach)) || Math.floor(settings.items);
+            ? 1
+            : Math.floor(Number(settings.dotsEach)) || Math.floor(settings.items);
         size = +size;
         if (settings.slideBy !== 'page') {
             settings.slideBy = Math.min(+settings.slideBy, settings.items);
@@ -1762,12 +1769,12 @@ class NavigationService {
                 if (j >= size || j === 0) {
                     pages.push({
                         start: Math.min(maximum, i - lower),
-                        end: i - lower + size - 1
+                        end: i - lower + size - 1,
                     });
                     if (Math.min(maximum, i - lower) === maximum) {
                         break;
                     }
-                    j = 0, ++k;
+                    (j = 0), ++k;
                 }
                 j += this.carouselService.mergers(this.carouselService.relative(i));
             }
@@ -1787,12 +1794,12 @@ class NavigationService {
             difference = this._pages.length - this._dotsData.dots.length;
             if (settings.dotsData && difference !== 0) {
                 this._dotsData.dots = [];
-                items.forEach(item => {
+                items.forEach((item) => {
                     this._dotsData.dots.push({
                         active: false,
-                        id: `dot-${item.id}`,
+                        id: `dot-${item.id()}`,
                         innerContent: item.dotContent(),
-                        showInnerContent: true
+                        showInnerContent: true,
                     });
                 });
             }
@@ -1803,7 +1810,7 @@ class NavigationService {
                         active: false,
                         id: `dot-${i + startI}`,
                         innerContent: '',
-                        showInnerContent: false
+                        showInnerContent: false,
                     });
                 }
             }
@@ -1814,7 +1821,6 @@ class NavigationService {
         this.carouselService.navData = this._navData;
         this.carouselService.dotsData = this._dotsData;
     }
-    ;
     /**
      * Updates navigation buttons's and dots's states
      */
@@ -1828,8 +1834,10 @@ class NavigationService {
     _updateNavButtons() {
         const settings = this.carouselService.settings, loop = settings.loop || settings.rewind, index = this.carouselService.relative(this.carouselService.current());
         if (settings.nav) {
-            this._navData.prev.disabled = !loop && index <= this.carouselService.minimum(true);
-            this._navData.next.disabled = !loop && index >= this.carouselService.maximum(true);
+            this._navData.prev.disabled =
+                !loop && index <= this.carouselService.minimum(true);
+            this._navData.next.disabled =
+                !loop && index >= this.carouselService.maximum(true);
         }
         this.carouselService.navData = this._navData;
     }
@@ -1841,7 +1849,7 @@ class NavigationService {
         if (!this.carouselService.settings.dots) {
             return;
         }
-        this._dotsData.dots.forEach(item => {
+        this._dotsData.dots.forEach((item) => {
             if (item.active === true) {
                 item.active = false;
             }
@@ -1859,15 +1867,16 @@ class NavigationService {
     _current() {
         const current = this.carouselService.relative(this.carouselService.current());
         let finalCurrent;
-        const pages = this._pages.filter((page, index) => {
+        const pages = this._pages
+            .filter((page, index) => {
             return page.start <= current && page.end >= current;
-        }).pop();
-        finalCurrent = this._pages.findIndex(page => {
+        })
+            .pop();
+        finalCurrent = this._pages.findIndex((page) => {
             return page.start === pages.start && page.end === pages.end;
         });
         return finalCurrent;
     }
-    ;
     /**
      * Gets the current succesor/predecessor position.
      * @param sussessor position of slide
@@ -1885,11 +1894,12 @@ class NavigationService {
         else {
             position = this.carouselService.relative(this.carouselService.current());
             length = this.carouselService.items().length;
-            successor ? position += +settings.slideBy : position -= +settings.slideBy;
+            successor
+                ? (position += +settings.slideBy)
+                : (position -= +settings.slideBy);
         }
         return position;
     }
-    ;
     /**
      * Slides to the next item or page.
      * @param speed The time in milliseconds for the transition.
@@ -1897,7 +1907,6 @@ class NavigationService {
     next(speed) {
         this.carouselService.to(this._getPosition(true), speed);
     }
-    ;
     /**
      * Slides to the previous item or page.
      * @param speed The time in milliseconds for the transition.
@@ -1905,13 +1914,12 @@ class NavigationService {
     prev(speed) {
         this.carouselService.to(this._getPosition(false), speed);
     }
-    ;
     /**
-   * Slides to the specified item or page.
-   * @param position - The position of the item or page.
-   * @param speed - The time in milliseconds for the transition.
-   * @param standard - Whether to use the standard behaviour or not. Default meaning false
-   */
+     * Slides to the specified item or page.
+     * @param position - The position of the item or page.
+     * @param speed - The time in milliseconds for the transition.
+     * @param standard - Whether to use the standard behaviour or not. Default meaning false
+     */
     to(position, speed, standard) {
         let length;
         if (!standard && this._pages.length) {
@@ -1922,12 +1930,11 @@ class NavigationService {
             this.carouselService.to(position, speed);
         }
     }
-    ;
     /**
      * Moves carousel after user's clicking on any dots
      */
     moveByDot(dotId) {
-        const index = this._dotsData.dots.findIndex(dot => dotId === dot.id);
+        const index = this._dotsData.dots.findIndex((dot) => dotId === dot.id);
         this.to(index, this.carouselService.settings.dotsSpeed);
     }
     /**
@@ -1935,7 +1942,7 @@ class NavigationService {
      * @param id id of slide
      */
     toSlideById(id) {
-        const position = this.carouselService.slidesData.findIndex(slide => slide.id === id && slide.isCloned === false);
+        const position = this.carouselService.slidesData.findIndex((slide) => slide.id === id && slide.isCloned === false);
         if (position === -1 || position === this.carouselService.current()) {
             console.log(`Slide with id=${id} not found`);
             return;
