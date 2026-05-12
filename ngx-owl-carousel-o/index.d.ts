@@ -1222,11 +1222,11 @@ declare class NavigationService implements OnDestroy {
      */
     prev(speed: number | boolean): void;
     /**
-   * Slides to the specified item or page.
-   * @param position - The position of the item or page.
-   * @param speed - The time in milliseconds for the transition.
-   * @param standard - Whether to use the standard behaviour or not. Default meaning false
-   */
+     * Slides to the specified item or page.
+     * @param position - The position of the item or page.
+     * @param speed - The time in milliseconds for the transition.
+     * @param standard - Whether to use the standard behaviour or not. Default meaning false
+     */
     to(position: number, speed: number | boolean, standard?: boolean): void;
     /**
      * Moves carousel after user's clicking on any dots
@@ -1457,6 +1457,8 @@ declare class CarouselComponent implements OnInit, OnDestroy, AfterContentInit {
     private logger;
     private changeDetectorRef;
     slides: QueryList<CarouselSlideDirective>;
+    dots: Signal<readonly ElementRef<any>[]>;
+    navButtons: Signal<readonly ElementRef<any>[]>;
     translated: i0.OutputEmitterRef<SlidesOutputData>;
     dragging: i0.OutputEmitterRef<{
         dragging: boolean;
@@ -1573,6 +1575,11 @@ declare class CarouselComponent implements OnInit, OnDestroy, AfterContentInit {
      * Init subscription to resize event and attaches handler for this event
      */
     private _winResizeWatcher;
+    private _hasADotFocus;
+    protected defineTabIndexForDots(dot: OwlSingeDot): number;
+    private _onArrowKeydown;
+    protected onDotKeydown(event: KeyboardEvent, dotId: string): boolean;
+    protected onNavKeydown(event: KeyboardEvent, navId: string): boolean;
     /**
      * Handler for transitioend event
      */
@@ -1580,15 +1587,15 @@ declare class CarouselComponent implements OnInit, OnDestroy, AfterContentInit {
     /**
      * Handler for click event, attached to next button
      */
-    next(): void;
+    next(): boolean;
     /**
      * Handler for click event, attached to prev button
      */
-    prev(): void;
+    prev(): boolean;
     /**
      * Handler for click event, attached to dots
      */
-    moveByDot(dotId: string): void;
+    moveByDot(dotId: string): boolean;
     /**
      * rewinds carousel to slide with needed id
      * @param id fragment of url
@@ -1637,6 +1644,10 @@ declare class StageComponent implements OnInit, OnDestroy {
      *  Data of every slide
      */
     slidesData: i0.InputSignal<SlideModel[]>;
+    /**
+     *  The number of actual slides without cloned ones
+     */
+    slidesCount: i0.Signal<number>;
     /**
      * Function wich will be returned after attaching listener to 'mousemove' event
      */
@@ -1790,6 +1801,7 @@ declare class StageComponent implements OnInit, OnDestroy {
      * @param id Id of slides
      */
     clear(id: any): void;
+    protected getActualSlideNumber(slideId: string): number;
     static ɵfac: i0.ɵɵFactoryDeclaration<StageComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<StageComponent, "owl-stage", never, { "owlDraggable": { "alias": "owlDraggable"; "required": false; "isSignal": true; }; "stageData": { "alias": "stageData"; "required": false; "isSignal": true; }; "slidesData": { "alias": "slidesData"; "required": false; "isSignal": true; }; }, {}, never, never, false, never>;
 }

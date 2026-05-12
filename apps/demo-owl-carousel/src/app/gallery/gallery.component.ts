@@ -1,5 +1,4 @@
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 
@@ -9,28 +8,10 @@ interface Image {
   alt?: string;
 }
 @Component({
-    selector: 'app-gallery',
-    imports: [CommonModule, CarouselModule, NgOptimizedImage],
-    templateUrl: './gallery.component.html',
-    styleUrl: './gallery.component.sass',
-    animations: [
-        trigger('activeSlide', [
-            state('active', style({
-                transform: 'scale(1.4)',
-                opacity: 1,
-            })),
-            state('inActive', style({
-                transform: 'scale(0.7)',
-                opacity: 0.8,
-            })),
-            transition('active => inActive', [
-                animate('0.5s')
-            ]),
-            transition('inActive => active', [
-                animate('0.5s')
-            ])
-        ])
-    ]
+  selector: 'app-gallery',
+  imports: [CommonModule, CarouselModule, NgOptimizedImage],
+  templateUrl: './gallery.component.html',
+  styleUrl: './gallery.component.sass',
 })
 export class GalleryComponent {
   imagesData: Image[] = [

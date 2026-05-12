@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { isDevMode, Injectable, InjectionToken, PLATFORM_ID, Inject, Optional, input, Directive, HostListener, Component, output, signal, ContentChildren, ChangeDetectionStrategy, Input, Attribute, HostBinding, NgModule } from '@angular/core';
+import { isDevMode, Injectable, InjectionToken, PLATFORM_ID, Inject, Optional, input, Directive, computed, HostListener, Component, viewChildren, output, signal, ContentChildren, ChangeDetectionStrategy, Input, Attribute, HostBinding, NgModule } from '@angular/core';
 import * as i3 from '@angular/common';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -7,7 +7,6 @@ import { Subject, merge, of, fromEvent, from } from 'rxjs';
 import { tap, filter, switchMap, first, take, skip, map, toArray, pairwise, delay } from 'rxjs/operators';
 import * as i1 from '@angular/router';
 import { NavigationEnd } from '@angular/router';
-import { trigger, state, transition, style, animate } from '@angular/animations';
 
 /**
  * Defaults value of options
@@ -134,10 +133,10 @@ class OwlLogger {
     warn(value, ...rest) {
         console.warn(value, ...rest);
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: OwlLogger, deps: [{ token: i0.ErrorHandler }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: OwlLogger });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: OwlLogger, deps: [{ token: i0.ErrorHandler }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: OwlLogger });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: OwlLogger, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: OwlLogger, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: i0.ErrorHandler }] });
 
@@ -1444,6 +1443,11 @@ class CarouselService {
         if (this.settings.animateOut) {
             currentClasses[this.settings.animateOut] = slide.isCustomAnimatedOut || false;
         }
+        if (this.settings.autoHeight) {
+            currentClasses['owl-height'] = true;
+            currentClasses['height-0'] = slide.heightState === 'nulled';
+            currentClasses['height-full'] = slide.heightState === 'full';
+        }
         return currentClasses;
     }
     /**
@@ -1650,10 +1654,10 @@ class CarouselService {
             y: first.y - second.y
         };
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: CarouselService, deps: [{ token: OwlLogger }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: CarouselService });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: CarouselService, deps: [{ token: OwlLogger }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: CarouselService });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: CarouselService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: CarouselService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: OwlLogger }] });
 
@@ -1678,11 +1682,11 @@ class NavigationService {
         disabled: false,
         prev: {
             disabled: false,
-            htmlText: ''
+            htmlText: '',
         },
         next: {
             disabled: false,
-            htmlText: ''
+            htmlText: '',
         },
     };
     /**
@@ -1690,7 +1694,7 @@ class NavigationService {
      */
     _dotsData = {
         disabled: false,
-        dots: []
+        dots: [],
     };
     constructor(carouselService) {
         this.carouselService = carouselService;
@@ -1703,7 +1707,9 @@ class NavigationService {
      * Defines Observables which service must observe
      */
     spyDataStreams() {
-        const initializedCarousel$ = this.carouselService.getInitializedState().pipe(tap(state => {
+        const initializedCarousel$ = this.carouselService
+            .getInitializedState()
+            .pipe(tap((state) => {
             this.initialize();
             this._updateNavPages();
             this.draw();
@@ -1712,7 +1718,9 @@ class NavigationService {
         }));
         // mostly changes in carouselService and carousel at all causes carouselService.to(). It moves stage right-left by its code and calling needed functions
         // Thus this method by calling carouselService.current(position) notifies about changes
-        const changedSettings$ = this.carouselService.getChangedState().pipe(filter(data => data.property.name === 'position'), tap(data => {
+        const changedSettings$ = this.carouselService
+            .getChangedState()
+            .pipe(filter((data) => data.property.name === 'position'), tap((data) => {
             this.update();
             // should be the call of the function written at the end of comment
             // but the method carouselServive.to() has setTimeout(f, 0) which contains carouselServive.update() which calls sendChanges() method.
@@ -1721,7 +1729,9 @@ class NavigationService {
             // carouselService.current(position) is being calling earlier than carouselServive.update();
             // this.carouselService.sendChanges();
         }));
-        const refreshedCarousel$ = this.carouselService.getRefreshedState().pipe(tap(() => {
+        const refreshedCarousel$ = this.carouselService
+            .getRefreshedState()
+            .pipe(tap(() => {
             this._updateNavPages();
             this.draw();
             this.update();
@@ -1748,7 +1758,8 @@ class NavigationService {
         let i, j, k;
         const lower = this.carouselService.clones().length / 2, upper = lower + this.carouselService.items().length, maximum = this.carouselService.maximum(true), pages = [], settings = this.carouselService.settings;
         let size = settings.center || settings.autoWidth || settings.dotsData
-            ? 1 : Math.floor(Number(settings.dotsEach)) || Math.floor(settings.items);
+            ? 1
+            : Math.floor(Number(settings.dotsEach)) || Math.floor(settings.items);
         size = +size;
         if (settings.slideBy !== 'page') {
             settings.slideBy = Math.min(+settings.slideBy, settings.items);
@@ -1758,12 +1769,12 @@ class NavigationService {
                 if (j >= size || j === 0) {
                     pages.push({
                         start: Math.min(maximum, i - lower),
-                        end: i - lower + size - 1
+                        end: i - lower + size - 1,
                     });
                     if (Math.min(maximum, i - lower) === maximum) {
                         break;
                     }
-                    j = 0, ++k;
+                    (j = 0), ++k;
                 }
                 j += this.carouselService.mergers(this.carouselService.relative(i));
             }
@@ -1783,12 +1794,12 @@ class NavigationService {
             difference = this._pages.length - this._dotsData.dots.length;
             if (settings.dotsData && difference !== 0) {
                 this._dotsData.dots = [];
-                items.forEach(item => {
+                items.forEach((item) => {
                     this._dotsData.dots.push({
                         active: false,
-                        id: `dot-${item.id}`,
+                        id: `dot-${item.id()}`,
                         innerContent: item.dotContent(),
-                        showInnerContent: true
+                        showInnerContent: true,
                     });
                 });
             }
@@ -1799,7 +1810,7 @@ class NavigationService {
                         active: false,
                         id: `dot-${i + startI}`,
                         innerContent: '',
-                        showInnerContent: false
+                        showInnerContent: false,
                     });
                 }
             }
@@ -1810,7 +1821,6 @@ class NavigationService {
         this.carouselService.navData = this._navData;
         this.carouselService.dotsData = this._dotsData;
     }
-    ;
     /**
      * Updates navigation buttons's and dots's states
      */
@@ -1824,8 +1834,10 @@ class NavigationService {
     _updateNavButtons() {
         const settings = this.carouselService.settings, loop = settings.loop || settings.rewind, index = this.carouselService.relative(this.carouselService.current());
         if (settings.nav) {
-            this._navData.prev.disabled = !loop && index <= this.carouselService.minimum(true);
-            this._navData.next.disabled = !loop && index >= this.carouselService.maximum(true);
+            this._navData.prev.disabled =
+                !loop && index <= this.carouselService.minimum(true);
+            this._navData.next.disabled =
+                !loop && index >= this.carouselService.maximum(true);
         }
         this.carouselService.navData = this._navData;
     }
@@ -1837,7 +1849,7 @@ class NavigationService {
         if (!this.carouselService.settings.dots) {
             return;
         }
-        this._dotsData.dots.forEach(item => {
+        this._dotsData.dots.forEach((item) => {
             if (item.active === true) {
                 item.active = false;
             }
@@ -1855,15 +1867,16 @@ class NavigationService {
     _current() {
         const current = this.carouselService.relative(this.carouselService.current());
         let finalCurrent;
-        const pages = this._pages.filter((page, index) => {
+        const pages = this._pages
+            .filter((page, index) => {
             return page.start <= current && page.end >= current;
-        }).pop();
-        finalCurrent = this._pages.findIndex(page => {
+        })
+            .pop();
+        finalCurrent = this._pages.findIndex((page) => {
             return page.start === pages.start && page.end === pages.end;
         });
         return finalCurrent;
     }
-    ;
     /**
      * Gets the current succesor/predecessor position.
      * @param sussessor position of slide
@@ -1881,11 +1894,12 @@ class NavigationService {
         else {
             position = this.carouselService.relative(this.carouselService.current());
             length = this.carouselService.items().length;
-            successor ? position += +settings.slideBy : position -= +settings.slideBy;
+            successor
+                ? (position += +settings.slideBy)
+                : (position -= +settings.slideBy);
         }
         return position;
     }
-    ;
     /**
      * Slides to the next item or page.
      * @param speed The time in milliseconds for the transition.
@@ -1893,7 +1907,6 @@ class NavigationService {
     next(speed) {
         this.carouselService.to(this._getPosition(true), speed);
     }
-    ;
     /**
      * Slides to the previous item or page.
      * @param speed The time in milliseconds for the transition.
@@ -1901,13 +1914,12 @@ class NavigationService {
     prev(speed) {
         this.carouselService.to(this._getPosition(false), speed);
     }
-    ;
     /**
-   * Slides to the specified item or page.
-   * @param position - The position of the item or page.
-   * @param speed - The time in milliseconds for the transition.
-   * @param standard - Whether to use the standard behaviour or not. Default meaning false
-   */
+     * Slides to the specified item or page.
+     * @param position - The position of the item or page.
+     * @param speed - The time in milliseconds for the transition.
+     * @param standard - Whether to use the standard behaviour or not. Default meaning false
+     */
     to(position, speed, standard) {
         let length;
         if (!standard && this._pages.length) {
@@ -1918,12 +1930,11 @@ class NavigationService {
             this.carouselService.to(position, speed);
         }
     }
-    ;
     /**
      * Moves carousel after user's clicking on any dots
      */
     moveByDot(dotId) {
-        const index = this._dotsData.dots.findIndex(dot => dotId === dot.id);
+        const index = this._dotsData.dots.findIndex((dot) => dotId === dot.id);
         this.to(index, this.carouselService.settings.dotsSpeed);
     }
     /**
@@ -1931,16 +1942,17 @@ class NavigationService {
      * @param id id of slide
      */
     toSlideById(id) {
-        const position = this.carouselService.slidesData.findIndex(slide => slide.id === id && slide.isCloned === false);
+        const position = this.carouselService.slidesData.findIndex((slide) => slide.id === id && slide.isCloned === false);
         if (position === -1 || position === this.carouselService.current()) {
+            console.log(`Slide with id=${id} not found`);
             return;
         }
         this.carouselService.to(this.carouselService.relative(position), false);
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: NavigationService, deps: [{ token: CarouselService }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: NavigationService });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: NavigationService, deps: [{ token: CarouselService }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: NavigationService });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: NavigationService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: NavigationService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: CarouselService }] });
 
@@ -1980,10 +1992,10 @@ class BrowserWindowRef extends WindowRef {
     get nativeWindow() {
         return window;
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: BrowserWindowRef, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: BrowserWindowRef });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: BrowserWindowRef, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: BrowserWindowRef });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: BrowserWindowRef, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: BrowserWindowRef, decorators: [{
             type: Injectable
         }], ctorParameters: () => [] });
 /**
@@ -2047,10 +2059,10 @@ class BrowserDocumentRef extends DocumentRef {
     get nativeDocument() {
         return document;
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: BrowserDocumentRef, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: BrowserDocumentRef });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: BrowserDocumentRef, deps: [], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: BrowserDocumentRef });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: BrowserDocumentRef, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: BrowserDocumentRef, decorators: [{
             type: Injectable
         }], ctorParameters: () => [] });
 /**
@@ -2277,10 +2289,10 @@ class AutoplayService {
             this._playAfterTranslated();
         }
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: AutoplayService, deps: [{ token: CarouselService }, { token: WINDOW }, { token: DOCUMENT }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: AutoplayService });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: AutoplayService, deps: [{ token: CarouselService }, { token: WINDOW }, { token: DOCUMENT }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: AutoplayService });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: AutoplayService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: AutoplayService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: CarouselService }, { type: undefined, decorators: [{
                     type: Inject,
@@ -2352,10 +2364,10 @@ class LazyLoadService {
         }
         this.carouselService.slidesData[position].load = true;
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: LazyLoadService, deps: [{ token: CarouselService }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: LazyLoadService });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: LazyLoadService, deps: [{ token: CarouselService }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: LazyLoadService });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: LazyLoadService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: LazyLoadService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: CarouselService }] });
 
@@ -2464,10 +2476,10 @@ class AnimateService {
         this.carouselService.onTransitionEnd();
     }
     ;
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: AnimateService, deps: [{ token: CarouselService }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: AnimateService });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: AnimateService, deps: [{ token: CarouselService }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: AnimateService });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: AnimateService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: AnimateService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: CarouselService }] });
 
@@ -2506,7 +2518,10 @@ class AutoHeightService {
                 this.update();
             }
         }));
-        const autoHeight$ = merge(initializedCarousel$, changedSettings$, refreshedCarousel$);
+        const autoHeight$ = merge(initializedCarousel$, changedSettings$, refreshedCarousel$).pipe(tap(() => {
+            this.carouselService.slidesData.forEach(slide => slide.classes = this.carouselService.setCurSlideClasses(slide));
+            this.carouselService.sendChanges();
+        }));
         this.autoHeightSubscription = autoHeight$.subscribe(() => { });
     }
     /**
@@ -2523,10 +2538,10 @@ class AutoHeightService {
             slide.heightState = (i >= start && i < end) ? 'full' : 'nulled';
         });
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: AutoHeightService, deps: [{ token: CarouselService }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: AutoHeightService });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: AutoHeightService, deps: [{ token: CarouselService }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: AutoHeightService });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: AutoHeightService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: AutoHeightService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: CarouselService }] });
 
@@ -2602,10 +2617,10 @@ class HashService {
             this.rewind(fragment);
         });
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: HashService, deps: [{ token: CarouselService }, { token: i1.ActivatedRoute, optional: true }, { token: i1.Router, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: HashService });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: HashService, deps: [{ token: CarouselService }, { token: i1.ActivatedRoute, optional: true }, { token: i1.Router, optional: true }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: HashService });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: HashService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: HashService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: CarouselService }, { type: i1.ActivatedRoute, decorators: [{
                     type: Optional
@@ -2620,28 +2635,30 @@ class CarouselSlideDirective {
      * Unique slide identifier. Must be unique for the entire document for proper accessibility support.
      * Will be auto-generated if not provided.
      */
-    id = input(`owl-slide-${nextId++}`);
+    id = input(`owl-slide-${nextId++}`, ...(ngDevMode ? [{ debugName: "id" }] : []));
     /**
      * Defines how much widths of common slide will current slide have
      * e.g. if dataMerge=2, the slide will twice wider then slides with dataMerge=1
      */
-    dataMerge = input(1, {
-        transform: (data) => {
-            return +data || 1;
-        }
-    });
+    dataMerge = input(1, ...(ngDevMode ? [{ debugName: "dataMerge", transform: (data) => {
+                return +data || 1;
+            } }] : [{
+            transform: (data) => {
+                return +data || 1;
+            }
+        }]));
     /**
      * Width of slide
      */
-    width = input(0);
+    width = input(0, ...(ngDevMode ? [{ debugName: "width" }] : []));
     /**
      * Inner content of dot for certain slide; can be html-markup
      */
-    dotContent = input('');
+    dotContent = input('', ...(ngDevMode ? [{ debugName: "dotContent" }] : []));
     /**
      * Hash (fragment) of url which corresponds to certain slide
      */
-    dataHash = input('');
+    dataHash = input('', ...(ngDevMode ? [{ debugName: "dataHash" }] : []));
     constructor(tplRef) {
         this.tplRef = tplRef;
     }
@@ -2653,16 +2670,16 @@ class CarouselSlideDirective {
     isNumeric(number) {
         return !isNaN(parseFloat(number));
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: CarouselSlideDirective, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "17.1.0", version: "20.0.2", type: CarouselSlideDirective, isStandalone: false, selector: "ng-template[carouselSlide]", inputs: { id: { classPropertyName: "id", publicName: "id", isSignal: true, isRequired: false, transformFunction: null }, dataMerge: { classPropertyName: "dataMerge", publicName: "dataMerge", isSignal: true, isRequired: false, transformFunction: null }, width: { classPropertyName: "width", publicName: "width", isSignal: true, isRequired: false, transformFunction: null }, dotContent: { classPropertyName: "dotContent", publicName: "dotContent", isSignal: true, isRequired: false, transformFunction: null }, dataHash: { classPropertyName: "dataHash", publicName: "dataHash", isSignal: true, isRequired: false, transformFunction: null } }, ngImport: i0 });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: CarouselSlideDirective, deps: [{ token: i0.TemplateRef }], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "17.1.0", version: "20.3.9", type: CarouselSlideDirective, isStandalone: false, selector: "ng-template[carouselSlide]", inputs: { id: { classPropertyName: "id", publicName: "id", isSignal: true, isRequired: false, transformFunction: null }, dataMerge: { classPropertyName: "dataMerge", publicName: "dataMerge", isSignal: true, isRequired: false, transformFunction: null }, width: { classPropertyName: "width", publicName: "width", isSignal: true, isRequired: false, transformFunction: null }, dotContent: { classPropertyName: "dotContent", publicName: "dotContent", isSignal: true, isRequired: false, transformFunction: null }, dataHash: { classPropertyName: "dataHash", publicName: "dataHash", isSignal: true, isRequired: false, transformFunction: null } }, ngImport: i0 });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: CarouselSlideDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: CarouselSlideDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: 'ng-template[carouselSlide]',
                     standalone: false
                 }]
-        }], ctorParameters: () => [{ type: i0.TemplateRef }] });
+        }], ctorParameters: () => [{ type: i0.TemplateRef }], propDecorators: { id: [{ type: i0.Input, args: [{ isSignal: true, alias: "id", required: false }] }], dataMerge: [{ type: i0.Input, args: [{ isSignal: true, alias: "dataMerge", required: false }] }], width: [{ type: i0.Input, args: [{ isSignal: true, alias: "width", required: false }] }], dotContent: [{ type: i0.Input, args: [{ isSignal: true, alias: "dotContent", required: false }] }], dataHash: [{ type: i0.Input, args: [{ isSignal: true, alias: "dataHash", required: false }] }] } });
 
 class ResizeService {
     resizeObservable$;
@@ -2680,10 +2697,10 @@ class ResizeService {
             ? fromEvent(winRef, 'resize')
             : (new Subject()).asObservable();
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: ResizeService, deps: [{ token: WINDOW }, { token: DOCUMENT }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
-    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: ResizeService });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: ResizeService, deps: [{ token: WINDOW }, { token: DOCUMENT }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable });
+    static ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: ResizeService });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: ResizeService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: ResizeService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: undefined, decorators: [{
                     type: Inject,
@@ -2705,15 +2722,19 @@ class StageComponent {
     /**
      * Object with settings which make carousel draggable by touch or mouse
      */
-    owlDraggable = input();
+    owlDraggable = input(...(ngDevMode ? [undefined, { debugName: "owlDraggable" }] : []));
     /**
      * Data of owl-stage
      */
-    stageData = input();
+    stageData = input(...(ngDevMode ? [undefined, { debugName: "stageData" }] : []));
     /**
      *  Data of every slide
      */
-    slidesData = input();
+    slidesData = input(...(ngDevMode ? [undefined, { debugName: "slidesData" }] : []));
+    /**
+     *  The number of actual slides without cloned ones
+     */
+    slidesCount = computed(() => this.slidesData()?.filter(slide => !slide.isCloned)?.length, ...(ngDevMode ? [{ debugName: "slidesCount" }] : []));
     /**
      * Function wich will be returned after attaching listener to 'mousemove' event
      */
@@ -3034,8 +3055,15 @@ class StageComponent {
     clear(id) {
         this.animateService.clear(id);
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: StageComponent, deps: [{ token: i0.NgZone }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: CarouselService }, { token: AnimateService }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.0.2", type: StageComponent, isStandalone: false, selector: "owl-stage", inputs: { owlDraggable: { classPropertyName: "owlDraggable", publicName: "owlDraggable", isSignal: true, isRequired: false, transformFunction: null }, stageData: { classPropertyName: "stageData", publicName: "stageData", isSignal: true, isRequired: false, transformFunction: null }, slidesData: { classPropertyName: "slidesData", publicName: "slidesData", isSignal: true, isRequired: false, transformFunction: null } }, host: { listeners: { "mousedown": "onMouseDown($event)", "touchstart": "onTouchStart($event)", "touchcancel": "onTouchCancel($event)", "dragstart": "onDragStart()", "selectstart": "onSelectStart()" } }, ngImport: i0, template: `
+    getActualSlideNumber(slideId) {
+        const originalId = slideId.replace('cloned-', '').replace('-append', '');
+        const index = this.slidesData()
+            ?.filter((el) => !el.isCloned)
+            ?.findIndex(slide => slide.id === originalId);
+        return (index || 0) + 1;
+    }
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: StageComponent, deps: [{ token: i0.NgZone }, { token: i0.ElementRef }, { token: i0.Renderer2 }, { token: CarouselService }, { token: AnimateService }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.3.9", type: StageComponent, isStandalone: false, selector: "owl-stage", inputs: { owlDraggable: { classPropertyName: "owlDraggable", publicName: "owlDraggable", isSignal: true, isRequired: false, transformFunction: null }, stageData: { classPropertyName: "stageData", publicName: "stageData", isSignal: true, isRequired: false, transformFunction: null }, slidesData: { classPropertyName: "slidesData", publicName: "slidesData", isSignal: true, isRequired: false, transformFunction: null } }, host: { listeners: { "mousedown": "onMouseDown($event)", "touchstart": "onTouchStart($event)", "touchcancel": "onTouchCancel($event)", "dragstart": "onDragStart()", "selectstart": "onSelectStart()" } }, ngImport: i0, template: `
     <div>
       <div class="owl-stage" [ngStyle]="{'width': stageData().width + 'px',
                                         'transform': stageData().transform,
@@ -3052,7 +3080,10 @@ class StageComponent {
                                             'margin-right': slide.marginR ? slide.marginR + 'px' : '',
                                             'left': slide.left}"
                                 (animationend)="clear(slide.id)"
-                                [@autoHeight]="slide.heightState">
+                                [id]="slide.id"
+                                role="group"
+                                [attr.aria-label]="'Slide ' + getActualSlideNumber(slide.id) + ' of ' + slidesCount()"
+                                [attr.aria-hidden]="!slide.isActive ? 'true' : null">
               @if(slide.load) {
                 <ng-template  [ngTemplateOutlet]="slide.tplRef" [ngTemplateOutletContext]="{ 
                   $implicit: preparePublicSlide(slide), 
@@ -3065,22 +3096,9 @@ class StageComponent {
       
       </div><!-- /.owl-stage -->
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i3.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i3.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i3.NgStyle, selector: "[ngStyle]", inputs: ["ngStyle"] }], animations: [
-            trigger('autoHeight', [
-                state('nulled', style({ height: 0 })),
-                state('full', style({ height: '*' })),
-                transition('full => nulled', [
-                    // style({height: '*'}),
-                    animate('700ms 350ms')
-                ]),
-                transition('nulled => full', [
-                    // style({height: 0}),
-                    animate(350)
-                ]),
-            ])
-        ] });
+  `, isInline: true, dependencies: [{ kind: "directive", type: i3.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i3.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i3.NgStyle, selector: "[ngStyle]", inputs: ["ngStyle"] }] });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: StageComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: StageComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'owl-stage',
@@ -3101,7 +3119,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImpor
                                             'margin-right': slide.marginR ? slide.marginR + 'px' : '',
                                             'left': slide.left}"
                                 (animationend)="clear(slide.id)"
-                                [@autoHeight]="slide.heightState">
+                                [id]="slide.id"
+                                role="group"
+                                [attr.aria-label]="'Slide ' + getActualSlideNumber(slide.id) + ' of ' + slidesCount()"
+                                [attr.aria-hidden]="!slide.isActive ? 'true' : null">
               @if(slide.load) {
                 <ng-template  [ngTemplateOutlet]="slide.tplRef" [ngTemplateOutletContext]="{ 
                   $implicit: preparePublicSlide(slide), 
@@ -3115,23 +3136,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImpor
       </div><!-- /.owl-stage -->
     </div>
   `,
-                    animations: [
-                        trigger('autoHeight', [
-                            state('nulled', style({ height: 0 })),
-                            state('full', style({ height: '*' })),
-                            transition('full => nulled', [
-                                // style({height: '*'}),
-                                animate('700ms 350ms')
-                            ]),
-                            transition('nulled => full', [
-                                // style({height: 0}),
-                                animate(350)
-                            ]),
-                        ])
-                    ],
                     standalone: false
                 }]
-        }], ctorParameters: () => [{ type: i0.NgZone }, { type: i0.ElementRef }, { type: i0.Renderer2 }, { type: CarouselService }, { type: AnimateService }], propDecorators: { onMouseDown: [{
+        }], ctorParameters: () => [{ type: i0.NgZone }, { type: i0.ElementRef }, { type: i0.Renderer2 }, { type: CarouselService }, { type: AnimateService }], propDecorators: { owlDraggable: [{ type: i0.Input, args: [{ isSignal: true, alias: "owlDraggable", required: false }] }], stageData: [{ type: i0.Input, args: [{ isSignal: true, alias: "stageData", required: false }] }], slidesData: [{ type: i0.Input, args: [{ isSignal: true, alias: "slidesData", required: false }] }], onMouseDown: [{
                 type: HostListener,
                 args: ['mousedown', ['$event']]
             }], onTouchStart: [{
@@ -3164,6 +3171,8 @@ class CarouselComponent {
     // in the case of converting slides to Observable and subscribing to it 
     // when using effect I get endless loop, because it also uses options() input and they fire one after another
     slides;
+    dots = viewChildren('dot', ...(ngDevMode ? [{ debugName: "dots" }] : []));
+    navButtons = viewChildren('navBtn', ...(ngDevMode ? [{ debugName: "navButtons" }] : []));
     translated = output();
     dragging = output();
     change = output();
@@ -3190,27 +3199,27 @@ class CarouselComponent {
     /**
      * Current settings for the carousel.
      */
-    _owlDOMData = signal(null);
+    _owlDOMData = signal(null, ...(ngDevMode ? [{ debugName: "_owlDOMData" }] : []));
     owlDOMData = this._owlDOMData.asReadonly();
     /**
      * Data of owl-stage
      */
-    _stageData = signal(null);
+    _stageData = signal(null, ...(ngDevMode ? [{ debugName: "_stageData" }] : []));
     stageData = this._stageData.asReadonly();
     /**
      *  Data of every slide
      */
-    _slidesData = signal([]);
+    _slidesData = signal([], ...(ngDevMode ? [{ debugName: "_slidesData" }] : []));
     slidesData = this._slidesData.asReadonly();
     /**
      * Data of navigation block
      */
-    _navData = signal(null);
+    _navData = signal(null, ...(ngDevMode ? [{ debugName: "_navData" }] : []));
     navData = this._navData.asReadonly();
     /**
      * Data of dots block
      */
-    _dotsData = signal(null);
+    _dotsData = signal(null, ...(ngDevMode ? [{ debugName: "_dotsData" }] : []));
     dotsData = this._dotsData.asReadonly();
     /**
      * Data, wich are passed out of carousel after ending of transioning of carousel
@@ -3219,12 +3228,12 @@ class CarouselComponent {
     /**
      * Shows whether carousel is loaded of not.
      */
-    _carouselLoaded = signal(false);
+    _carouselLoaded = signal(false, ...(ngDevMode ? [{ debugName: "_carouselLoaded" }] : []));
     carouselLoaded = this._carouselLoaded.asReadonly();
     /**
      * User's options
      */
-    options = input();
+    options = input(...(ngDevMode ? [undefined, { debugName: "options" }] : []));
     /**
      * Observable for user's options
      * It is used to track changes of options and re-render carousel if needed
@@ -3428,6 +3437,59 @@ class CarouselComponent {
             });
         }
     }
+    _hasADotFocus() {
+        const activeEl = this.docRef?.activeElement;
+        return this.dots().some((dotEl) => dotEl.nativeElement === activeEl);
+    }
+    defineTabIndexForDots(dot) {
+        if (!this._carouselLoaded())
+            return -1;
+        if (!this._hasADotFocus() && dot.active) {
+            return 0;
+        }
+        const focusedElId = this.docRef?.activeElement?.id;
+        if (this._hasADotFocus() && focusedElId === dot.id) {
+            return 0;
+        }
+        return -1;
+    }
+    _onArrowKeydown(event, elems, targetId) {
+        if (!this._carouselLoaded())
+            return;
+        const isArrowLeft = event.key === 'ArrowLeft' || event.code === 'ArrowLeft';
+        const isArrowRight = event.key === 'ArrowRight' || event.code === 'ArrowRight';
+        if (!isArrowLeft && !isArrowRight) {
+            return;
+        }
+        const curIndex = elems.findIndex((el) => el.nativeElement.id === targetId);
+        const futureIndex = isArrowLeft
+            ? (curIndex - 1 + elems.length) % elems.length
+            : (curIndex + 1) % elems.length;
+        elems?.[futureIndex]?.nativeElement?.focus();
+        return false;
+    }
+    onDotKeydown(event, dotId) {
+        if (!this._carouselLoaded())
+            return;
+        if (event.key === 'Enter' || event.code === 'Enter') {
+            this.navigationService.moveByDot(dotId);
+            return false;
+        }
+        this._onArrowKeydown(event, this.dots() || [], dotId);
+    }
+    onNavKeydown(event, navId) {
+        if (!this._carouselLoaded())
+            return;
+        if (event.key === 'Enter' || event.code === 'Enter') {
+            const navFunctions = {
+                'owl-next': () => this.next(),
+                'owl-prev': () => this.prev()
+            };
+            navFunctions[navId]?.();
+            return false;
+        }
+        this._onArrowKeydown(event, this.navButtons() || [], navId);
+    }
     /**
      * Handler for transitioend event
      */
@@ -3438,17 +3500,19 @@ class CarouselComponent {
      * Handler for click event, attached to next button
      */
     next() {
-        if (!this._carouselLoaded())
+        if (!this._carouselLoaded() || this.navData()?.next?.disabled)
             return;
         this.navigationService.next(this.carouselService.settings.navSpeed || false);
+        return false;
     }
     /**
      * Handler for click event, attached to prev button
      */
     prev() {
-        if (!this._carouselLoaded())
+        if (!this._carouselLoaded() || this.navData()?.prev?.disabled)
             return;
         this.navigationService.prev(this.carouselService.settings.navSpeed || false);
+        return false;
     }
     /**
      * Handler for click event, attached to dots
@@ -3457,6 +3521,7 @@ class CarouselComponent {
         if (!this._carouselLoaded())
             return;
         this.navigationService.moveByDot(dotId);
+        return false;
     }
     /**
      * rewinds carousel to slide with needed id
@@ -3518,8 +3583,8 @@ class CarouselComponent {
         this.autoplayService.isAutoplayStopped = false;
         this.autoplayService.play();
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: CarouselComponent, deps: [{ token: i0.ElementRef }, { token: ResizeService }, { token: CarouselService }, { token: NavigationService }, { token: AutoplayService }, { token: LazyLoadService }, { token: AnimateService }, { token: AutoHeightService }, { token: HashService }, { token: OwlLogger }, { token: i0.ChangeDetectorRef }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component });
-    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.0.2", type: CarouselComponent, isStandalone: false, selector: "owl-carousel-o", inputs: { options: { classPropertyName: "options", publicName: "options", isSignal: true, isRequired: false, transformFunction: null } }, outputs: { translated: "translated", dragging: "dragging", change: "change", changed: "changed", initialized: "initialized" }, host: { listeners: { "document:visibilitychange": "onVisibilityChange($event)" } }, providers: [
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: CarouselComponent, deps: [{ token: i0.ElementRef }, { token: ResizeService }, { token: CarouselService }, { token: NavigationService }, { token: AutoplayService }, { token: LazyLoadService }, { token: AnimateService }, { token: AutoHeightService }, { token: HashService }, { token: OwlLogger }, { token: i0.ChangeDetectorRef }, { token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Component });
+    static ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "20.3.9", type: CarouselComponent, isStandalone: false, selector: "owl-carousel-o", inputs: { options: { classPropertyName: "options", publicName: "options", isSignal: true, isRequired: false, transformFunction: null } }, outputs: { translated: "translated", dragging: "dragging", change: "change", changed: "changed", initialized: "initialized" }, host: { listeners: { "document:visibilitychange": "onVisibilityChange($event)" } }, providers: [
             NavigationService,
             AutoplayService,
             CarouselService,
@@ -3527,8 +3592,8 @@ class CarouselComponent {
             AnimateService,
             AutoHeightService,
             HashService
-        ], queries: [{ propertyName: "slides", predicate: CarouselSlideDirective }], ngImport: i0, template: `
-    <div class="owl-carousel owl-theme" #owlCarousel
+        ], queries: [{ propertyName: "slides", predicate: CarouselSlideDirective }], viewQueries: [{ propertyName: "dots", predicate: ["dot"], descendants: true, isSignal: true }, { propertyName: "navButtons", predicate: ["navBtn"], descendants: true, isSignal: true }], ngImport: i0, template: `
+    <div role="region" aria-label="Carousel" class="owl-carousel owl-theme" #owlCarousel
       [ngClass]="{'owl-rtl': owlDOMData()?.rtl,
                   'owl-loaded': owlDOMData()?.isLoaded,
                   'owl-responsive': owlDOMData()?.isResponsive,
@@ -3538,6 +3603,22 @@ class CarouselComponent {
       (mouseleave)="startPlayML()"
       (touchstart)="startPausing()"
       (touchend)="startPlayTE()">
+
+      <div class="owl-carousel-inner">
+        @if(slides.toArray().length && !navData()?.disabled) {
+          <button 
+            #navBtn
+            id="owl-prev"
+            type="button" 
+            aria-label="Previous Slide" 
+            class="owl-prev" 
+            [ngClass]="{'disabled': navData()?.prev?.disabled}" 
+            (click)="prev()" 
+            [innerHTML]="navData()?.prev?.htmlText" 
+            (keydown)="onNavKeydown($event, 'owl-prev');"
+            [disabled]="navData()?.prev?.disabled">
+          </button>
+        }
 
       @if(carouselLoaded()) {
         <div class="owl-stage-outer">
@@ -3549,29 +3630,50 @@ class CarouselComponent {
                       [slidesData]="slidesData()"></owl-stage>
         </div> <!-- /.owl-stage-outer -->
       }
-
-      @if(slides.toArray().length) {
-          <div class="owl-nav" [ngClass]="{'disabled': navData()?.disabled}">
-            <div class="owl-prev" [ngClass]="{'disabled': navData()?.prev?.disabled}" (click)="prev()" [innerHTML]="navData()?.prev?.htmlText"></div>
-            <div class="owl-next" [ngClass]="{'disabled': navData()?.next?.disabled}" (click)="next()" [innerHTML]="navData()?.next?.htmlText"></div>
-          </div> <!-- /.owl-nav -->
-          <div class="owl-dots" [ngClass]="{'disabled': dotsData()?.disabled}">
-
-            @for (dot of dotsData()?.dots; track dot.id) {
-              <div  class="owl-dot" [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" (click)="moveByDot(dot.id)">
-                <span [innerHTML]="dot.innerContent"></span>
-              </div>
-            }
-            
-          </div> <!-- /.owl-dots -->
+      @if(slides.toArray().length && !navData()?.disabled) {
+        <button  
+          #navBtn
+          id="owl-next"
+          type="button" 
+          aria-label="Next Slide" 
+          class="owl-next" 
+          [ngClass]="{'disabled': navData()?.next?.disabled}" 
+          (click)="next()" 
+          [innerHTML]="navData()?.next?.htmlText" 
+          (keydown)="onNavKeydown($event, 'owl-next');"
+          [disabled]="navData()?.next?.disabled">
+        </button>
       }
+    </div>
+
+    @if(slides.toArray().length) {
+        <div class="owl-dots" [ngClass]="{'disabled': dotsData()?.disabled}" aria-label="Carousel Dots Pagination">
+
+          @for (dot of dotsData()?.dots; track dot.id; let i = $index) {
+            <button 
+              #dot 
+              [id]="dot.id"
+              type="button" 
+              [attr.aria-label]="'Carousel Dot ' + (i+1)"
+              [attr.aria-current]="dot.active ? 'true' : null"
+              class="owl-dot"
+              [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" 
+              (click)="moveByDot(dot.id)" 
+              (keydown)="onDotKeydown($event, dot.id);"
+              [attr.tabindex]="defineTabIndexForDots(dot)">
+              <span [innerHTML]="dot.innerContent"></span>
+            </button>
+          }
+          
+        </div> <!-- /.owl-dots -->
+    }
     </div> <!-- /.owl-carousel owl-loaded -->
   `, isInline: true, styles: [".owl-theme{display:block}\n"], dependencies: [{ kind: "directive", type: i3.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: StageComponent, selector: "owl-stage", inputs: ["owlDraggable", "stageData", "slidesData"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: CarouselComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: CarouselComponent, decorators: [{
             type: Component,
             args: [{ selector: 'owl-carousel-o', template: `
-    <div class="owl-carousel owl-theme" #owlCarousel
+    <div role="region" aria-label="Carousel" class="owl-carousel owl-theme" #owlCarousel
       [ngClass]="{'owl-rtl': owlDOMData()?.rtl,
                   'owl-loaded': owlDOMData()?.isLoaded,
                   'owl-responsive': owlDOMData()?.isResponsive,
@@ -3581,6 +3683,22 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImpor
       (mouseleave)="startPlayML()"
       (touchstart)="startPausing()"
       (touchend)="startPlayTE()">
+
+      <div class="owl-carousel-inner">
+        @if(slides.toArray().length && !navData()?.disabled) {
+          <button 
+            #navBtn
+            id="owl-prev"
+            type="button" 
+            aria-label="Previous Slide" 
+            class="owl-prev" 
+            [ngClass]="{'disabled': navData()?.prev?.disabled}" 
+            (click)="prev()" 
+            [innerHTML]="navData()?.prev?.htmlText" 
+            (keydown)="onNavKeydown($event, 'owl-prev');"
+            [disabled]="navData()?.prev?.disabled">
+          </button>
+        }
 
       @if(carouselLoaded()) {
         <div class="owl-stage-outer">
@@ -3592,22 +3710,43 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImpor
                       [slidesData]="slidesData()"></owl-stage>
         </div> <!-- /.owl-stage-outer -->
       }
-
-      @if(slides.toArray().length) {
-          <div class="owl-nav" [ngClass]="{'disabled': navData()?.disabled}">
-            <div class="owl-prev" [ngClass]="{'disabled': navData()?.prev?.disabled}" (click)="prev()" [innerHTML]="navData()?.prev?.htmlText"></div>
-            <div class="owl-next" [ngClass]="{'disabled': navData()?.next?.disabled}" (click)="next()" [innerHTML]="navData()?.next?.htmlText"></div>
-          </div> <!-- /.owl-nav -->
-          <div class="owl-dots" [ngClass]="{'disabled': dotsData()?.disabled}">
-
-            @for (dot of dotsData()?.dots; track dot.id) {
-              <div  class="owl-dot" [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" (click)="moveByDot(dot.id)">
-                <span [innerHTML]="dot.innerContent"></span>
-              </div>
-            }
-            
-          </div> <!-- /.owl-dots -->
+      @if(slides.toArray().length && !navData()?.disabled) {
+        <button  
+          #navBtn
+          id="owl-next"
+          type="button" 
+          aria-label="Next Slide" 
+          class="owl-next" 
+          [ngClass]="{'disabled': navData()?.next?.disabled}" 
+          (click)="next()" 
+          [innerHTML]="navData()?.next?.htmlText" 
+          (keydown)="onNavKeydown($event, 'owl-next');"
+          [disabled]="navData()?.next?.disabled">
+        </button>
       }
+    </div>
+
+    @if(slides.toArray().length) {
+        <div class="owl-dots" [ngClass]="{'disabled': dotsData()?.disabled}" aria-label="Carousel Dots Pagination">
+
+          @for (dot of dotsData()?.dots; track dot.id; let i = $index) {
+            <button 
+              #dot 
+              [id]="dot.id"
+              type="button" 
+              [attr.aria-label]="'Carousel Dot ' + (i+1)"
+              [attr.aria-current]="dot.active ? 'true' : null"
+              class="owl-dot"
+              [ngClass]="{'active': dot.active, 'owl-dot-text': dot.showInnerContent}" 
+              (click)="moveByDot(dot.id)" 
+              (keydown)="onDotKeydown($event, dot.id);"
+              [attr.tabindex]="defineTabIndexForDots(dot)">
+              <span [innerHTML]="dot.innerContent"></span>
+            </button>
+          }
+          
+        </div> <!-- /.owl-dots -->
+    }
     </div> <!-- /.owl-carousel owl-loaded -->
   `, providers: [
                         NavigationService,
@@ -3624,7 +3763,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImpor
                 }] }], propDecorators: { slides: [{
                 type: ContentChildren,
                 args: [CarouselSlideDirective]
-            }], onVisibilityChange: [{
+            }], dots: [{ type: i0.ViewChildren, args: ['dot', { isSignal: true }] }], navButtons: [{ type: i0.ViewChildren, args: ['navBtn', { isSignal: true }] }], translated: [{ type: i0.Output, args: ["translated"] }], dragging: [{ type: i0.Output, args: ["dragging"] }], change: [{ type: i0.Output, args: ["change"] }], changed: [{ type: i0.Output, args: ["changed"] }], initialized: [{ type: i0.Output, args: ["initialized"] }], options: [{ type: i0.Input, args: [{ isSignal: true, alias: "options", required: false }] }], onVisibilityChange: [{
                 type: HostListener,
                 args: ['document:visibilitychange', ['$event']]
             }] } });
@@ -3692,10 +3831,10 @@ class OwlRouterLinkDirective {
             preserveFragment: attrBoolValue(this.preserveFragment)
         });
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: OwlRouterLinkDirective, deps: [{ token: i1.Router }, { token: i1.ActivatedRoute }, { token: 'tabindex', attribute: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.0.2", type: OwlRouterLinkDirective, isStandalone: false, selector: ":not(a)[owlRouterLink]", inputs: { queryParams: "queryParams", fragment: "fragment", queryParamsHandling: "queryParamsHandling", preserveFragment: "preserveFragment", skipLocationChange: "skipLocationChange", replaceUrl: "replaceUrl", stopLink: "stopLink", owlRouterLink: "owlRouterLink", preserveQueryParams: "preserveQueryParams" }, host: { listeners: { "click": "onClick()" } }, ngImport: i0 });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: OwlRouterLinkDirective, deps: [{ token: i1.Router }, { token: i1.ActivatedRoute }, { token: 'tabindex', attribute: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.3.9", type: OwlRouterLinkDirective, isStandalone: false, selector: ":not(a)[owlRouterLink]", inputs: { queryParams: "queryParams", fragment: "fragment", queryParamsHandling: "queryParamsHandling", preserveFragment: "preserveFragment", skipLocationChange: "skipLocationChange", replaceUrl: "replaceUrl", stopLink: "stopLink", owlRouterLink: "owlRouterLink", preserveQueryParams: "preserveQueryParams" }, host: { listeners: { "click": "onClick()" } }, ngImport: i0 });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: OwlRouterLinkDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: OwlRouterLinkDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: ':not(a)[owlRouterLink]',
@@ -3818,10 +3957,10 @@ class OwlRouterLinkWithHrefDirective {
             preserveFragment: attrBoolValue(this.preserveFragment)
         });
     }
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: OwlRouterLinkWithHrefDirective, deps: [{ token: i1.Router }, { token: i1.ActivatedRoute }, { token: i3.LocationStrategy }], target: i0.ɵɵFactoryTarget.Directive });
-    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.0.2", type: OwlRouterLinkWithHrefDirective, isStandalone: false, selector: "a[owlRouterLink]", inputs: { target: "target", queryParams: "queryParams", fragment: "fragment", queryParamsHandling: "queryParamsHandling", preserveFragment: "preserveFragment", skipLocationChange: "skipLocationChange", replaceUrl: "replaceUrl", stopLink: "stopLink", owlRouterLink: "owlRouterLink", preserveQueryParams: "preserveQueryParams" }, host: { listeners: { "click": "onClick($event.button,$event.ctrlKey,$event.metaKey,$event.shiftKey)" }, properties: { "attr.target": "this.target", "href": "this.href" } }, usesOnChanges: true, ngImport: i0 });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: OwlRouterLinkWithHrefDirective, deps: [{ token: i1.Router }, { token: i1.ActivatedRoute }, { token: i3.LocationStrategy }], target: i0.ɵɵFactoryTarget.Directive });
+    static ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "20.3.9", type: OwlRouterLinkWithHrefDirective, isStandalone: false, selector: "a[owlRouterLink]", inputs: { target: "target", queryParams: "queryParams", fragment: "fragment", queryParamsHandling: "queryParamsHandling", preserveFragment: "preserveFragment", skipLocationChange: "skipLocationChange", replaceUrl: "replaceUrl", stopLink: "stopLink", owlRouterLink: "owlRouterLink", preserveQueryParams: "preserveQueryParams" }, host: { listeners: { "click": "onClick($event.button,$event.ctrlKey,$event.metaKey,$event.shiftKey)" }, properties: { "attr.target": "this.target", "href": "this.href" } }, usesOnChanges: true, ngImport: i0 });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: OwlRouterLinkWithHrefDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: OwlRouterLinkWithHrefDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: 'a[owlRouterLink]',
@@ -3871,16 +4010,15 @@ class SlidesOutputData {
 
 const routes = [];
 class CarouselModule {
-    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: CarouselModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "20.0.2", ngImport: i0, type: CarouselModule, declarations: [CarouselComponent, CarouselSlideDirective, StageComponent, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective], imports: [CommonModule], exports: [CarouselComponent, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective] });
-    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: CarouselModule, providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS, OwlLogger], imports: [CommonModule] });
+    static ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: CarouselModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+    static ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "20.3.9", ngImport: i0, type: CarouselModule, declarations: [CarouselComponent, CarouselSlideDirective, StageComponent, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective], imports: [CommonModule], exports: [CarouselComponent, CarouselSlideDirective, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective] });
+    static ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: CarouselModule, providers: [WINDOW_PROVIDERS, ResizeService, DOCUMENT_PROVIDERS, OwlLogger], imports: [CommonModule] });
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.0.2", ngImport: i0, type: CarouselModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "20.3.9", ngImport: i0, type: CarouselModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [
                         CommonModule,
-                        // BrowserAnimationsModule, // there's an issue with this import while using lazy loading of module consuming this library. I don't remove it because it could be needed during future enhancement of this lib.
                         // RouterModule.forChild(routes)
                     ],
                     declarations: [CarouselComponent, CarouselSlideDirective, StageComponent, OwlRouterLinkDirective, OwlRouterLinkWithHrefDirective],

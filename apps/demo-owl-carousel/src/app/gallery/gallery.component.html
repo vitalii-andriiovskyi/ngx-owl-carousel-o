@@ -1,10 +1,10 @@
-<h1 class="text-center my-4">Cities gallery</h1>
+<h1 class="text-center my-4">Cities Gallery</h1>
 
 <div class="wrapper">
   <owl-carousel-o [options]="customOptions" #owlCat>
     @for(image of imagesData; track image.src) {
     <ng-template carouselSlide let-owlItem>
-      <div class="slide" [@activeSlide]="owlItem.isCentered ? 'active' : 'inActive'">
+      <div class="slide" [class.active]="owlItem.isCentered">
         <!-- {{owlItem.center}}
           {{owlItem.id}} -->
         <img [src]="image.src" [alt]="image.alt" [title]="image.title">

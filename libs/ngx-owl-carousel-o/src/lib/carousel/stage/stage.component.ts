@@ -1,17 +1,10 @@
-import { Component, NgZone, ElementRef, HostListener, Renderer2, OnInit, OnDestroy, input } from '@angular/core';
+import { Component, NgZone, ElementRef, HostListener, Renderer2, OnInit, OnDestroy, input, computed } from '@angular/core';
 import { CarouselService, Coords } from '../../services/carousel.service';
 import { Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { StageData } from '../../models/stage-data.model';
 import { SlideModel } from '../../models/slide.model';
 import { AnimateService } from '../../services/animate.service';
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition
-} from '@angular/animations';
 @Component({
   selector: 'owl-stage',
   template: `
@@ -31,7 +24,10 @@ import {
                                             'margin-right': slide.marginR ? slide.marginR + 'px' : '',
                                             'left': slide.left}"
                                 (animationend)="clear(slide.id)"
-                                [@autoHeight]="slide.heightState">
+                                [id]="slide.id"
+                                role="group"
+                                [attr.aria-label]="'Slide ' + getActualSlideNumber(slide.id) + ' of ' + slidesCount()"
+                                [attr.aria-hidden]="!slide.isActive ? 'true' : null">
               @if(slide.load) {
                 <ng-template  [ngTemplateOutlet]="slide.tplRef" [ngTemplateOutletContext]="{ 
                   $implicit: preparePublicSlide(slide), 
@@ -45,20 +41,7 @@ import {
       </div><!-- /.owl-stage -->
     </div>
   `,
-  animations: [
-    trigger('autoHeight', [
-      state('nulled', style({ height: 0 })),
-      state('full', style({ height: '*' })),
-      transition('full => nulled', [
-        // style({height: '*'}),
-        animate('700ms 350ms')
-      ]),
-      transition('nulled => full', [
-        // style({height: 0}),
-        animate(350)
-      ]),
-    ])
-  ],
+
   standalone: false
 })
 export class StageComponent implements OnInit, OnDestroy {
@@ -79,6 +62,11 @@ export class StageComponent implements OnInit, OnDestroy {
    *  Data of every slide
    */
   slidesData = input<SlideModel[]>();
+
+  /**
+   *  The number of actual slides without cloned ones
+   */
+  slidesCount = computed(() => this.slidesData()?.filter(slide => !slide.isCloned)?.length);
 
   /**
    * Function wich will be returned after attaching listener to 'mousemove' event
@@ -446,5 +434,13 @@ export class StageComponent implements OnInit, OnDestroy {
    */
   clear(id) {
     this.animateService.clear(id);
+  }
+
+  protected getActualSlideNumber(slideId: string): number {
+    const originalId = slideId.replace('cloned-', '').replace('-append', '');
+    const index = this.slidesData()
+      ?.filter((el) => !el.isCloned)
+      ?.findIndex(slide => slide.id === originalId);
+    return (index || 0) + 1;
   }
 }
