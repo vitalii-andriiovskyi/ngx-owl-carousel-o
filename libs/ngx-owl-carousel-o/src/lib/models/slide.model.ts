@@ -1,11 +1,10 @@
-import { TemplateRef } from "@angular/core";
+import { TemplateRef } from '@angular/core';
 
 export class SlideModel {
-
   /**
    * Id of slide
    */
-  id: string;
+  id!: string;
 
   /**
    * Active state of slide. If true slide gets css-class .active
@@ -65,7 +64,7 @@ export class SlideModel {
   /**
    * Changeable classes of slide
    */
-  classes?: {[key:string]: boolean};
+  classes?: { [key: string]: boolean };
 
   /**
    * Shows whether slide could be animated and could have css-class '.animated'

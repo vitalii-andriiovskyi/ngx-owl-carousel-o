@@ -8,5 +8,8 @@
     "isolatedModules": true
   },
   "files": ["src/test.ts", "src/polyfills.ts"],
-  "include": ["**/*.spec.ts", "**/*.d.ts"]
+  "include": ["**/*.spec.ts", "**/*.d.ts"],
+  "angularCompilerOptions": {
+    "strictTemplates": false
+  }
 }

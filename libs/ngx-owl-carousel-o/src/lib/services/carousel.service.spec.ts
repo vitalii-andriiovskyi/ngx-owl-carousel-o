@@ -10,7 +10,11 @@ import {
 } from '@angular/core/testing';
 
 import { CarouselService } from './carousel.service';
-import { Component, DebugElement } from '@angular/core';
+import {
+  Component,
+  DebugElement,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CarouselComponent } from '../carousel/carousel.component';
 import { SlidesOutputData } from '../models/SlidesOutputData';
 import { CarouselSlideDirective } from '../carousel/carousel-slide.directive';
@@ -22,7 +26,6 @@ import { NavigationService } from './navigation.service';
 import { By } from '@angular/platform-browser';
 import { DOCUMENT_PROVIDERS } from './document-ref.service';
 import { StageComponent } from '../carousel/stage/stage.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { OwlLogger } from './logger.service';
 import { RouterModule } from '@angular/router';
 
@@ -59,14 +62,14 @@ describe('CarouselService', () => {
       true,
       'has state move'
     );
-    expect(carouselService.states.current['move']).toBe(1);
+    expect((carouselService.states.current as any)['move']).toBe(1);
   });
 
   it('should add new state to carouselService.states and after calling leave() decrease value of current state', () => {
     carouselService.enter('move');
-    expect(carouselService.states.current['move']).toBe(1);
+    expect((carouselService.states.current as any)['move']).toBe(1);
     carouselService.leave('move');
-    expect(carouselService.states.current['move']).toBe(0);
+    expect((carouselService.states.current as any)['move']).toBe(0);
   });
 
   it('should the carousel be in a state "move"', () => {
@@ -95,12 +98,7 @@ describe('CarouselService in context of TestComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        NoopAnimationsModule,
-        RouterModule.forRoot([
-          { path: '', component: TestComponent },
-        ]),
-      ],
+      imports: [RouterModule.forRoot([{ path: '', component: TestComponent }])],
       declarations: [
         CarouselComponent,
         TestComponent,
@@ -153,12 +151,13 @@ describe('CarouselService in context of TestComponent', () => {
 @Component({
   selector: 'test-dom',
   template: '',
-  standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class TestComponent {
   options: any = {};
-  translatedData: SlidesOutputData;
-  constructor() { }
+  translatedData!: SlidesOutputData;
+  constructor() {}
   getPassedData(data: any) {
     this.translatedData = data;
   }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { CarouselModule } from 'ngx-owl-carousel-o';
@@ -17,6 +17,7 @@ export interface CarouselData {
     selector: 'owl-carousel-libdemo-root',
     imports: [RouterOutlet, CarouselModule, RouterLink],
     templateUrl: './app.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./app.component.sass']
 })
 export class AppComponent {

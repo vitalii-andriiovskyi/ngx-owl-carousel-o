@@ -1,4 +1,4 @@
-import { Component, OnInit, WritableSignal, signal } from '@angular/core';
+import { Component, OnInit, WritableSignal, signal, ChangeDetectionStrategy } from '@angular/core';
 
 
 import { Router, ActivatedRoute, RouterOutlet, RouterLink } from '@angular/router';
@@ -20,6 +20,7 @@ interface CarouselData {
   selector: 'app-home',
   imports: [CarouselModule, RouterOutlet, RouterLink],
   templateUrl: './home.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
