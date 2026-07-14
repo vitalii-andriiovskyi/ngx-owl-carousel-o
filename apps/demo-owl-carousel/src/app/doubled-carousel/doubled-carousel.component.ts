@@ -121,12 +121,9 @@ export class DoubledCarouselComponent implements OnInit {
 
   changeSlide($event: SlidesOutputData) {
     if (this.owlCat) {
-      // this.category$.next($event.slides[0].id);
-      const id =
-        this.owlCat.dotsData()?.dots?.[$event.startPosition as number]?.id;
-      if (id) {
-        this.owlMac.moveByDot(id);
-      }
+      this.owlCat.moveByDot(
+        this.owlCat.dotsData()?.dots?.[$event.startPosition as number]?.id || ''
+      );
     }
   }
 
