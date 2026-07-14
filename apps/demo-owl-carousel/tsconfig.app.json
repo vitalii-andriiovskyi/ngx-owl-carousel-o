@@ -7,5 +7,8 @@
     "useDefineForClassFields": false
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
-  "include": ["**/*.d.ts"]
+  "include": ["**/*.d.ts"],
+  "angularCompilerOptions": {
+    "strictTemplates": false
+  }
 }

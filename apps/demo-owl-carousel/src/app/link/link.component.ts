@@ -1,4 +1,4 @@
-import { Component, WritableSignal, signal } from '@angular/core';
+import { Component, WritableSignal, signal, ChangeDetectionStrategy } from '@angular/core';
 
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { CarouselData } from '../app.component';
@@ -7,6 +7,7 @@ import { CarouselData } from '../app.component';
     selector: 'app-link',
     imports: [CarouselModule],
     templateUrl: './link.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './link.component.sass'
 })
 export class LinkComponent {

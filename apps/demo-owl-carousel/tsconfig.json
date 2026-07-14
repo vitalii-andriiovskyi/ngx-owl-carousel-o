@@ -5,7 +5,8 @@
     "target": "es2020",
     "module": "preserve",
     "moduleResolution": "bundler",
-    "lib": ["dom", "es2022"]
+    "lib": ["dom", "es2022"],
+    "ignoreDeprecations": "6.0"
   },
   "files": [],
   "include": [],
