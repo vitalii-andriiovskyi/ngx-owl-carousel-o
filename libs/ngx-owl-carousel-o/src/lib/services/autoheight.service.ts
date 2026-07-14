@@ -8,7 +8,7 @@ export class AutoHeightService implements OnDestroy {
   /**
    * Subscrioption to merge Observable  from CarouselService
    */
-  autoHeightSubscription: Subscription;
+  autoHeightSubscription!: Subscription;
   constructor(private carouselService: CarouselService) {
     this.spyDataStreams();
   }
@@ -20,49 +20,65 @@ export class AutoHeightService implements OnDestroy {
    * Defines Observables which service must observe
    */
   spyDataStreams() {
-    const initializedCarousel$: Observable<string> = this.carouselService.getInitializedState().pipe(
-      tap(data => {
-        if (this.carouselService.settings.autoHeight) {
-          this.update();
-        } else {
-          this.carouselService.slidesData.forEach(slide => slide.heightState = 'full');
-        }
-      })
-    );
+    const initializedCarousel$: Observable<string> = this.carouselService
+      .getInitializedState()
+      .pipe(
+        tap((data) => {
+          if (this.carouselService.settings.autoHeight) {
+            this.update();
+          } else {
+            this.carouselService.slidesData.forEach(
+              (slide) => (slide.heightState = 'full')
+            );
+          }
+        })
+      );
 
-    const changedSettings$: Observable<any> = this.carouselService.getChangedState().pipe(
-      tap(data => {
-        if (this.carouselService.settings.autoHeight && data.property.name === 'position') {
-          this.update();
-        }
-      })
-    );
+    const changedSettings$: Observable<any> = this.carouselService
+      .getChangedState()
+      .pipe(
+        tap((data) => {
+          if (
+            this.carouselService.settings.autoHeight &&
+            data.property.name === 'position'
+          ) {
+            this.update();
+          }
+        })
+      );
 
-    const refreshedCarousel$: Observable<string> = this.carouselService.getRefreshedState().pipe(
-      tap(data => {
-        if (this.carouselService.settings.autoHeight) {
-          this.update();
-        }
-      })
-    );
+    const refreshedCarousel$: Observable<string> = this.carouselService
+      .getRefreshedState()
+      .pipe(
+        tap((data) => {
+          if (this.carouselService.settings.autoHeight) {
+            this.update();
+          }
+        })
+      );
 
-    const autoHeight$: Observable<string | any> = merge(initializedCarousel$, changedSettings$, refreshedCarousel$).pipe(
+    const autoHeight$: Observable<string | any> = merge(
+      initializedCarousel$,
+      changedSettings$,
+      refreshedCarousel$
+    ).pipe(
       tap(() => {
-        this.carouselService.slidesData.forEach(slide => slide.classes = this.carouselService.setCurSlideClasses(slide));
+        this.carouselService.slidesData.forEach(
+          (slide) =>
+            (slide.classes = this.carouselService.setCurSlideClasses(slide))
+        );
         this.carouselService.sendChanges();
       })
     );
-    this.autoHeightSubscription = autoHeight$.subscribe(
-      () => { }
-    );
+    this.autoHeightSubscription = autoHeight$.subscribe(() => {});
   }
 
   /**
    * Updates the prop 'heightState' of slides
    */
   update() {
-    const items = this.carouselService.settings.items
-    let start = this.carouselService.current(),
+    const items = this.carouselService.settings.items as number;
+    let start = this.carouselService.current() as number,
       end = start + items;
 
     if (this.carouselService.settings.center) {
@@ -71,9 +87,7 @@ export class AutoHeightService implements OnDestroy {
     }
 
     this.carouselService.slidesData.forEach((slide, i) => {
-      slide.heightState = (i >= start && i < end) ? 'full' : 'nulled';
+      slide.heightState = i >= start && i < end ? 'full' : 'nulled';
     });
   }
-
-
 }

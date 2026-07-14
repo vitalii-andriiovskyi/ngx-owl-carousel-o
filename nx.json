@@ -105,5 +105,6 @@
   },
   "parallel": 1,
   "defaultBase": "master",
-  "useLegacyCache": true
+  "useLegacyCache": true,
+  "analytics": false
 }

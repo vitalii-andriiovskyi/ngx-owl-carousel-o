@@ -1,3 +1,13 @@
 {
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": {
+        "parser": "angular"
+      }
+    }
+  ],
+  "useTabs": false,
+  "tabWidth": 2,
   "singleQuote": true
 }

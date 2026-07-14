@@ -8,7 +8,7 @@ export class LazyLoadService implements OnDestroy {
   /**
    * Subscrioption to merge Observable  from CarouselService
    */
-  lazyLoadSubscription: Subscription;
+  lazyLoadSubscription!: Subscription;
 
   constructor(private carouselService: CarouselService) {
     this.spyDataStreams();
@@ -22,45 +22,66 @@ export class LazyLoadService implements OnDestroy {
    * Defines Observables which service must observe
    */
   spyDataStreams() {
-    const initializedCarousel$: Observable<string> = this.carouselService.getInitializedState().pipe(
-      tap(() => {
-        const isLazyLoad = this.carouselService.settings && !this.carouselService.settings.lazyLoad;
-        this.carouselService.slidesData.forEach(item => item.load = isLazyLoad ? true : false);
-      })
-    );
+    const initializedCarousel$: Observable<string> = this.carouselService
+      .getInitializedState()
+      .pipe(
+        tap(() => {
+          const isLazyLoad =
+            this.carouselService.settings &&
+            !this.carouselService.settings.lazyLoad;
+          this.carouselService.slidesData.forEach(
+            (item) => (item.load = isLazyLoad ? true : false)
+          );
+        })
+      );
 
-    const changeSettings$: Observable<any> = this.carouselService.getChangeState();
+    const changeSettings$: Observable<any> =
+      this.carouselService.getChangeState();
 
-    const resizedCarousel$: Observable<string> = this.carouselService.getResizedState();
+    const resizedCarousel$: Observable<string> =
+      this.carouselService.getResizedState();
 
-
-    const lazyLoadMerge$: Observable<string | any> = merge(initializedCarousel$, changeSettings$, resizedCarousel$).pipe(
-      tap(data => this._defineLazyLoadSlides(data)),
+    const lazyLoadMerge$: Observable<string | any> = merge(
+      initializedCarousel$,
+      changeSettings$,
+      resizedCarousel$
+    ).pipe(
+      tap((data) => this._defineLazyLoadSlides(data))
       // tap(() => this.carouselService.sendChanges())
     );
-    this.lazyLoadSubscription = lazyLoadMerge$.subscribe(
-      () => {}
-    );
+    this.lazyLoadSubscription = lazyLoadMerge$.subscribe(() => {});
   }
 
   private _defineLazyLoadSlides(data: any) {
-    if (!this.carouselService.settings || !this.carouselService.settings.lazyLoad) {
+    if (
+      !this.carouselService.settings ||
+      !this.carouselService.settings.lazyLoad
+    ) {
       return;
     }
 
-    if ((data.property && data.property.name === 'position') || data === 'initialized' || data === "resized") {
+    if (
+      (data.property && data.property.name === 'position') ||
+      data === 'initialized' ||
+      data === 'resized'
+    ) {
       const settings = this.carouselService.settings,
-            clones = this.carouselService.clones().length;
-      let n = (settings.center && Math.ceil(settings.items / 2) || settings.items),
-          i = ((settings.center && n * -1) || 0),
-          position = (data.property && data.property.value !== undefined ? data.property.value : this.carouselService.current()) + i;
-        // load = $.proxy(function(i, v) { this.load(v) }, this);
+        clones = this.carouselService.clones().length;
+      let n =
+          (settings.center && Math.ceil((settings.items as number) / 2)) ||
+          (settings.items as number),
+        i = (settings.center && n * -1) || 0,
+        position =
+          (data.property && data.property.value !== undefined
+            ? data.property.value
+            : (this.carouselService.current() as number)) + i;
+      // load = $.proxy(function(i, v) { this.load(v) }, this);
       //TODO: Need documentation for this new option
-      if (settings.lazyLoadEager > 0) {
-        n += settings.lazyLoadEager;
+      if ((settings.lazyLoadEager as number) > 0) {
+        n += settings.lazyLoadEager as number;
         // If the carousel is looping also preload images that are to the "left"
         if (settings.loop) {
-          position -= settings.lazyLoadEager;
+          position -= settings.lazyLoadEager as number;
           n++;
         }
       }
@@ -68,8 +89,9 @@ export class LazyLoadService implements OnDestroy {
       while (i++ < n) {
         this._load(clones / 2 + this.carouselService.relative(position));
         if (clones) {
-          this.carouselService.clones(this.carouselService.relative(position)).forEach(value => this._load(value));
-
+          this.carouselService
+            .clones(this.carouselService.relative(position))
+            .forEach((value) => this._load(value));
         }
         position++;
       }
@@ -77,9 +99,9 @@ export class LazyLoadService implements OnDestroy {
   }
 
   /**
-	 * Loads all resources of an item at the specified position.
-	 * @param position - The absolute position of the item.
-	 */
+   * Loads all resources of an item at the specified position.
+   * @param position - The absolute position of the item.
+   */
   private _load(position: number) {
     if (this.carouselService.slidesData[position].load) {
       return;

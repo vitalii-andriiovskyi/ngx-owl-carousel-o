@@ -1,117 +1,129 @@
 {
   "migrations": [
     {
-      "version": "22.3.0-beta.0",
-      "requires": { "@angular/core": ">=21.0.0" },
-      "description": "Update the @angular/cli package version to ~21.0.0.",
-      "factory": "./src/migrations/update-22-3-0/update-angular-cli",
+      "version": "23.1.0-beta.0",
+      "requires": {
+        "@angular/core": ">=22.0.0"
+      },
+      "description": "Rename the `ssr.experimentalPlatform` option to `ssr.platform` in `@angular/build:application`, `@angular-devkit/build-angular:application`, and `@nx/angular:application` targets, matching the Angular v22 rename.",
+      "factory": "./dist/src/migrations/update-23-1-0/rename-ssr-experimental-platform",
+      "documentation": "./dist/src/migrations/update-23-1-0/rename-ssr-experimental-platform.md",
       "package": "@nx/angular",
-      "name": "update-angular-cli-version-21-0-0"
+      "name": "update-23-1-0-rename-ssr-experimental-platform"
     },
     {
-      "version": "22.3.0-beta.0",
-      "requires": { "@angular/core": ">=21.0.0" },
-      "description": "Updates webpack-based SSR configuration to use preserve module format and bundler module resolution.",
-      "factory": "./src/migrations/update-22-3-0/update-ssr-webpack-config",
+      "version": "23.1.0-beta.0",
+      "requires": {
+        "@angular/core": ">=22.0.0"
+      },
+      "description": "Add `istanbul-lib-instrument` to `devDependencies` when a project runs unit tests with Karma (the `@angular-devkit/build-angular:karma` / `@angular/build:karma` builders, or `@angular/build:unit-test` / `@nx/angular:unit-test` with `runner: karma`), matching the Angular v22 `add-istanbul-instrumenter` migration.",
+      "factory": "./dist/src/migrations/update-23-1-0/add-istanbul-instrumenter",
+      "documentation": "./dist/src/migrations/update-23-1-0/add-istanbul-instrumenter.md",
       "package": "@nx/angular",
-      "name": "update-ssr-webpack-config-22-2-0"
+      "name": "update-23-1-0-add-istanbul-instrumenter"
     },
     {
-      "version": "22.3.0-beta.0",
-      "requires": { "@angular/core": ">=21.0.0-rc.3" },
-      "description": "Update 'module' to 'preserve' and 'moduleResolution' to 'bundler' in TypeScript configurations for Angular projects.",
-      "factory": "./src/migrations/update-22-3-0/update-module-resolution",
+      "version": "23.1.0-beta.0",
+      "requires": {
+        "@angular/core": ">=22.0.0"
+      },
+      "description": "Add the `trustProxyHeaders` option to `AngularNodeAppEngine` and `AngularAppEngine` instantiations in SSR server files, matching the Angular v22 `trust-proxy-headers` migration.",
+      "factory": "./dist/src/migrations/update-23-1-0/add-trust-proxy-headers",
+      "documentation": "./dist/src/migrations/update-23-1-0/add-trust-proxy-headers.md",
       "package": "@nx/angular",
-      "name": "update-module-resolution-22-2-0"
+      "name": "update-23-1-0-add-trust-proxy-headers"
     },
     {
-      "version": "22.3.0-beta.0",
-      "requires": { "@angular/core": ">=21.0.0" },
-      "description": "Updates the 'lib' property in tsconfig files to use 'es2022' or a more modern version.",
-      "factory": "./src/migrations/update-22-3-0/update-typescript-lib",
+      "version": "23.1.0-beta.0",
+      "requires": {
+        "@angular/core": ">=22.0.0"
+      },
+      "description": "Add `@angular/build` to `devDependencies` when a project uses the `@nx/angular:application` or `@nx/angular:unit-test` executor, or an `@angular/build:*` executor, and it is not already installed. These executors import `@angular/build` directly at runtime, but it has only ever been available transitively via `@angular-devkit/build-angular`, which is not reliable across package managers.",
+      "factory": "./dist/src/migrations/update-23-1-0/add-angular-build",
+      "documentation": "./dist/src/migrations/update-23-1-0/add-angular-build.md",
       "package": "@nx/angular",
-      "name": "update-typescript-lib-22-2-0"
+      "name": "update-23-1-0-add-angular-build"
     },
     {
-      "version": "22.3.0-beta.0",
-      "requires": { "@angular/core": ">=21.0.0" },
-      "description": "Update 'vitest' unit test runner option to 'vitest-analog' in generator defaults.",
-      "factory": "./src/migrations/update-22-3-0/update-unit-test-runner-option",
+      "version": "23.1.0-beta.0",
+      "requires": {
+        "@angular/core": ">=22.0.0"
+      },
+      "description": "Remove the `extendedDiagnostics` Angular compiler option from tsconfig files where `strictTemplates` resolves to `false`. Angular v22's `strict-templates-default` and `strict-safe-navigation-narrow` migrations can together produce this combination, which the Angular compiler rejects (`extendedDiagnostics` requires `strictTemplates` to be enabled).",
+      "factory": "./dist/src/migrations/update-23-1-0/remove-conflicting-extended-diagnostics",
+      "documentation": "./dist/src/migrations/update-23-1-0/remove-conflicting-extended-diagnostics.md",
       "package": "@nx/angular",
-      "name": "update-unit-test-runner-option"
+      "name": "update-23-1-0-remove-conflicting-extended-diagnostics"
     },
     {
-      "version": "22.3.0-beta.3",
-      "requires": { "@angular/core": ">=21.0.0" },
-      "description": "Set 'isolatedModules' to 'true' in TypeScript test configurations for Angular projects.",
-      "factory": "./src/migrations/update-22-3-0/set-isolated-modules",
-      "package": "@nx/angular",
-      "name": "set-isolated-modules-22-3-0"
-    },
-    {
-      "version": "22.3.0-beta.3",
-      "requires": { "@angular/core": ">=21.0.0" },
-      "description": "Replace 'jest-preset-angular/setup-jest' imports with the new 'setupZoneTestEnv' function.",
-      "factory": "./src/migrations/update-22-3-0/update-jest-preset-angular-setup",
-      "package": "@nx/angular",
-      "name": "update-jest-preset-angular-setup"
-    },
-    {
-      "version": "21.0.0",
-      "description": "Converts the entire application to block control flow syntax",
-      "factory": "./bundles/control-flow-migration.cjs#migrate",
+      "version": "22.0.0",
+      "description": "Adds `ChangeDetectionStrategy.Eager` to all components.",
+      "factory": "./bundles/change-detection-eager.cjs#migrate",
       "package": "@angular/core",
-      "name": "control-flow-migration"
+      "name": "change-detection-eager"
     },
     {
-      "version": "21.0.0",
-      "description": "Replaces usages of the deprecated Router.getCurrentNavigation method with the Router.currentNavigation signal",
-      "factory": "./bundles/router-current-navigation.cjs#migrate",
-      "optional": true,
+      "version": "22.0.0",
+      "description": "Adds 'withXhr' to 'provideHttpClient' function calls when the 'HttpXhrBackend' is used. For more information see: https://angular.dev/api/common/http/withXhr",
+      "factory": "./bundles/http-xhr-backend.cjs#migrate",
       "package": "@angular/core",
-      "name": "router-current-navigation"
+      "name": "http-xhr-backend"
     },
     {
-      "version": "21.0.0",
-      "description": "Ensures that the Router.lastSuccessfulNavigation signal is now invoked",
-      "factory": "./bundles/router-last-successful-navigation.cjs#migrate",
+      "version": "22.0.0",
+      "description": "Adds 'strictTemplates: false' in tsconfig.json when not set.",
+      "factory": "./bundles/strict-templates-default.cjs#migrate",
       "package": "@angular/core",
-      "name": "router-last-successful-navigation"
+      "name": "strict-templates-default"
     },
     {
-      "version": "21.0.0",
-      "description": "Moves imports of `ApplicationConfig` from `@angular/platform-browser` to `@angular/core`",
-      "factory": "./bundles/application-config-core.cjs#migrate",
+      "version": "22.0.0",
+      "description": "Adds the required third argument to canMatch callsites.",
+      "factory": "./bundles/can-match-snapshot-required.cjs#migrate",
       "package": "@angular/core",
-      "name": "application-config-core"
+      "name": "can-match-snapshot-required"
     },
     {
-      "version": "21.0.0",
-      "description": "Adds `BootstrapContext` to `bootstrapApplication` calls in `main.server.ts` to support server rendering.",
-      "factory": "./bundles/add-bootstrap-context-to-server-main.cjs#migrate",
+      "version": "22.0.0",
+      "description": "Adds withNoIncrementalHydration() opt out to provideClientHydration() when incremental hydration is not enabled to retain pre-v22 behavior-.",
+      "factory": "./bundles/incremental-hydration.cjs#migrate",
       "package": "@angular/core",
-      "name": "add-bootstrap-context-to-server-main"
+      "name": "incremental-hydration"
     },
     {
-      "version": "21.0.0",
-      "description": "Migrates deprecated bootstrap options to providers.",
-      "factory": "./bundles/bootstrap-options-migration.cjs#migrate",
+      "version": "22.0.0",
+      "description": "Disables the 'nullishCoalescingNotNullable & optionalChainNotNullable extended diagnostics.",
+      "factory": "./bundles/strict-safe-navigation-narrow.cjs#migrate",
       "package": "@angular/core",
-      "name": "bootstrap-options-migration"
+      "name": "strict-safe-navigation-narrow"
     },
     {
-      "version": "21.0.0-0",
-      "description": "Updates Angular Material to v21",
-      "factory": "./ng-update/index_bundled#updateToV21",
+      "version": "22.0.0",
+      "description": "Migrate broken duplicate outputs",
+      "factory": "./bundles/model-output.cjs#migrate",
+      "package": "@angular/core",
+      "name": "model-output"
+    },
+    {
+      "version": "22.0.0",
+      "description": "Wraps optional chaining expressions in $safeNavigationMigration().",
+      "factory": "./bundles/safe-optional-chaining.cjs#migrate",
+      "package": "@angular/core",
+      "name": "safe-optional-chaining"
+    },
+    {
+      "version": "22.0.0-0",
+      "description": "Updates Angular Material to v22",
+      "factory": "./ng-update/index_bundled#updateToV22",
       "package": "@angular/material",
-      "name": "migration-v21"
+      "name": "migration-v22"
     },
     {
-      "version": "21.0.0-0",
-      "description": "Updates the Angular CDK to v21",
-      "factory": "./ng-update/index#updateToV21",
+      "version": "22.0.0-0",
+      "description": "Updates the Angular CDK to v22",
+      "factory": "./ng-update/index#updateToV22",
       "package": "@angular/cdk",
-      "name": "migration-v21"
+      "name": "migration-v22"
     }
   ]
 }

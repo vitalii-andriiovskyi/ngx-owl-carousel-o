@@ -2,24 +2,24 @@
  * Data model for managing classes of .owl-stage DOM element
  */
 export class StageData {
-	/**
-	 * Determines css-rule 'transform'
-	 */
-	transform: string;
-	/**
-	 *  Determines css-rule 'transition'
+  /**
+   * Determines css-rule 'transform'
    */
-	transition: string;
-	/**
-	 *  Determines css-rule 'width'
+  transform!: string;
+  /**
+   *  Determines css-rule 'transition'
    */
-	width: number | string;
-	/**
-	 *  Determines css-rule 'padding-left'
+  transition!: string;
+  /**
+   *  Determines css-rule 'width'
    */
-	paddingL: number | string;
-	/**
-	 *  Determines css-rule 'padding-right'
+  width!: number | string;
+  /**
+   *  Determines css-rule 'padding-left'
    */
-	paddingR: number | string;
+  paddingL!: number | string;
+  /**
+   *  Determines css-rule 'padding-right'
+   */
+  paddingR!: number | string;
 }

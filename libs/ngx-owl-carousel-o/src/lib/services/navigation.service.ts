@@ -11,7 +11,7 @@ export class NavigationService implements OnDestroy {
   /**
    * Subscrioption to merge Observable  from CarouselService
    */
-  navSubscription: Subscription;
+  navSubscription!: Subscription;
 
   /**
    * Indicates whether the plugin is initialized or not.
@@ -30,11 +30,11 @@ export class NavigationService implements OnDestroy {
     disabled: false,
     prev: {
       disabled: false,
-      htmlText: ''
+      htmlText: '',
     },
     next: {
       disabled: false,
-      htmlText: ''
+      htmlText: '',
     },
   };
 
@@ -43,7 +43,7 @@ export class NavigationService implements OnDestroy {
    */
   protected _dotsData: DotsData = {
     disabled: false,
-    dots: []
+    dots: [],
   };
 
   constructor(private carouselService: CarouselService) {
@@ -58,44 +58,52 @@ export class NavigationService implements OnDestroy {
    * Defines Observables which service must observe
    */
   spyDataStreams() {
-    const initializedCarousel$: Observable<string> = this.carouselService.getInitializedState().pipe(
-      tap(state => {
-        this.initialize();
-        this._updateNavPages();
-        this.draw();
-        this.update();
-        this.carouselService.sendChanges();
-      })
-    );
+    const initializedCarousel$: Observable<string> = this.carouselService
+      .getInitializedState()
+      .pipe(
+        tap((state) => {
+          this.initialize();
+          this._updateNavPages();
+          this.draw();
+          this.update();
+          this.carouselService.sendChanges();
+        })
+      );
 
     // mostly changes in carouselService and carousel at all causes carouselService.to(). It moves stage right-left by its code and calling needed functions
     // Thus this method by calling carouselService.current(position) notifies about changes
-    const changedSettings$: Observable<any> = this.carouselService.getChangedState().pipe(
-      filter(data => data.property.name === 'position'),
-      tap(data => {
-        this.update();
-        // should be the call of the function written at the end of comment
-        // but the method carouselServive.to() has setTimeout(f, 0) which contains carouselServive.update() which calls sendChanges() method.
-        // carouselService.navData and carouselService.dotsData update earlier than carouselServive.update() gets called
-        // updates of carouselService.navData and carouselService.dotsData are being happening withing carouselService.current(position) method which calls next() of _changedSettingsCarousel$
-        // carouselService.current(position) is being calling earlier than carouselServive.update();
-        // this.carouselService.sendChanges();
-      })
-    );
+    const changedSettings$: Observable<any> = this.carouselService
+      .getChangedState()
+      .pipe(
+        filter((data) => data.property.name === 'position'),
+        tap((data) => {
+          this.update();
+          // should be the call of the function written at the end of comment
+          // but the method carouselServive.to() has setTimeout(f, 0) which contains carouselServive.update() which calls sendChanges() method.
+          // carouselService.navData and carouselService.dotsData update earlier than carouselServive.update() gets called
+          // updates of carouselService.navData and carouselService.dotsData are being happening withing carouselService.current(position) method which calls next() of _changedSettingsCarousel$
+          // carouselService.current(position) is being calling earlier than carouselServive.update();
+          // this.carouselService.sendChanges();
+        })
+      );
 
-    const refreshedCarousel$: Observable<string> = this.carouselService.getRefreshedState().pipe(
-      tap(() => {
-        this._updateNavPages();
-        this.draw();
-        this.update();
-        this.carouselService.sendChanges();
-      })
-    );
+    const refreshedCarousel$: Observable<string> = this.carouselService
+      .getRefreshedState()
+      .pipe(
+        tap(() => {
+          this._updateNavPages();
+          this.draw();
+          this.update();
+          this.carouselService.sendChanges();
+        })
+      );
 
-    const navMerge$: Observable<string> = merge(initializedCarousel$, changedSettings$, refreshedCarousel$);
-    this.navSubscription = navMerge$.subscribe(
-      () => { }
+    const navMerge$: Observable<string> = merge(
+      initializedCarousel$,
+      changedSettings$,
+      refreshedCarousel$
     );
+    this.navSubscription = navMerge$.subscribe(() => {});
   }
 
   /**
@@ -103,8 +111,10 @@ export class NavigationService implements OnDestroy {
    */
   initialize() {
     this._navData.disabled = true;
-    this._navData.prev.htmlText = this.carouselService.settings.navText[0];
-    this._navData.next.htmlText = this.carouselService.settings.navText[1];
+    this._navData.prev.htmlText = this.carouselService.settings
+      ?.navText?.[0] as string;
+    this._navData.next.htmlText = this.carouselService.settings
+      ?.navText?.[1] as string;
 
     this._dotsData.disabled = true;
 
@@ -122,27 +132,34 @@ export class NavigationService implements OnDestroy {
       maximum: number = this.carouselService.maximum(true),
       pages: any[] = [],
       settings: OwlOptions = this.carouselService.settings;
-    let size = settings.center || settings.autoWidth || settings.dotsData
-      ? 1 : Math.floor(Number(settings.dotsEach)) || Math.floor(settings.items);
+    let size =
+      settings.center || settings.autoWidth || settings.dotsData
+        ? 1
+        : Math.floor(Number(settings.dotsEach)) ||
+          Math.floor(settings.items as number);
     size = +size;
     if (settings.slideBy !== 'page') {
-      settings.slideBy = Math.min(+settings.slideBy, settings.items);
+      settings.slideBy = Math.min(
+        +(settings.slideBy as number),
+        settings.items as number
+      );
     }
 
     if (settings.dots || settings.slideBy === 'page') {
-
       for (i = lower, j = 0, k = 0; i < upper; i++) {
         if (j >= size || j === 0) {
           pages.push({
             start: Math.min(maximum, i - lower),
-            end: i - lower + size - 1
+            end: i - lower + size - 1,
           });
           if (Math.min(maximum, i - lower) === maximum) {
             break;
           }
-          j = 0, ++k;
+          (j = 0), ++k;
         }
-        j += this.carouselService.mergers(this.carouselService.relative(i)) as number;
+        j += this.carouselService.mergers(
+          this.carouselService.relative(i)
+        ) as number;
       }
     }
     this._pages = pages;
@@ -156,7 +173,7 @@ export class NavigationService implements OnDestroy {
     let difference: number;
     const settings: OwlOptions = this.carouselService.settings,
       items: CarouselSlideDirective[] = this.carouselService.items(),
-      disabled = items.length <= settings.items;
+      disabled = items.length <= (settings.items as number);
 
     this._navData.disabled = !settings.nav || disabled;
     this._dotsData.disabled = !settings.dots || disabled;
@@ -166,32 +183,33 @@ export class NavigationService implements OnDestroy {
 
       if (settings.dotsData && difference !== 0) {
         this._dotsData.dots = [];
-        items.forEach(item => {
+        items.forEach((item) => {
           this._dotsData.dots.push({
             active: false,
-            id: `dot-${item.id}`,
+            id: `dot-${item.id()}`,
             innerContent: item.dotContent(),
-            showInnerContent: true
+            showInnerContent: true,
           });
         });
       } else if (difference > 0) {
-        const startI: number = this._dotsData.dots.length > 0 ? this._dotsData.dots.length : 0;
+        const startI: number =
+          this._dotsData.dots.length > 0 ? this._dotsData.dots.length : 0;
         for (let i = 0; i < difference; i++) {
           this._dotsData.dots.push({
             active: false,
             id: `dot-${i + startI}`,
             innerContent: '',
-            showInnerContent: false
+            showInnerContent: false,
           });
         }
       } else if (difference < 0) {
-        this._dotsData.dots.splice(difference, Math.abs(difference))
+        this._dotsData.dots.splice(difference, Math.abs(difference));
       }
     }
 
     this.carouselService.navData = this._navData;
     this.carouselService.dotsData = this._dotsData;
-  };
+  }
 
   /**
    * Updates navigation buttons's and dots's states
@@ -206,12 +224,16 @@ export class NavigationService implements OnDestroy {
    */
   private _updateNavButtons() {
     const settings: OwlOptions = this.carouselService.settings,
-      loop: boolean = settings.loop || settings.rewind,
-      index: number = this.carouselService.relative(this.carouselService.current());
+      loop: boolean = settings.loop || settings.rewind || false,
+      index: number = this.carouselService.relative(
+        this.carouselService.current() as number
+      );
 
     if (settings.nav) {
-      this._navData.prev.disabled = !loop && index <= this.carouselService.minimum(true);
-      this._navData.next.disabled = !loop && index >= this.carouselService.maximum(true);
+      this._navData.prev.disabled =
+        !loop && index <= this.carouselService.minimum(true);
+      this._navData.next.disabled =
+        !loop && index >= this.carouselService.maximum(true);
     }
 
     this.carouselService.navData = this._navData;
@@ -226,11 +248,11 @@ export class NavigationService implements OnDestroy {
     if (!this.carouselService.settings.dots) {
       return;
     }
-    this._dotsData.dots.forEach(item => {
+    this._dotsData.dots.forEach((item) => {
       if (item.active === true) {
         item.active = false;
       }
-    })
+    });
 
     curActiveDotI = this._current();
     if (this._dotsData.dots.length) {
@@ -244,18 +266,22 @@ export class NavigationService implements OnDestroy {
    * @returns the current page position of the carousel
    */
   private _current(): any {
-    const current: number = this.carouselService.relative(this.carouselService.current());
+    const current: number = this.carouselService.relative(
+      this.carouselService.current() as number
+    );
     let finalCurrent: number;
-    const pages: any = this._pages.filter((page, index) => {
-      return page.start <= current && page.end >= current;
-    }).pop();
+    const pages: any = this._pages
+      .filter((page, index) => {
+        return page.start <= current && page.end >= current;
+      })
+      .pop();
 
-    finalCurrent = this._pages.findIndex(page => {
+    finalCurrent = this._pages.findIndex((page) => {
       return page.start === pages.start && page.end === pages.end;
     });
 
     return finalCurrent;
-  };
+  }
 
   /**
    * Gets the current succesor/predecessor position.
@@ -272,13 +298,17 @@ export class NavigationService implements OnDestroy {
       successor ? ++position : --position;
       position = this._pages[((position % length) + length) % length].start;
     } else {
-      position = this.carouselService.relative(this.carouselService.current());
+      position = this.carouselService.relative(
+        this.carouselService.current() as number
+      );
       length = this.carouselService.items().length;
-      successor ? position += +settings.slideBy : position -= +settings.slideBy;
+      successor
+        ? (position += +(settings.slideBy as number))
+        : (position -= +(settings.slideBy as number));
     }
 
     return position;
-  };
+  }
 
   /**
    * Slides to the next item or page.
@@ -286,7 +316,7 @@ export class NavigationService implements OnDestroy {
    */
   next(speed: number | boolean) {
     this.carouselService.to(this._getPosition(true), speed);
-  };
+  }
 
   /**
    * Slides to the previous item or page.
@@ -294,30 +324,35 @@ export class NavigationService implements OnDestroy {
    */
   prev(speed: number | boolean) {
     this.carouselService.to(this._getPosition(false), speed);
-  };
+  }
 
   /**
- * Slides to the specified item or page.
- * @param position - The position of the item or page.
- * @param speed - The time in milliseconds for the transition.
- * @param standard - Whether to use the standard behaviour or not. Default meaning false
- */
+   * Slides to the specified item or page.
+   * @param position - The position of the item or page.
+   * @param speed - The time in milliseconds for the transition.
+   * @param standard - Whether to use the standard behaviour or not. Default meaning false
+   */
   to(position: number, speed: number | boolean, standard?: boolean) {
     let length: number;
     if (!standard && this._pages.length) {
       length = this._pages.length;
-      this.carouselService.to(this._pages[((position % length) + length) % length].start, speed);
+      this.carouselService.to(
+        this._pages[((position % length) + length) % length].start,
+        speed
+      );
     } else {
       this.carouselService.to(position, speed);
     }
-  };
+  }
 
   /**
    * Moves carousel after user's clicking on any dots
    */
   moveByDot(dotId: string) {
-    const index: number = this._dotsData.dots.findIndex(dot => dotId === dot.id);
-    this.to(index, this.carouselService.settings.dotsSpeed);
+    const index: number = this._dotsData.dots.findIndex(
+      (dot) => dotId === dot.id
+    );
+    this.to(index, this.carouselService.settings.dotsSpeed as number);
   }
 
   /**
@@ -325,14 +360,15 @@ export class NavigationService implements OnDestroy {
    * @param id id of slide
    */
   toSlideById(id: string) {
-    const position = this.carouselService.slidesData.findIndex(slide => slide.id === id && slide.isCloned === false);
+    const position = this.carouselService.slidesData.findIndex(
+      (slide) => slide.id === id && slide.isCloned === false
+    );
 
     if (position === -1 || position === this.carouselService.current()) {
-      console.log(`Slide with id=${id} not found`)
+      console.log(`Slide with id=${id} not found`);
       return;
     }
 
     this.carouselService.to(this.carouselService.relative(position), false);
   }
-
 }

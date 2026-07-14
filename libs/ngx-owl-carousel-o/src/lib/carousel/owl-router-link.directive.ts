@@ -1,37 +1,59 @@
 import { LocationStrategy } from '@angular/common';
-import { Attribute, Directive, ElementRef, HostBinding, HostListener, Input, OnChanges, OnDestroy, Renderer2, isDevMode } from '@angular/core';
+import {
+  Attribute,
+  Directive,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Renderer2,
+  isDevMode,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { NavigationEnd, RouterEvent, Router, ActivatedRoute, UrlTree } from '@angular/router';
+import {
+  NavigationEnd,
+  RouterEvent,
+  Router,
+  ActivatedRoute,
+  UrlTree,
+  Event,
+} from '@angular/router';
 
 export type QueryParamsHandling = 'merge' | 'preserve' | '';
 
 @Directive({
-    selector: ':not(a)[owlRouterLink]',
-    standalone: false
+  selector: ':not(a)[owlRouterLink]',
+  standalone: false,
 })
 export class OwlRouterLinkDirective {
   // TODO(issue/24571): remove '!'.
-  @Input() queryParams !: { [k: string]: any };
+  @Input() queryParams!: { [k: string]: any };
   // TODO(issue/24571): remove '!'.
-  @Input() fragment !: string;
+  @Input() fragment!: string;
   // TODO(issue/24571): remove '!'.
-  @Input() queryParamsHandling !: QueryParamsHandling;
+  @Input() queryParamsHandling!: QueryParamsHandling;
   // TODO(issue/24571): remove '!'.
-  @Input() preserveFragment !: boolean;
+  @Input() preserveFragment!: boolean;
   // TODO(issue/24571): remove '!'.
-  @Input() skipLocationChange !: boolean;
+  @Input() skipLocationChange!: boolean;
   // TODO(issue/24571): remove '!'.
-  @Input() replaceUrl !: boolean;
+  @Input() replaceUrl!: boolean;
 
   @Input() stopLink = false;
   private commands: any[] = [];
   // TODO(issue/24571): remove '!'.
-  private preserve !: boolean;
+  private preserve!: boolean;
 
   constructor(
-    private router: Router, private route: ActivatedRoute,
-    @Attribute('tabindex') tabIndex: string, renderer: Renderer2, el: ElementRef) {
+    private router: Router,
+    private route: ActivatedRoute,
+    @Attribute('tabindex') tabIndex: string,
+    renderer: Renderer2,
+    el: ElementRef
+  ) {
     if (tabIndex == null) {
       renderer.setAttribute(el.nativeElement, 'tabindex', '0');
     }
@@ -52,7 +74,9 @@ export class OwlRouterLinkDirective {
   @Input()
   set preserveQueryParams(value: boolean) {
     if (isDevMode() && <any>console && <any>console.warn) {
-      console.warn('preserveQueryParams is deprecated!, use queryParamsHandling instead.');
+      console.warn(
+        'preserveQueryParams is deprecated!, use queryParamsHandling instead.'
+      );
     }
     this.preserve = value;
   }
@@ -76,7 +100,7 @@ export class OwlRouterLinkDirective {
       queryParams: this.queryParams,
       fragment: this.fragment,
       queryParamsHandling: this.queryParamsHandling,
-      preserveFragment: attrBoolValue(this.preserveFragment)
+      preserveFragment: attrBoolValue(this.preserveFragment),
     });
   }
 }
@@ -93,39 +117,41 @@ export class OwlRouterLinkDirective {
  * @publicApi
  */
 @Directive({
-    selector: 'a[owlRouterLink]',
-    standalone: false
+  selector: 'a[owlRouterLink]',
+  standalone: false,
 })
 export class OwlRouterLinkWithHrefDirective implements OnChanges, OnDestroy {
   // TODO(issue/24571): remove '!'.
-  @HostBinding('attr.target') @Input() target !: string;
+  @HostBinding('attr.target') @Input() target!: string;
   // TODO(issue/24571): remove '!'.
-  @Input() queryParams !: { [k: string]: any };
+  @Input() queryParams!: { [k: string]: any };
   // TODO(issue/24571): remove '!'.
-  @Input() fragment !: string;
+  @Input() fragment!: string;
   // TODO(issue/24571): remove '!'.
-  @Input() queryParamsHandling !: QueryParamsHandling;
+  @Input() queryParamsHandling!: QueryParamsHandling;
   // TODO(issue/24571): remove '!'.
-  @Input() preserveFragment !: boolean;
+  @Input() preserveFragment!: boolean;
   // TODO(issue/24571): remove '!'.
-  @Input() skipLocationChange !: boolean;
+  @Input() skipLocationChange!: boolean;
   // TODO(issue/24571): remove '!'.
-  @Input() replaceUrl !: boolean;
+  @Input() replaceUrl!: boolean;
   @Input() stopLink = false;
 
   private commands: any[] = [];
   private subscription: Subscription;
   // TODO(issue/24571): remove '!'.
-  private preserve !: boolean;
+  private preserve!: boolean;
 
   // the url displayed on the anchor element.
   // TODO(issue/24571): remove '!'.
-  @HostBinding() href !: string;
+  @HostBinding() href!: string;
 
   constructor(
-    private router: Router, private route: ActivatedRoute,
-    private locationStrategy: LocationStrategy) {
-    this.subscription = router.events.subscribe((s: NavigationEnd) => {
+    private router: Router,
+    private route: ActivatedRoute,
+    private locationStrategy: LocationStrategy
+  ) {
+    this.subscription = router.events.subscribe((s: Event) => {
       if (s instanceof NavigationEnd) {
         this.updateTargetUrlAndHref();
       }
@@ -144,16 +170,32 @@ export class OwlRouterLinkWithHrefDirective implements OnChanges, OnDestroy {
   @Input()
   set preserveQueryParams(value: boolean) {
     if (isDevMode() && <any>console && <any>console.warn) {
-      console.warn('preserveQueryParams is deprecated, use queryParamsHandling instead.');
+      console.warn(
+        'preserveQueryParams is deprecated, use queryParamsHandling instead.'
+      );
     }
     this.preserve = value;
   }
 
-  ngOnChanges(changes: {}): any { this.updateTargetUrlAndHref(); }
-  ngOnDestroy(): any { this.subscription.unsubscribe(); }
+  ngOnChanges(changes: {}): any {
+    this.updateTargetUrlAndHref();
+  }
+  ngOnDestroy(): any {
+    this.subscription.unsubscribe();
+  }
 
-  @HostListener('click', ['$event.button', '$event.ctrlKey', '$event.metaKey', '$event.shiftKey'])
-  onClick(button: number, ctrlKey: boolean, metaKey: boolean, shiftKey: boolean): boolean {
+  @HostListener('click', [
+    '$event.button',
+    '$event.ctrlKey',
+    '$event.metaKey',
+    '$event.shiftKey',
+  ])
+  onClick(
+    button: number,
+    ctrlKey: boolean,
+    metaKey: boolean,
+    shiftKey: boolean
+  ): boolean {
     if (button !== 0 || ctrlKey || metaKey || shiftKey) {
       return true;
     }
@@ -175,7 +217,9 @@ export class OwlRouterLinkWithHrefDirective implements OnChanges, OnDestroy {
   }
 
   private updateTargetUrlAndHref(): void {
-    this.href = this.locationStrategy.prepareExternalUrl(this.router.serializeUrl(this.urlTree));
+    this.href = this.locationStrategy.prepareExternalUrl(
+      this.router.serializeUrl(this.urlTree)
+    );
   }
 
   get urlTree(): UrlTree {
@@ -184,7 +228,7 @@ export class OwlRouterLinkWithHrefDirective implements OnChanges, OnDestroy {
       queryParams: this.queryParams,
       fragment: this.fragment,
       queryParamsHandling: this.queryParamsHandling,
-      preserveFragment: attrBoolValue(this.preserveFragment)
+      preserveFragment: attrBoolValue(this.preserveFragment),
     });
   }
 }

@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/ng-packagr/package.schema.json",
   "name": "ngx-owl-carousel-o",
-  "version": "21.0.2",
+  "version": "22.0.0",
   "description": "Angular powered owl-carousel",
   "keywords": [
     "angular",
@@ -24,8 +24,8 @@
     "url": "https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues"
   },
   "peerDependencies": {
-    "@angular/common": " ^21.0.0-rc.0 || ^21.0.0",
-    "@angular/core": "^21.0.0-rc.0 || ^21.0.0",
+    "@angular/common": " ^22.0.0-rc.0 || ^22.0.0",
+    "@angular/core": "^22.0.0-rc.0 || ^22.0.0",
     "rxjs": "^6.0.1 || ^7.0.0"
   },
   "exports": {
@@ -58,6 +58,7 @@
   "module": "fesm2022/ngx-owl-carousel-o.mjs",
   "typings": "types/ngx-owl-carousel-o.d.ts",
   "sideEffects": false,
+  "type": "module",
   "dependencies": {
     "tslib": "^2.3.0"
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, WritableSignal, signal } from '@angular/core';
+import { Component, OnInit, WritableSignal, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
@@ -19,6 +19,7 @@ interface CarouselData {
   selector: 'app-subhome',
   imports: [CommonModule, RouterLink, CarouselModule],
   templateUrl: './subhome.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './subhome.component.scss'
 })
 export class SubhomeComponent implements OnInit {

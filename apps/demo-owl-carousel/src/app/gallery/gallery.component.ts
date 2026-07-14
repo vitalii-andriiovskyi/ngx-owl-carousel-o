@@ -1,5 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 
 interface Image {
@@ -11,6 +11,7 @@ interface Image {
   selector: 'app-gallery',
   imports: [CarouselModule, NgOptimizedImage],
   templateUrl: './gallery.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './gallery.component.sass',
 })
 export class GalleryComponent {

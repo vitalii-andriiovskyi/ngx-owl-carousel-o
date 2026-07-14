@@ -1,12 +1,22 @@
-
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { CarouselComponent, CarouselModule, OwlOptions, SlidesOutputData } from 'ngx-owl-carousel-o';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import {
+  CarouselComponent,
+  CarouselModule,
+  OwlOptions,
+  SlidesOutputData,
+} from 'ngx-owl-carousel-o';
 
 @Component({
   selector: 'app-doubled-carousel',
   imports: [CarouselModule],
   templateUrl: './doubled-carousel.component.html',
-  styleUrl: './doubled-carousel.component.scss'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './doubled-carousel.component.scss',
 })
 export class DoubledCarouselComponent implements OnInit {
   @ViewChild('owlMac') owlMac!: CarouselComponent;
@@ -36,8 +46,8 @@ export class DoubledCarouselComponent implements OnInit {
       940: {
         items: 4,
         loop: true,
-      }
-    }
+      },
+    },
   };
 
   carouselOptions: OwlOptions = {
@@ -71,23 +81,23 @@ export class DoubledCarouselComponent implements OnInit {
     items: [
       {
         id: 'slide-1',
-        displayedName: 'Slide 1'
+        displayedName: 'Slide 1',
       },
       {
         id: 'slide-2',
-        displayedName: 'Slide 2'
+        displayedName: 'Slide 2',
       },
       {
         id: 'slide-3',
-        displayedName: 'Slide 3'
+        displayedName: 'Slide 3',
       },
       {
         id: 'slide-4',
-        displayedName: 'Slide 4'
+        displayedName: 'Slide 4',
       },
       {
         id: 'slide-5',
-        displayedName: 'Slide 5'
+        displayedName: 'Slide 5',
       },
       // {
       //   id: 'slide-6',
@@ -101,10 +111,9 @@ export class DoubledCarouselComponent implements OnInit {
       //   id: 'slide-8',
       //   displayedName: 'Slide 8'
       // }
-    ]
-
+    ],
   };
-  constructor() { }
+  constructor() {}
 
   slideTo(category: string) {
     this.owlMac.moveByDot(category);
@@ -112,12 +121,11 @@ export class DoubledCarouselComponent implements OnInit {
 
   changeSlide($event: SlidesOutputData) {
     if (this.owlCat) {
-      // this.category$.next($event.slides[0].id);
-      this.owlCat.moveByDot(this.owlCat.dotsData().dots[$event.startPosition as number].id)
+      this.owlCat.moveByDot(
+        this.owlCat.dotsData()?.dots?.[$event.startPosition as number]?.id || ''
+      );
     }
   }
 
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }

@@ -28,19 +28,19 @@ declare class StageData {
     transform: string;
     /**
      *  Determines css-rule 'transition'
-   */
+     */
     transition: string;
     /**
      *  Determines css-rule 'width'
-   */
+     */
     width: number | string;
     /**
      *  Determines css-rule 'padding-left'
-   */
+     */
     paddingL: number | string;
     /**
      *  Determines css-rule 'padding-right'
-   */
+     */
     paddingR: number | string;
 }
 
@@ -62,7 +62,7 @@ declare class OwlDOMData {
     isRefreshed: boolean;
     /**
      * Defines whether to set class .owl-loaded or not
-    */
+     */
     isLoaded: boolean;
     /**
      * Defines whether to set class .owl-loading or not
@@ -752,7 +752,7 @@ declare class CarouselService {
     private _states;
     get states(): States;
     /**
-         * Ordered list of workers for the update process.
+     * Ordered list of workers for the update process.
      */
     private _pipe;
     constructor(logger: OwlLogger);
@@ -887,7 +887,7 @@ declare class CarouselService {
      * Checks window `resize` event.
      * @param curWidth width of .owl-carousel
      */
-    onResize(curWidth: number): boolean;
+    onResize(curWidth: number): false | undefined;
     /**
      * Prepares data for dragging carousel. It starts after firing `touchstart` and `mousedown` events.
      * @todo Horizontal swipe threshold as option
@@ -924,7 +924,7 @@ declare class CarouselService {
      * @param direction The direction to check for the closest item. Ether `left` or `right`.
      * @returns The absolute position of the closest item.
      */
-    closest(coordinate: number, direction: string): number;
+    closest(coordinate: number, direction: string | null): number;
     /**
      * Animates the stage.
      * @todo #270
@@ -1038,7 +1038,7 @@ declare class CarouselService {
      * Handles the end of an animation.
      * @param event - The event arguments.
      */
-    onTransitionEnd(event?: any): boolean;
+    onTransitionEnd(event?: any): false | undefined;
     /**
      * Gets viewport width.
      * @returns - The width in pixel.
@@ -1222,11 +1222,11 @@ declare class NavigationService implements OnDestroy {
      */
     prev(speed: number | boolean): void;
     /**
-   * Slides to the specified item or page.
-   * @param position - The position of the item or page.
-   * @param speed - The time in milliseconds for the transition.
-   * @param standard - Whether to use the standard behaviour or not. Default meaning false
-   */
+     * Slides to the specified item or page.
+     * @param position - The position of the item or page.
+     * @param speed - The time in milliseconds for the transition.
+     * @param standard - Whether to use the standard behaviour or not. Default meaning false
+     */
     to(position: number, speed: number | boolean, standard?: boolean): void;
     /**
      * Moves carousel after user's clicking on any dots
@@ -1276,29 +1276,29 @@ declare class AutoplayService implements OnDestroy {
      */
     spyDataStreams(): void;
     /**
-       * Starts the autoplay.
-       * @param timeout The interval before the next animation starts.
-       * @param speed The animation speed for the animations.
-       */
+     * Starts the autoplay.
+     * @param timeout The interval before the next animation starts.
+     * @param speed The animation speed for the animations.
+     */
     play(timeout?: number, speed?: number): void;
     /**
-       * Gets a new timeout
-       * @param timeout - The interval before the next animation starts.
-       * @param speed - The animation speed for the animations.
-       * @return
-       */
+     * Gets a new timeout
+     * @param timeout - The interval before the next animation starts.
+     * @param speed - The animation speed for the animations.
+     * @return
+     */
     private _getNextTimeout;
     /**
-       * Sets autoplay in motion.
-       */
+     * Sets autoplay in motion.
+     */
     private _setAutoPlayInterval;
     /**
      * Stops the autoplay.
      */
     stop(): void;
     /**
-       * Stops the autoplay.
-       */
+     * Stops the autoplay.
+     */
     pause(): void;
     /**
      * Manages by autoplaying according to data passed by _changedSettingsCarousel$ Obsarvable
@@ -1339,9 +1339,9 @@ declare class LazyLoadService implements OnDestroy {
     spyDataStreams(): void;
     private _defineLazyLoadSlides;
     /**
-       * Loads all resources of an item at the specified position.
-       * @param position - The absolute position of the item.
-       */
+     * Loads all resources of an item at the specified position.
+     * @param position - The absolute position of the item.
+     */
     private _load;
     static ɵfac: i0.ɵɵFactoryDeclaration<LazyLoadService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<LazyLoadService>;
@@ -1360,11 +1360,11 @@ declare class AnimateService implements OnDestroy {
     /**
      * active slide before translating
      */
-    previous: any;
+    previous: number | undefined;
     /**
      * new active slide after translating
      */
-    next: any;
+    next: number | undefined;
     constructor(carouselService: CarouselService);
     ngOnDestroy(): void;
     /**
@@ -1372,15 +1372,15 @@ declare class AnimateService implements OnDestroy {
      */
     spyDataStreams(): void;
     /**
-       * Toggles the animation classes whenever an translations starts.
-       * @returns
-       */
+     * Toggles the animation classes whenever an translations starts.
+     * @returns
+     */
     private _swap;
     /**
      * Handles the end of 'animationend' event
      * @param id Id of slides
      */
-    clear(id: any): void;
+    clear(id: string): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<AnimateService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<AnimateService>;
 }
@@ -1489,12 +1489,12 @@ declare class CarouselComponent implements OnInit, OnDestroy, AfterContentInit {
      * Current settings for the carousel.
      */
     private _owlDOMData;
-    owlDOMData: Signal<OwlDOMData>;
+    owlDOMData: Signal<OwlDOMData | null>;
     /**
      * Data of owl-stage
      */
     private _stageData;
-    stageData: Signal<StageData>;
+    stageData: Signal<StageData | null>;
     /**
      *  Data of every slide
      */
@@ -1504,12 +1504,12 @@ declare class CarouselComponent implements OnInit, OnDestroy, AfterContentInit {
      * Data of navigation block
      */
     private _navData;
-    navData: Signal<NavData>;
+    navData: Signal<NavData | null>;
     /**
      * Data of dots block
      */
     private _dotsData;
-    dotsData: Signal<DotsData>;
+    dotsData: Signal<DotsData | null>;
     /**
      * Data, wich are passed out of carousel after ending of transioning of carousel
      */
@@ -1522,7 +1522,7 @@ declare class CarouselComponent implements OnInit, OnDestroy, AfterContentInit {
     /**
      * User's options
      */
-    options: i0.InputSignal<OwlOptions>;
+    options: i0.InputSignal<OwlOptions | undefined>;
     /**
      * Observable for user's options
      * It is used to track changes of options and re-render carousel if needed
@@ -1578,8 +1578,8 @@ declare class CarouselComponent implements OnInit, OnDestroy, AfterContentInit {
     private _hasADotFocus;
     protected defineTabIndexForDots(dot: OwlSingeDot): number;
     private _onArrowKeydown;
-    protected onDotKeydown(event: KeyboardEvent, dotId: string): boolean;
-    protected onNavKeydown(event: KeyboardEvent, navId: string): boolean;
+    protected onDotKeydown(event: KeyboardEvent, dotId: string): false | undefined;
+    protected onNavKeydown(event: KeyboardEvent, navId: string): false | undefined;
     /**
      * Handler for transitioend event
      */
@@ -1587,15 +1587,15 @@ declare class CarouselComponent implements OnInit, OnDestroy, AfterContentInit {
     /**
      * Handler for click event, attached to next button
      */
-    next(): boolean;
+    next(): false | undefined;
     /**
      * Handler for click event, attached to prev button
      */
-    prev(): boolean;
+    prev(): false | undefined;
     /**
      * Handler for click event, attached to dots
      */
-    moveByDot(dotId: string): boolean;
+    moveByDot(dotId: string): false | undefined;
     /**
      * rewinds carousel to slide with needed id
      * @param id fragment of url
@@ -1635,19 +1635,19 @@ declare class StageComponent implements OnInit, OnDestroy {
     owlDraggable: i0.InputSignal<{
         isMouseDragable: boolean;
         isTouchDragable: boolean;
-    }>;
+    } | undefined>;
     /**
      * Data of owl-stage
      */
-    stageData: i0.InputSignal<StageData>;
+    stageData: i0.InputSignal<StageData | null | undefined>;
     /**
      *  Data of every slide
      */
-    slidesData: i0.InputSignal<SlideModel[]>;
+    slidesData: i0.InputSignal<SlideModel[] | undefined>;
     /**
      *  The number of actual slides without cloned ones
      */
-    slidesCount: i0.Signal<number>;
+    slidesCount: i0.Signal<number | undefined>;
     /**
      * Function wich will be returned after attaching listener to 'mousemove' event
      */
@@ -1691,25 +1691,25 @@ declare class StageComponent implements OnInit, OnDestroy {
     private _oneMoveSubsription;
     preparePublicSlide: (slide: SlideModel) => SlideModel;
     constructor(zone: NgZone, el: ElementRef, renderer: Renderer2, carouselService: CarouselService, animateService: AnimateService);
-    onMouseDown(event: any): void;
-    onTouchStart(event: any): boolean;
-    onTouchCancel(event: any): void;
-    onDragStart(): boolean;
-    onSelectStart(): boolean;
+    onMouseDown(event: MouseEvent): void;
+    onTouchStart(event: TouchEvent): false | undefined;
+    onTouchCancel(event: TouchEvent): void;
+    onDragStart(): false | undefined;
+    onSelectStart(): false | undefined;
     ngOnInit(): void;
     ngOnDestroy(): void;
     /**
      * Passes this to _oneMouseTouchMove();
      */
-    bindOneMouseTouchMove: (ev: any) => void;
+    bindOneMouseTouchMove: (ev: MouseEvent | TouchEvent) => void;
     /**
      * Passes this to _onDragMove();
      */
-    bindOnDragMove: (ev: any) => void;
+    bindOnDragMove: (ev: MouseEvent | TouchEvent) => void;
     /**
      * Passes this to _onDragMove();
      */
-    bindOnDragEnd: (ev: any) => void;
+    bindOnDragEnd: (ev: MouseEvent | TouchEvent) => void;
     /**
      * Handles `touchstart` and `mousedown` events.
      * @todo Horizontal swipe threshold as option
@@ -1728,10 +1728,10 @@ declare class StageComponent implements OnInit, OnDestroy {
      */
     private blockClickAnchorInDragging;
     /**
-   * Handles the `touchmove` and `mousemove` events.
-   * @todo #261
-   * @param event - The event arguments.
-   */
+     * Handles the `touchmove` and `mousemove` events.
+     * @todo #261
+     * @param event - The event arguments.
+     */
     private _onDragMove;
     /**
      * Moves .owl-stage left-right
@@ -1780,9 +1780,9 @@ declare class StageComponent implements OnInit, OnDestroy {
      */
     private _is;
     /**
-    * Enters a state.
-    * @param name The state name.
-    */
+     * Enters a state.
+     * @param name The state name.
+     */
     private _enter;
     /**
      * Sends all data needed for View.
@@ -1800,7 +1800,7 @@ declare class StageComponent implements OnInit, OnDestroy {
      * Handles the end of 'animationend' event
      * @param id Id of slides
      */
-    clear(id: any): void;
+    clear(id: string): void;
     protected getActualSlideNumber(slideId: string): number;
     static ɵfac: i0.ɵɵFactoryDeclaration<StageComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<StageComponent, "owl-stage", never, { "owlDraggable": { "alias": "owlDraggable"; "required": false; "isSignal": true; }; "stageData": { "alias": "stageData"; "required": false; "isSignal": true; }; "slidesData": { "alias": "slidesData"; "required": false; "isSignal": true; }; }, {}, never, never, false, never>;

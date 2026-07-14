@@ -1,8 +1,11 @@
 # Versions Changes
 
+* [v22.0.0](#v2200)
+* [v21.0.3](#v2103)
 * [v21.0.2](#v2102)
 * [v21.0.1](#v2101)
 * [v21.0.0](#v2100)
+* [v20.1.1](#v2011)
 * [v20.1.0](#v2010)
 * [v20.0.1](#v2001)
 * [v20.0.0](#v2000)
@@ -75,6 +78,14 @@
 * [v0.1.0](#v010)
 * [v0.0.5](#v005)
 
+## v22.0.0
+
+The version `v22.0.0` is generated for Angular 22.
+
+## v21.0.3
+
+The version `v21.0.3` fixes bugs [`#298`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/298) for Angular 21.
+
 ## v21.0.2
 
 The version `v21.0.2` fixes bugs accidentally introduced in the previous version.
@@ -86,6 +97,10 @@ The version `v21.0.1` adds css files export, so it is possible to `@import "ngx-
 ## v21.0.0
 
 The version `v21.0.0` is generated for Angular 21.
+
+## v20.1.1
+
+The version `v20.1.1` fixes bugs [`#298`](https://github.com/vitalii-andriiovskyi/ngx-owl-carousel-o/issues/298) for Angular 20.
 
 ## v20.1.0
 
