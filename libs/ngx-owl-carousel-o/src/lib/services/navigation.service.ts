@@ -11,7 +11,7 @@ export class NavigationService implements OnDestroy {
   /**
    * Subscrioption to merge Observable  from CarouselService
    */
-  navSubscription: Subscription;
+  navSubscription!: Subscription;
 
   /**
    * Indicates whether the plugin is initialized or not.
@@ -111,8 +111,10 @@ export class NavigationService implements OnDestroy {
    */
   initialize() {
     this._navData.disabled = true;
-    this._navData.prev.htmlText = this.carouselService.settings.navText[0];
-    this._navData.next.htmlText = this.carouselService.settings.navText[1];
+    this._navData.prev.htmlText = this.carouselService.settings
+      ?.navText?.[0] as string;
+    this._navData.next.htmlText = this.carouselService.settings
+      ?.navText?.[1] as string;
 
     this._dotsData.disabled = true;
 
@@ -133,10 +135,14 @@ export class NavigationService implements OnDestroy {
     let size =
       settings.center || settings.autoWidth || settings.dotsData
         ? 1
-        : Math.floor(Number(settings.dotsEach)) || Math.floor(settings.items);
+        : Math.floor(Number(settings.dotsEach)) ||
+          Math.floor(settings.items as number);
     size = +size;
     if (settings.slideBy !== 'page') {
-      settings.slideBy = Math.min(+settings.slideBy, settings.items);
+      settings.slideBy = Math.min(
+        +(settings.slideBy as number),
+        settings.items as number
+      );
     }
 
     if (settings.dots || settings.slideBy === 'page') {
@@ -167,7 +173,7 @@ export class NavigationService implements OnDestroy {
     let difference: number;
     const settings: OwlOptions = this.carouselService.settings,
       items: CarouselSlideDirective[] = this.carouselService.items(),
-      disabled = items.length <= settings.items;
+      disabled = items.length <= (settings.items as number);
 
     this._navData.disabled = !settings.nav || disabled;
     this._dotsData.disabled = !settings.dots || disabled;
@@ -218,9 +224,9 @@ export class NavigationService implements OnDestroy {
    */
   private _updateNavButtons() {
     const settings: OwlOptions = this.carouselService.settings,
-      loop: boolean = settings.loop || settings.rewind,
+      loop: boolean = settings.loop || settings.rewind || false,
       index: number = this.carouselService.relative(
-        this.carouselService.current()
+        this.carouselService.current() as number
       );
 
     if (settings.nav) {
@@ -261,7 +267,7 @@ export class NavigationService implements OnDestroy {
    */
   private _current(): any {
     const current: number = this.carouselService.relative(
-      this.carouselService.current()
+      this.carouselService.current() as number
     );
     let finalCurrent: number;
     const pages: any = this._pages
@@ -292,11 +298,13 @@ export class NavigationService implements OnDestroy {
       successor ? ++position : --position;
       position = this._pages[((position % length) + length) % length].start;
     } else {
-      position = this.carouselService.relative(this.carouselService.current());
+      position = this.carouselService.relative(
+        this.carouselService.current() as number
+      );
       length = this.carouselService.items().length;
       successor
-        ? (position += +settings.slideBy)
-        : (position -= +settings.slideBy);
+        ? (position += +(settings.slideBy as number))
+        : (position -= +(settings.slideBy as number));
     }
 
     return position;
@@ -344,7 +352,7 @@ export class NavigationService implements OnDestroy {
     const index: number = this._dotsData.dots.findIndex(
       (dot) => dotId === dot.id
     );
-    this.to(index, this.carouselService.settings.dotsSpeed);
+    this.to(index, this.carouselService.settings.dotsSpeed as number);
   }
 
   /**

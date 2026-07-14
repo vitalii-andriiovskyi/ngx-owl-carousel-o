@@ -8,6 +8,12 @@
     "isolatedModules": true
   },
   "angularCompilerOptions": {
+    "extendedDiagnostics": {
+      "checks": {
+        "nullishCoalescingNotNullable": "suppress",
+        "optionalChainNotNullable": "suppress"
+      }
+    },
     "strictTemplates": true
   },
   "files": ["src/test.ts"],

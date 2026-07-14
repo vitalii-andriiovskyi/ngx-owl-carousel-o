@@ -7,7 +7,12 @@ import {
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-import { Component, DebugElement, signal } from '@angular/core';
+import {
+  Component,
+  DebugElement,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
@@ -66,7 +71,7 @@ describe('CarouselComponent', () => {
         RouterModule.forRoot([
           { path: '', component: TestComponent },
           { path: 'owl-car', component: HashComponent },
-        ])
+        ]),
       ],
       declarations: [
         CarouselComponent,
@@ -115,26 +120,28 @@ describe('CarouselComponent', () => {
       ).nativeElement;
       expect(carouselComponent).toBeTruthy();
 
-      expect(carouselComponent.owlDOMData().isMouseDragable).toBeTruthy(
+      expect(carouselComponent.owlDOMData()?.isMouseDragable).toBeTruthy(
         'isMouseDragable should be true'
       );
       expect(carouselHTML.classList.contains('owl-drag')).toBeTruthy(
         'has .owl-drag'
       );
 
-      expect(carouselComponent.owlDOMData().rtl).toBeFalsy('rtl should be true');
+      expect(carouselComponent.owlDOMData()?.rtl).toBeFalsy(
+        'rtl should be true'
+      );
       expect(carouselHTML.classList.contains('owl-rtl')).toBeFalsy(
         'has .owl-rtl'
       );
 
-      expect(carouselComponent.owlDOMData().isResponsive).toBeFalsy(
+      expect(carouselComponent.owlDOMData()?.isResponsive).toBeFalsy(
         'isResponsive should be true'
       );
       expect(carouselHTML.classList.contains('owl-responsive')).toBeFalsy(
         'has .owl-responsive'
       );
 
-      expect(carouselComponent.owlDOMData().isLoaded).toBe(
+      expect(carouselComponent.owlDOMData()?.isLoaded).toBe(
         true,
         'isLoaded should be true'
       );
@@ -142,7 +149,7 @@ describe('CarouselComponent', () => {
         'has .owl-loaded'
       );
 
-      expect(carouselComponent.owlDOMData().isGrab).toBe(
+      expect(carouselComponent.owlDOMData()?.isGrab).toBe(
         false,
         'isGrab should be true'
       );
@@ -155,10 +162,10 @@ describe('CarouselComponent', () => {
       );
 
       deStage = deCarouselComponent.query(By.css('.owl-stage'));
-      expect(carouselComponent.stageData().width).toBe(2000, 'width of stage');
+      expect(carouselComponent.stageData()?.width).toBe(2000, 'width of stage');
       expect(deStage.nativeElement.clientWidth).toBe(2000, 'width of stage');
 
-      expect(carouselComponent.stageData().transition).toBe(
+      expect(carouselComponent.stageData()?.transition).toBe(
         '0s',
         'transition of stage'
       );
@@ -167,7 +174,7 @@ describe('CarouselComponent', () => {
         'transition of stage'
       );
 
-      expect(carouselComponent.stageData().transform).toBe(
+      expect(carouselComponent.stageData()?.transform).toBe(
         'translate3d(0px,0px,0px)',
         'transform of stage'
       );
@@ -176,7 +183,7 @@ describe('CarouselComponent', () => {
         'transform of stage'
       );
 
-      expect(carouselComponent.stageData().paddingL).toBe(
+      expect(carouselComponent.stageData()?.paddingL).toBe(
         '',
         'padding-left of stage'
       );
@@ -185,7 +192,7 @@ describe('CarouselComponent', () => {
         'padding-left of stage'
       );
 
-      expect(carouselComponent.stageData().paddingR).toBe(
+      expect(carouselComponent.stageData()?.paddingR).toBe(
         '',
         'padding-right of stage'
       );
@@ -255,7 +262,9 @@ describe('CarouselComponent', () => {
         "there's just empty span in .owl-dot"
       );
 
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class*="owl-"]'));
+      deNavButtons = deCarouselComponent.queryAll(
+        By.css('.owl-carousel-inner > button[class*="owl-"]')
+      );
       expect(deNavButtons.length).toBe(0, 'nav buttons are disabled');
       // discardPeriodicTasks();
     });
@@ -769,8 +778,8 @@ describe('CarouselComponent', () => {
 
     // ------- set width of carousel to 800px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 800px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 800px; margin: auto');
     fixtureHost.detectChanges();
 
     expect(carouselHTML.clientWidth).toBe(800);
@@ -793,8 +802,8 @@ describe('CarouselComponent', () => {
 
     // ------- set width of carousel to 400px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 400px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 400px; margin: auto');
     fixtureHost.detectChanges();
 
     expect(carouselHTML.clientWidth).toBe(400);
@@ -1033,7 +1042,9 @@ describe('CarouselComponent', () => {
     );
     expect(activeSlides.length).toBe(3, 'should be 3 active slides');
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(deDots.length).toBe(2, '2 dots');
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
       '1th dot is active'
@@ -1044,8 +1055,8 @@ describe('CarouselComponent', () => {
 
     // ------- set width of carousel to 800px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 800px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 800px; margin: auto');
     fixtureHost.detectChanges();
 
     expect(carouselHTML.clientWidth).toBe(800);
@@ -1061,7 +1072,9 @@ describe('CarouselComponent', () => {
     expect(activeSlides[0].nativeElement.innerHTML).toContain('Slide 1');
 
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(deDots.length).toBe(3, '3 dots');
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
       '1th dot is active'
@@ -1072,8 +1085,8 @@ describe('CarouselComponent', () => {
 
     // ------- set width of carousel to 500px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 500px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 500px; margin: auto');
     fixtureHost.detectChanges();
     expect(carouselHTML.clientWidth).toBe(500);
 
@@ -1086,7 +1099,9 @@ describe('CarouselComponent', () => {
     expect(activeSlides[0].nativeElement.innerHTML).toContain('Slide 1');
 
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(deDots.length).toBe(5, '5 dots');
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
       '1th dot is active'
@@ -1097,8 +1112,8 @@ describe('CarouselComponent', () => {
 
     // ------- set width of carousel to 800px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 800px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 800px; margin: auto');
     window.dispatchEvent(new Event('resize'));
     tick(200);
     fixtureHost.detectChanges();
@@ -1108,7 +1123,9 @@ describe('CarouselComponent', () => {
     expect(activeSlides[0].nativeElement.innerHTML).toContain('Slide 1');
 
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(deDots.length).toBe(3, '3 dots');
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
       '1th dot is active'
@@ -1119,8 +1136,8 @@ describe('CarouselComponent', () => {
 
     // ------- set width of carousel to 1100px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 1100px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 1100px; margin: auto');
     window.dispatchEvent(new Event('resize'));
     tick(200);
     fixtureHost.detectChanges();
@@ -1130,7 +1147,9 @@ describe('CarouselComponent', () => {
     expect(activeSlides[0].nativeElement.innerHTML).toContain('Slide 1');
 
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(deDots.length).toBe(2, '2 dots');
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
       '1th dot is active'
@@ -1189,7 +1208,9 @@ describe('CarouselComponent', () => {
     );
 
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(deDots.length).toBe(3, '3 dots');
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
       '1th dot is active'
@@ -1206,8 +1227,8 @@ describe('CarouselComponent', () => {
 
     // ------- set width of carousel to 800px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 800px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 800px; margin: auto');
     fixtureHost.detectChanges();
 
     expect(carouselHTML.clientWidth).toBe(800);
@@ -1227,12 +1248,13 @@ describe('CarouselComponent', () => {
     );
 
     deDotsWrapper = deCarouselComponent.query(By.css('.owl-dots'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class*="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class*="owl-"]')
+    );
     expect(
       deDotsWrapper.nativeElement.classList.contains('disabled')
     ).toBeTruthy('dots are disabled');
     expect(deNavButtons.length).toBe(0, 'nav buttons are disabled');
-
 
     deStage = deCarouselComponent.query(By.css('.owl-carousel .owl-stage'));
     expect(deStage.nativeElement.style.paddingLeft).toBe(
@@ -1241,8 +1263,8 @@ describe('CarouselComponent', () => {
     );
     // ------- set width of carousel to 500px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 500px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 500px; margin: auto');
     fixtureHost.detectChanges();
     expect(carouselHTML.clientWidth).toBe(500);
 
@@ -1259,7 +1281,9 @@ describe('CarouselComponent', () => {
     );
 
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(deDots.length).toBe(5, '5 dots');
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
       '1th dot is active'
@@ -1304,7 +1328,9 @@ describe('CarouselComponent', () => {
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
     expect(deActiveSlides.length).toBe(3, 'should be 3 active slides');
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(deDots[0].nativeElement.classList.contains('active')).toBeTruthy(
       '1th dot is active'
     );
@@ -1320,8 +1346,8 @@ describe('CarouselComponent', () => {
 
     // ------- set width of carousel to 800px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 800px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 800px; margin: auto');
     window.dispatchEvent(new Event('resize'));
     tick(200);
     fixtureHost.detectChanges();
@@ -1349,8 +1375,8 @@ describe('CarouselComponent', () => {
 
     // ------- set width of carousel to 400px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 400px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 400px; margin: auto');
     window.dispatchEvent(new Event('resize'));
     tick(200);
     fixtureHost.detectChanges();
@@ -1381,8 +1407,8 @@ describe('CarouselComponent', () => {
 
     // ------- set width of carousel to 800px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 800px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 800px; margin: auto');
     window.dispatchEvent(new Event('resize'));
     tick(200);
     fixtureHost.detectChanges();
@@ -1581,8 +1607,8 @@ describe('CarouselComponent', () => {
 
       // ------- set width of carousel to 804px
       carouselHTML
-        .closest('.owl-wrapper')
-        .setAttribute('style', 'width: 804px; margin: auto');
+        ?.closest('.owl-wrapper')
+        ?.setAttribute('style', 'width: 804px; margin: auto');
       fixtureHost.detectChanges();
 
       expect(carouselHTML.clientWidth).toBe(804);
@@ -1607,8 +1633,8 @@ describe('CarouselComponent', () => {
 
       // ------- set width of carousel to 402px
       carouselHTML
-        .closest('.owl-wrapper')
-        .setAttribute('style', 'width: 402px; margin: auto');
+        ?.closest('.owl-wrapper')
+        ?.setAttribute('style', 'width: 402px; margin: auto');
       fixtureHost.detectChanges();
 
       expect(carouselHTML.clientWidth).toBe(402);
@@ -1679,8 +1705,8 @@ describe('CarouselComponent', () => {
 
       // ------- set width of carousel to 804px
       carouselHTML
-        .closest('.owl-wrapper')
-        .setAttribute('style', 'width: 804px; margin: auto');
+        ?.closest('.owl-wrapper')
+        ?.setAttribute('style', 'width: 804px; margin: auto');
       fixtureHost.detectChanges();
 
       expect(carouselHTML.clientWidth).toBe(804);
@@ -1705,8 +1731,8 @@ describe('CarouselComponent', () => {
 
       // ------- set width of carousel to 402px
       carouselHTML
-        .closest('.owl-wrapper')
-        .setAttribute('style', 'width: 402px; margin: auto');
+        ?.closest('.owl-wrapper')
+        ?.setAttribute('style', 'width: 402px; margin: auto');
       fixtureHost.detectChanges();
 
       expect(carouselHTML.clientWidth).toBe(402);
@@ -1849,8 +1875,8 @@ describe('CarouselComponent', () => {
 
       // ------- set width of carousel to 804px
       carouselHTML
-        .closest('.owl-wrapper')
-        .setAttribute('style', 'width: 804px; margin: auto');
+        ?.closest('.owl-wrapper')
+        ?.setAttribute('style', 'width: 804px; margin: auto');
       fixtureHost.detectChanges();
 
       expect(carouselHTML.clientWidth).toBe(804);
@@ -1875,8 +1901,8 @@ describe('CarouselComponent', () => {
 
       // ------- set width of carousel to 402px
       carouselHTML
-        .closest('.owl-wrapper')
-        .setAttribute('style', 'width: 402px; margin: auto');
+        ?.closest('.owl-wrapper')
+        ?.setAttribute('style', 'width: 402px; margin: auto');
       fixtureHost.detectChanges();
 
       expect(carouselHTML.clientWidth).toBe(402);
@@ -1922,7 +1948,9 @@ describe('CarouselComponent', () => {
     fixtureHost.whenStable().then(() => {
       fixtureHost.detectChanges();
 
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+      deNavButtons = deCarouselComponent.queryAll(
+        By.css('.owl-carousel-inner > button[class^="owl-"]')
+      );
       expect(deNavButtons.length).toBe(2, '2 buttons');
 
       prevButton = deNavButtons[0].nativeElement;
@@ -1961,16 +1989,18 @@ describe('CarouselComponent', () => {
     fixtureHost.whenStable().then(() => {
       fixtureHost.detectChanges();
 
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+      deNavButtons = deCarouselComponent.queryAll(
+        By.css('.owl-carousel-inner > button[class^="owl-"]')
+      );
       prevButton = deNavButtons[0].nativeElement;
       nextButton = deNavButtons[1].nativeElement;
       expect(
-        prevButton.firstElementChild.classList.contains('fa-chevron-left')
+        prevButton.firstElementChild?.classList.contains('fa-chevron-left')
       ).toBeTruthy(
         'fa-chevron-left is class of child <i> Element of prev button'
       );
       expect(
-        nextButton.firstElementChild.classList.contains('fa-chevron-right')
+        nextButton.firstElementChild?.classList.contains('fa-chevron-right')
       ).toBeTruthy(
         'fa-chevron-right is class of child <i> Element of next button'
       );
@@ -2169,7 +2199,9 @@ describe('CarouselComponent', () => {
     fixtureHost.whenStable().then(() => {
       fixtureHost.detectChanges();
 
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+      deNavButtons = deCarouselComponent.queryAll(
+        By.css('.owl-carousel-inner > button[class^="owl-"]')
+      );
       prevButton = deNavButtons[0].nativeElement;
       expect(prevButton.classList.contains('disabled')).toBeFalsy(
         'prev button is enabled'
@@ -2675,7 +2707,9 @@ describe('CarouselComponent', () => {
     tick();
     fixtureHost.detectChanges();
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     nextButton = deCarouselComponent.query(
       By.css('.owl-carousel-inner > .owl-next')
     ).nativeElement;
@@ -2728,7 +2762,9 @@ describe('CarouselComponent', () => {
       tick();
       fixtureHost.detectChanges();
 
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+      deNavButtons = deCarouselComponent.queryAll(
+        By.css('.owl-carousel-inner > button[class^="owl-"]')
+      );
       nextButton = deCarouselComponent.query(
         By.css('.owl-carousel-inner > .owl-next')
       ).nativeElement;
@@ -2790,7 +2826,9 @@ describe('CarouselComponent', () => {
       deCarouselComponent = fixtureHost.debugElement.query(
         By.css('owl-carousel-o')
       );
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+      deNavButtons = deCarouselComponent.queryAll(
+        By.css('.owl-carousel-inner > button[class^="owl-"]')
+      );
       deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
       deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
       expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
@@ -2860,7 +2898,9 @@ describe('CarouselComponent', () => {
       carouselHTML = deCarouselComponent.query(
         By.css('.owl-carousel')
       ).nativeElement;
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+      deNavButtons = deCarouselComponent.queryAll(
+        By.css('.owl-carousel-inner > button[class^="owl-"]')
+      );
       nextButton = deCarouselComponent.query(
         By.css('.owl-carousel-inner > .owl-next')
       ).nativeElement;
@@ -2907,8 +2947,8 @@ describe('CarouselComponent', () => {
 
       // ------- set width of carousel to 800px
       carouselHTML
-        .closest('.owl-wrapper')
-        .setAttribute('style', 'width: 800px; margin: auto');
+        ?.closest('.owl-wrapper')
+        ?.setAttribute('style', 'width: 800px; margin: auto');
       fixtureHost.detectChanges();
 
       expect(carouselHTML.clientWidth).toBe(800);
@@ -2925,7 +2965,9 @@ describe('CarouselComponent', () => {
       expect(deActiveSlides.length).toBe(3, '3 active slide');
       // -------------------------
 
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+      deNavButtons = deCarouselComponent.queryAll(
+        By.css('.owl-carousel-inner > button[class^="owl-"]')
+      );
       prevButton = deNavButtons[0].nativeElement;
 
       expect(prevButton.classList.contains('disabled')).toBeTruthy(
@@ -2967,7 +3009,9 @@ describe('CarouselComponent', () => {
       '11 slides: 3 cloned + 5 origin + 3 cloned '
     );
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
 
     // move carousel left
@@ -3184,7 +3228,9 @@ describe('CarouselComponent', () => {
       '11 slides: 3 cloned + 5 origin + 3 cloned '
     );
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
 
     deNavButtons[0].triggerEventHandler('click', null);
     tick();
@@ -3205,8 +3251,8 @@ describe('CarouselComponent', () => {
 
     // ------- set width of carousel to 800px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 800px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 800px; margin: auto');
     fixtureHost.detectChanges();
 
     expect(carouselHTML.clientWidth).toBe(800);
@@ -3231,8 +3277,8 @@ describe('CarouselComponent', () => {
 
     // ------- set width of carousel to 400px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 400px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 400px; margin: auto');
     fixtureHost.detectChanges();
 
     expect(carouselHTML.clientWidth).toBe(400);
@@ -3269,7 +3315,9 @@ describe('CarouselComponent', () => {
     deCarouselComponent = fixtureHost.debugElement.query(
       By.css('owl-carousel-o')
     );
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
 
     let centeredSlide: HTMLElement = deCarouselComponent.query(
@@ -3323,7 +3371,9 @@ describe('CarouselComponent', () => {
     deCarouselComponent = fixtureHost.debugElement.query(
       By.css('owl-carousel-o')
     );
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -3365,7 +3415,9 @@ describe('CarouselComponent', () => {
     deCarouselComponent = fixtureHost.debugElement.query(
       By.css('owl-carousel-o')
     );
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -3408,7 +3460,9 @@ describe('CarouselComponent', () => {
     deCarouselComponent = fixtureHost.debugElement.query(
       By.css('owl-carousel-o')
     );
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -3464,7 +3518,9 @@ describe('CarouselComponent', () => {
       deCarouselComponent = fixtureHost.debugElement.query(
         By.css('owl-carousel-o')
       );
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+      deNavButtons = deCarouselComponent.queryAll(
+        By.css('.owl-carousel-inner > button[class^="owl-"]')
+      );
       deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
       deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
       expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
@@ -3509,7 +3565,9 @@ describe('CarouselComponent', () => {
       deCarouselComponent = fixtureHost.debugElement.query(
         By.css('owl-carousel-o')
       );
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+      deNavButtons = deCarouselComponent.queryAll(
+        By.css('.owl-carousel-inner > button[class^="owl-"]')
+      );
       deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
       deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
       expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
@@ -3579,7 +3637,9 @@ describe('CarouselComponent', () => {
       deCarouselComponent = fixtureHost.debugElement.query(
         By.css('owl-carousel-o')
       );
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+      deNavButtons = deCarouselComponent.queryAll(
+        By.css('.owl-carousel-inner > button[class^="owl-"]')
+      );
       deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
       deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -3641,9 +3701,7 @@ describe('CarouselComponent', () => {
       );
       expect(
         deNavButtons[1].nativeElement.classList.contains('disabled')
-      ).toBeTruthy(
-        'next button is disabled'
-      );
+      ).toBeTruthy('next button is disabled');
 
       deNavButtons[1].triggerEventHandler('click', null);
       tick();
@@ -3659,9 +3717,7 @@ describe('CarouselComponent', () => {
       );
       expect(
         deNavButtons[0].nativeElement.classList.contains('disabled')
-      ).toBeFalsy(
-        'prev button is active'
-      );
+      ).toBeFalsy('prev button is active');
 
       deNavButtons[0].triggerEventHandler('click', null);
       tick();
@@ -3676,9 +3732,7 @@ describe('CarouselComponent', () => {
       );
       expect(
         deNavButtons[1].nativeElement.classList.contains('disabled')
-      ).toBeFalsy(
-        'next button is not disabled'
-      );
+      ).toBeFalsy('next button is not disabled');
     }));
 
     it(`should move carousel by pages; [options]="{nav: true, slideBy: 'page', rewind: true}"`, fakeAsync(() => {
@@ -3705,7 +3759,9 @@ describe('CarouselComponent', () => {
       deCarouselComponent = fixtureHost.debugElement.query(
         By.css('owl-carousel-o')
       );
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+      deNavButtons = deCarouselComponent.queryAll(
+        By.css('.owl-carousel-inner > button[class^="owl-"]')
+      );
       deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
       deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -3831,7 +3887,9 @@ describe('CarouselComponent', () => {
       deCarouselComponent = fixtureHost.debugElement.query(
         By.css('owl-carousel-o')
       );
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+      deNavButtons = deCarouselComponent.queryAll(
+        By.css('.owl-carousel-inner > button[class^="owl-"]')
+      );
       deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
       deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -3985,7 +4043,9 @@ describe('CarouselComponent', () => {
       carouselHTML = deCarouselComponent.query(
         By.css('.owl-carousel')
       ).nativeElement;
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+      deNavButtons = deCarouselComponent.queryAll(
+        By.css('.owl-carousel-inner > button[class^="owl-"]')
+      );
       deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
       deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -4009,8 +4069,8 @@ describe('CarouselComponent', () => {
 
       // ------- set width of carousel to 800px
       carouselHTML
-        .closest('.owl-wrapper')
-        .setAttribute('style', 'width: 800px; margin: auto');
+        ?.closest('.owl-wrapper')
+        ?.setAttribute('style', 'width: 800px; margin: auto');
       fixtureHost.detectChanges();
 
       expect(carouselHTML.clientWidth).toBe(800);
@@ -4039,8 +4099,8 @@ describe('CarouselComponent', () => {
 
       // ------- set width of carousel to 400px
       carouselHTML
-        .closest('.owl-wrapper')
-        .setAttribute('style', 'width: 400px; margin: auto');
+        ?.closest('.owl-wrapper')
+        ?.setAttribute('style', 'width: 400px; margin: auto');
       fixtureHost.detectChanges();
 
       expect(carouselHTML.clientWidth).toBe(400);
@@ -4088,7 +4148,9 @@ describe('CarouselComponent', () => {
     tick();
 
     fixtureHost.detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deStage = deCarouselComponent.query(By.css('.owl-stage'));
 
     expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe(
@@ -4126,7 +4188,9 @@ describe('CarouselComponent', () => {
     tick();
 
     fixtureHost.detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -4157,7 +4221,9 @@ describe('CarouselComponent', () => {
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
       'Slide 3',
       'Slide 3'
@@ -4196,7 +4262,9 @@ describe('CarouselComponent', () => {
     tick();
 
     fixtureHost.detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -4359,7 +4427,9 @@ describe('CarouselComponent', () => {
     tick();
 
     fixtureHost.detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -4390,7 +4460,9 @@ describe('CarouselComponent', () => {
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(deActiveSlides[0].nativeElement.innerHTML).toContain(
       'Slide 7',
       'Slide 7'
@@ -4503,7 +4575,9 @@ describe('CarouselComponent', () => {
     ).nativeElement;
     deStage = deCarouselComponent.query(By.css('.owl-stage'));
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
 
     expect(deDots.length).toBe(4, '4 dots');
     expect(getComputedStyle(deStage.nativeElement).transitionDuration).toBe(
@@ -4535,8 +4609,8 @@ describe('CarouselComponent', () => {
 
     // ------- set width of carousel to 800px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 800px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 800px; margin: auto');
     fixtureHost.detectChanges();
 
     expect(carouselHTML.clientWidth).toBe(800);
@@ -4596,7 +4670,9 @@ describe('CarouselComponent', () => {
 
     fixtureHost.detectChanges();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(deDots.length).toBe(2, '2 dots');
 
     deDots[1].triggerEventHandler('click', null);
@@ -4611,7 +4687,7 @@ describe('CarouselComponent', () => {
       2,
       '2 startPosition'
     );
-    expect(testComponent.translatedData.slides[0].id).toBe(
+    expect(testComponent.translatedData?.slides?.[0]?.id).toBe(
       'owl-slide-3',
       'owl-slide-3'
     );
@@ -4627,7 +4703,7 @@ describe('CarouselComponent', () => {
       0,
       '0 startPosition'
     );
-    expect(testComponent.translatedData.slides[0].id).toBe(
+    expect(testComponent.translatedData?.slides?.[0]?.id).toBe(
       'owl-slide-1',
       'owl-slide-1'
     );
@@ -4643,7 +4719,7 @@ describe('CarouselComponent', () => {
       1,
       '1 startPosition'
     );
-    expect(testComponent.translatedData.slides[0].id).toBe(
+    expect(testComponent.translatedData?.slides?.[0]?.id).toBe(
       'owl-slide-2',
       'owl-slide-2'
     );
@@ -4674,14 +4750,16 @@ describe('CarouselComponent', () => {
 
     fixtureHost.detectChanges();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(deDots.length).toBe(2, '2 dots');
 
     expect(testComponent.currentSlidesData.startPosition).toBe(
       0,
       '0 startPosition'
     );
-    expect(testComponent.currentSlidesData.slides.length).toBe(0, '0 slides');
+    expect(testComponent.currentSlidesData?.slides?.length).toBe(0, '0 slides');
 
     deDots[1].triggerEventHandler('click', null);
     tick();
@@ -4692,7 +4770,7 @@ describe('CarouselComponent', () => {
       0,
       '0 startPosition'
     );
-    expect(testComponent.currentSlidesData.slides.length).toBe(3, '3 slides');
+    expect(testComponent.currentSlidesData?.slides?.length).toBe(3, '3 slides');
     // Code can't wait the end of transition. Thus transition is finished manually.
     stageComponent.componentInstance.onTransitionEnd();
 
@@ -4700,7 +4778,7 @@ describe('CarouselComponent', () => {
       2,
       '2 startPosition'
     );
-    expect(testComponent.translatedData.slides[0].id).toBe(
+    expect(testComponent.translatedData?.slides?.[0]?.id).toBe(
       'owl-slide-3',
       'owl-slide-3'
     );
@@ -4713,7 +4791,7 @@ describe('CarouselComponent', () => {
       2,
       '2 startPosition'
     );
-    expect(testComponent.currentSlidesData.slides[0].id).toBe(
+    expect(testComponent.currentSlidesData?.slides?.[0]?.id).toBe(
       'owl-slide-3',
       'owl-slide-3'
     );
@@ -4721,11 +4799,11 @@ describe('CarouselComponent', () => {
     // Code can't wait the end of transition. Thus transition is finished manually.
     stageComponent.componentInstance.onTransitionEnd();
 
-    expect(testComponent.translatedData.startPosition).toBe(
+    expect(testComponent.translatedData?.startPosition).toBe(
       0,
       '0 startPosition'
     );
-    expect(testComponent.translatedData.slides[0].id).toBe(
+    expect(testComponent.translatedData?.slides?.[0]?.id).toBe(
       'owl-slide-1',
       'owl-slide-1'
     );
@@ -4734,11 +4812,11 @@ describe('CarouselComponent', () => {
     tick();
     fixtureHost.detectChanges();
 
-    expect(testComponent.currentSlidesData.startPosition).toBe(
+    expect(testComponent.currentSlidesData?.startPosition).toBe(
       0,
       '0 startPosition'
     );
-    expect(testComponent.currentSlidesData.slides[0].id).toBe(
+    expect(testComponent.currentSlidesData?.slides?.[0]?.id).toBe(
       'owl-slide-1',
       'owl-slide-1'
     );
@@ -4750,7 +4828,7 @@ describe('CarouselComponent', () => {
       1,
       '1 startPosition'
     );
-    expect(testComponent.translatedData.slides[0].id).toBe(
+    expect(testComponent.translatedData?.slides?.[0]?.id).toBe(
       'owl-slide-2',
       'owl-slide-2'
     );
@@ -4781,14 +4859,16 @@ describe('CarouselComponent', () => {
 
     fixtureHost.detectChanges();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(deDots.length).toBe(2, '2 dots');
 
     expect(testComponent.currentSlidesData.startPosition).toBe(
       0,
       '0 startPosition'
     );
-    expect(testComponent.currentSlidesData.slides.length).toBe(0, '0 slides');
+    expect(testComponent.currentSlidesData?.slides?.length).toBe(0, '0 slides');
 
     deDots[1].triggerEventHandler('click', null);
     tick();
@@ -4799,8 +4879,8 @@ describe('CarouselComponent', () => {
       2,
       '2 startPosition'
     );
-    expect(testComponent.currentSlidesData.slides.length).toBe(3, '3 slides');
-    expect(testComponent.currentSlidesData.slides[0].id).toBe(
+    expect(testComponent.currentSlidesData?.slides?.length).toBe(3, '3 slides');
+    expect(testComponent.currentSlidesData?.slides?.[0]?.id).toBe(
       'owl-slide-3',
       'owl-slide-3'
     );
@@ -4811,7 +4891,7 @@ describe('CarouselComponent', () => {
       2,
       '2 startPosition'
     );
-    expect(testComponent.translatedData.slides[0].id).toBe(
+    expect(testComponent.translatedData?.slides?.[0]?.id).toBe(
       'owl-slide-3',
       'owl-slide-3'
     );
@@ -4824,7 +4904,7 @@ describe('CarouselComponent', () => {
       0,
       '0 startPosition'
     );
-    expect(testComponent.currentSlidesData.slides[0].id).toBe(
+    expect(testComponent.currentSlidesData?.slides?.[0]?.id).toBe(
       'owl-slide-1',
       'owl-slide-1'
     );
@@ -4836,7 +4916,7 @@ describe('CarouselComponent', () => {
       0,
       '0 startPosition'
     );
-    expect(testComponent.translatedData.slides[0].id).toBe(
+    expect(testComponent.translatedData?.slides?.[0]?.id).toBe(
       'owl-slide-1',
       'owl-slide-1'
     );
@@ -4849,7 +4929,7 @@ describe('CarouselComponent', () => {
       1,
       '1 startPosition'
     );
-    expect(testComponent.currentSlidesData.slides[0].id).toBe(
+    expect(testComponent.currentSlidesData?.slides?.[0]?.id).toBe(
       'owl-slide-2',
       'owl-slide-2'
     );
@@ -4861,7 +4941,7 @@ describe('CarouselComponent', () => {
       1,
       '1 startPosition'
     );
-    expect(testComponent.translatedData.slides[0].id).toBe(
+    expect(testComponent.translatedData?.slides?.[0]?.id).toBe(
       'owl-slide-2',
       'owl-slide-2'
     );
@@ -4896,8 +4976,8 @@ describe('CarouselComponent', () => {
       0,
       '0 startPosition'
     );
-    expect(testComponent.currentSlidesData.slides.length).toBe(3, '3 slides');
-    expect(testComponent.currentSlidesData.slides[0].id).toBe(
+    expect(testComponent.currentSlidesData?.slides?.length).toBe(3, '3 slides');
+    expect(testComponent.currentSlidesData?.slides?.[0]?.id).toBe(
       'owl-slide-1',
       'owl-slide-1'
     );
@@ -4932,7 +5012,9 @@ describe('CarouselComponent', () => {
     tick();
 
     fixtureHost.detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
 
     deNavButtons[0].triggerEventHandler('click', null);
     tick();
@@ -4945,7 +5027,7 @@ describe('CarouselComponent', () => {
       9,
       '9 startPosition'
     );
-    expect(testComponent.translatedData.slides[0].id).toBe(
+    expect(testComponent.translatedData?.slides?.[0]?.id).toBe(
       'owl-slide-10',
       'owl-slide-10'
     );
@@ -5226,8 +5308,8 @@ describe('CarouselComponent', () => {
 
       // ------- set width of carousel to 800px
       carouselHTML
-        .closest('.owl-wrapper')
-        .setAttribute('style', 'width: 800px; margin: auto');
+        ?.closest('.owl-wrapper')
+        ?.setAttribute('style', 'width: 800px; margin: auto');
       fixtureHost.detectChanges();
 
       expect(carouselHTML.clientWidth).toBe(800);
@@ -5261,8 +5343,8 @@ describe('CarouselComponent', () => {
 
       // ------- set width of carousel to 400px
       carouselHTML
-        .closest('.owl-wrapper')
-        .setAttribute('style', 'width: 400px; margin: auto');
+        ?.closest('.owl-wrapper')
+        ?.setAttribute('style', 'width: 400px; margin: auto');
       fixtureHost.detectChanges();
 
       expect(carouselHTML.clientWidth).toBe(400);
@@ -5454,7 +5536,9 @@ describe('CarouselComponent', () => {
     img = deSlides[3].query(By.css('.owl-lazy'));
     expect(img).toBeFalsy("img in 4th slide isn't loaded");
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick();
@@ -5507,7 +5591,9 @@ describe('CarouselComponent', () => {
     img = deSlides[10].query(By.css('.owl-lazy'));
     expect(img).toBeTruthy('img in 11th slide is loaded');
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick();
@@ -5547,7 +5633,7 @@ describe('CarouselComponent', () => {
     let deImages = deCarouselComponent.queryAll(By.css('.owl-item .owl-lazy'));
     expect(deImages.length).toBe(9, '9 images');
     let img: DebugElement = deSlides[0].query(By.css('.owl-lazy'));
-    expect(img).toBeTruthy("img in 1th slide isn loaded");
+    expect(img).toBeTruthy('img in 1th slide isn loaded');
     img = deSlides[1].query(By.css('.owl-lazy'));
     expect(img).toBeFalsy("img in 2th slide isn't loaded");
     img = deSlides[2].query(By.css('.owl-lazy'));
@@ -5570,7 +5656,9 @@ describe('CarouselComponent', () => {
     img = deSlides[10].query(By.css('.owl-lazy'));
     expect(img).toBeTruthy('img in 11th slide is loaded');
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deNavButtons[0].triggerEventHandler('click', null);
 
     tick();
@@ -5684,8 +5772,8 @@ describe('CarouselComponent', () => {
 
       // ------- set width of carousel to 800px
       carouselHTML
-        .closest('.owl-wrapper')
-        .setAttribute('style', 'width: 800px; margin: auto');
+        ?.closest('.owl-wrapper')
+        ?.setAttribute('style', 'width: 800px; margin: auto');
       fixtureHost.detectChanges();
 
       expect(carouselHTML.clientWidth).toBe(800);
@@ -5728,7 +5816,9 @@ describe('CarouselComponent', () => {
       'Slide 1'
     );
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick();
@@ -5822,7 +5912,9 @@ describe('CarouselComponent', () => {
       'Slide 1'
     );
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick();
@@ -5904,7 +5996,9 @@ describe('CarouselComponent', () => {
       'Slide 1'
     );
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick();
@@ -5984,7 +6078,9 @@ describe('CarouselComponent', () => {
       'Slide 1'
     );
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick();
@@ -6052,8 +6148,8 @@ describe('CarouselComponent', () => {
 
     // ------- set width of carousel to 800px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 800px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 800px; margin: auto');
     fixtureHost.detectChanges();
 
     expect(carouselHTML.clientWidth).toBe(800);
@@ -6136,8 +6232,8 @@ describe('CarouselComponent', () => {
 
     // ------- set width of carousel to 400px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 400px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 400px; margin: auto');
     fixtureHost.detectChanges();
 
     expect(carouselHTML.clientWidth).toBe(400);
@@ -6225,63 +6321,70 @@ describe('CarouselComponent', () => {
       'Slide 1'
     );
 
-    expect(deSlides.filter(slide => slide.nativeElement.classList.contains('owl-height')).length).toBe(5, 'all 5 slides have owl-height class');
-    expect(deActiveSlides[0].nativeElement.classList.contains('height-full')).toBeTruthy(
-      'first active slide contains height-full class'
-    );
+    expect(
+      deSlides.filter((slide) =>
+        slide.nativeElement.classList.contains('owl-height')
+      ).length
+    ).toBe(5, 'all 5 slides have owl-height class');
+    expect(
+      deActiveSlides[0].nativeElement.classList.contains('height-full')
+    ).toBeTruthy('first active slide contains height-full class');
     expect(getComputedStyle(deActiveSlides[0].nativeElement).height).toBe(
       '100px',
       '100px'
     );
-    expect(deActiveSlides[1].nativeElement.classList.contains('height-full')).toBeTruthy(
-      'element contains height-full class'
-    );
+    expect(
+      deActiveSlides[1].nativeElement.classList.contains('height-full')
+    ).toBeTruthy('element contains height-full class');
     expect(getComputedStyle(deActiveSlides[1].nativeElement).height).toBe(
       '40px',
       '40px'
     );
-    expect(deActiveSlides[2].nativeElement.classList.contains('height-full')).toBeTruthy(
-      'element contains height-full class'
-    );
+    expect(
+      deActiveSlides[2].nativeElement.classList.contains('height-full')
+    ).toBeTruthy('element contains height-full class');
     expect(getComputedStyle(deActiveSlides[2].nativeElement).height).toBe(
       '80px',
       '80px'
     );
-    expect(deNotActiveSlide[0].nativeElement.classList.contains('height-0')).toBeTruthy(
-      'element contains height-0 class'
-    );
-    expect(deNotActiveSlide[0].nativeElement.classList.contains('height-full')).toBeFalsy(
-      'element does not contain height-full class'
-    );
+    expect(
+      deNotActiveSlide[0].nativeElement.classList.contains('height-0')
+    ).toBeTruthy('element contains height-0 class');
+    expect(
+      deNotActiveSlide[0].nativeElement.classList.contains('height-full')
+    ).toBeFalsy('element does not contain height-full class');
     expect(getComputedStyle(deNotActiveSlide[0].nativeElement).height).toBe(
       '1px',
       '1px height'
     );
-    expect(deNotActiveSlide[1].nativeElement.classList.contains('height-0')).toBeTruthy(
-      'element contains height-0 class'
-    );
-    expect(deNotActiveSlide[1].nativeElement.classList.contains('height-full')).toBeFalsy(
-      'element does not contain height-full class'
-    );
+    expect(
+      deNotActiveSlide[1].nativeElement.classList.contains('height-0')
+    ).toBeTruthy('element contains height-0 class');
+    expect(
+      deNotActiveSlide[1].nativeElement.classList.contains('height-full')
+    ).toBeFalsy('element does not contain height-full class');
     expect(getComputedStyle(deNotActiveSlide[1].nativeElement).height).toBe(
       '1px',
       '1px height'
     );
 
-
     deStage = deCarouselComponent.query(By.css('.owl-stage'));
 
     // Default styles aren't turned on. Thus it's needed to set some of them.
-    deStage.nativeElement.querySelectorAll('.owl-item').forEach((element) => {
-      element.style.cssFloat = 'left';
-    });
+    deStage.nativeElement
+      .querySelectorAll('.owl-item')
+      .forEach((element: HTMLElement) => {
+        element.style.cssFloat = 'left';
+      });
     deStage.nativeElement.style.overflow = 'hidden';
     expect(getComputedStyle(deStage.nativeElement).height).toBe(
       '100px',
       '100px height'
     );
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick(450);
@@ -6289,8 +6392,8 @@ describe('CarouselComponent', () => {
     deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
     // try to fire transitionend event to finish height transition, but it doesn't work
     deSlides.forEach((slide) => {
-      slide.nativeElement.dispatchEvent(new Event('transitionend'))
-    })
+      slide.nativeElement.dispatchEvent(new Event('transitionend'));
+    });
     tick(1100);
     fixtureHost.detectChanges();
 
@@ -6301,36 +6404,36 @@ describe('CarouselComponent', () => {
     expect(deSlides[0].nativeElement.classList.contains('height-0')).toBeTruthy(
       'element contains height-0 class'
     );
-    expect(deSlides[0].nativeElement.classList.contains('height-full')).toBeFalsy(
-      'element contains height-full class'
-    );
-    // there's native css transition that sets max-height to 0px. But in test environment I cannot simulate the end of this transition. 
+    expect(
+      deSlides[0].nativeElement.classList.contains('height-full')
+    ).toBeFalsy('element contains height-full class');
+    // there's native css transition that sets max-height to 0px. But in test environment I cannot simulate the end of this transition.
     // So, the height remains 100px instead of becoming 1px.
     // expect(getComputedStyle(deSlides[0].nativeElement).height).toBe(
     //   '1px',
     //   '1px'
     // );
-    expect(deSlides[1].nativeElement.classList.contains('height-full')).toBeTruthy(
-      'element contains height-full class'
-    );
+    expect(
+      deSlides[1].nativeElement.classList.contains('height-full')
+    ).toBeTruthy('element contains height-full class');
     expect(getComputedStyle(deSlides[1].nativeElement).height).toBe(
       '40px',
       '40px'
     );
-    expect(deSlides[2].nativeElement.classList.contains('height-full')).toBeTruthy(
-      'element contains height-full class'
-    );
+    expect(
+      deSlides[2].nativeElement.classList.contains('height-full')
+    ).toBeTruthy('element contains height-full class');
     expect(getComputedStyle(deSlides[2].nativeElement).height).toBe(
       '80px',
       '80px'
     );
-    expect(deSlides[3].nativeElement.classList.contains('height-full')).toBeTruthy(
-      'element contains height-full class'
-    );
+    expect(
+      deSlides[3].nativeElement.classList.contains('height-full')
+    ).toBeTruthy('element contains height-full class');
     expect(deSlides[3].nativeElement.classList.contains('height-0')).toBeFalsy(
       'element contains height-0 class'
     );
-    // there's native css transition that sets max-height to 2000px. But in test environment I cannot simulate the end of this transition. 
+    // there's native css transition that sets max-height to 2000px. But in test environment I cannot simulate the end of this transition.
     // So, the height remains 1px instead of becoming 130px.
     // expect(getComputedStyle(deSlides[3].nativeElement).height).toBe(
     //   '130px',
@@ -6346,7 +6449,7 @@ describe('CarouselComponent', () => {
     );
 
     // there's native css transition that sets max-height  to 2000px for active slides and max-height to 0px for not active slides.
-    //  But in test environment I cannot simulate the end of this transition. 
+    //  But in test environment I cannot simulate the end of this transition.
     // So, the height doesn't change correctly after moving carousel to the right.
     // So I comment out the expect below. HOWEVER, CSS CLASSES ARE SET CORRECTLY.
 
@@ -6409,42 +6512,46 @@ describe('CarouselComponent', () => {
       'Slide 1'
     );
 
-    expect(deSlides.filter(slide => slide.nativeElement.classList.contains('owl-height')).length).toBe(5, 'all 5 slides have owl-height class');
-    expect(deActiveSlides[0].nativeElement.classList.contains('height-full')).toBeTruthy(
-      'first active slide contains height-full class'
-    );
-    expect(deActiveSlides[0].nativeElement.classList.contains('owl-height')).toBeTruthy(
-      'first active slide contains owl-height class'
-    );
+    expect(
+      deSlides.filter((slide) =>
+        slide.nativeElement.classList.contains('owl-height')
+      ).length
+    ).toBe(5, 'all 5 slides have owl-height class');
+    expect(
+      deActiveSlides[0].nativeElement.classList.contains('height-full')
+    ).toBeTruthy('first active slide contains height-full class');
+    expect(
+      deActiveSlides[0].nativeElement.classList.contains('owl-height')
+    ).toBeTruthy('first active slide contains owl-height class');
 
     expect(getComputedStyle(deActiveSlides[0].nativeElement).height).toBe(
       '100px',
       '100px'
     );
-    expect(deActiveSlides[1].nativeElement.classList.contains('height-full')).toBeTruthy(
-      'element contains height-full class'
-    );
+    expect(
+      deActiveSlides[1].nativeElement.classList.contains('height-full')
+    ).toBeTruthy('element contains height-full class');
     expect(getComputedStyle(deActiveSlides[1].nativeElement).height).toBe(
       '40px',
       '40px'
     );
-    expect(deActiveSlides[2].nativeElement.classList.contains('height-full')).toBeTruthy(
-      'element contains height-full class'
-    );
+    expect(
+      deActiveSlides[2].nativeElement.classList.contains('height-full')
+    ).toBeTruthy('element contains height-full class');
     expect(getComputedStyle(deActiveSlides[2].nativeElement).height).toBe(
       '80px',
       '80px'
     );
-    expect(deNotActiveSlide[0].nativeElement.classList.contains('height-0')).toBeTruthy(
-      'element contains height-0 class'
-    );
+    expect(
+      deNotActiveSlide[0].nativeElement.classList.contains('height-0')
+    ).toBeTruthy('element contains height-0 class');
     expect(getComputedStyle(deNotActiveSlide[0].nativeElement).height).toBe(
       '1px',
       '1px height'
     );
-    expect(deNotActiveSlide[1].nativeElement.classList.contains('height-0')).toBeTruthy(
-      'element contains height-0 class'
-    );
+    expect(
+      deNotActiveSlide[1].nativeElement.classList.contains('height-0')
+    ).toBeTruthy('element contains height-0 class');
     expect(getComputedStyle(deNotActiveSlide[1].nativeElement).height).toBe(
       '1px',
       '1px height'
@@ -6457,7 +6564,9 @@ describe('CarouselComponent', () => {
       '100px height'
     );
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick(450);
@@ -6468,8 +6577,8 @@ describe('CarouselComponent', () => {
     deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
     // try to fire transitionend event to finish height transition, but it doesn't work
     deSlides.forEach((slide) => {
-      slide.nativeElement.dispatchEvent(new Event('transitionend'))
-    })
+      slide.nativeElement.dispatchEvent(new Event('transitionend'));
+    });
 
     tick();
     fixtureHost.detectChanges();
@@ -6478,7 +6587,7 @@ describe('CarouselComponent', () => {
     expect(deSlides[0].nativeElement.classList.contains('height-0')).toBeTruthy(
       'element contains height-0 class'
     );
-    // there's native css transition that sets max-height to 0px. But in test environment I cannot simulate the end of this transition. 
+    // there's native css transition that sets max-height to 0px. But in test environment I cannot simulate the end of this transition.
     // So, the height remains 100px instead of becoming 1px.
     // expect(getComputedStyle(deSlides[0].nativeElement).height).toBe(
     //   '1px',
@@ -6492,10 +6601,10 @@ describe('CarouselComponent', () => {
       '80px',
       '80px'
     );
-    expect(deSlides[3].nativeElement.classList.contains('height-full')).toBeTruthy(
-      'element contains height-full class'
-    );
-    // there's native css transition that sets max-height to 2000px. But in test environment I cannot simulate the end of this transition. 
+    expect(
+      deSlides[3].nativeElement.classList.contains('height-full')
+    ).toBeTruthy('element contains height-full class');
+    // there's native css transition that sets max-height to 2000px. But in test environment I cannot simulate the end of this transition.
     // So, the height remains 1px instead of becoming 130px.
     // expect(getComputedStyle(deSlides[3].nativeElement).height).toBe(
     //   '130px',
@@ -6507,7 +6616,7 @@ describe('CarouselComponent', () => {
     );
 
     // there's native css transition that sets max-height  to 2000px for active slides and max-height to 0px for not active slides.
-    //  But in test environment I cannot simulate the end of this transition. 
+    //  But in test environment I cannot simulate the end of this transition.
     // So, the height doesn't change correctly after moving carousel to the right.
     // So I comment out the expect below. HOWEVER, CSS CLASSES ARE SET CORRECTLY.
     // deStage = deCarouselComponent.query(By.css('.owl-stage'));
@@ -6516,11 +6625,10 @@ describe('CarouselComponent', () => {
     //   '130px height'
     // );
 
-
     // ------- set width of carousel to 800px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 800px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 800px; margin: auto');
     fixtureHost.detectChanges();
 
     expect(carouselHTML.clientWidth).toBe(800);
@@ -6541,11 +6649,17 @@ describe('CarouselComponent', () => {
     tick();
     fixtureHost.detectChanges();
     deStage = deCarouselComponent.query(By.css('.owl-stage'));
-    deStage.nativeElement.querySelectorAll('.owl-item').forEach((element) => {
-      element.style.cssFloat = 'left';
-    });
+    deStage.nativeElement
+      .querySelectorAll('.owl-item')
+      .forEach((element: HTMLElement) => {
+        element.style.cssFloat = 'left';
+      });
 
-    expect(deSlides.filter(slide => slide.nativeElement.classList.contains('owl-height')).length).toBe(0, 'all slides should not have owl-height class');
+    expect(
+      deSlides.filter((slide) =>
+        slide.nativeElement.classList.contains('owl-height')
+      ).length
+    ).toBe(0, 'all slides should not have owl-height class');
     expect(getComputedStyle(deSlides[0].nativeElement).height).toBe(
       '100px',
       '100px'
@@ -6670,7 +6784,9 @@ describe('CarouselComponent', () => {
     expect(deActiveCenteredSlide.innerHTML).toContain('Slide 1', 'Slide 1');
     expect(location.path(true)).toBe('/owl-car#one', '/owl-car#one');
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deNavButtons[1].triggerEventHandler('click', null);
 
     tick();
@@ -6798,8 +6914,8 @@ describe('CarouselComponent', () => {
     const html = `
       <div style="width: 920px; margin: auto">
         <owl-carousel-o [options]="{}">
-          @for(slide of slidesData(); track slide.id) {
-            <ng-template carouselSlide><div>{{slide}}</div></ng-template>
+          @for(slide of slidesData(); track slide) {
+            <ng-template carouselSlide [id]="slide"><div>{{slide}}</div></ng-template>
           }
         </owl-carousel-o>
       </div>
@@ -6822,7 +6938,7 @@ describe('CarouselComponent', () => {
       'Slide 3',
       'Slide 4',
       'Slide 5',
-    ]);
+    ] as any);
     fixtureHost.detectChanges();
     tick();
     fixtureHost.detectChanges();
@@ -6841,7 +6957,7 @@ describe('CarouselComponent', () => {
       'Slide 2',
       'Slide 3',
       'Slide 4',
-    ]);
+    ] as any);
     fixtureHost.detectChanges();
     tick();
     fixtureHost.detectChanges();
@@ -6861,8 +6977,8 @@ describe('CarouselComponent', () => {
     const html = `
       <div style="width: 920px; margin: auto">
         <owl-carousel-o [options]="{startPosition: 2}">
-         @for(slide of slidesData(); track slide.id) {
-          <ng-template carouselSlide><div>{{slide}}</div></ng-template>
+         @for(slide of slidesData(); track slide) {
+          <ng-template carouselSlide [id]="slide"><div>{{slide}}</div></ng-template>
          }
         </owl-carousel-o>
       </div>
@@ -6885,7 +7001,7 @@ describe('CarouselComponent', () => {
       'Slide 5',
       'Slide 6',
       'Slide 7',
-    ]);
+    ] as any);
     fixtureHost.detectChanges();
     tick();
     fixtureHost.detectChanges();
@@ -6906,7 +7022,7 @@ describe('CarouselComponent', () => {
       'Slide 4',
       'Slide 5',
       'Slide 6',
-    ]);
+    ] as any);
     fixtureHost.detectChanges();
     tick();
     fixtureHost.detectChanges();
@@ -6994,8 +7110,14 @@ describe('CarouselComponent', () => {
     const carouselDiv: HTMLElement = deCarouselComponent.query(
       By.css('.owl-carousel.owl-theme')
     ).nativeElement;
-    expect(carouselDiv.getAttribute('role')).toBe('region', 'role="region" for carousel div');
-    expect(carouselDiv.getAttribute('aria-label')).toBe('Carousel', 'aria-label="Carousel" for carousel div');
+    expect(carouselDiv.getAttribute('role')).toBe(
+      'region',
+      'role="region" for carousel div'
+    );
+    expect(carouselDiv.getAttribute('aria-label')).toBe(
+      'Carousel',
+      'aria-label="Carousel" for carousel div'
+    );
 
     const navButtons: DebugElement[] = deCarouselComponent.queryAll(
       By.css('.owl-carousel-inner > button[class*="owl-"]')
@@ -7003,23 +7125,38 @@ describe('CarouselComponent', () => {
     expect(navButtons.length).toBe(2, '2 nav buttons');
 
     const prevButton: HTMLElement = navButtons[0].nativeElement;
-    expect(prevButton.getAttribute('type')).toBe('button', 'type="button" for prev button');
-    expect(prevButton.getAttribute('aria-label')).toBe('Previous Slide', 'aria-label="Previous Slide" for prev button');
-    expect(prevButton.hasAttribute('disabled')).toBeTruthy('prev button is disabled at the beginning');
+    expect(prevButton.getAttribute('type')).toBe(
+      'button',
+      'type="button" for prev button'
+    );
+    expect(prevButton.getAttribute('aria-label')).toBe(
+      'Previous Slide',
+      'aria-label="Previous Slide" for prev button'
+    );
+    expect(prevButton.hasAttribute('disabled')).toBeTruthy(
+      'prev button is disabled at the beginning'
+    );
 
     const nextButton: HTMLElement = navButtons[1].nativeElement;
-    expect(nextButton.getAttribute('type')).toBe('button', 'type="button" for next button');
-    expect(nextButton.getAttribute('aria-label')).toBe('Next Slide', 'aria-label="Next Slide" for next button');
-
-    deSlides = deCarouselComponent.queryAll(
-      By.css('.owl-item')
+    expect(nextButton.getAttribute('type')).toBe(
+      'button',
+      'type="button" for next button'
     );
+    expect(nextButton.getAttribute('aria-label')).toBe(
+      'Next Slide',
+      'aria-label="Next Slide" for next button'
+    );
+
+    deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
     expect(deSlides.length).toBe(10, '10 slides');
 
     //.  check if  .owl-item has aria-hidden set to true or false depending on active state, has role="group" and aria-label with slide number and total slides
     activeSlides.forEach((slide, index) => {
       const slideEl: HTMLElement = slide.nativeElement;
-      expect(slideEl.getAttribute('role')).toBe('group', `role="group" for active slide ${slideEl.id}`);
+      expect(slideEl.getAttribute('role')).toBe(
+        'group',
+        `role="group" for active slide ${slideEl.id}`
+      );
       const slideNumber = index + 1;
       expect(slideEl.getAttribute('aria-label')).toBe(
         `Slide ${slideNumber} of 10`,
@@ -7035,19 +7172,28 @@ describe('CarouselComponent', () => {
     inactiveSlides.forEach((slide, index) => {
       const slideEl: HTMLElement = slide.nativeElement;
       const slideNumber = index + activeSlides.length + 1;
-      expect(slideEl.getAttribute('role')).toBe('group', `role="group" for inactive slide ${slideNumber}`);
+      expect(slideEl.getAttribute('role')).toBe(
+        'group',
+        `role="group" for inactive slide ${slideNumber}`
+      );
       expect(slideEl.getAttribute('aria-label')).toBe(
         `Slide ${slideNumber} of 10`,
         `aria-label="Slide ${slideNumber} of 10" for inactive slide ${slideNumber}`
       );
-      expect(slideEl.getAttribute('aria-hidden')).toBe('true', `aria-hidden="true" for inactive slide ${slideNumber}`);
+      expect(slideEl.getAttribute('aria-hidden')).toBe(
+        'true',
+        `aria-hidden="true" for inactive slide ${slideNumber}`
+      );
     });
 
-    //  find .owl-dots and check if they have aria-label, 
+    //  find .owl-dots and check if they have aria-label,
     const dotsContainer: HTMLElement = deCarouselComponent.query(
       By.css('.owl-dots')
     ).nativeElement;
-    expect(dotsContainer.getAttribute('aria-label')).toBe('Carousel Dots Pagination', 'aria-label="Carousel Dots Pagination" for dots container');
+    expect(dotsContainer.getAttribute('aria-label')).toBe(
+      'Carousel Dots Pagination',
+      'aria-label="Carousel Dots Pagination" for dots container'
+    );
 
     //  find each .owl-dot and check if it is button, aria-current set to true for active dot, tabindex=0 for active dot, tabindex=-1 for inactive dots, all dots should have aria-label with "Carousel Dot and dot number"
     const dots: DebugElement[] = deCarouselComponent.queryAll(
@@ -7057,18 +7203,34 @@ describe('CarouselComponent', () => {
 
     dots.forEach((dot, index) => {
       const dotEl: HTMLElement = dot.nativeElement;
-      expect(dotEl.getAttribute('type')).toBe('button', `type="button" for dot ${index + 1}`);
+      expect(dotEl.getAttribute('type')).toBe(
+        'button',
+        `type="button" for dot ${index + 1}`
+      );
       const isActiveDot = dotEl.classList.contains('active');
       if (isActiveDot) {
-        expect(dotEl.getAttribute('aria-current')).toBe('true', `aria-current="true" for active dot ${index + 1}`);
-        expect(dotEl.getAttribute('tabindex')).toBe('0', `tabindex="0" for active dot ${index + 1}`);
+        expect(dotEl.getAttribute('aria-current')).toBe(
+          'true',
+          `aria-current="true" for active dot ${index + 1}`
+        );
+        expect(dotEl.getAttribute('tabindex')).toBe(
+          '0',
+          `tabindex="0" for active dot ${index + 1}`
+        );
       } else {
-        expect(dotEl.getAttribute('aria-current')).toBeNull(`aria-current is null for inactive dot ${index + 1}`);
-        expect(dotEl.getAttribute('tabindex')).toBe('-1', `tabindex="-1" for inactive dot ${index + 1}`);
+        expect(dotEl.getAttribute('aria-current')).toBeNull(
+          `aria-current is null for inactive dot ${index + 1}`
+        );
+        expect(dotEl.getAttribute('tabindex')).toBe(
+          '-1',
+          `tabindex="-1" for inactive dot ${index + 1}`
+        );
       }
-      expect(dotEl.getAttribute('aria-label')).toBe(`Carousel Dot ${index + 1}`, `aria-label="Carousel Dot ${index + 1}" for dot ${index + 1}`);
-    })
-
+      expect(dotEl.getAttribute('aria-label')).toBe(
+        `Carousel Dot ${index + 1}`,
+        `aria-label="Carousel Dot ${index + 1}" for dot ${index + 1}`
+      );
+    });
 
     /* 
       The logic below should test this schenarios:
@@ -7106,8 +7268,8 @@ describe('CarouselComponent', () => {
     // fixtureHost.detectChanges();
     // expect(document.activeElement).toEqual(testInput, 'focus is on the input before tabbing into carousel');
 
-    // // press tab to focus first focusable element in carousel. prev button is disabled, so focus should go to next button 
-    // // press tab to focus first dot 
+    // // press tab to focus first focusable element in carousel. prev button is disabled, so focus should go to next button
+    // // press tab to focus first dot
     // // press tab so first dot looses focus and focus goes to #after-carousel-button.
     // triggerKeyboardEvent(testInput, 'keypress', 9, 'Tab');
     // tick();
@@ -7117,7 +7279,7 @@ describe('CarouselComponent', () => {
     //   By.css('.owl-carousel-inner > button[class*="owl-"]')
     // );
     // const nextButtonAfterInput: HTMLElement = navButtonsAfterInput[1].nativeElement;
-    // // for now cannot simulate tab event 
+    // // for now cannot simulate tab event
     // expect(document.activeElement).toEqual(nextButtonAfterInput, 'focus is on next button after tabbing from input');
 
     // // press tab to focus first dot
@@ -7199,7 +7361,6 @@ describe('CarouselComponent', () => {
     // navButtonsAfterInput[0].nativeElement.click();
     // tick();
     // fixtureHost.detectChanges();
-
 
     // // prev button is disabled again, slide 1 is active again
     // expect(navButtonsAfterInput[0].nativeElement.getAttribute('disabled')).toBeTruthy('prev button is disabled after moving carousel back');
@@ -7310,14 +7471,15 @@ describe('CarouselComponent', () => {
 @Component({
   selector: 'test-dom',
   template: '',
-  standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class TestComponent {
   options: any = signal({});
-  translatedData: SlidesOutputData;
-  currentSlidesData: SlidesOutputData;
+  translatedData!: SlidesOutputData;
+  currentSlidesData!: SlidesOutputData;
   slidesData = signal([]);
-  constructor() { }
+  constructor() {}
   getPassedData(data: any) {
     this.translatedData = data;
   }
@@ -7356,10 +7518,11 @@ class TestComponent {
       </owl-carousel-o>
     </div>
   `,
-  standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class HashComponent {
-  constructor() { }
+  constructor() {}
 }
 
 function triggerMouseEvent(node: any, eventType: string, evtObj: any) {

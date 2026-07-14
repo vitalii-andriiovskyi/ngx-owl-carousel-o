@@ -7,7 +7,12 @@ import {
   tick,
   waitForAsync,
 } from '@angular/core/testing';
-import { Component, DebugElement, OnInit } from '@angular/core';
+import {
+  Component,
+  DebugElement,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 
@@ -112,12 +117,14 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     );
 
     const stageParent: HTMLElement = deStageWrapper.nativeElement.children[0]; // css rules for this element are being changed outer of angular zone. Thus there's no need to call detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
 
-    expect(
-      deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).withContext('prev button has .disabled').toBeTruthy();
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled'))
+      .withContext('prev button has .disabled')
+      .toBeTruthy();
     expect(deDots.length).withContext('2 dots').toBe(2);
 
     // drag carousel to left hand-side
@@ -143,18 +150,18 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     });
     tick();
 
-    expect(stageParent.style.transform).withContext('translate3d(-10px, 0px, 0px)').toBe(
-      'translate3d(-10px, 0px, 0px)'
-    );
+    expect(stageParent.style.transform)
+      .withContext('translate3d(-10px, 0px, 0px)')
+      .toBe('translate3d(-10px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mousemove', {
       clientX: coords.x - 40,
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).withContext('translate3d(-40px, 0px, 0px)').toBe(
-      'translate3d(-40px, 0px, 0px)'
-    );
+    expect(stageParent.style.transform)
+      .withContext('translate3d(-40px, 0px, 0px)')
+      .toBe('translate3d(-40px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mouseup', {
       clientX: coords.x - 40,
@@ -165,15 +172,19 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 2').toContain(
-      'Slide 2'
+    expect(deActiveSlides[0].nativeElement.innerHTML)
+      .withContext('Slide 2')
+      .toContain('Slide 2');
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
     );
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
-    expect(
-      deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).withContext("prev button doesn't have .disabled").toBeFalsy();
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled'))
+      .withContext("prev button doesn't have .disabled")
+      .toBeFalsy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[0].nativeElement.classList.contains('active')).withContext('1th dot is active').toBeTruthy();
+    expect(deDots[0].nativeElement.classList.contains('active'))
+      .withContext('1th dot is active')
+      .toBeTruthy();
 
     // drag carousel to right hand-side
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -190,14 +201,18 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).withContext('translate3d(10px, 0px, 0px)').toBe('translate3d(10px, 0px, 0px)');
+    expect(stageParent.style.transform)
+      .withContext('translate3d(10px, 0px, 0px)')
+      .toBe('translate3d(10px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mousemove', {
       clientX: coords.x + 40,
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).withContext('translate3d(40px, 0px, 0px)').toBe('translate3d(40px, 0px, 0px)');
+    expect(stageParent.style.transform)
+      .withContext('translate3d(40px, 0px, 0px)')
+      .toBe('translate3d(40px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mouseup', {
       clientX: coords.x + 40,
@@ -208,13 +223,19 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 1').toContain('Slide 1');
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
-    expect(
-      deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).withContext('prev button has .disabled').toBeTruthy();
+    expect(deActiveSlides[0].nativeElement.innerHTML)
+      .withContext('Slide 1')
+      .toContain('Slide 1');
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled'))
+      .withContext('prev button has .disabled')
+      .toBeTruthy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[0].nativeElement.classList.contains('active')).withContext('1th dot is active').toBeTruthy();
+    expect(deDots[0].nativeElement.classList.contains('active'))
+      .withContext('1th dot is active')
+      .toBeTruthy();
 
     // Slide 1 is active. Thus dragging carousel to right hand-side shoudn't change anything
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -231,7 +252,9 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).withContext('translate3d(2px, 0px, 0px)').toBeTruthy();
+    expect(stageParent.style.transform)
+      .withContext('translate3d(2px, 0px, 0px)')
+      .toBeTruthy();
 
     triggerMouseEvent(document, 'mousemove', {
       clientX: coords.x + 40,
@@ -247,13 +270,19 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 1').toContain('Slide 1');
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
-    expect(
-      deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).withContext('prev button has .disabled').toBeTruthy();
+    expect(deActiveSlides[0].nativeElement.innerHTML)
+      .withContext('Slide 1')
+      .toContain('Slide 1');
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled'))
+      .withContext('prev button has .disabled')
+      .toBeTruthy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[0].nativeElement.classList.contains('active')).withContext('1th dot is active').toBeTruthy();
+    expect(deDots[0].nativeElement.classList.contains('active'))
+      .withContext('1th dot is active')
+      .toBeTruthy();
 
     coords = findCoordsInElem(
       deSlides[2].nativeElement,
@@ -289,13 +318,19 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 3').toContain('Slide 3');
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
-    expect(
-      deNavButtons[1].nativeElement.classList.contains('disabled')
-    ).withContext('next button has .disabled').toBeTruthy();
+    expect(deActiveSlides[0].nativeElement.innerHTML)
+      .withContext('Slide 3')
+      .toContain('Slide 3');
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
+    expect(deNavButtons[1].nativeElement.classList.contains('disabled'))
+      .withContext('next button has .disabled')
+      .toBeTruthy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[1].nativeElement.classList.contains('active')).withContext('2th dot is active').toBeTruthy();
+    expect(deDots[1].nativeElement.classList.contains('active'))
+      .withContext('2th dot is active')
+      .toBeTruthy();
 
     // drag carousel to left hand-side
     // Slide 5 is active. Thus dragging carousel to left hand-side shoudn't change anything
@@ -326,13 +361,19 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 3').toContain('Slide 3');
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
-    expect(
-      deNavButtons[1].nativeElement.classList.contains('disabled')
-    ).withContext('next button has .disabled').toBeTruthy();
+    expect(deActiveSlides[0].nativeElement.innerHTML)
+      .withContext('Slide 3')
+      .toContain('Slide 3');
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
+    expect(deNavButtons[1].nativeElement.classList.contains('disabled'))
+      .withContext('next button has .disabled')
+      .toBeTruthy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[1].nativeElement.classList.contains('active')).withContext('2th dot is active').toBeTruthy();
+    expect(deDots[1].nativeElement.classList.contains('active'))
+      .withContext('2th dot is active')
+      .toBeTruthy();
   }));
 
   it('should drag carousel by mouse [options]="{nav: true, loop: true}"', fakeAsync(() => {
@@ -365,13 +406,15 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     );
 
     const stageParent: HTMLElement = deStageWrapper.nativeElement.children[0]; // css rules for this element are being changed outer of angular zone. Thus there's no need to call detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
 
-    expect(
-      deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).withContext("prev button hasn't .disabled").toBeFalsy();
-    expect(deDots.length).withContext('2 dots').toBe(2,);
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled'))
+      .withContext("prev button hasn't .disabled")
+      .toBeFalsy();
+    expect(deDots.length).withContext('2 dots').toBe(2);
 
     // drag carousel to left hand-side
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -394,14 +437,18 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     });
     tick();
 
-    expect(stageParent.style.transform).withContext('translate3d(-10px, 0px, 0px)').toBe('translate3d(-10px, 0px, 0px)');
+    expect(stageParent.style.transform)
+      .withContext('translate3d(-10px, 0px, 0px)')
+      .toBe('translate3d(-10px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mousemove', {
       clientX: coords.x - 300,
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).withContext('translate3d(-300px, 0px, 0px)').toBe('translate3d(-300px, 0px, 0px)');
+    expect(stageParent.style.transform)
+      .withContext('translate3d(-300px, 0px, 0px)')
+      .toBe('translate3d(-300px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mouseup', {
       clientX: coords.x - 300,
@@ -412,13 +459,19 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 2').toContain('Slide 2');
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
-    expect(
-      deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).withContext("prev button doesn't have .disabled").toBeFalsy();
+    expect(deActiveSlides[0].nativeElement.innerHTML)
+      .withContext('Slide 2')
+      .toContain('Slide 2');
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled'))
+      .withContext("prev button doesn't have .disabled")
+      .toBeFalsy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[0].nativeElement.classList.contains('active')).withContext('1th dot is active').toBeTruthy();
+    expect(deDots[0].nativeElement.classList.contains('active'))
+      .withContext('1th dot is active')
+      .toBeTruthy();
 
     // drag carousel to right hand-side on 2 slides, before it carousel is in initial state
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -436,14 +489,18 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     });
     tick();
 
-    expect(stageParent.style.transform).withContext('translate3d(10px, 0px, 0px)').toBe('translate3d(10px, 0px, 0px)');
+    expect(stageParent.style.transform)
+      .withContext('translate3d(10px, 0px, 0px)')
+      .toBe('translate3d(10px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mousemove', {
       clientX: coords.x + 600,
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).withContext('translate3d(-933px, 0px, 0px)').toBe('translate3d(-933px, 0px, 0px)');
+    expect(stageParent.style.transform)
+      .withContext('translate3d(-933px, 0px, 0px)')
+      .toBe('translate3d(-933px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mouseup', {
       clientX: coords.x + 600,
@@ -462,12 +519,16 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       'Slide 5',
       'Slide 5'
     );
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
-    expect(
-      deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).withContext("prev button doesn't have .disabled").toBeFalsy();
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled'))
+      .withContext("prev button doesn't have .disabled")
+      .toBeFalsy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[0].nativeElement.classList.contains('active')).withContext('1th dot is active').toBeTruthy();
+    expect(deDots[0].nativeElement.classList.contains('active'))
+      .withContext('1th dot is active')
+      .toBeTruthy();
 
     // drag carousel to left hand-side on 3 slides
     coords = findCoordsInElem(
@@ -490,14 +551,18 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     });
     tick();
 
-    expect(stageParent.style.transform).withContext('translate3d(-10px, 0px, 0px)').toBe('translate3d(-10px, 0px, 0px)');
+    expect(stageParent.style.transform)
+      .withContext('translate3d(-10px, 0px, 0px)')
+      .toBe('translate3d(-10px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mousemove', {
       clientX: coords.x - 900,
       clientY: coords.y,
     });
     tick();
-    expect(stageParent.style.transform).withContext('translate3d(-900px, 0px, 0px)').toBe('translate3d(-900px, 0px, 0px)');
+    expect(stageParent.style.transform)
+      .withContext('translate3d(-900px, 0px, 0px)')
+      .toBe('translate3d(-900px, 0px, 0px)');
 
     triggerMouseEvent(document, 'mouseup', {
       clientX: coords.x - 900,
@@ -508,14 +573,22 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 1').toContain('Slide 1');
-    expect(deActiveSlides[2].nativeElement.innerHTML).withContext('Slide 3').toContain('Slide 3');
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
-    expect(
-      deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).withContext("prev button doesn't have .disabled").toBeFalsy();
+    expect(deActiveSlides[0].nativeElement.innerHTML)
+      .withContext('Slide 1')
+      .toContain('Slide 1');
+    expect(deActiveSlides[2].nativeElement.innerHTML)
+      .withContext('Slide 3')
+      .toContain('Slide 3');
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled'))
+      .withContext("prev button doesn't have .disabled")
+      .toBeFalsy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[0].nativeElement.classList.contains('active')).withContext('1th dot is active').toBeTruthy();
+    expect(deDots[0].nativeElement.classList.contains('active'))
+      .withContext('1th dot is active')
+      .toBeTruthy();
   }));
 
   it('shouldn\'t drag the carousel by the mouse [options]="{nav: true, loop: true}"', fakeAsync(() => {
@@ -548,12 +621,14 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     );
 
     const stageParent: HTMLElement = deStageWrapper.nativeElement.children[0]; // css rules for this element are being changed outer of angular zone. Thus there's no need to call detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
 
-    expect(
-      deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).withContext("prev button hasn't .disabled").toBeFalsy();
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled'))
+      .withContext("prev button hasn't .disabled")
+      .toBeFalsy();
     expect(deDots.length).withContext('2 dots').toBe(2);
 
     // drag carousel to left hand-side
@@ -612,12 +687,14 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     );
 
     const stageParent: HTMLElement = deStageWrapper.nativeElement.children[0]; // css rules for this element are being changed outer of angular zone. Thus there's no need to call detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
 
-    expect(
-      deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).withContext('prev button has .disabled').toBeTruthy();
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled'))
+      .withContext('prev button has .disabled')
+      .toBeTruthy();
     expect(deDots.length).withContext('5 dots').toBe(5);
     expect(centeredSlide.innerHTML).withContext('Slide 1').toContain('Slide 1');
 
@@ -650,14 +727,20 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 1').toContain('Slide 1');
+    expect(deActiveSlides[0].nativeElement.innerHTML)
+      .withContext('Slide 1')
+      .toContain('Slide 1');
     expect(centeredSlide.innerHTML).withContext('Slide 1').toContain('Slide 1');
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
-    expect(
-      deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).withContext('prev button has .disabled').toBeTruthy();
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled'))
+      .withContext('prev button has .disabled')
+      .toBeTruthy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[0].nativeElement.classList.contains('active')).withContext('1th dot is active').toBeTruthy();
+    expect(deDots[0].nativeElement.classList.contains('active'))
+      .withContext('1th dot is active')
+      .toBeTruthy();
 
     // drag carousel to right hand-side on 1 slide; current centered slide is Slide 1;
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -687,17 +770,23 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 1').toContain('Slide 1');
+    expect(deActiveSlides[0].nativeElement.innerHTML)
+      .withContext('Slide 1')
+      .toContain('Slide 1');
     centeredSlide = deCarouselComponent.query(
       By.css('.owl-item.active.center')
     ).nativeElement;
     expect(centeredSlide.innerHTML).withContext('Slide 2').toContain('Slide 2');
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
-    expect(
-      deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).withContext("prev button hasn't .disabled").toBeFalsy();
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled'))
+      .withContext("prev button hasn't .disabled")
+      .toBeFalsy();
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[1].nativeElement.classList.contains('active')).withContext('2th dot is active').toBeTruthy();
+    expect(deDots[1].nativeElement.classList.contains('active'))
+      .withContext('2th dot is active')
+      .toBeTruthy();
 
     // drag carousel to right hand-side on 1 slide; current centered slide is Slide 2;
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -727,13 +816,17 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 2').toContain('Slide 2');
+    expect(deActiveSlides[0].nativeElement.innerHTML)
+      .withContext('Slide 2')
+      .toContain('Slide 2');
     centeredSlide = deCarouselComponent.query(
       By.css('.owl-item.active.center')
     ).nativeElement;
     expect(centeredSlide.innerHTML).withContext('Slide 3').toContain('Slide 3');
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[2].nativeElement.classList.contains('active')).withContext('3th dot is active').toBeTruthy();
+    expect(deDots[2].nativeElement.classList.contains('active'))
+      .withContext('3th dot is active')
+      .toBeTruthy();
 
     // drag carousel to left hand-side on 1 slide; current centered slide is Slide 3
     triggerMouseEvent(deStageWrapper.nativeElement, 'mousedown', {
@@ -763,13 +856,17 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     fixtureHost.detectChanges();
 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
-    expect(deActiveSlides[0].nativeElement.innerHTML).withContext('Slide 1').toContain('Slide 1');
+    expect(deActiveSlides[0].nativeElement.innerHTML)
+      .withContext('Slide 1')
+      .toContain('Slide 1');
     centeredSlide = deCarouselComponent.query(
       By.css('.owl-item.active.center')
     ).nativeElement;
     expect(centeredSlide.innerHTML).withContext('Slide 2').toContain('Slide 2');
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
-    expect(deDots[1].nativeElement.classList.contains('active')).withContext('2th dot is active').toBeTruthy();
+    expect(deDots[1].nativeElement.classList.contains('active'))
+      .withContext('2th dot is active')
+      .toBeTruthy();
   }));
 
   it('should drag carousel by mouse [options]="{nav: true, rewind: true}"', fakeAsync(() => {
@@ -801,12 +898,14 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     );
 
     const stageParent: HTMLElement = deStageWrapper.nativeElement.children[0]; // css rules for this element are being changed outer of angular zone. Thus there's no need to call detectChanges();
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
 
-    expect(
-      deNavButtons[0].nativeElement.classList.contains('disabled')
-    ).withContext("prev button hasn't .disabled").toBeFalsy();
+    expect(deNavButtons[0].nativeElement.classList.contains('disabled'))
+      .withContext("prev button hasn't .disabled")
+      .toBeFalsy();
     expect(deDots.length).withContext('2 dots').toBe(2);
 
     // drag carousel to right hand-side; current first active slide is Slide 1;
@@ -842,7 +941,9 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       'Slide 1',
       'Slide 1'
     );
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
     ).toBeFalsy("prev button hasn't .disabled");
@@ -896,7 +997,9 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       'Slide 5',
       'Slide 5'
     );
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(
       deNavButtons[1].nativeElement.classList.contains('disabled')
     ).toBeFalsy("prev button hasn't .disabled");
@@ -932,7 +1035,9 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       getCoords(deSlides[1].nativeElement)
     );
 
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots .owl-dot'));
 
     expect(
@@ -973,7 +1078,9 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       'Slide 2'
     );
     expect(deActiveSlides.length).toBe(2, '2 active slide');
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
     ).toBeFalsy("prev button hasn't .disabled");
@@ -1015,7 +1122,9 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       'Slide 3'
     );
     expect(deActiveSlides.length).toBe(1, '1 active slide');
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
     ).toBeFalsy("prev button hasn't .disabled");
@@ -1057,7 +1166,9 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       'Slide 1'
     );
     expect(deActiveSlides.length).toBe(2, '2 active slide');
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
     ).toBeTruthy('prev button has .disabled');
@@ -1087,7 +1198,9 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     deCarouselComponent = fixtureHost.debugElement.query(
       By.css('owl-carousel-o')
     );
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     deDots = deCarouselComponent.queryAll(By.css('.owl-dots > .owl-dot'));
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
 
@@ -1134,7 +1247,9 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       'Slide 2'
     );
     expect(deActiveSlides.length).toBe(3, '3 active slide');
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
     expect(
       deNavButtons[0].nativeElement.classList.contains('disabled')
     ).toBeFalsy("prev button hasn't .disabled");
@@ -1326,7 +1441,9 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
     deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
     deStageWrapper = deCarouselComponent.query(By.css('owl-stage'));
-    deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+    deNavButtons = deCarouselComponent.queryAll(
+      By.css('.owl-carousel-inner > button[class^="owl-"]')
+    );
 
     coords = findCoordsInElem(
       deSlides[3].nativeElement,
@@ -1370,8 +1487,8 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 
     // ------- set width of carousel to 800px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 800px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 800px; margin: auto');
     fixtureHost.detectChanges();
 
     expect(carouselHTML.clientWidth).toBe(800);
@@ -1433,8 +1550,8 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 
     // ------- set width of carousel to 400px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 400px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 400px; margin: auto');
     fixtureHost.detectChanges();
 
     expect(carouselHTML.clientWidth).toBe(400);
@@ -1588,8 +1705,8 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 
       // ------- set width of carousel to 800px
       carouselHTML
-        .closest('.owl-wrapper')
-        .setAttribute('style', 'width: 800px; margin: auto');
+        ?.closest('.owl-wrapper')
+        ?.setAttribute('style', 'width: 800px; margin: auto');
       fixtureHost.detectChanges();
 
       expect(carouselHTML.clientWidth).toBe(800);
@@ -1951,8 +2068,8 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 
     // ------- set width of carousel to 800px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 800px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 800px; margin: auto');
     fixtureHost.detectChanges();
 
     expect(carouselHTML.clientWidth).toBe(800);
@@ -2008,8 +2125,8 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 
     // ------- set width of carousel to 400px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 400px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 400px; margin: auto');
     fixtureHost.detectChanges();
 
     expect(carouselHTML.clientWidth).toBe(400);
@@ -2222,8 +2339,8 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 
     // ------- set width of carousel to 800px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 800px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 800px; margin: auto');
     fixtureHost.detectChanges();
 
     expect(carouselHTML.clientWidth).toBe(800);
@@ -2279,8 +2396,8 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 
     // ------- set width of carousel to 400px
     carouselHTML
-      .closest('.owl-wrapper')
-      .setAttribute('style', 'width: 400px; margin: auto');
+      ?.closest('.owl-wrapper')
+      ?.setAttribute('style', 'width: 400px; margin: auto');
     fixtureHost.detectChanges();
 
     expect(carouselHTML.clientWidth).toBe(400);
@@ -2664,7 +2781,9 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
       deActiveSlides = deCarouselComponent.queryAll(By.css('.owl-item.active'));
       deSlides = deCarouselComponent.queryAll(By.css('.owl-item'));
       deStageWrapper = deCarouselComponent.query(By.css('owl-stage'));
-      deNavButtons = deCarouselComponent.queryAll(By.css('.owl-carousel-inner > button[class^="owl-"]'));
+      deNavButtons = deCarouselComponent.queryAll(
+        By.css('.owl-carousel-inner > button[class^="owl-"]')
+      );
 
       coords = findCoordsInElem(
         deSlides[3].nativeElement,
@@ -2719,8 +2838,8 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 
       // ------- set width of carousel to 800px
       carouselHTML
-        .closest('.owl-wrapper')
-        .setAttribute('style', 'width: 800px; margin: auto');
+        ?.closest('.owl-wrapper')
+        ?.setAttribute('style', 'width: 800px; margin: auto');
       fixtureHost.detectChanges();
 
       expect(carouselHTML.clientWidth).toBe(800);
@@ -2789,8 +2908,8 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 
       // ------- set width of carousel to 400px
       carouselHTML
-        .closest('.owl-wrapper')
-        .setAttribute('style', 'width: 400px; margin: auto');
+        ?.closest('.owl-wrapper')
+        ?.setAttribute('style', 'width: 400px; margin: auto');
       fixtureHost.detectChanges();
 
       expect(carouselHTML.clientWidth).toBe(400);
@@ -3051,7 +3170,9 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     locationService.back();
     tick();
     fixtureHost.detectChanges();
-    expect(locationService.path()).withContext("owlRouterLink doesn't work").toBe('');
+    expect(locationService.path())
+      .withContext("owlRouterLink doesn't work")
+      .toBe('');
 
     coords = findCoordsInElem(
       anchorIn1tSlide.nativeElement,
@@ -3074,10 +3195,14 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     });
     tick();
 
-    expect(testComponent.isDragging).withContext('isDragging property is true').toBeTruthy();
+    expect(testComponent.isDragging)
+      .withContext('isDragging property is true')
+      .toBeTruthy();
 
     anchorIn1tSlide.triggerEventHandler('click', { button: 0 });
-    expect(locationService.path()).withContext("owlRouterLink doesn't work").toBe('');
+    expect(locationService.path())
+      .withContext("owlRouterLink doesn't work")
+      .toBe('');
 
     triggerMouseEvent(document, 'mousemove', {
       clientX: coords.x - 40,
@@ -3086,9 +3211,13 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     tick();
     fixtureHost.detectChanges();
 
-    expect(testComponent.isDragging).withContext('isDragging property is true').toBeTruthy();
+    expect(testComponent.isDragging)
+      .withContext('isDragging property is true')
+      .toBeTruthy();
     // for some reason this test fails, however in practice everything works
-    expect(locationService.path()).withContext("owlRouterLink doesn't work 2").toBe('');
+    expect(locationService.path())
+      .withContext("owlRouterLink doesn't work 2")
+      .toBe('');
 
     triggerMouseEvent(document, 'mouseup', {
       clientX: coords.x - 40,
@@ -3100,7 +3229,9 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
     fixtureHost.detectChanges();
     // console.log('locationService.path() 3: ', locationService.path())
     // for some reason this test fails, however in practice everything works
-    expect(locationService.path()).withContext("owlRouterLink doesn't work 3").toBe('');
+    expect(locationService.path())
+      .withContext("owlRouterLink doesn't work 3")
+      .toBe('');
   }));
   // the ending of tests
 });
@@ -3108,13 +3239,14 @@ describe('StageComponent in context of CarouselComponent (integrated tests): ', 
 @Component({
   selector: 'test-dom',
   template: '',
-  standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class TestComponent {
   options: any = {};
-  translatedData: SlidesOutputData;
-  isDragging: boolean;
-  constructor(private location: Location) { }
+  translatedData!: SlidesOutputData;
+  isDragging!: boolean;
+  constructor(private location: Location) {}
   getPassedData(data: any) {
     this.translatedData = data;
   }
@@ -3123,18 +3255,19 @@ class TestComponent {
 @Component({
   selector: 'owl-any',
   template: '<div>It works</div>',
-  standalone: false
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 class AnyComponent implements OnInit {
   init = false;
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.init = true;
   }
 }
 
-function getCoords(elem) {
+function getCoords(elem: HTMLElement) {
   // (1)
   const box = elem.getBoundingClientRect();
 

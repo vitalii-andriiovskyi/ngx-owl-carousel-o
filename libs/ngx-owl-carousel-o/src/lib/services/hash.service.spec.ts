@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { HashService } from './hash.service';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CarouselService } from './carousel.service';
 import { OwlLogger } from './logger.service';
 import { RouterModule } from '@angular/router';
@@ -25,6 +25,7 @@ describe('HashService', () => {
 @Component({
   selector: 'test-dom',
   template: '',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 class TestComponent {

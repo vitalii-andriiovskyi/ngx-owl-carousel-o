@@ -1,89 +1,129 @@
 {
   "migrations": [
     {
-      "cli": "nx",
-      "version": "22.6.0-beta.10",
-      "description": "Adds .claude/worktrees to .gitignore",
-      "implementation": "./dist/src/migrations/update-22-6-0/add-claude-worktrees-to-git-ignore",
-      "package": "nx",
-      "name": "22-6-1-add-claude-worktrees-to-git-ignore"
-    },
-    {
-      "cli": "nx",
-      "version": "22.7.0-beta.0",
-      "description": "Adds .nx/polygraph to .gitignore",
-      "implementation": "./dist/src/migrations/update-22-7-0/add-polygraph-to-git-ignore",
-      "package": "nx",
-      "name": "22-7-0-add-polygraph-to-git-ignore"
-    },
-    {
-      "cli": "nx",
-      "version": "22.6.0-rc.0",
-      "description": "Adds .claude/settings.local.json to .gitignore",
-      "implementation": "./dist/src/migrations/update-17-3-0/update-nxw",
-      "package": "nx",
-      "name": "22-6-0-add-claude-settings-local-to-git-ignore"
-    },
-    {
-      "cli": "nx",
-      "version": "22.7.0-beta.0",
-      "description": "Adds .nx/self-healing to .gitignore",
-      "implementation": "./dist/src/migrations/update-22-2-0/add-self-healing-to-gitignore",
-      "documentation": "./dist/src/migrations/update-22-2-0/add-self-healing-to-gitignore.md",
-      "package": "nx",
-      "name": "22-7-0-add-self-healing-to-gitignore"
-    },
-    {
-      "version": "23.0.0-beta.16",
-      "description": "Consolidates any remaining legacy releaseTag* flat properties into the nested releaseTag object. The flat properties were removed in Nx 23.",
-      "implementation": "./dist/src/migrations/update-23-0-0/consolidate-release-tag-config",
-      "package": "nx",
-      "name": "23-0-0-consolidate-release-tag-config"
-    },
-    {
-      "version": "23.0.0-beta.18",
-      "description": "Adds .nx/migrate-runs to .gitignore",
-      "implementation": "./dist/src/migrations/update-23-0-0/add-migrate-runs-to-git-ignore",
-      "package": "nx",
-      "name": "23-0-0-add-migrate-runs-to-git-ignore"
-    },
-    {
-      "version": "23.0.0-beta.10",
-      "description": "Rewrites imports of `@nx/workspace/src/utilities/typescript/compilation` to `@nx/js/internal`, where the module now lives.",
-      "implementation": "./dist/src/migrations/update-23-0-0/move-typescript-compilation-import",
-      "package": "@nx/workspace",
-      "name": "23-0-0-move-typescript-compilation-import"
-    },
-    {
-      "version": "23.0.0-beta.0",
-      "description": "Update the @nx/angular/module-federation import to use @nx/module-federation/angular.",
-      "factory": "./dist/src/migrations/update-23-0-0/migrate-with-mf-import-to-new-package",
-      "documentation": "./dist/src/migrations/update-23-0-0/migrate-with-mf-import-to-new-package.md",
+      "version": "23.1.0-beta.0",
+      "requires": {
+        "@angular/core": ">=22.0.0"
+      },
+      "description": "Rename the `ssr.experimentalPlatform` option to `ssr.platform` in `@angular/build:application`, `@angular-devkit/build-angular:application`, and `@nx/angular:application` targets, matching the Angular v22 rename.",
+      "factory": "./dist/src/migrations/update-23-1-0/rename-ssr-experimental-platform",
+      "documentation": "./dist/src/migrations/update-23-1-0/rename-ssr-experimental-platform.md",
       "package": "@nx/angular",
-      "name": "update-23-0-0-update-with-module-federation-import"
+      "name": "update-23-1-0-rename-ssr-experimental-platform"
     },
     {
-      "version": "23.0.0-beta.7",
-      "description": "Split @nx/angular:ngrx generator defaults in nx.json across the @nx/angular:ngrx-root-store and @nx/angular:ngrx-feature-store generators.",
-      "factory": "./dist/src/migrations/update-23-0-0/migrate-ngrx-generator-defaults",
-      "documentation": "./dist/src/migrations/update-23-0-0/migrate-ngrx-generator-defaults.md",
+      "version": "23.1.0-beta.0",
+      "requires": {
+        "@angular/core": ">=22.0.0"
+      },
+      "description": "Add `istanbul-lib-instrument` to `devDependencies` when a project runs unit tests with Karma (the `@angular-devkit/build-angular:karma` / `@angular/build:karma` builders, or `@angular/build:unit-test` / `@nx/angular:unit-test` with `runner: karma`), matching the Angular v22 `add-istanbul-instrumenter` migration.",
+      "factory": "./dist/src/migrations/update-23-1-0/add-istanbul-instrumenter",
+      "documentation": "./dist/src/migrations/update-23-1-0/add-istanbul-instrumenter.md",
       "package": "@nx/angular",
-      "name": "update-23-0-0-migrate-ngrx-generator-defaults"
+      "name": "update-23-1-0-add-istanbul-instrumenter"
     },
     {
-      "version": "23.0.0-beta.24",
-      "description": "Rename imports of `createNodesV2` from `@nx/angular/plugin` to the canonical `createNodes` export.",
-      "implementation": "./dist/src/migrations/update-23-0-0/migrate-create-nodes-v2-to-create-nodes",
-      "documentation": "./dist/src/migrations/update-23-0-0/migrate-create-nodes-v2-to-create-nodes.md",
+      "version": "23.1.0-beta.0",
+      "requires": {
+        "@angular/core": ">=22.0.0"
+      },
+      "description": "Add the `trustProxyHeaders` option to `AngularNodeAppEngine` and `AngularAppEngine` instantiations in SSR server files, matching the Angular v22 `trust-proxy-headers` migration.",
+      "factory": "./dist/src/migrations/update-23-1-0/add-trust-proxy-headers",
+      "documentation": "./dist/src/migrations/update-23-1-0/add-trust-proxy-headers.md",
       "package": "@nx/angular",
-      "name": "update-23-0-0-migrate-create-nodes-v2-import"
+      "name": "update-23-1-0-add-trust-proxy-headers"
     },
     {
-      "version": "23.0.0-beta.25",
-      "description": "Rewrites the now-removed deep `@nx/angular/src/utils`, `@nx/angular/src/generators/utils` and `@nx/angular/src/generators/move/move-impl` subpath imports to the new `@nx/angular/internal` entry. The executor/builder/generator schema and impl subpaths remain available and are left untouched.",
-      "implementation": "./dist/src/migrations/update-23-0-0/rewrite-internal-subpath-imports",
+      "version": "23.1.0-beta.0",
+      "requires": {
+        "@angular/core": ">=22.0.0"
+      },
+      "description": "Add `@angular/build` to `devDependencies` when a project uses the `@nx/angular:application` or `@nx/angular:unit-test` executor, or an `@angular/build:*` executor, and it is not already installed. These executors import `@angular/build` directly at runtime, but it has only ever been available transitively via `@angular-devkit/build-angular`, which is not reliable across package managers.",
+      "factory": "./dist/src/migrations/update-23-1-0/add-angular-build",
+      "documentation": "./dist/src/migrations/update-23-1-0/add-angular-build.md",
       "package": "@nx/angular",
-      "name": "rewrite-angular-internal-subpath-imports"
+      "name": "update-23-1-0-add-angular-build"
+    },
+    {
+      "version": "23.1.0-beta.0",
+      "requires": {
+        "@angular/core": ">=22.0.0"
+      },
+      "description": "Remove the `extendedDiagnostics` Angular compiler option from tsconfig files where `strictTemplates` resolves to `false`. Angular v22's `strict-templates-default` and `strict-safe-navigation-narrow` migrations can together produce this combination, which the Angular compiler rejects (`extendedDiagnostics` requires `strictTemplates` to be enabled).",
+      "factory": "./dist/src/migrations/update-23-1-0/remove-conflicting-extended-diagnostics",
+      "documentation": "./dist/src/migrations/update-23-1-0/remove-conflicting-extended-diagnostics.md",
+      "package": "@nx/angular",
+      "name": "update-23-1-0-remove-conflicting-extended-diagnostics"
+    },
+    {
+      "version": "22.0.0",
+      "description": "Adds `ChangeDetectionStrategy.Eager` to all components.",
+      "factory": "./bundles/change-detection-eager.cjs#migrate",
+      "package": "@angular/core",
+      "name": "change-detection-eager"
+    },
+    {
+      "version": "22.0.0",
+      "description": "Adds 'withXhr' to 'provideHttpClient' function calls when the 'HttpXhrBackend' is used. For more information see: https://angular.dev/api/common/http/withXhr",
+      "factory": "./bundles/http-xhr-backend.cjs#migrate",
+      "package": "@angular/core",
+      "name": "http-xhr-backend"
+    },
+    {
+      "version": "22.0.0",
+      "description": "Adds 'strictTemplates: false' in tsconfig.json when not set.",
+      "factory": "./bundles/strict-templates-default.cjs#migrate",
+      "package": "@angular/core",
+      "name": "strict-templates-default"
+    },
+    {
+      "version": "22.0.0",
+      "description": "Adds the required third argument to canMatch callsites.",
+      "factory": "./bundles/can-match-snapshot-required.cjs#migrate",
+      "package": "@angular/core",
+      "name": "can-match-snapshot-required"
+    },
+    {
+      "version": "22.0.0",
+      "description": "Adds withNoIncrementalHydration() opt out to provideClientHydration() when incremental hydration is not enabled to retain pre-v22 behavior-.",
+      "factory": "./bundles/incremental-hydration.cjs#migrate",
+      "package": "@angular/core",
+      "name": "incremental-hydration"
+    },
+    {
+      "version": "22.0.0",
+      "description": "Disables the 'nullishCoalescingNotNullable & optionalChainNotNullable extended diagnostics.",
+      "factory": "./bundles/strict-safe-navigation-narrow.cjs#migrate",
+      "package": "@angular/core",
+      "name": "strict-safe-navigation-narrow"
+    },
+    {
+      "version": "22.0.0",
+      "description": "Migrate broken duplicate outputs",
+      "factory": "./bundles/model-output.cjs#migrate",
+      "package": "@angular/core",
+      "name": "model-output"
+    },
+    {
+      "version": "22.0.0",
+      "description": "Wraps optional chaining expressions in $safeNavigationMigration().",
+      "factory": "./bundles/safe-optional-chaining.cjs#migrate",
+      "package": "@angular/core",
+      "name": "safe-optional-chaining"
+    },
+    {
+      "version": "22.0.0-0",
+      "description": "Updates Angular Material to v22",
+      "factory": "./ng-update/index_bundled#updateToV22",
+      "package": "@angular/material",
+      "name": "migration-v22"
+    },
+    {
+      "version": "22.0.0-0",
+      "description": "Updates the Angular CDK to v22",
+      "factory": "./ng-update/index#updateToV22",
+      "package": "@angular/cdk",
+      "name": "migration-v22"
     }
   ]
 }
